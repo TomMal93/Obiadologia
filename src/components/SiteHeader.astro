@@ -1,0 +1,89 @@
+---
+const pathname = Astro.url.pathname;
+
+const items = [
+  { href: "/", label: "Strona główna" },
+  { href: "/przepisy", label: "Przepisy" },
+  { href: "/o-nas", label: "O nas" },
+  { href: "/kontakt", label: "Kontakt" }
+];
+---
+
+<header class="site-header">
+  <a href="/" class="logo" aria-label="Obiadologia - strona główna">
+    <span class="logo-mark" aria-hidden="true">🍳</span>
+    Obiadologia
+  </a>
+
+  <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-nav">
+    Menu
+  </button>
+
+  <nav class="site-nav" aria-label="Główna nawigacja">
+    {items.map((item) => (
+      <a href={item.href} aria-current={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "page" : undefined}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+
+  <nav class="mobile-nav" id="mobile-nav" data-mobile-nav aria-label="Mobilna nawigacja" hidden>
+    {items.map((item) => <a href={item.href}>{item.label}</a>)}
+  </nav>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>("[data-menu-button]");
+  const nav = document.querySelector<HTMLElement>("[data-mobile-nav]");
+
+  button?.addEventListener("click", () => {
+    if (!nav) return;
+    const open = nav.hasAttribute("hidden");
+    nav.toggleAttribute("hidden", !open);
+    button.setAttribute("aria-expanded", String(open));
+  });
+</script>
+
+<style>
+  .site-header {
+    position: relative;
+  }
+
+  .mobile-nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 18px;
+    z-index: 10;
+    width: min(220px, calc(100vw - 36px));
+    padding: 8px;
+    display: grid;
+    gap: 4px;
+    border-radius: 22px;
+    background: rgba(255, 253, 248, 0.94);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+  }
+
+  .mobile-nav a {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 15px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  .mobile-nav a:active {
+    background: var(--soft);
+    color: var(--text);
+  }
+
+  @media (min-width: 960px) {
+    .mobile-nav {
+      display: none;
+    }
+  }
+</style>

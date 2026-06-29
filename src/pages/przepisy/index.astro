@@ -1,0 +1,399 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import RecipeCard from "@components/RecipeCard.astro";
+import RecipeFilters from "@components/RecipeFilters.astro";
+
+const recipes = await getCollection("recipes");
+---
+
+<BaseLayout
+  title="Obiadologia - Wszystkie przepisy"
+  description="Katalog pomysłów obiadowych Obiadologii. Filtruj po czasie, składnikach, koszcie, wysiłku i sytuacji."
+  questions={[
+    "wszystkie przepisy",
+    "gotowe w 15 minut",
+    "jedna patelnia",
+    "bez mięsa",
+    "tanie obiady",
+    "na dwa dni",
+    "mało zmywania",
+    "z resztek",
+    "kurczak",
+    "makaron",
+    "ryż",
+    "dla dzieci"
+  ]}
+>
+  <section class="mobile-sheet" data-mobile-sheet aria-label="Filtry" hidden>
+    <button class="sheet-backdrop" type="button" data-sheet-close aria-label="Zamknij filtry"></button>
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <RecipeFilters mobile />
+    </div>
+  </section>
+
+  <section class="hero catalog" data-catalog>
+    <div class="eyebrow">Przepisy</div>
+
+    <h1>Wszystkie <span>przepisy.</span></h1>
+
+    <p class="lead">
+      Pełna lista pomysłów z Obiadologii. Filtruj po czasie, typie obiadu, składnikach i sytuacji.
+    </p>
+
+    <div class="toolbar">
+      <div class="toolbar-main">
+        <div class="toolbar-count">
+          <span><strong data-result-count>{recipes.length} przepisów</strong> w katalogu</span>
+        </div>
+
+        <div class="toolbar-actions">
+          <select class="sort-select" data-sort aria-label="Sortowanie">
+            <option value="time">Sortuj: najkrótszy czas</option>
+            <option value="title">Sortuj: alfabetycznie</option>
+            <option value="low-cost">Sortuj: najtańsze</option>
+            <option value="effort">Sortuj: najmniej zmywania</option>
+          </select>
+
+          <button class="filter-toggle" type="button" data-open-filters>Filtry</button>
+        </div>
+      </div>
+
+      <div class="active-filters" data-active-filters aria-label="Aktywne filtry"></div>
+    </div>
+  </section>
+
+  <section class="catalog-layout">
+    <aside class="desktop-filters" aria-label="Filtry przepisów">
+      <RecipeFilters />
+    </aside>
+
+    <section class="recipe-list" aria-label="Lista przepisów">
+      <div class="recipe-grid" data-recipe-grid>
+        {recipes.map((recipe, index) => <RecipeCard recipe={recipe} index={index} />)}
+      </div>
+
+      <p class="empty-state" data-empty-state hidden>Nie ma takiego zestawu. Wyczyść filtry albo wybierz mniej warunków.</p>
+    </section>
+  </section>
+
+  <section class="cta-card">
+    <div>
+      <h2>Nie chcesz przeglądać listy?</h2>
+      <p>Wróć do strony głównej i użyj decyzyjnika. Tam szybciej zawęzisz wybór.</p>
+    </div>
+
+    <a class="cta-button" href="/">Wróć do decyzyjnika</a>
+  </section>
+</BaseLayout>
+
+<script>
+  const cards = [...document.querySelectorAll<HTMLElement>("[data-recipe-card]")];
+  const grid = document.querySelector<HTMLElement>("[data-recipe-grid]");
+  const count = document.querySelector<HTMLElement>("[data-result-count]");
+  const active = document.querySelector<HTMLElement>("[data-active-filters]");
+  const empty = document.querySelector<HTMLElement>("[data-empty-state]");
+  const sheet = document.querySelector<HTMLElement>("[data-mobile-sheet]");
+  const sort = document.querySelector<HTMLSelectElement>("[data-sort]");
+  const inputs = [...document.querySelectorAll<HTMLInputElement>("[data-filter-input]")];
+
+  function selectedFilters() {
+    return [...new Set(inputs.filter((input) => input.checked).map((input) => input.value))];
+  }
+
+  function syncInputs(filters: string[]) {
+    inputs.forEach((input) => {
+      input.checked = filters.includes(input.value);
+    });
+  }
+
+  function matchesFilter(card: HTMLElement, filter: string) {
+    const tags = card.dataset.tags ?? "";
+    const effort = card.dataset.effort ?? "";
+    const mood = card.dataset.mood ?? "";
+    const cost = card.dataset.cost ?? "";
+    const time = Number(card.dataset.time);
+
+    if (filter === "do 15 minut") return time <= 15;
+    if (filter === "do 30 minut") return time <= 30;
+    if (filter === "do 45 minut") return time <= 45;
+    if (filter === "tanie") return cost === "tanie" || tags.includes("tanie");
+    return tags.includes(filter) || effort.includes(filter) || mood.includes(filter);
+  }
+
+  function renderActive(filters: string[]) {
+    if (!active) return;
+    active.innerHTML = "";
+
+    filters.forEach((filter) => {
+      const chip = document.createElement("button");
+      chip.className = "active-chip";
+      chip.type = "button";
+      chip.textContent = filter;
+      chip.addEventListener("click", () => {
+        syncInputs(filters.filter((item) => item !== filter));
+        applyCatalog();
+      });
+      active.append(chip);
+    });
+
+    if (filters.length > 0) {
+      const clear = document.createElement("button");
+      clear.className = "active-chip clear";
+      clear.type = "button";
+      clear.textContent = "Wyczyść";
+      clear.addEventListener("click", clearFilters);
+      active.append(clear);
+    }
+  }
+
+  function sortCards(visibleCards: HTMLElement[]) {
+    const mode = sort?.value ?? "time";
+    const ordered = [...cards].sort((a, b) => {
+      if (mode === "title") return (a.dataset.title ?? "").localeCompare(b.dataset.title ?? "", "pl");
+      if (mode === "low-cost") return Number(b.dataset.cost === "tanie") - Number(a.dataset.cost === "tanie");
+      if (mode === "effort") return Number(b.dataset.tags?.includes("mało zmywania")) - Number(a.dataset.tags?.includes("mało zmywania"));
+      return Number(a.dataset.time) - Number(b.dataset.time);
+    });
+
+    ordered.forEach((card) => grid?.append(card));
+    return visibleCards;
+  }
+
+  function applyCatalog() {
+    const filters = selectedFilters();
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const match = filters.every((filter) => matchesFilter(card, filter));
+      card.classList.toggle("is-hidden", !match);
+      if (match) visible += 1;
+    });
+
+    sortCards(cards.filter((card) => !card.classList.contains("is-hidden")));
+    renderActive(filters);
+    if (count) count.textContent = `${visible} ${visible === 1 ? "przepis" : "przepisów"}`;
+    empty?.toggleAttribute("hidden", visible !== 0);
+  }
+
+  function clearFilters() {
+    syncInputs([]);
+    applyCatalog();
+  }
+
+  document.querySelectorAll("[data-apply-filters]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const filters = selectedFilters();
+      syncInputs(filters);
+      applyCatalog();
+      sheet?.setAttribute("hidden", "");
+    });
+  });
+
+  document.querySelectorAll("[data-clear-filters]").forEach((button) => button.addEventListener("click", clearFilters));
+  document.querySelectorAll("[data-sheet-close]").forEach((button) => button.addEventListener("click", () => sheet?.setAttribute("hidden", "")));
+  document.querySelector("[data-open-filters]")?.addEventListener("click", () => sheet?.removeAttribute("hidden"));
+  sort?.addEventListener("change", applyCatalog);
+
+  inputs.forEach((input) => input.addEventListener("change", () => {
+    const filters = selectedFilters();
+    syncInputs(filters);
+    applyCatalog();
+  }));
+
+  const params = new URLSearchParams(window.location.search);
+  const initial = params.get("tag");
+  if (initial) {
+    syncInputs([initial]);
+  }
+
+  applyCatalog();
+</script>
+
+<style>
+  .toolbar {
+    margin-top: 28px;
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+    display: grid;
+    gap: 10px;
+  }
+
+  .toolbar-main {
+    display: grid;
+    gap: 10px;
+  }
+
+  .toolbar-count {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    border-radius: 17px;
+    background: #fff8ef;
+    border: 1px solid rgba(37, 26, 20, 0.08);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .toolbar-count strong {
+    color: var(--text);
+    font-weight: 950;
+  }
+
+  .toolbar-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+  }
+
+  .sort-select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--card);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 900;
+    outline: none;
+  }
+
+  .filter-toggle {
+    min-height: 48px;
+    display: grid;
+    place-items: center;
+    padding: 0 16px;
+    border-radius: 17px;
+    background: var(--text);
+    color: white;
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  .active-filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .active-filters::-webkit-scrollbar { display: none; }
+
+  .active-chip {
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: var(--text);
+    color: white;
+    font-size: 12px;
+    font-weight: 950;
+    white-space: nowrap;
+  }
+
+  .active-chip.clear {
+    background: var(--soft);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .catalog-layout {
+    display: grid;
+    gap: 18px;
+    margin-top: 32px;
+    align-items: start;
+  }
+
+  .desktop-filters { display: none; }
+
+  .mobile-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+  }
+
+  .sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: rgba(37, 26, 20, 0.32);
+  }
+
+  .sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 86vh;
+    padding: 14px 14px 22px;
+    border-radius: 30px 30px 0 0;
+    background: var(--bg);
+    box-shadow: 0 -22px 70px rgba(37, 26, 20, 0.24);
+    overflow-y: auto;
+  }
+
+  .sheet-handle {
+    width: 42px;
+    height: 5px;
+    margin: 0 auto 12px;
+    border-radius: 999px;
+    background: rgba(37, 26, 20, 0.18);
+  }
+
+  .recipe-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .empty-state {
+    margin: 16px 0 0;
+    padding: 18px;
+    border-radius: 24px;
+    background: rgba(255, 253, 248, 0.88);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 850;
+    text-align: center;
+  }
+
+  @media (min-width: 700px) {
+    .toolbar-main {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+
+    .toolbar-actions { grid-template-columns: 220px auto; }
+    .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    :root { --container: 1120px; }
+
+    .filter-toggle,
+    .mobile-sheet {
+      display: none !important;
+    }
+
+    .catalog-layout {
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+    }
+
+    .desktop-filters {
+      position: sticky;
+      top: 22px;
+      display: block;
+    }
+
+    .recipe-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

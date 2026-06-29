@@ -1,0 +1,22 @@
+{
+  "title": "Quesadilla z serem i warzywami",
+  "summary": "Szybka rzecz z patelni. Działa z tortillą, serem i czymkolwiek chrupiącym.",
+  "description": "Quesadilla to obiad awaryjny: tortilla, ser, warzywa i kilka minut na patelni.",
+  "timeMinutes": 15,
+  "servings": 2,
+  "difficulty": "łatwe",
+  "effort": "1 patelnia",
+  "cost": "tanie",
+  "mood": "szybko",
+  "tags": ["do 15 minut", "mało zmywania", "ser", "warzywa", "jedna patelnia"],
+  "ingredients": [
+    { "name": "Tortille", "amount": "4 sztuki" },
+    { "name": "Ser", "amount": "150 g" },
+    { "name": "Warzywa", "amount": "1 szklanka" }
+  ],
+  "steps": [
+    { "title": "Złóż tortille", "text": "Na połowie tortilli ułóż ser i pokrojone warzywa." },
+    { "title": "Podsmaż", "text": "Smaż na suchej patelni, aż ser się roztopi." },
+    { "title": "Pokrój", "text": "Przetnij na trójkąty i podaj z jogurtem albo sosem." }
+  ]
+}

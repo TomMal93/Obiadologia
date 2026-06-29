@@ -1,0 +1,22 @@
+{
+  "title": "Kasza z pieczarkami i cebulą",
+  "summary": "Prosty, tani obiad bez mięsa.",
+  "description": "Kasza z pieczarkami i cebulą, dobra z ogórkiem kiszonym albo szybką surówką.",
+  "timeMinutes": 28,
+  "servings": 2,
+  "difficulty": "proste",
+  "effort": "jednogarnkowe",
+  "cost": "tanie",
+  "mood": "spokojnie",
+  "tags": ["kasza", "pieczarki", "bez mięsa", "tanie", "jednogarnkowe"],
+  "ingredients": [
+    { "name": "Kasza", "amount": "1 szklanka" },
+    { "name": "Pieczarki", "amount": "250 g" },
+    { "name": "Cebula", "amount": "1 sztuka" }
+  ],
+  "steps": [
+    { "title": "Ugotuj kaszę", "text": "Ugotuj kaszę według instrukcji na opakowaniu." },
+    { "title": "Podsmaż dodatki", "text": "Podsmaż cebulę i pieczarki, aż odparują." },
+    { "title": "Wymieszaj", "text": "Połącz z kaszą i dopraw pieprzem." }
+  ]
+}

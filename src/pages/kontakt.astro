@@ -1,0 +1,389 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Obiadologia - Kontakt"
+  description="Skontaktuj się z Obiadologią. Zgłoś problem, pomysł na funkcję albo propozycję współpracy."
+  questions={[
+    "masz pytanie?",
+    "napisz do nas",
+    "pomysł na funkcję?",
+    "coś nie działa?",
+    "chcesz pogadać?",
+    "kontakt bez formularza?",
+    "masz sugestię?",
+    "daj znać",
+    "co poprawić?",
+    "współpraca?",
+    "zgłoś problem",
+    "odezwiemy się"
+  ]}
+>
+  <section class="hero">
+    <div class="eyebrow">Kontakt</div>
+
+    <h1>Masz coś do <span>dodania?</span></h1>
+
+    <p class="lead">
+      Napisz, jeśli masz pomysł na funkcję, chcesz zgłosić błąd albo po prostu powiedzieć,
+      czego brakuje Ci przy planowaniu obiadu.
+    </p>
+
+    <div class="contact-card" id="formularz">
+      <div class="contact-layout">
+        <aside class="contact-info">
+          <h2>Najlepsze produkty powstają z konkretnych uwag.</h2>
+          <p>
+            Obiadologia ma pomagać w zwykłym dniu, więc interesują nas zwykłe problemy:
+            brak czasu, brak pomysłu, pusta lodówka albo za dużo opcji naraz.
+          </p>
+
+          <div class="contact-methods">
+            <a class="method" href="mailto:kontakt@obiadologia.pl">
+              <span class="method-icon">✉️</span>
+              <div>
+                <strong>Email</strong>
+                <span>kontakt@obiadologia.pl</span>
+              </div>
+            </a>
+
+            <div class="method">
+              <span class="method-icon">⏱️</span>
+              <div>
+                <strong>Odpowiedź</strong>
+                <span>Zwykle w ciągu 1-2 dni roboczych</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <form action="#" method="post" data-contact-form>
+          <div class="field">
+            <label for="name">Imię</label>
+            <input id="name" name="name" type="text" placeholder="Jak się do Ciebie zwracać?" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="twoj@email.pl" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="topic">Temat</label>
+            <select id="topic" name="topic">
+              <option>Pomysł na funkcję</option>
+              <option>Zgłoszenie błędu</option>
+              <option>Współpraca</option>
+              <option>Inna sprawa</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Wiadomość</label>
+            <textarea id="message" name="message" placeholder="Napisz krótko, o co chodzi."></textarea>
+          </div>
+
+          <button class="submit-button" type="submit">Wyślij wiadomość</button>
+
+          <p class="form-note" data-form-note>
+            Formularz jest elementem makiety. Do działania wymaga podpięcia backendu albo zewnętrznej usługi formularzy.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>W czym możesz napisać?</h2>
+      <p>
+        Najbardziej przydatne są krótkie, konkretne informacje. Co było niejasne? Czego zabrakło? Co skróciłoby decyzję?
+      </p>
+    </div>
+
+    <div class="topic-grid">
+      <article class="topic">
+        <span>💡</span>
+        <strong>Pomysł na funkcję</strong>
+        <p>Na przykład lista zakupów, tryb resztek albo obiad dla dzieci.</p>
+      </article>
+
+      <article class="topic">
+        <span>🐞</span>
+        <strong>Zgłoszenie błędu</strong>
+        <p>Coś nie działa, źle wygląda na telefonie albo jest trudne do kliknięcia.</p>
+      </article>
+
+      <article class="topic">
+        <span>🤝</span>
+        <strong>Współpraca</strong>
+        <p>Masz treści, przepisy, zdjęcia albo pomysł na wspólny projekt.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="response-card">
+      <p>Pisz normalnie. Bez briefu, bez prezentacji, bez napinki.</p>
+      <span>Wystarczy kilka zdań. Najlepiej takich, które opisują realny problem przy wyborze obiadu.</span>
+    </div>
+  </section>
+
+  <section class="cta-card">
+    <div>
+      <h2>Nie chcesz pisać?</h2>
+      <p>Wróć do decyzyjnika i sprawdź, co możesz ugotować z tego, co masz pod ręką.</p>
+    </div>
+
+    <a class="cta-button" href="/">Wróć do strony głównej</a>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const note = document.querySelector<HTMLElement>("[data-form-note]");
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (note) {
+      note.textContent = "To mock formularza: wiadomość nie została wysłana, ale interakcja działa po stronie frontendu.";
+      note.classList.add("is-active");
+    }
+  });
+</script>
+
+<style>
+  .contact-card {
+    margin-top: 28px;
+    padding: 14px;
+    text-align: left;
+  }
+
+  .contact-layout {
+    display: grid;
+    gap: 14px;
+  }
+
+  .contact-info {
+    padding: 22px;
+    border-radius: 23px;
+    background:
+      radial-gradient(circle at 86% 16%, rgba(255, 200, 87, 0.58), transparent 32%),
+      #fff8ef;
+    border: 1px solid rgba(37, 26, 20, 0.08);
+  }
+
+  .contact-info h2 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+
+  .contact-info p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .contact-methods {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .method {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(255, 253, 248, 0.82);
+  }
+
+  .method-icon {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--soft);
+    font-size: 18px;
+  }
+
+  .method strong {
+    display: block;
+    font-size: 14px;
+    line-height: 1.1;
+  }
+
+  .method span:not(.method-icon) {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  form {
+    display: grid;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 23px;
+    background: #fff8ef;
+    border: 1px solid rgba(37, 26, 20, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+  }
+
+  label {
+    padding-inline: 7px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 950;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    outline: none;
+    border-radius: 17px;
+    background: rgba(255, 253, 248, 0.9);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 650;
+    border: 1px solid rgba(37, 26, 20, 0.08);
+  }
+
+  input,
+  select {
+    min-height: 52px;
+    padding: 0 15px;
+  }
+
+  textarea {
+    min-height: 138px;
+    resize: vertical;
+    padding: 15px;
+    line-height: 1.45;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(122, 102, 88, 0.82);
+    font-weight: 600;
+  }
+
+  .submit-button {
+    border: 0;
+  }
+
+  .form-note {
+    margin: 0;
+    padding: 0 7px 4px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .form-note.is-active {
+    color: var(--green);
+    font-weight: 850;
+  }
+
+  .topic-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .topic {
+    min-height: 132px;
+    padding: 18px;
+    border-radius: 24px;
+    background: rgba(255, 253, 248, 0.88);
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 34px rgba(37, 26, 20, 0.08);
+    backdrop-filter: blur(14px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .topic span {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 13px;
+    border-radius: 13px;
+    background: var(--soft);
+    font-size: 17px;
+  }
+
+  .topic strong {
+    display: block;
+    font-size: 21px;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .topic p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .response-card {
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(circle at 18% 20%, rgba(255, 90, 61, 0.16), transparent 36%),
+      linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(255, 241, 219, 0.86));
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .response-card p {
+    margin: 0 auto;
+    max-width: 640px;
+    font-size: 28px;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+    font-weight: 950;
+  }
+
+  .response-card span {
+    display: block;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 750;
+  }
+
+  @media (min-width: 700px) {
+    .contact-layout {
+      grid-template-columns: 0.92fr 1.08fr;
+      align-items: stretch;
+    }
+
+    .topic-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .contact-info h2 { font-size: 36px; }
+    .response-card { padding: 32px; }
+    .response-card p { font-size: 42px; }
+  }
+</style>

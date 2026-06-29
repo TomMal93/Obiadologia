@@ -1,0 +1,22 @@
+{
+  "title": "Tosty francuskie na słono",
+  "summary": "Ratunek dla starszego pieczywa, jajek i końcówki sera.",
+  "description": "Słona wersja tostów francuskich, dobra z pieczywa, które nie jest już pierwszej świeżości.",
+  "timeMinutes": 12,
+  "servings": 2,
+  "difficulty": "łatwe",
+  "effort": "1 patelnia",
+  "cost": "tanie",
+  "mood": "z resztek",
+  "tags": ["do 15 minut", "jajka", "ser", "z resztek", "tanie"],
+  "ingredients": [
+    { "name": "Pieczywo", "amount": "4 kromki" },
+    { "name": "Jajka", "amount": "2 sztuki" },
+    { "name": "Ser", "amount": "garść" }
+  ],
+  "steps": [
+    { "title": "Roztrzep jajka", "text": "Wymieszaj jajka z solą i pieprzem." },
+    { "title": "Namocz pieczywo", "text": "Zanurz kromki w jajku i obtocz serem." },
+    { "title": "Usmaż", "text": "Smaż na patelni, aż będą rumiane." }
+  ]
+}

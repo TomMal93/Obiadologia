@@ -1,0 +1,176 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  recipe: CollectionEntry<"recipes">;
+  index?: number;
+  compact?: boolean;
+  variant?: "catalog" | "result";
+  homeResult?: boolean;
+  initiallyHidden?: boolean;
+}
+
+const {
+  recipe,
+  index = 0,
+  compact = false,
+  variant = "catalog",
+  homeResult = false,
+  initiallyHidden = false
+} = Astro.props;
+const tone = `tone-${(index % 5) + 1}`;
+const href = `/przepisy/${recipe.id}`;
+const catalogTags = [
+  `${recipe.data.timeMinutes} min`,
+  recipe.data.effort,
+  recipe.data.mood
+].filter(Boolean).slice(0, 3);
+const resultTags = [`${recipe.data.timeMinutes} min`, recipe.data.effort].filter(Boolean);
+const tags = variant === "result" ? resultTags : catalogTags;
+---
+
+<a
+  class:list={["recipe-card", `recipe-card--${variant}`, tone, { compact, "is-hidden": initiallyHidden }]}
+  href={href}
+  data-recipe-card
+  data-home-result={homeResult ? "" : undefined}
+  data-title={recipe.data.title.toLowerCase()}
+  data-tags={recipe.data.tags.join(" ").toLowerCase()}
+  data-time={recipe.data.timeMinutes}
+  data-cost={recipe.data.cost}
+  data-effort={recipe.data.effort}
+  data-mood={recipe.data.mood}
+>
+  <div class="recipe-content">
+    <div class="meta-row">
+      {tags.map((tag) => <span class="meta">{tag}</span>)}
+    </div>
+    <h3>{recipe.data.title}</h3>
+    <p>{recipe.data.summary}</p>
+    {variant === "catalog" && <span class="recipe-action">Zobacz przepis</span>}
+  </div>
+  <div class="recipe-thumb" aria-hidden="true"></div>
+</a>
+
+<style>
+  .recipe-card {
+    min-height: 154px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 106px;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: rgba(255, 253, 248, 0.88);
+    box-shadow: 0 12px 34px rgba(37, 26, 20, 0.08);
+    backdrop-filter: blur(14px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.18s ease;
+  }
+
+  .recipe-content {
+    min-width: 0;
+  }
+
+  .meta-row {
+    margin-bottom: 9px;
+  }
+
+  .recipe-card h3 {
+    margin: 0;
+    font-size: 21px;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+  }
+
+  .recipe-card p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .recipe-action {
+    display: inline-grid;
+    min-height: 34px;
+    margin-top: 12px;
+    padding: 0 11px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+
+  .recipe-thumb {
+    width: 106px;
+    height: 112px;
+  }
+
+  .recipe-card.is-hidden {
+    display: none;
+  }
+
+  .recipe-card--result {
+    min-height: 118px;
+    grid-template-columns: 1fr 104px;
+  }
+
+  .recipe-card--result .meta-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .recipe-card--result h3 {
+    font-size: 20px;
+  }
+
+  .recipe-card--result p {
+    margin-top: 7px;
+  }
+
+  .recipe-card--result .recipe-thumb {
+    width: 104px;
+    height: 94px;
+  }
+
+  @media (min-width: 700px) {
+    .recipe-card:not(.compact) {
+      grid-template-columns: 1fr;
+    }
+
+    .recipe-card:not(.compact) .recipe-thumb {
+      width: 100%;
+      height: 142px;
+      order: -1;
+    }
+
+    .recipe-card--result:not(.compact) {
+      grid-template-columns: 1fr 136px;
+      min-height: 132px;
+    }
+
+    .recipe-card--result:not(.compact) .recipe-thumb {
+      width: 136px;
+      height: 108px;
+      order: initial;
+    }
+
+    .recipe-card--result h3 {
+      font-size: 24px;
+    }
+
+    .recipe-card--result p {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .recipe-card--result:first-child {
+      grid-column: span 2;
+    }
+  }
+</style>

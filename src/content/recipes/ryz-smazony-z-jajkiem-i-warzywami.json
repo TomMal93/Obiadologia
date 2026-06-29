@@ -1,0 +1,29 @@
+{
+  "title": "Ryż smażony z jajkiem i warzywami",
+  "summary": "Szybki obiad z rzeczy, które często są już w kuchni.",
+  "description": "Prosty obiad z rzeczy, które często są już w kuchni. Działa z ryżem z wczoraj, mrożonymi warzywami i tym, co zostało w lodówce.",
+  "timeMinutes": 25,
+  "servings": 2,
+  "difficulty": "łatwe",
+  "effort": "1 patelnia",
+  "cost": "tanie",
+  "mood": "z resztek",
+  "tags": ["ryż", "jajka", "warzywa", "mało zmywania", "z resztek", "jedna patelnia"],
+  "ingredients": [
+    { "name": "Ryż", "amount": "2 szklanki ugotowanego" },
+    { "name": "Jajka", "amount": "2 sztuki" },
+    { "name": "Warzywa", "amount": "1,5 szklanki" },
+    { "name": "Cebula", "amount": "1 mała" },
+    { "name": "Czosnek", "amount": "1 ząbek" },
+    { "name": "Sos sojowy", "amount": "2 łyżki" },
+    { "name": "Olej", "amount": "2 łyżki" }
+  ],
+  "steps": [
+    { "title": "Przygotuj składniki", "text": "Pokrój cebulę i czosnek. Jeśli używasz mrożonych warzyw, nie musisz ich wcześniej rozmrażać." },
+    { "title": "Podsmaż bazę", "text": "Rozgrzej olej na dużej patelni. Wrzuć cebulę, po chwili czosnek i smaż krótko, aż zmiękną." },
+    { "title": "Dorzuć warzywa", "text": "Dodaj warzywa i smaż kilka minut. Mają być ciepłe, ale nie rozgotowane." },
+    { "title": "Dodaj ryż", "text": "Wrzuć ugotowany ryż. Rozbij grudki łopatką i smaż, aż ryż lekko się podsuszy." },
+    { "title": "Wbij jajka", "text": "Przesuń ryż na bok patelni. Wbij jajka, wymieszaj je jak jajecznicę, potem połącz z ryżem." },
+    { "title": "Dopraw i podawaj", "text": "Dodaj sos sojowy, wymieszaj i spróbuj. Jeśli trzeba, dopraw pieprzem albo odrobiną chili." }
+  ]
+}

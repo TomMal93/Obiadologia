@@ -1,0 +1,69 @@
+---
+import SiteHeader from "@components/SiteHeader.astro";
+import "@styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  questions?: string[];
+  compactMain?: boolean;
+  schema?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  questions = [
+    "co dziś na obiad?",
+    "co zjemy?",
+    "coś szybkiego?",
+    "masz pomysł?",
+    "znowu makaron?",
+    "coś z kurczakiem?",
+    "bez stania przy garach",
+    "20 minut i gotowe",
+    "co dziś na obiad?",
+    "co zjemy?",
+    "coś dobrego?",
+    "obiad bez dramatu"
+  ],
+  compactMain = false,
+  schema
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://obiadologia.pl").toString();
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fff7ea" />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Obiadologia" />
+    {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <div class="page">
+      <div class="blob" aria-hidden="true"></div>
+      <div class="blob second" aria-hidden="true"></div>
+
+      <div class="background-questions" aria-hidden="true">
+        {questions.map((question) => <span>{question}</span>)}
+      </div>
+
+      <SiteHeader />
+
+      <main class:list={{ "compact-main": compactMain }}>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

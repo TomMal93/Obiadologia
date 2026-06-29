@@ -1,0 +1,175 @@
+---
+interface Props {
+  mobile?: boolean;
+}
+
+const { mobile = false } = Astro.props;
+
+const groups = [
+  { title: "Czas", options: ["do 15 minut", "do 30 minut", "do 45 minut"] },
+  { title: "Typ", options: ["jednogarnkowe", "jedna patelnia", "bez mięsa", "dla dzieci"] },
+  { title: "Sytuacja", options: ["mało zmywania", "tanie", "na dwa dni", "z resztek"] },
+  { title: "Główny składnik", options: ["kurczak", "makaron", "ryż", "jajka", "warzywa"] }
+];
+---
+
+<div class="filter-panel" data-filter-panel={mobile ? "mobile" : "desktop"}>
+  <div class="filter-panel-head">
+    <h2>Filtry</h2>
+    {mobile ? (
+      <button class="sheet-close" type="button" data-sheet-close aria-label="Zamknij">×</button>
+    ) : (
+      <button class="filter-clear-link" type="button" data-clear-filters>Wyczyść</button>
+    )}
+  </div>
+
+  {groups.map((group) => (
+    <div class="filter-group">
+      <strong class="filter-group-title">{group.title}</strong>
+      <div class="filter-options">
+        {group.options.map((option) => (
+          <label class="filter-chip">
+            <input type="checkbox" value={option} data-filter-input />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  <div class="filter-actions">
+    <button class="filter-apply" type="button" data-apply-filters>{mobile ? "Pokaż wyniki" : "Zastosuj"}</button>
+    <button class="filter-clear" type="button" data-clear-filters>Wyczyść</button>
+  </div>
+</div>
+
+<style>
+  .filter-panel {
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 253, 248, 0.9);
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 34px rgba(37, 26, 20, 0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  .filter-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .filter-panel h2 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .filter-clear-link {
+    padding: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 950;
+    white-space: nowrap;
+  }
+
+  .filter-group {
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .filter-group:first-of-type {
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
+  }
+
+  .filter-group-title {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 950;
+    letter-spacing: -0.035em;
+  }
+
+  .filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .filter-chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 950;
+    white-space: nowrap;
+    transition: 0.18s ease;
+  }
+
+  .filter-chip input:checked + span {
+    background: var(--text);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 10px 24px rgba(37, 26, 20, 0.14);
+  }
+
+  .filter-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .filter-apply,
+  .filter-clear {
+    min-height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 950;
+  }
+
+  .filter-apply {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 14px 30px rgba(255, 90, 61, 0.24);
+  }
+
+  .filter-clear {
+    background: var(--soft);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .sheet-close {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--soft);
+    color: var(--muted);
+    font-size: 18px;
+    font-weight: 950;
+  }
+</style>

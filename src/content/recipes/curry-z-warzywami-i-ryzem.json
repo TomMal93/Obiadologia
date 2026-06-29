@@ -1,0 +1,23 @@
+{
+  "title": "Curry z warzywami i ryżem",
+  "summary": "Ciepłe, sycące i wygodne do zrobienia na dwa dni.",
+  "description": "Warzywne curry na dni, kiedy chcesz czegoś konkretnego, ale bez mięsa. Dobrze się odgrzewa.",
+  "timeMinutes": 30,
+  "servings": 3,
+  "difficulty": "łatwe",
+  "effort": "jednogarnkowe",
+  "cost": "średnie",
+  "mood": "konkretnie",
+  "tags": ["bez mięsa", "ryż", "warzywa", "na dwa dni", "jednogarnkowe"],
+  "ingredients": [
+    { "name": "Ryż", "amount": "1 szklanka" },
+    { "name": "Warzywa", "amount": "3 szklanki" },
+    { "name": "Mleczko kokosowe", "amount": "1 puszka" },
+    { "name": "Pasta curry", "amount": "1-2 łyżki" }
+  ],
+  "steps": [
+    { "title": "Ugotuj ryż", "text": "Nastaw ryż i gotuj go pod przykryciem." },
+    { "title": "Podsmaż pastę", "text": "Rozgrzej garnek, dodaj pastę curry i warzywa." },
+    { "title": "Duś", "text": "Wlej mleczko kokosowe i gotuj, aż warzywa zmiękną." }
+  ]
+}

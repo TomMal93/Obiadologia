@@ -1,0 +1,22 @@
+{
+  "title": "Kurczak z ryżem i brokułem",
+  "summary": "Klasyk na szybko, łatwy do doprawienia po swojemu.",
+  "description": "Kurczak, ryż i brokuł w prostym wydaniu. Działa jako szybki obiad i pudełko na jutro.",
+  "timeMinutes": 22,
+  "servings": 2,
+  "difficulty": "łatwe",
+  "effort": "proste",
+  "cost": "średnie",
+  "mood": "konkretnie",
+  "tags": ["kurczak", "ryż", "brokuł", "do 30 minut", "dla dzieci"],
+  "ingredients": [
+    { "name": "Kurczak", "amount": "300 g" },
+    { "name": "Ryż", "amount": "1 szklanka" },
+    { "name": "Brokuł", "amount": "1 mały" }
+  ],
+  "steps": [
+    { "title": "Nastaw ryż", "text": "Gotuj ryż, a w tym czasie przygotuj resztę." },
+    { "title": "Podsmaż kurczaka", "text": "Pokrój i podsmaż kurczaka z przyprawami." },
+    { "title": "Dodaj brokuł", "text": "Dodaj brokuł, podlej odrobiną wody i duś kilka minut." }
+  ]
+}
