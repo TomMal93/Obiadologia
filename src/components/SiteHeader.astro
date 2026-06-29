@@ -30,7 +30,11 @@ const items = [
   </nav>
 
   <nav class="mobile-nav" id="mobile-nav" data-mobile-nav aria-label="Mobilna nawigacja" hidden>
-    {items.map((item) => <a href={item.href}>{item.label}</a>)}
+    {items.map((item) => (
+      <a href={item.href} aria-current={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "page" : undefined}>
+        {item.label}
+      </a>
+    ))}
   </nav>
 </header>
 
@@ -54,17 +58,17 @@ const items = [
 
   .mobile-nav {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 10px);
+    left: 18px;
     right: 18px;
     z-index: 10;
-    width: min(220px, calc(100vw - 36px));
-    padding: 8px;
+    padding: 10px;
     display: grid;
-    gap: 4px;
-    border-radius: 22px;
-    background: rgba(255, 253, 248, 0.94);
+    gap: 6px;
+    border-radius: 24px;
+    background: rgba(255, 253, 248, 0.96);
     border: 1px solid var(--border);
-    box-shadow: var(--shadow);
+    box-shadow: 0 18px 42px rgba(37, 26, 20, 0.14);
     backdrop-filter: blur(16px);
   }
 
@@ -73,14 +77,32 @@ const items = [
   }
 
   .mobile-nav a {
-    min-height: 42px;
+    min-height: 48px;
     display: flex;
     align-items: center;
-    padding: 0 12px;
-    border-radius: 15px;
+    justify-content: space-between;
+    padding: 0 14px 0 16px;
+    border-radius: 17px;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 950;
+  }
+
+  .mobile-nav a::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: transparent;
+  }
+
+  .mobile-nav a[aria-current="page"] {
+    background: var(--soft);
+    color: var(--text);
+  }
+
+  .mobile-nav a[aria-current="page"]::after {
+    background: var(--accent);
   }
 
   .mobile-nav a:active {
