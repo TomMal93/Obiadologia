@@ -71,17 +71,50 @@ button {
   position: fixed;
   inset: 0;
   z-index: -2;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 120px 0 20px;
   opacity: 0.055;
-  transform: rotate(-8deg) scale(1.12);
   pointer-events: none;
+  transform: rotate(-10deg) scale(1.18);
   font-size: 17px;
   font-weight: 900;
   line-height: 1.15;
   color: var(--text);
+  overflow: hidden;
+}
+
+.marquee-row {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 32px;
+  animation: marquee-scroll var(--row-duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-row.reverse .marquee-track {
+  animation-name: marquee-scroll-reverse;
+}
+
+.marquee-track span {
+  flex-shrink: 0;
+  padding: 0 8px;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes marquee-scroll-reverse {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 .blob {
@@ -424,7 +457,6 @@ h2 span {
 
 @media (min-width: 700px) {
   .background-questions {
-    grid-template-columns: repeat(3, 1fr);
     font-size: 20px;
   }
 
@@ -443,9 +475,6 @@ h2 span {
   :root { --container: 1120px; }
 
   .background-questions {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    padding: 40px;
     font-size: 22px;
   }
 

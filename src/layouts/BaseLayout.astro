@@ -10,26 +10,66 @@ interface Props {
   schema?: Record<string, unknown>;
 }
 
+const allPhrases = [
+  "co dziś na obiad?",
+  "co zjemy?",
+  "coś szybkiego?",
+  "masz pomysł?",
+  "znowu makaron?",
+  "coś z kurczakiem?",
+  "bez stania przy garach",
+  "20 minut i gotowe",
+  "coś dobrego?",
+  "obiad bez dramatu",
+  "a może zupę?",
+  "coś na ciepło",
+  "szybki obiad",
+  "co na kolację?",
+  "dziś gotuję ja!",
+  "prosty przepis",
+  "coś lekkiego?",
+  "bez glutenu?",
+  "pyszne i proste",
+  "na jeden garnek",
+  "coś z piekarnika",
+  "fit obiad",
+  "wegetariańskie?",
+  "obiad w 15 minut",
+  "co kupić?",
+  "mam tylko ryż",
+  "bez mięsa?",
+  "kuchnia polska",
+  "sezonowe składniki",
+  "domowy rosół",
+  "makaron inaczej",
+  "coś na wynos",
+  "obiad dla dzieci",
+  "tani i pyszny",
+  "comfort food",
+  "sobotni obiad",
+  "niedzielny rosół",
+  "szybka sałatka",
+  "co z resztek?",
+  "meal prep?",
+];
+
 const {
   title,
   description,
-  questions = [
-    "co dziś na obiad?",
-    "co zjemy?",
-    "coś szybkiego?",
-    "masz pomysł?",
-    "znowu makaron?",
-    "coś z kurczakiem?",
-    "bez stania przy garach",
-    "20 minut i gotowe",
-    "co dziś na obiad?",
-    "co zjemy?",
-    "coś dobrego?",
-    "obiad bez dramatu"
-  ],
+  questions = allPhrases,
   compactMain = false,
   schema
 } = Astro.props;
+
+// Split phrases into rows for the marquee effect
+const rowCount = 8;
+const rows: string[][] = [];
+for (let i = 0; i < rowCount; i++) {
+  // Shift phrases for each row to create variety
+  const offset = Math.floor((i * questions.length) / rowCount);
+  const shifted = [...questions.slice(offset), ...questions.slice(0, offset)];
+  rows.push(shifted);
+}
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://obiadologia.pl").toString();
 ---
@@ -56,7 +96,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://obiadologia
       <div class="blob second" aria-hidden="true"></div>
 
       <div class="background-questions" aria-hidden="true">
-        {questions.map((question) => <span>{question}</span>)}
+        {rows.map((row, i) => (
+          <div class={`marquee-row ${i % 2 === 1 ? 'reverse' : ''}`} style={`--row-duration: ${195 + i * 38}s;`}>
+            <div class="marquee-track">
+              {row.map((q) => <span>{q}</span>)}
+              {row.map((q) => <span>{q}</span>)}
+            </div>
+          </div>
+        ))}
       </div>
 
       <SiteHeader />
