@@ -4,7 +4,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import RecipeCard from "@components/RecipeCard.astro";
 
 const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinutes - b.data.timeMinutes);
-const featured = recipes.slice(0, 3);
 ---
 
 <BaseLayout
@@ -14,10 +13,6 @@ const featured = recipes.slice(0, 3);
   <section class="hero home-decision" data-home-decision>
     <div class="home-hero-copy">
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
-
-      <p class="lead">
-        Wpisz, co masz pod ręką. Podpowiemy prosty obiad na dziś.
-      </p>
     </div>
 
     <div class="mode">
@@ -28,6 +23,8 @@ const featured = recipes.slice(0, 3);
         <label for="searchMode">Wyszukiwarka</label>
         <label for="mapMode">Mapa</label>
       </div>
+
+      <p class="mode-hint">Wpisz, co masz pod ręką.<br />Podpowiemy prosty obiad na dziś.</p>
 
       <div class="panels">
         <div class="panel search-panel">
@@ -86,13 +83,25 @@ const featured = recipes.slice(0, 3);
     <section class="results" aria-live="polite">
       <div class="results-header">
         <h2>Propozycje</h2>
-        <span data-home-count>{featured.length} wyniki</span>
+        <span data-home-count>{recipes.length} wyniki</span>
       </div>
 
-      <div class="result-list">
-        {recipes.map((recipe, index) => (
-          <RecipeCard recipe={recipe} index={index} variant="result" homeResult initiallyHidden={index > 2} />
-        ))}
+      <div class="carousel-wrap" data-carousel-wrap>
+        <button class="carousel-arrow carousel-arrow--up" data-carousel-up aria-label="Przewiń w górę" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+
+        <div class="carousel-viewport" data-carousel-viewport>
+          <div class="result-list" data-result-list>
+            {recipes.map((recipe, index) => (
+              <RecipeCard recipe={recipe} index={index} variant="result" homeResult />
+            ))}
+          </div>
+        </div>
+
+        <button class="carousel-arrow carousel-arrow--down" data-carousel-down aria-label="Przewiń w dół" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
       </div>
     </section>
   </section>
@@ -137,6 +146,50 @@ const featured = recipes.slice(0, 3);
   const count = root?.querySelector<HTMLElement>("[data-home-count]");
   const tags = root?.querySelector<HTMLElement>("[data-map-tags]");
 
+  // Carousel elements
+  const viewport = root?.querySelector<HTMLElement>("[data-carousel-viewport]");
+  const upBtn = root?.querySelector<HTMLButtonElement>("[data-carousel-up]");
+  const downBtn = root?.querySelector<HTMLButtonElement>("[data-carousel-down]");
+
+  function isMobile() {
+    return window.matchMedia("(max-width: 959px)").matches;
+  }
+
+  function getVisibleCards() {
+    return results.filter((item) => !item.classList.contains("is-hidden"));
+  }
+
+  function getCardScrollStep() {
+    const cards = getVisibleCards();
+    if (cards.length === 0) return 140;
+    // Scroll by one card height + gap
+    return cards[0].offsetHeight + 12;
+  }
+
+  function updateArrows() {
+    if (!viewport || !isMobile()) {
+      upBtn?.classList.remove("is-visible");
+      downBtn?.classList.remove("is-visible");
+      return;
+    }
+    const atTop = viewport.scrollTop <= 2;
+    const atBottom = viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 2;
+    upBtn?.classList.toggle("is-visible", !atTop);
+    downBtn?.classList.toggle("is-visible", !atBottom);
+  }
+
+  viewport?.addEventListener("scroll", () => updateArrows(), { passive: true });
+
+  upBtn?.addEventListener("click", () => {
+    if (!viewport) return;
+    viewport.scrollBy({ top: -getCardScrollStep(), behavior: "smooth" });
+  });
+
+  downBtn?.addEventListener("click", () => {
+    if (!viewport) return;
+    viewport.scrollBy({ top: getCardScrollStep(), behavior: "smooth" });
+  });
+
   function applyHomeFilter(term = "") {
     const normalized = term.trim().toLowerCase();
     let shown = 0;
@@ -144,17 +197,22 @@ const featured = recipes.slice(0, 3);
     results.forEach((item) => {
       const haystack = `${item.dataset.title ?? ""} ${item.dataset.tags ?? ""}`;
       const match = !normalized || haystack.includes(normalized) || (normalized.includes("15") && Number(item.dataset.time) <= 15);
-      const visible = match && shown < 3;
+      const visible = match;
       item.classList.toggle("is-hidden", !visible);
       if (visible) shown += 1;
     });
 
     if (shown === 0) {
-      results.slice(0, 3).forEach((item) => item.classList.remove("is-hidden"));
-      shown = Math.min(3, results.length);
+      results.forEach((item) => item.classList.remove("is-hidden"));
+      shown = results.length;
     }
 
     if (count) count.textContent = `${shown} ${shown === 1 ? "wynik" : "wyniki"}`;
+
+    if (viewport && isMobile()) {
+      viewport.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    requestAnimationFrame(() => updateArrows());
   }
 
   form?.addEventListener("submit", (event) => {
@@ -178,6 +236,10 @@ const featured = recipes.slice(0, 3);
       applyHomeFilter(filter);
     });
   });
+
+  // Init arrows
+  updateArrows();
+  window.addEventListener("resize", () => updateArrows());
 </script>
 
 <style>
@@ -196,26 +258,15 @@ const featured = recipes.slice(0, 3);
   .home-hero-copy {
     padding: 0;
     border-radius: var(--radius-lg);
-    background: rgba(255, 225, 184, 0.92);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(16px);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
     overflow: hidden;
   }
 
   .home-hero-copy .home-title {
     padding: 38px 12px 30px;
-  }
-
-  .home-hero-copy .lead {
-    margin-top: 0;
-    max-width: none;
-    padding: 8px 8px 9px;
-    border-top: 1px solid rgba(37, 26, 20, 0.08);
-    background: rgba(255, 253, 248, 0.42);
-    font-size: 13px;
-    line-height: 1.25;
-    white-space: nowrap;
   }
 
   .mode {
@@ -264,6 +315,26 @@ const featured = recipes.slice(0, 3);
     background: var(--text);
     color: white;
     box-shadow: 0 8px 18px rgba(37, 26, 20, 0.12);
+  }
+
+  .mode-hint {
+    display: none;
+    width: fit-content;
+    max-width: 100%;
+    margin: 12px auto 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  #searchMode:checked ~ .mode-hint {
+    display: block;
   }
 
   .panels { margin-top: 18px; }
@@ -481,9 +552,67 @@ const featured = recipes.slice(0, 3);
     white-space: nowrap;
   }
 
+  /* Carousel wrapper with arrows */
+  .carousel-wrap {
+    position: relative;
+  }
+
+  .carousel-viewport {
+    /* 3 cards visible: 3 × card-height + 2 × gap */
+    /* card min-height ~142px (118 + padding), gap 12px */
+    height: calc(3 * 142px + 2 * 12px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    border-radius: 24px;
+  }
+
+  .carousel-viewport::-webkit-scrollbar { display: none; }
+
   .result-list {
     display: grid;
     gap: 12px;
+  }
+
+  /* Arrow buttons at top and bottom */
+  .carousel-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.92);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(37, 26, 20, 0.12);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.2s ease;
+  }
+
+  .carousel-arrow.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) scale(1);
+  }
+
+  .carousel-arrow:active {
+    transform: translateX(-50%) scale(0.9);
+  }
+
+  .carousel-arrow--up {
+    top: -20px;
+  }
+
+  .carousel-arrow--down {
+    bottom: -20px;
   }
 
   .category-row {
@@ -545,16 +674,6 @@ const featured = recipes.slice(0, 3);
       padding: 0;
     }
 
-    .home-hero-copy .lead {
-      margin-top: 20px;
-      padding: 0;
-      border: 0;
-      border-top: 0;
-      background: transparent;
-      font-size: 17px;
-      white-space: normal;
-    }
-
     .mode {
       padding: 0;
       border: 0;
@@ -587,6 +706,11 @@ const featured = recipes.slice(0, 3);
       box-shadow: 0 10px 24px rgba(37, 26, 20, 0.18);
     }
 
+    .mode-hint {
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
     .search-box {
       grid-template-columns: 1fr auto;
       align-items: center;
@@ -601,6 +725,14 @@ const featured = recipes.slice(0, 3);
   }
 
   @media (min-width: 960px) {
+    .carousel-viewport {
+      height: auto;
+      overflow: visible;
+      border-radius: 0;
+    }
+
+    .carousel-arrow { display: none; }
+
     .result-list { grid-template-columns: repeat(2, 1fr); }
 
     .category-row {
