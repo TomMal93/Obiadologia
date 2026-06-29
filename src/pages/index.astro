@@ -192,7 +192,15 @@ const featured = recipes.slice(0, 3);
     border: 0;
   }
 
-  .mode { margin-top: 28px; }
+  .mode {
+    margin-top: 28px;
+    padding: 14px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+  }
 
   .mode input[type="radio"] {
     position: absolute;
@@ -210,9 +218,7 @@ const featured = recipes.slice(0, 3);
     gap: 6px;
     border: 1px solid var(--border);
     border-radius: 999px;
-    background: rgba(255, 253, 248, 0.78);
-    box-shadow: 0 12px 34px rgba(37, 26, 20, 0.1);
-    backdrop-filter: blur(14px);
+    background: rgba(255, 248, 239, 0.7);
   }
 
   .switch label {
@@ -221,7 +227,7 @@ const featured = recipes.slice(0, 3);
     place-items: center;
     border-radius: 999px;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 950;
     transition: 0.2s ease;
     user-select: none;
@@ -231,7 +237,7 @@ const featured = recipes.slice(0, 3);
   #mapMode:checked ~ .switch label[for="mapMode"] {
     background: var(--text);
     color: white;
-    box-shadow: 0 10px 24px rgba(37, 26, 20, 0.18);
+    box-shadow: 0 8px 18px rgba(37, 26, 20, 0.12);
   }
 
   .panels { margin-top: 18px; }
@@ -242,7 +248,11 @@ const featured = recipes.slice(0, 3);
   .search-card,
   .map-card {
     height: 220px;
-    padding: 14px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
   .search-card {
@@ -496,6 +506,38 @@ const featured = recipes.slice(0, 3);
   }
 
   @media (min-width: 700px) {
+    .mode {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .search-card,
+    .map-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .switch {
+      background: rgba(255, 253, 248, 0.78);
+      box-shadow: 0 12px 34px rgba(37, 26, 20, 0.1);
+      backdrop-filter: blur(14px);
+    }
+
+    .switch label {
+      font-size: 14px;
+    }
+
+    #searchMode:checked ~ .switch label[for="searchMode"],
+    #mapMode:checked ~ .switch label[for="mapMode"] {
+      box-shadow: 0 10px 24px rgba(37, 26, 20, 0.18);
+    }
+
     .search-box {
       grid-template-columns: 1fr auto;
       align-items: center;

@@ -188,8 +188,9 @@ h1 {
 }
 
 h1.home-title {
-  font-size: clamp(52px, 18vw, 86px);
+  font-size: clamp(40px, 13.5vw, 86px);
   line-height: 0.88;
+  white-space: nowrap;
 }
 
 h1 span,
