@@ -157,26 +157,16 @@ main {
   padding: 34px 18px 74px;
 }
 
+main > section:not(.mobile-sheet) {
+  width: 100%;
+}
+
 main.compact-main {
   padding-top: 28px;
 }
 
 .hero {
   text-align: center;
-}
-
-.eyebrow {
-  width: fit-content;
-  margin: 0 auto 14px;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255, 253, 248, 0.78);
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 950;
-  box-shadow: 0 10px 26px rgba(37, 26, 20, 0.08);
-  backdrop-filter: blur(12px);
 }
 
 h1,
@@ -422,7 +412,7 @@ h2 span {
 }
 
 @media (min-width: 960px) {
-  :root { --container: 920px; }
+  :root { --container: 1120px; }
 
   .background-questions {
     grid-template-columns: repeat(4, 1fr);
@@ -448,14 +438,27 @@ h2 span {
   .site-header { padding-top: 28px; }
 
   .site-nav {
-    display: flex;
-    gap: 22px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(112px, 1fr));
+    gap: 6px;
+    align-items: center;
     color: var(--muted);
     font-size: 14px;
     font-weight: 800;
   }
 
+  .site-nav a {
+    min-height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0 12px;
+    border-radius: 999px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
   .site-nav a[aria-current="page"] {
+    background: rgba(255, 253, 248, 0.62);
     color: var(--text);
   }
 

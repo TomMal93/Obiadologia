@@ -62,8 +62,6 @@ const schema = {
 
   <section class="recipe-hero">
     <article class="recipe-intro">
-      <div class="eyebrow">Przepis · {recipe.data.mood}</div>
-
       <h1>{displayTitle}{accentTitle && <span>{accentTitle}</span>}</h1>
 
       <p class="lead">{recipe.data.description}</p>
@@ -165,12 +163,6 @@ const schema = {
 
   .recipe-intro {
     padding: 18px;
-  }
-
-  .recipe-intro .eyebrow {
-    margin: 0 0 14px;
-    background: var(--soft);
-    box-shadow: none;
   }
 
   .recipe-intro h1 {
