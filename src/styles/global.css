@@ -142,15 +142,40 @@ main {
 }
 
 .menu-button {
-  min-height: 38px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.58);
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+}
+
+.menu-button span {
+  width: 22px;
+  height: 2px;
   border-radius: 999px;
-  padding: 9px 13px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 900;
-  backdrop-filter: blur(12px);
+  background: currentColor;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.menu-button span:nth-child(2) {
+  width: 16px;
+}
+
+.menu-button[aria-expanded="true"] span:first-child {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-button[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-button[aria-expanded="true"] span:last-child {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .site-nav { display: none; }

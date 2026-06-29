@@ -15,8 +15,10 @@ const items = [
     Obiadologia
   </a>
 
-  <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-nav">
-    Menu
+  <button class="menu-button" type="button" data-menu-button aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-nav">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
   </button>
 
   <nav class="site-nav" aria-label="Główna nawigacja">
@@ -41,6 +43,7 @@ const items = [
     const open = nav.hasAttribute("hidden");
     nav.toggleAttribute("hidden", !open);
     button.setAttribute("aria-expanded", String(open));
+    button.setAttribute("aria-label", open ? "Zamknij menu" : "Otwórz menu");
   });
 </script>
 
