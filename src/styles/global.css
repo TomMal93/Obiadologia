@@ -16,6 +16,8 @@
 * { box-sizing: border-box; }
 
 html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
   scroll-behavior: smooth;
   text-size-adjust: 100%;
 }
