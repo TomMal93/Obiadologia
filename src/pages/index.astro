@@ -12,12 +12,13 @@ const featured = recipes.slice(0, 3);
   description="Mobile-first decyzyjnik obiadowy. Wpisz składniki albo wybierz nastrój i szybciej zdecyduj, co dziś ugotować."
 >
   <section class="hero home-decision" data-home-decision>
-    <h1 class="home-title">Co dziś <span>jemy?</span></h1>
+    <div class="home-hero-copy">
+      <h1 class="home-title">Co dziś <span>jemy?</span></h1>
 
-    <p class="lead">
-      Decyzyjnik obiadowy. Wpisz, co masz w lodówce albo wybierz nastrój na mapie.
-      Dostaniesz pomysł na obiad bez przekopywania setek przepisów.
-    </p>
+      <p class="lead">
+        Wpisz, co masz pod ręką. Podpowiemy prosty obiad na dziś.
+      </p>
+    </div>
 
     <div class="mode">
       <input type="radio" name="mode" id="searchMode" checked />
@@ -190,6 +191,31 @@ const featured = recipes.slice(0, 3);
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  .home-hero-copy {
+    padding: 0;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 225, 184, 0.92);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+  }
+
+  .home-hero-copy .home-title {
+    padding: 38px 12px 30px;
+  }
+
+  .home-hero-copy .lead {
+    margin-top: 0;
+    max-width: none;
+    padding: 8px 8px 9px;
+    border-top: 1px solid rgba(37, 26, 20, 0.08);
+    background: rgba(255, 253, 248, 0.42);
+    font-size: 13px;
+    line-height: 1.25;
+    white-space: nowrap;
   }
 
   .mode {
@@ -506,6 +532,29 @@ const featured = recipes.slice(0, 3);
   }
 
   @media (min-width: 700px) {
+    .home-hero-copy {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      overflow: visible;
+    }
+
+    .home-hero-copy .home-title {
+      padding: 0;
+    }
+
+    .home-hero-copy .lead {
+      margin-top: 20px;
+      padding: 0;
+      border: 0;
+      border-top: 0;
+      background: transparent;
+      font-size: 17px;
+      white-space: normal;
+    }
+
     .mode {
       padding: 0;
       border: 0;
