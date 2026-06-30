@@ -51,8 +51,8 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
           <div class="map-card">
             <div class="map-card-header">
               <div>
-                <h2>Wybierz nastrój obiadu</h2>
-                <p>Dotknij punktu na mapie albo otwórz większy wybór.</p>
+                <h2>Wskaż klimat na mapie</h2>
+                <p>Szybko, lekko czy konkretnie, mapa podpowie.</p>
               </div>
             </div>
 
@@ -368,15 +368,16 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   .map-card h2 {
     margin: 0;
     max-width: 220px;
-    font-size: 22px;
+    font-size: 19px;
     letter-spacing: -0.05em;
     line-height: 1;
   }
 
-  .search-card h2 {
+  .search-card h2,
+  .map-card h2 {
     max-width: none;
     white-space: nowrap;
-    font-size: clamp(19px, 5.6vw, 22px);
+    font-size: clamp(17px, 4.9vw, 19px);
   }
 
   .search-card p,
@@ -388,7 +389,8 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
     line-height: 1.35;
   }
 
-  .search-card p {
+  .search-card p,
+  .map-card p {
     max-width: none;
     white-space: nowrap;
     font-size: clamp(11px, 3.35vw, 13px);
