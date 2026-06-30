@@ -19,20 +19,20 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
       <input type="radio" name="mode" id="searchMode" checked />
       <input type="radio" name="mode" id="mapMode" />
 
-      <div class="switch" aria-label="Tryb wyboru obiadu">
-        <label for="searchMode">Wyszukiwarka</label>
-        <label for="mapMode">Mapa</label>
-      </div>
-
-      <p class="mode-hint">Wpisz, co masz pod ręką.<br />Podpowiemy prosty obiad na dziś.</p>
-
       <div class="panels">
         <div class="panel search-panel">
           <div class="search-card">
+            <div class="search-card-header">
+              <div>
+                <h2>Masz trop? Wpisz go tutaj</h2>
+                <p>Składnik, smak czy nazwa dania, wszystko działa.</p>
+              </div>
+            </div>
+
             <form class="search-box" data-home-search>
               <div class="input-wrap">
                 <label class="sr-only" for="home-query">Składniki</label>
-                <input id="home-query" data-home-query type="search" placeholder="Kurczak, ryż, pomidory..." autocomplete="off" />
+                <input id="home-query" data-home-query type="search" placeholder="ryż, tanie, mało zmywania, curry..." autocomplete="off" />
               </div>
 
               <button type="submit">Szukaj</button>
@@ -54,8 +54,6 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
                 <h2>Wybierz nastrój obiadu</h2>
                 <p>Dotknij punktu na mapie albo otwórz większy wybór.</p>
               </div>
-
-              <a class="open-map" href="/przepisy">Otwórz</a>
             </div>
 
             <div class="map-tags" data-map-tags>
@@ -75,8 +73,15 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
               <button class="dot three" type="button" data-map-filter="bez mięsa" aria-label="Wolniej i lekko"><span>curry</span></button>
               <button class="dot four" type="button" data-map-filter="na dwa dni" aria-label="Wolniej i konkretnie"><span>garnek</span></button>
             </div>
+
+            <a class="open-map" href="/przepisy">Otwórz</a>
           </div>
         </div>
+      </div>
+
+      <div class="switch" aria-label="Tryb wyboru obiadu">
+        <label for="searchMode">Wyszukiwarka</label>
+        <label for="mapMode">Mapa</label>
       </div>
     </div>
 
@@ -317,34 +322,18 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
     box-shadow: 0 8px 18px rgba(37, 26, 20, 0.12);
   }
 
-  .mode-hint {
-    display: none;
-    width: fit-content;
-    max-width: 100%;
-    margin: 12px auto 0;
-    padding: 0;
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.25;
-    white-space: nowrap;
-  }
-
-  #searchMode:checked ~ .mode-hint {
-    display: block;
-  }
-
-  .panels { margin-top: 18px; }
+  .panels { margin-top: 0; }
   .panel { display: none; }
   #searchMode:checked ~ .panels .search-panel,
   #mapMode:checked ~ .panels .map-panel { display: block; }
 
+  .panels + .switch {
+    margin-top: 14px;
+  }
+
   .search-card,
   .map-card {
-    height: 220px;
+    min-height: 220px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -355,8 +344,62 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   .search-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 14px;
     text-align: left;
+  }
+
+  .search-card-header,
+  .map-card-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .search-card-header,
+  .map-card-header {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .search-card h2,
+  .map-card h2 {
+    margin: 0;
+    max-width: 220px;
+    font-size: 22px;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+
+  .search-card h2 {
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(19px, 5.6vw, 22px);
+  }
+
+  .search-card p,
+  .map-card p {
+    margin: 7px 0 0;
+    max-width: 240px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .search-card p {
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(11px, 3.35vw, 13px);
+  }
+
+  .search-card h2,
+  .map-card h2,
+  .search-card p,
+  .map-card p {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .search-box {
@@ -399,9 +442,10 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   }
 
   .search-card .chips {
+    display: none;
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding: 12px 0 2px;
+    padding: 0 0 2px;
     scrollbar-width: none;
   }
 
@@ -416,37 +460,17 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   }
 
   .map-card {
-    position: relative;
-    overflow: hidden;
-    text-align: left;
-  }
-
-  .map-card-header {
-    position: relative;
-    z-index: 2;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 12px;
-    align-items: flex-start;
-  }
-
-  .map-card h2 {
-    margin: 0;
-    max-width: 220px;
-    font-size: 22px;
-    letter-spacing: -0.05em;
-    line-height: 1;
-  }
-
-  .map-card p {
-    margin: 7px 0 0;
-    max-width: 240px;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.35;
+    position: relative;
+    overflow: visible;
+    text-align: center;
   }
 
   .open-map {
+    width: fit-content;
+    margin: 0 auto;
     flex: 0 0 auto;
     min-height: 38px;
     display: grid;
@@ -460,11 +484,10 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   }
 
   .taste-map {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    width: 190px;
-    height: 104px;
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2.35 / 1;
     border-radius: 20px;
     background:
       linear-gradient(to right, transparent 49.5%, rgba(37, 26, 20, 0.16) 49.5% 50.5%, transparent 50.5%),
@@ -509,14 +532,12 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   .dot.active { transform: scale(1.24); box-shadow: 0 0 0 7px rgba(255, 90, 61, 0.12); }
 
   .map-tags {
-    position: absolute;
-    left: 14px;
-    bottom: 14px;
-    z-index: 2;
-    display: flex;
+    position: static;
+    display: none;
+    justify-content: center;
     gap: 7px;
     flex-wrap: wrap;
-    max-width: 180px;
+    max-width: none;
   }
 
   .map-tag {
@@ -706,19 +727,20 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
       box-shadow: 0 10px 24px rgba(37, 26, 20, 0.18);
     }
 
-    .mode-hint {
-      margin-top: 14px;
-      font-size: 14px;
-    }
-
     .search-box {
       grid-template-columns: 1fr auto;
       align-items: center;
     }
 
+    .search-card .chips,
+    .map-tags {
+      display: flex;
+    }
+
     .search-box button { min-width: 112px; }
-    .taste-map { width: 240px; height: 112px; }
+    .search-card h2,
     .map-card h2 { max-width: 320px; }
+    .search-card p,
     .map-card p { max-width: 330px; }
 
     .category-row { grid-auto-columns: 240px; }
