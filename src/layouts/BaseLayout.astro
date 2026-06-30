@@ -7,6 +7,7 @@ interface Props {
   description: string;
   questions?: string[];
   compactMain?: boolean;
+  mainClass?: string;
   schema?: Record<string, unknown>;
 }
 
@@ -58,6 +59,7 @@ const {
   description,
   questions = allPhrases,
   compactMain = false,
+  mainClass,
   schema
 } = Astro.props;
 
@@ -108,7 +110,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://obiadologia
 
       <SiteHeader />
 
-      <main class:list={{ "compact-main": compactMain }}>
+      <main class:list={[mainClass, { "compact-main": compactMain }]}>
         <slot />
       </main>
     </div>

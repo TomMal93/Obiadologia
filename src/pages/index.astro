@@ -25,24 +25,40 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 <BaseLayout
   title="Obiadologia - Decyzyjnik obiadowy"
   description="Mobile-first decyzyjnik obiadowy. Wpisz składniki albo wybierz nastrój i szybciej zdecyduj, co dziś ugotować."
+  mainClass="home-screen-stack"
 >
-  <section class="hero home-decision">
+  <section class="hero home-decision screen-section">
     <div class="home-hero-copy">
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
     </div>
 
     <div class="decision-preview" data-decision-launcher aria-label="Szybki wybór obiadu">
       <div class="decision-preview-copy">
-        <h2>Nie wiesz, co ugotować?</h2>
-        <p>Otwórz decyzyjnik, wpisz składnik albo wybierz klimat. Wyniki pokażą się od razu na pełnym ekranie.</p>
+        <h2>Wybierz, od czego zaczynamy</h2>
+        <p>Podpowiemy obiad po składniku, klimacie albo sytuacji.</p>
       </div>
 
-      <button class="preview-primary" type="button" data-open-decision="search">Szukaj obiadu</button>
-      <button class="preview-secondary" type="button" data-scroll-to-categories>Wybierz według sytuacji</button>
+      <div class="decision-paths" aria-label="Sposoby wyboru obiadu">
+        <button class="decision-path" type="button" data-open-decision="search">
+          <strong>Wyszukiwarka</strong>
+          <span>Mam składnik</span>
+        </button>
+        <button class="decision-path" type="button" data-scroll-to-categories>
+          <strong>Kategorie</strong>
+          <span>Mam sytuację</span>
+        </button>
+        <button class="decision-path" type="button" data-open-decision="map">
+          <strong>Mapa</strong>
+          <span>Mam klimat</span>
+        </button>
+      </div>
+
+      <button class="preview-primary" type="button" data-open-decision="search">Pomóż mi wybrać</button>
+      <button class="preview-secondary" type="button" data-scroll-to-categories>Pokaż kategorie</button>
     </div>
   </section>
 
-  <section class="decision-surface decision-surface--desktop" data-decision-surface="desktop">
+  <section class="decision-surface decision-surface--desktop screen-section" data-decision-surface="desktop">
     <div class="mode">
       <input type="radio" name="desktopMode" id="desktopSearchMode" checked data-search-mode />
       <input type="radio" name="desktopMode" id="desktopMapMode" data-map-mode />
@@ -237,7 +253,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     </section>
   </div>
 
-  <section class="section" data-categories-section>
+  <section class="section screen-section" data-categories-section>
     <div class="section-head">
       <h2>Wybierz według sytuacji</h2>
       <p>
@@ -494,8 +510,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     });
   });
 
-  document.querySelector<HTMLButtonElement>("[data-scroll-to-categories]")?.addEventListener("click", () => {
-    document.querySelector<HTMLElement>("[data-categories-section]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.querySelectorAll<HTMLButtonElement>("[data-scroll-to-categories]").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.querySelector<HTMLElement>("[data-categories-section]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
 
   overlay?.querySelector<HTMLButtonElement>("[data-close-decision]")?.addEventListener("click", closeDecision);
@@ -538,6 +556,30 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     border: 0;
   }
 
+  :global(main.home-screen-stack) {
+    padding-top: 0;
+    padding-bottom: 0;
+    scroll-snap-type: y proximity;
+  }
+
+  .screen-section {
+    min-height: 85svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: clamp(18px, 4.5vh, 44px);
+  }
+
+  .section.screen-section {
+    margin-top: 0;
+  }
+
+  .home-decision.screen-section {
+    padding-top: 0;
+    justify-content: flex-start;
+  }
+
   .home-hero-copy {
     padding: 0;
     border-radius: var(--radius-lg);
@@ -549,19 +591,20 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .home-hero-copy .home-title {
-    padding: 38px 12px 30px;
+    padding: 6px 12px 10px;
   }
 
   .decision-preview {
-    margin-top: 28px;
-    padding: 16px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 14px;
     border-radius: var(--radius-lg);
     background: rgba(255, 255, 255, 0.78);
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
     backdrop-filter: blur(16px);
     display: grid;
-    gap: 14px;
+    gap: 12px;
     text-align: left;
     transition:
       transform 260ms ease,
@@ -590,9 +633,48 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     line-height: 1.35;
   }
 
+  .decision-paths {
+    display: grid;
+    gap: 8px;
+  }
+
+  .decision-path {
+    padding: 11px 12px;
+    border-radius: 18px;
+    background: #fff8ef;
+    border: 1px solid rgba(37, 26, 20, 0.08);
+    display: grid;
+    gap: 3px;
+    color: inherit;
+    text-align: left;
+    transition:
+      transform 0.18s ease,
+      border-color 0.18s ease,
+      background 0.18s ease;
+  }
+
+  .decision-path:active {
+    transform: scale(0.98);
+    background: #fff1db;
+    border-color: rgba(255, 90, 61, 0.24);
+  }
+
+  .decision-path strong {
+    font-size: 13px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .decision-path span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
   .preview-primary,
   .preview-secondary {
-    min-height: 54px;
+    min-height: 50px;
     border-radius: 18px;
     font-weight: 950;
   }
@@ -604,7 +686,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .preview-secondary {
-    min-height: 46px;
+    min-height: 44px;
     background: #fff8ef;
     border: 1px solid rgba(37, 26, 20, 0.08);
     color: var(--muted);
@@ -1107,6 +1189,16 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       padding: 0;
     }
 
+    .decision-preview {
+      margin-top: auto;
+      margin-bottom: auto;
+      padding: 16px;
+    }
+
+    .decision-paths {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
     .search-box {
       grid-template-columns: 1fr auto;
       align-items: center;
@@ -1122,13 +1214,18 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   @media (min-width: 960px) {
+    .screen-section {
+      min-height: 100svh;
+      padding-block: clamp(28px, 7vh, 74px);
+    }
+
     .decision-preview,
     .decision-overlay {
       display: none;
     }
 
     .decision-surface--desktop {
-      display: block;
+      display: flex;
     }
 
     .decision-surface--desktop .mode {

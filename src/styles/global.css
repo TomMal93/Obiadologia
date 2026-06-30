@@ -152,10 +152,11 @@ main {
 }
 
 .site-header {
-  padding: 18px 18px 8px;
+  height: 15svh;
+  padding: clamp(10px, 1.8svh, 16px) 18px 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .logo {
@@ -496,7 +497,10 @@ h2 span {
     bottom: -160px;
   }
 
-  .site-header { padding-top: 28px; }
+  .site-header {
+    height: auto;
+    padding-top: 28px;
+  }
 
   .site-nav {
     display: grid;
