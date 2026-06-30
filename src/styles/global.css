@@ -31,6 +31,10 @@ body {
   overflow-x: hidden;
 }
 
+body.decision-overlay-open {
+  overflow: hidden;
+}
+
 a,
 button,
 input,

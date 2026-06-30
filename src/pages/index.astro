@@ -26,14 +26,26 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   title="Obiadologia - Decyzyjnik obiadowy"
   description="Mobile-first decyzyjnik obiadowy. Wpisz składniki albo wybierz nastrój i szybciej zdecyduj, co dziś ugotować."
 >
-  <section class="hero home-decision" data-home-decision>
+  <section class="hero home-decision">
     <div class="home-hero-copy">
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
     </div>
 
+    <div class="decision-preview" data-decision-launcher aria-label="Szybki wybór obiadu">
+      <div class="decision-preview-copy">
+        <h2>Nie wiesz, co ugotować?</h2>
+        <p>Otwórz decyzyjnik, wpisz składnik albo wybierz klimat. Wyniki pokażą się od razu na pełnym ekranie.</p>
+      </div>
+
+      <button class="preview-primary" type="button" data-open-decision="search">Szukaj obiadu</button>
+      <button class="preview-secondary" type="button" data-scroll-to-categories>Wybierz według sytuacji</button>
+    </div>
+  </section>
+
+  <section class="decision-surface decision-surface--desktop" data-decision-surface="desktop">
     <div class="mode">
-      <input type="radio" name="mode" id="searchMode" checked />
-      <input type="radio" name="mode" id="mapMode" />
+      <input type="radio" name="desktopMode" id="desktopSearchMode" checked data-search-mode />
+      <input type="radio" name="desktopMode" id="desktopMapMode" data-map-mode />
 
       <div class="panels">
         <div class="panel search-panel">
@@ -47,8 +59,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
             <form class="search-box" data-home-search>
               <div class="input-wrap">
-                <label class="sr-only" for="home-query">Składniki</label>
-                <input id="home-query" data-home-query type="search" placeholder="ryż, tanie, mało zmywania, curry..." autocomplete="off" />
+                <label class="sr-only" for="desktop-home-query">Składniki</label>
+                <input id="desktop-home-query" data-home-query type="search" placeholder="ryż, tanie, mało zmywania, curry..." autocomplete="off" />
               </div>
 
               <button type="submit">Szukaj</button>
@@ -96,12 +108,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       </div>
 
       <div class="switch" aria-label="Tryb wyboru obiadu">
-        <label for="searchMode">Wyszukiwarka</label>
-        <label for="mapMode">Mapa</label>
+        <label for="desktopSearchMode">Wyszukiwarka</label>
+        <label for="desktopMapMode">Mapa</label>
       </div>
     </div>
 
-    <section class="results" aria-live="polite">
+    <section class="results" data-results-section aria-live="polite">
       <div class="results-header">
         <h2>Propozycje</h2>
         <span data-home-count>{recipes.length} wyniki</span>
@@ -125,12 +137,107 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         </button>
       </div>
 
-      <p class="empty-state" data-home-empty hidden>Nie znalazĹ‚em takiego obiadu. SprĂłbuj podobnej frazy.</p>
+      <p class="empty-state" data-home-empty hidden>Nie znalazłem takiego obiadu, więc pokazuję wszystkie propozycje.</p>
       <div class="suggestions" data-home-suggestions hidden aria-label="Podpowiedzi wyszukiwania"></div>
     </section>
   </section>
 
-  <section class="section">
+  <div class="decision-overlay" data-decision-overlay hidden>
+    <section class="decision-surface decision-surface--mobile" data-decision-surface="mobile">
+      <div class="overlay-header">
+        <button class="overlay-close" type="button" data-close-decision aria-label="Zamknij decyzyjnik">
+          <span aria-hidden="true">×</span>
+        </button>
+        <a class="overlay-brand" href="/">Obiadologia</a>
+      </div>
+
+      <div class="mode">
+        <input type="radio" name="mobileMode" id="mobileSearchMode" checked data-search-mode />
+        <input type="radio" name="mobileMode" id="mobileMapMode" data-map-mode />
+
+        <div class="switch" aria-label="Tryb wyboru obiadu">
+          <label for="mobileSearchMode">Wyszukiwarka</label>
+          <label for="mobileMapMode">Mapa</label>
+        </div>
+
+        <div class="panels">
+          <div class="panel search-panel">
+            <div class="search-card">
+              <div class="search-card-header">
+                <div>
+                  <h2>Masz trop? Wpisz go tutaj</h2>
+                  <p>Składnik, smak czy nazwa dania, wszystko działa.</p>
+                </div>
+              </div>
+
+              <form class="search-box" data-home-search>
+                <div class="input-wrap">
+                  <label class="sr-only" for="mobile-home-query">Składniki</label>
+                  <input id="mobile-home-query" data-home-query type="search" placeholder="ryż, tanie, mało zmywania, curry..." autocomplete="off" />
+                </div>
+
+                <button type="submit">Szukaj</button>
+              </form>
+
+              <div class="chips" aria-label="Szybkie podpowiedzi">
+                <button class="chip" type="button" data-home-chip="makaron">mam makaron</button>
+                <button class="chip" type="button" data-home-chip="kurczak">coś z kurczakiem</button>
+                <button class="chip" type="button" data-home-chip="bez mięsa">bez mięsa</button>
+                <button class="chip" type="button" data-home-chip="mało zmywania">mało zmywania</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel map-panel">
+            <div class="map-card">
+              <div class="map-card-header">
+                <div>
+                  <h2>Wskaż klimat na mapie</h2>
+                  <p>Szybko, lekko czy konkretnie, mapa podpowie.</p>
+                </div>
+              </div>
+
+              <div class="map-tags" data-map-tags>
+                <span class="map-tag">szybko</span>
+                <span class="map-tag">konkretnie</span>
+                <span class="map-tag">mało garów</span>
+              </div>
+
+              <div class="taste-map" aria-label="Mapa smaków">
+                <span class="axis fast">szybko</span>
+                <span class="axis slow">wolno</span>
+                <span class="axis light">lekko</span>
+                <span class="axis heavy">konkretnie</span>
+
+                <button class="dot one" type="button" data-map-filter="do 15 minut" aria-label="Szybko i lekko"><span>szybko</span></button>
+                <button class="dot two" type="button" data-map-filter="mało zmywania" aria-label="Szybko i konkretnie"><span>patelnia</span></button>
+                <button class="dot three" type="button" data-map-filter="bez mięsa" aria-label="Wolniej i lekko"><span>curry</span></button>
+                <button class="dot four" type="button" data-map-filter="na dwa dni" aria-label="Wolniej i konkretnie"><span>garnek</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="results" data-results-section aria-live="polite">
+        <div class="results-header">
+          <h2>Propozycje</h2>
+          <span data-home-count>{recipes.length} wyniki</span>
+        </div>
+
+        <div class="result-list" data-result-list>
+          {recipes.map((recipe, index) => (
+            <RecipeCard recipe={recipe} index={index} variant="result" homeResult />
+          ))}
+        </div>
+
+        <p class="empty-state" data-home-empty hidden>Nie znalazłem takiego obiadu, więc pokazuję wszystkie propozycje.</p>
+        <div class="suggestions" data-home-suggestions hidden aria-label="Podpowiedzi wyszukiwania"></div>
+      </section>
+    </section>
+  </div>
+
+  <section class="section" data-categories-section>
     <div class="section-head">
       <h2>Wybierz według sytuacji</h2>
       <p>
@@ -167,128 +274,255 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 <script>
   import { createRecipeSearch } from "../lib/recipeSearch";
 
-  const root = document.querySelector<HTMLElement>("[data-home-decision]");
-  const query = root?.querySelector<HTMLInputElement>("[data-home-query]");
-  const form = root?.querySelector<HTMLFormElement>("[data-home-search]");
-  const results = [...(root?.querySelectorAll<HTMLElement>("[data-home-result]") ?? [])];
-  const resultList = root?.querySelector<HTMLElement>("[data-result-list]");
-  const count = root?.querySelector<HTMLElement>("[data-home-count]");
-  const tags = root?.querySelector<HTMLElement>("[data-map-tags]");
-  const empty = root?.querySelector<HTMLElement>("[data-home-empty]");
-  const suggestions = root?.querySelector<HTMLElement>("[data-home-suggestions]");
   const recipeDocuments = JSON.parse(document.querySelector("[data-recipe-search-docs]")?.textContent ?? "[]");
   const recipeSearch = createRecipeSearch(recipeDocuments);
-  const cardById = new Map(results.map((card) => [card.dataset.recipeId, card]));
+  const allIds = recipeSearch.search({ sort: "time" }).ids;
+  const overlay = document.querySelector<HTMLElement>("[data-decision-overlay]");
+  const decisionLauncher = document.querySelector<HTMLElement>("[data-decision-launcher]");
+  const mobileSurface = document.querySelector<HTMLElement>('[data-decision-surface="mobile"]');
+  let touchStartY = 0;
+  let touchStartX = 0;
 
-  // Carousel elements
-  const viewport = root?.querySelector<HTMLElement>("[data-carousel-viewport]");
-  const upBtn = root?.querySelector<HTMLButtonElement>("[data-carousel-up]");
-  const downBtn = root?.querySelector<HTMLButtonElement>("[data-carousel-down]");
-
-  function isMobile() {
+  function isMobileViewport() {
     return window.matchMedia("(max-width: 959px)").matches;
   }
 
-  function getVisibleCards() {
-    return results.filter((item) => !item.classList.contains("is-hidden"));
+  function getResultLabel(count: number) {
+    return `${count} ${count === 1 ? "wynik" : "wyniki"}`;
   }
 
-  function getCardScrollStep() {
-    const cards = getVisibleCards();
-    if (cards.length === 0) return 140;
-    // Scroll by one card height + gap
-    return cards[0].offsetHeight + 12;
-  }
+  function createDecisionSurface(surface: HTMLElement) {
+    const query = surface.querySelector<HTMLInputElement>("[data-home-query]");
+    const form = surface.querySelector<HTMLFormElement>("[data-home-search]");
+    const resultsSection = surface.querySelector<HTMLElement>("[data-results-section]");
+    const results = [...surface.querySelectorAll<HTMLElement>("[data-home-result]")];
+    const resultList = surface.querySelector<HTMLElement>("[data-result-list]");
+    const count = surface.querySelector<HTMLElement>("[data-home-count]");
+    const tags = surface.querySelector<HTMLElement>("[data-map-tags]");
+    const empty = surface.querySelector<HTMLElement>("[data-home-empty]");
+    const suggestions = surface.querySelector<HTMLElement>("[data-home-suggestions]");
+    const searchMode = surface.querySelector<HTMLInputElement>("[data-search-mode]");
+    const mapMode = surface.querySelector<HTMLInputElement>("[data-map-mode]");
+    const viewport = surface.querySelector<HTMLElement>("[data-carousel-viewport]");
+    const upBtn = surface.querySelector<HTMLButtonElement>("[data-carousel-up]");
+    const downBtn = surface.querySelector<HTMLButtonElement>("[data-carousel-down]");
+    const cardById = new Map(results.map((card) => [card.dataset.recipeId, card]));
+    const isMobileSurface = surface.dataset.decisionSurface === "mobile";
+    let debounceId: number | undefined;
 
-  function updateArrows() {
-    if (!viewport || !isMobile()) {
-      upBtn?.classList.remove("is-visible");
-      downBtn?.classList.remove("is-visible");
-      return;
+    function getVisibleCards() {
+      return results.filter((item) => !item.classList.contains("is-hidden"));
     }
-    const atTop = viewport.scrollTop <= 2;
-    const atBottom = viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 2;
-    upBtn?.classList.toggle("is-visible", !atTop);
-    downBtn?.classList.toggle("is-visible", !atBottom);
-  }
 
-  viewport?.addEventListener("scroll", () => updateArrows(), { passive: true });
+    function getCardScrollStep() {
+      const cards = getVisibleCards();
+      return (cards[0]?.offsetHeight ?? 128) + 12;
+    }
 
-  upBtn?.addEventListener("click", () => {
-    if (!viewport) return;
-    viewport.scrollBy({ top: -getCardScrollStep(), behavior: "smooth" });
-  });
+    function updateArrows() {
+      if (!viewport || !upBtn || !downBtn) return;
 
-  downBtn?.addEventListener("click", () => {
-    if (!viewport) return;
-    viewport.scrollBy({ top: getCardScrollStep(), behavior: "smooth" });
-  });
+      const atTop = viewport.scrollTop <= 2;
+      const atBottom = viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 2;
+      upBtn.classList.toggle("is-visible", !atTop);
+      downBtn.classList.toggle("is-visible", !atBottom);
+    }
 
-  function renderSuggestions(items: string[]) {
-    if (!suggestions) return;
-    suggestions.innerHTML = "";
-    suggestions.toggleAttribute("hidden", items.length === 0);
+    function renderSuggestions(items: string[]) {
+      if (!suggestions) return;
 
-    items.forEach((item) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "suggestion-chip";
-      button.textContent = item;
-      button.addEventListener("click", () => {
-        if (query) query.value = item;
-        applyHomeFilter(item);
+      suggestions.innerHTML = "";
+      suggestions.toggleAttribute("hidden", items.length === 0);
+
+      items.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "suggestion-chip";
+        button.textContent = item;
+        button.addEventListener("click", () => {
+          if (query) query.value = item;
+          applyFilter(item);
+          query?.focus();
+        });
+        suggestions.append(button);
       });
-      suggestions.append(button);
-    });
-  }
-
-  function applyHomeFilter(term = "") {
-    const hasQuery = term.trim().length > 0;
-    const searchResult = recipeSearch.search({ query: term, sort: hasQuery ? "relevance" : "time" });
-    const visibleIds = new Set(searchResult.ids);
-
-    results.forEach((item) => item.classList.toggle("is-hidden", !visibleIds.has(item.dataset.recipeId ?? "")));
-    searchResult.ids.forEach((id) => {
-      const card = cardById.get(id);
-      if (card) resultList?.append(card);
-    });
-
-    const shown = searchResult.ids.length;
-    if (count) count.textContent = `${shown} ${shown === 1 ? "wynik" : "wyniki"}`;
-    empty?.toggleAttribute("hidden", shown !== 0);
-    renderSuggestions(searchResult.suggestions);
-
-    if (viewport && isMobile()) {
-      viewport.scrollTo({ top: 0, behavior: "smooth" });
     }
-    requestAnimationFrame(() => updateArrows());
+
+    function applyFilter(term = "", options: { scrollToResults?: boolean } = {}) {
+      const hasQuery = term.trim().length > 0;
+      const searchResult = recipeSearch.search({ query: term, sort: hasQuery ? "relevance" : "time" });
+      const idsToShow = searchResult.ids.length > 0 ? searchResult.ids : allIds;
+      const visibleIds = new Set(idsToShow);
+
+      results.forEach((item) => item.classList.toggle("is-hidden", !visibleIds.has(item.dataset.recipeId ?? "")));
+      idsToShow.forEach((id) => {
+        const card = cardById.get(id);
+        if (card) resultList?.append(card);
+      });
+
+      if (count) count.textContent = getResultLabel(idsToShow.length);
+      empty?.toggleAttribute("hidden", searchResult.ids.length > 0 || !hasQuery);
+      renderSuggestions(searchResult.suggestions);
+
+      if (viewport) {
+        viewport.scrollTo({ top: 0, behavior: "smooth" });
+        requestAnimationFrame(updateArrows);
+      }
+
+      if (options.scrollToResults) {
+        resultsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function debounceFilter() {
+      window.clearTimeout(debounceId);
+      debounceId = window.setTimeout(() => applyFilter(query?.value ?? ""), 150);
+    }
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      applyFilter(query?.value ?? "");
+      if (isMobileSurface) query?.blur();
+    });
+
+    query?.addEventListener("input", debounceFilter);
+
+    surface.querySelectorAll<HTMLButtonElement>("[data-home-chip]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.homeChip ?? "";
+        if (query) query.value = value;
+        if (searchMode) searchMode.checked = true;
+        applyFilter(value);
+        query?.focus();
+      });
+    });
+
+    surface.querySelectorAll<HTMLButtonElement>("[data-map-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        surface.querySelectorAll("[data-map-filter]").forEach((dot) => dot.classList.remove("active"));
+        button.classList.add("active");
+
+        const filter = button.dataset.mapFilter ?? "";
+        if (query) query.value = "";
+        if (mapMode) mapMode.checked = true;
+        if (tags) tags.innerHTML = `<span class="map-tag">${filter}</span><span class="map-tag">dopasowane</span>`;
+        applyFilter(filter, { scrollToResults: isMobileSurface });
+      });
+    });
+
+    viewport?.addEventListener("scroll", updateArrows, { passive: true });
+
+    upBtn?.addEventListener("click", () => {
+      viewport?.scrollBy({ top: -getCardScrollStep(), behavior: "smooth" });
+    });
+
+    downBtn?.addEventListener("click", () => {
+      viewport?.scrollBy({ top: getCardScrollStep(), behavior: "smooth" });
+    });
+
+    updateArrows();
+    window.addEventListener("resize", updateArrows);
+
+    return {
+      applyFilter,
+      setMapFilter(filter: string) {
+        if (query) query.value = "";
+        if (mapMode) mapMode.checked = true;
+        surface.querySelectorAll("[data-map-filter]").forEach((dot) => {
+          dot.classList.toggle("active", dot instanceof HTMLElement && dot.dataset.mapFilter === filter);
+        });
+        if (tags) tags.innerHTML = `<span class="map-tag">${filter}</span><span class="map-tag">dopasowane</span>`;
+        applyFilter(filter, { scrollToResults: isMobileSurface });
+      },
+      focusSearch() {
+        if (searchMode) searchMode.checked = true;
+        window.setTimeout(() => query?.focus(), 320);
+      },
+      showMap() {
+        if (mapMode) mapMode.checked = true;
+      },
+      blur() {
+        query?.blur();
+      }
+    };
   }
 
-  form?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    applyHomeFilter(query?.value ?? "");
-  });
+  const surfaces = [...document.querySelectorAll<HTMLElement>("[data-decision-surface]")].map(createDecisionSurface);
+  const mobileController = mobileSurface ? surfaces.find((_, index) => document.querySelectorAll("[data-decision-surface]")[index] === mobileSurface) : undefined;
 
-  root?.querySelectorAll<HTMLButtonElement>("[data-home-chip]").forEach((button) => {
+  function openDecision(mode: "search" | "map", filter = "") {
+    if (!overlay || !mobileController || !isMobileViewport()) return;
+
+    decisionLauncher?.classList.add("is-expanding");
+    overlay.hidden = false;
+    overlay.classList.remove("is-closing");
+    document.body.classList.add("decision-overlay-open");
+
+    if (filter) {
+      mobileController.setMapFilter(filter);
+    } else if (mode === "search") {
+      mobileController.focusSearch();
+    } else {
+      mobileController.showMap();
+    }
+
+    requestAnimationFrame(() => {
+      overlay.classList.add("is-open");
+      overlay.scrollTo({ top: 0 });
+    });
+
+    window.setTimeout(() => decisionLauncher?.classList.remove("is-expanding"), 320);
+  }
+
+  function closeDecision() {
+    if (!overlay || overlay.hidden) return;
+
+    mobileController?.blur();
+    overlay.classList.remove("is-open");
+    overlay.classList.add("is-closing");
+    document.body.classList.remove("decision-overlay-open");
+
+    window.setTimeout(() => {
+      overlay.classList.remove("is-closing");
+      overlay.hidden = true;
+    }, 260);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-open-decision]").forEach((button) => {
     button.addEventListener("click", () => {
-      if (query) query.value = button.dataset.homeChip ?? "";
-      applyHomeFilter(button.dataset.homeChip ?? "");
+      openDecision(button.dataset.openDecision === "map" ? "map" : "search", button.dataset.previewFilter ?? "");
     });
   });
 
-  root?.querySelectorAll<HTMLButtonElement>("[data-map-filter]").forEach((button) => {
-    button.addEventListener("click", () => {
-      root.querySelectorAll("[data-map-filter]").forEach((dot) => dot.classList.remove("active"));
-      button.classList.add("active");
-      const filter = button.dataset.mapFilter ?? "";
-      if (tags) tags.innerHTML = `<span class="map-tag">${filter}</span><span class="map-tag">dopasowane</span>`;
-      applyHomeFilter(filter);
-    });
+  document.querySelector<HTMLButtonElement>("[data-scroll-to-categories]")?.addEventListener("click", () => {
+    document.querySelector<HTMLElement>("[data-categories-section]")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
-  // Init arrows
-  updateArrows();
-  window.addEventListener("resize", () => updateArrows());
+  overlay?.querySelector<HTMLButtonElement>("[data-close-decision]")?.addEventListener("click", closeDecision);
+
+  overlay?.addEventListener("touchstart", (event) => {
+    touchStartY = event.touches[0]?.clientY ?? 0;
+    touchStartX = event.touches[0]?.clientX ?? 0;
+  }, { passive: true });
+
+  overlay?.addEventListener("touchend", (event) => {
+    const touch = event.changedTouches[0];
+    if (!touch) return;
+
+    const deltaY = touch.clientY - touchStartY;
+    const deltaX = Math.abs(touch.clientX - touchStartX);
+    if (deltaY > 90 && deltaX < 60 && overlay.scrollTop < 12) {
+      closeDecision();
+    }
+  }, { passive: true });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDecision();
+  });
+
+  window.addEventListener("resize", () => {
+    if (!isMobileViewport()) closeDecision();
+  });
 </script>
 
 <style>
@@ -318,8 +552,134 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     padding: 38px 12px 30px;
   }
 
-  .mode {
+  .decision-preview {
     margin-top: 28px;
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+    display: grid;
+    gap: 14px;
+    text-align: left;
+    transition:
+      transform 260ms ease,
+      opacity 260ms ease,
+      box-shadow 260ms ease;
+  }
+
+  .decision-preview.is-expanding {
+    opacity: 0.72;
+    transform: translateY(8px) scale(0.985);
+    box-shadow: 0 10px 30px rgba(37, 26, 20, 0.08);
+  }
+
+  .decision-preview-copy h2 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  .decision-preview-copy p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .preview-primary,
+  .preview-secondary {
+    min-height: 54px;
+    border-radius: 18px;
+    font-weight: 950;
+  }
+
+  .preview-primary {
+    background: var(--text);
+    color: white;
+    box-shadow: 0 14px 30px rgba(37, 26, 20, 0.16);
+  }
+
+  .preview-secondary {
+    min-height: 46px;
+    background: #fff8ef;
+    border: 1px solid rgba(37, 26, 20, 0.08);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .decision-surface--desktop {
+    display: none;
+    margin-top: 28px;
+  }
+
+  .decision-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    height: 100dvh;
+    overflow-y: auto;
+    padding: 14px 18px 34px;
+    background: var(--bg);
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+    transform-origin: top center;
+    transition:
+      transform 300ms ease-out,
+      opacity 300ms ease-out;
+  }
+
+  .decision-overlay.is-open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .decision-overlay.is-closing {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+    transition:
+      transform 250ms ease-in,
+      opacity 250ms ease-in;
+  }
+
+  .overlay-header {
+    min-height: 56px;
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .overlay-close {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.86);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 29px;
+    line-height: 1;
+  }
+
+  .overlay-brand {
+    justify-self: center;
+    font-size: 18px;
+    font-weight: 950;
+    letter-spacing: -0.04em;
+  }
+
+  .mode {
+    padding: 0;
+  }
+
+  .decision-surface--desktop .mode {
+    margin-top: 0;
     padding: 14px;
     border-radius: var(--radius-lg);
     background: rgba(255, 255, 255, 0.78);
@@ -359,19 +719,24 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     user-select: none;
   }
 
-  #searchMode:checked ~ .switch label[for="searchMode"],
-  #mapMode:checked ~ .switch label[for="mapMode"] {
+  #desktopSearchMode:checked ~ .switch label[for="desktopSearchMode"],
+  #desktopMapMode:checked ~ .switch label[for="desktopMapMode"],
+  #mobileSearchMode:checked ~ .switch label[for="mobileSearchMode"],
+  #mobileMapMode:checked ~ .switch label[for="mobileMapMode"] {
     background: var(--text);
     color: white;
     box-shadow: 0 8px 18px rgba(37, 26, 20, 0.12);
   }
 
-  .panels { margin-top: 0; }
+  .panels { margin-top: 14px; }
+  .decision-surface--desktop .panels { margin-top: 0; }
   .panel { display: none; }
-  #searchMode:checked ~ .panels .search-panel,
-  #mapMode:checked ~ .panels .map-panel { display: block; }
+  #desktopSearchMode:checked ~ .panels .search-panel,
+  #desktopMapMode:checked ~ .panels .map-panel,
+  #mobileSearchMode:checked ~ .panels .search-panel,
+  #mobileMapMode:checked ~ .panels .map-panel { display: block; }
 
-  .panels + .switch {
+  .decision-surface--desktop .panels + .switch {
     margin-top: 14px;
   }
 
@@ -397,55 +762,30 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     position: relative;
     z-index: 2;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 12px;
     align-items: flex-start;
-  }
-
-  .search-card-header,
-  .map-card-header {
-    justify-content: center;
     text-align: center;
   }
 
   .search-card h2,
   .map-card h2 {
-    margin: 0;
-    max-width: 220px;
-    font-size: 19px;
+    margin: 0 auto;
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(17px, 4.9vw, 19px);
     letter-spacing: -0.05em;
     line-height: 1;
   }
 
-  .search-card h2,
-  .map-card h2 {
-    max-width: none;
-    white-space: nowrap;
-    font-size: clamp(17px, 4.9vw, 19px);
-  }
-
   .search-card p,
   .map-card p {
-    margin: 7px 0 0;
-    max-width: 240px;
+    margin: 7px auto 0;
+    max-width: none;
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.35;
-  }
-
-  .search-card p,
-  .map-card p {
-    max-width: none;
     white-space: nowrap;
     font-size: clamp(11px, 3.35vw, 13px);
-  }
-
-  .search-card h2,
-  .map-card h2,
-  .search-card p,
-  .map-card p {
-    margin-left: auto;
-    margin-right: auto;
+    line-height: 1.35;
   }
 
   .search-box {
@@ -488,7 +828,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .search-card .chips {
-    display: none;
+    display: flex;
     overflow-x: auto;
     flex-wrap: nowrap;
     padding: 0 0 2px;
@@ -579,7 +919,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   .map-tags {
     position: static;
-    display: none;
+    display: flex;
     justify-content: center;
     gap: 7px;
     flex-wrap: wrap;
@@ -592,8 +932,9 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .results {
-    margin-top: 26px;
+    margin-top: 24px;
     text-align: left;
+    scroll-margin-top: 16px;
   }
 
   .results-header {
@@ -619,14 +960,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     white-space: nowrap;
   }
 
-  /* Carousel wrapper with arrows */
   .carousel-wrap {
     position: relative;
   }
 
   .carousel-viewport {
-    /* 3 cards visible: 3 × card-height + 2 × gap */
-    /* card min-height ~142px (118 + padding), gap 12px */
     height: calc(3 * 142px + 2 * 12px);
     overflow-y: auto;
     overflow-x: hidden;
@@ -671,7 +1009,6 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     font-weight: 950;
   }
 
-  /* Arrow buttons at top and bottom */
   .carousel-arrow {
     position: absolute;
     left: 50%;
@@ -770,7 +1107,31 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       padding: 0;
     }
 
-    .mode {
+    .search-box {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+
+    .search-box button { min-width: 112px; }
+    .search-card h2,
+    .map-card h2 { max-width: 320px; }
+    .search-card p,
+    .map-card p { max-width: 330px; }
+
+    .category-row { grid-auto-columns: 240px; }
+  }
+
+  @media (min-width: 960px) {
+    .decision-preview,
+    .decision-overlay {
+      display: none;
+    }
+
+    .decision-surface--desktop {
+      display: block;
+    }
+
+    .decision-surface--desktop .mode {
       padding: 0;
       border: 0;
       background: transparent;
@@ -782,6 +1143,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .map-card {
       padding: 14px;
       border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       background: rgba(255, 255, 255, 0.78);
       box-shadow: var(--shadow);
       backdrop-filter: blur(16px);
@@ -797,31 +1159,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       font-size: 14px;
     }
 
-    #searchMode:checked ~ .switch label[for="searchMode"],
-    #mapMode:checked ~ .switch label[for="mapMode"] {
+    #desktopSearchMode:checked ~ .switch label[for="desktopSearchMode"],
+    #desktopMapMode:checked ~ .switch label[for="desktopMapMode"],
+    #mobileSearchMode:checked ~ .switch label[for="mobileSearchMode"],
+    #mobileMapMode:checked ~ .switch label[for="mobileMapMode"] {
       box-shadow: 0 10px 24px rgba(37, 26, 20, 0.18);
     }
 
-    .search-box {
-      grid-template-columns: 1fr auto;
-      align-items: center;
-    }
-
-    .search-card .chips,
-    .map-tags {
-      display: flex;
-    }
-
-    .search-box button { min-width: 112px; }
-    .search-card h2,
-    .map-card h2 { max-width: 320px; }
-    .search-card p,
-    .map-card p { max-width: 330px; }
-
-    .category-row { grid-auto-columns: 240px; }
-  }
-
-  @media (min-width: 960px) {
     .carousel-viewport {
       height: auto;
       overflow: visible;
