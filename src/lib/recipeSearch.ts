@@ -81,7 +81,8 @@ export function createRecipeSearch(documents: RecipeSearchDocument[]) {
     searchOptions: {
       boost: FIELD_BOOSTS,
       prefix: true,
-      fuzzy: (term) => (term.length > 3 ? 0.25 : false)
+      fuzzy: (term) => (term.length > 3 ? 0.25 : false),
+      combineWith: "AND"
     },
     processTerm: (term) => normalizeSearchText(term)
   });
@@ -115,7 +116,7 @@ export function createRecipeSearch(documents: RecipeSearchDocument[]) {
       .filter(Boolean)
       .filter((suggestion, index, all) => all.indexOf(suggestion) === index)
       .filter((suggestion) => {
-        const ids = miniSearch.search(suggestion).map((result) => result.id);
+        const ids = miniSearch.search(suggestion, { combineWith: "AND" }).map((result) => result.id);
         return ids.some((id) => {
           const document = byId.get(id);
           return document && filters.every((filter) => matchesFilter(document, filter));
