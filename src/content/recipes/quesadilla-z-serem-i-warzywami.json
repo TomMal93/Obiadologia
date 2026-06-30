@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "szybko",
   "tags": ["do 15 minut", "mało zmywania", "ser", "warzywa", "jedna patelnia"],
+  "searchAliases": ["tortilla", "tortille", "wrap", "bez zmywania", "malo garow", "jedna patelnia", "15 min", "szybkie"],
+  "categories": ["do-15-minut", "malo-zmywania", "jedna-patelnia", "tanie"],
+  "mainIngredients": ["tortilla", "ser", "warzywa"],
+  "equipment": ["patelnia"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Tortille", "amount": "4 sztuki" },
     { "name": "Ser", "amount": "150 g" },

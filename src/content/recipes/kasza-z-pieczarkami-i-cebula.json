@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "spokojnie",
   "tags": ["kasza", "pieczarki", "bez mięsa", "tanie", "jednogarnkowe"],
+  "searchAliases": ["wege", "wegetarianskie", "bez miesa", "budzetowe", "oszczedne", "za grosze", "malo garow"],
+  "categories": ["tanie", "bez-miesa", "jednogarnkowe", "do-30-minut"],
+  "mainIngredients": ["kasza", "pieczarki", "cebula"],
+  "equipment": ["garnek", "patelnia"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Kasza", "amount": "1 szklanka" },
     { "name": "Pieczarki", "amount": "250 g" },

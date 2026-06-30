@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "z resztek",
   "tags": ["ryż", "jajka", "warzywa", "mało zmywania", "z resztek", "jedna patelnia"],
+  "searchAliases": ["fried rice", "ryz z jajkiem", "resztki", "bez zmywania", "malo garow", "jedna patelnia", "wege", "wegetarianskie"],
+  "categories": ["malo-zmywania", "jedna-patelnia", "z-resztek", "do-30-minut", "tanie"],
+  "mainIngredients": ["ryz", "jajka", "warzywa"],
+  "equipment": ["patelnia"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Ryż", "amount": "2 szklanki ugotowanego" },
     { "name": "Jajka", "amount": "2 sztuki" },

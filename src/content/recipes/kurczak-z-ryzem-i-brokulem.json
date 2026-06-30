@@ -9,6 +9,11 @@
   "cost": "średnie",
   "mood": "konkretnie",
   "tags": ["kurczak", "ryż", "brokuł", "do 30 minut", "dla dzieci"],
+  "searchAliases": ["kurczk", "kurczakiem", "rice bowl", "pudelko", "lunchbox", "dzieci"],
+  "categories": ["do-30-minut", "dla-dzieci", "z-miesem"],
+  "mainIngredients": ["kurczak", "ryz", "brokul"],
+  "equipment": ["garnek", "patelnia"],
+  "diet": ["z-miesem"],
   "ingredients": [
     { "name": "Kurczak", "amount": "300 g" },
     { "name": "Ryż", "amount": "1 szklanka" },

@@ -33,9 +33,12 @@ const tags = variant === "result" ? resultTags : catalogTags;
   class:list={["recipe-card", `recipe-card--${variant}`, tone, { compact, "is-hidden": initiallyHidden }]}
   href={href}
   data-recipe-card
+  data-recipe-id={recipe.id}
   data-home-result={homeResult ? "" : undefined}
   data-title={recipe.data.title.toLowerCase()}
   data-tags={recipe.data.tags.join(" ").toLowerCase()}
+  data-categories={recipe.data.categories.join(" ").toLowerCase()}
+  data-main-ingredients={recipe.data.mainIngredients.join(" ").toLowerCase()}
   data-time={recipe.data.timeMinutes}
   data-cost={recipe.data.cost}
   data-effort={recipe.data.effort}

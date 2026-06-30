@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "z resztek",
   "tags": ["do 15 minut", "jajka", "ser", "z resztek", "tanie"],
+  "searchAliases": ["chleb w jajku", "stare pieczywo", "resztki", "budzetowe", "oszczedne", "za grosze", "15 min", "szybkie"],
+  "categories": ["do-15-minut", "z-resztek", "tanie", "jedna-patelnia"],
+  "mainIngredients": ["pieczywo", "jajka", "ser"],
+  "equipment": ["patelnia"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Pieczywo", "amount": "4 kromki" },
     { "name": "Jajka", "amount": "2 sztuki" },

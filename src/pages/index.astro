@@ -4,6 +4,22 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import RecipeCard from "@components/RecipeCard.astro";
 
 const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinutes - b.data.timeMinutes);
+const searchDocuments = recipes.map(({ id, data }) => ({
+  id,
+  title: data.title,
+  summary: data.summary,
+  description: data.description,
+  timeMinutes: data.timeMinutes,
+  tags: data.tags,
+  categories: data.categories,
+  mainIngredients: data.mainIngredients,
+  searchAliases: data.searchAliases,
+  effort: data.effort,
+  mood: data.mood,
+  cost: data.cost,
+  equipment: data.equipment ?? [],
+  diet: data.diet ?? []
+}));
 ---
 
 <BaseLayout
@@ -108,6 +124,9 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>
+
+      <p class="empty-state" data-home-empty hidden>Nie znalazĹ‚em takiego obiadu. SprĂłbuj podobnej frazy.</p>
+      <div class="suggestions" data-home-suggestions hidden aria-label="Podpowiedzi wyszukiwania"></div>
     </section>
   </section>
 
@@ -143,13 +162,23 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   </section>
 </BaseLayout>
 
+<script type="application/json" data-recipe-search-docs set:html={JSON.stringify(searchDocuments)}></script>
+
 <script>
+  import { createRecipeSearch } from "../lib/recipeSearch";
+
   const root = document.querySelector<HTMLElement>("[data-home-decision]");
   const query = root?.querySelector<HTMLInputElement>("[data-home-query]");
   const form = root?.querySelector<HTMLFormElement>("[data-home-search]");
   const results = [...(root?.querySelectorAll<HTMLElement>("[data-home-result]") ?? [])];
+  const resultList = root?.querySelector<HTMLElement>("[data-result-list]");
   const count = root?.querySelector<HTMLElement>("[data-home-count]");
   const tags = root?.querySelector<HTMLElement>("[data-map-tags]");
+  const empty = root?.querySelector<HTMLElement>("[data-home-empty]");
+  const suggestions = root?.querySelector<HTMLElement>("[data-home-suggestions]");
+  const recipeDocuments = JSON.parse(document.querySelector("[data-recipe-search-docs]")?.textContent ?? "[]");
+  const recipeSearch = createRecipeSearch(recipeDocuments);
+  const cardById = new Map(results.map((card) => [card.dataset.recipeId, card]));
 
   // Carousel elements
   const viewport = root?.querySelector<HTMLElement>("[data-carousel-viewport]");
@@ -195,24 +224,39 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
     viewport.scrollBy({ top: getCardScrollStep(), behavior: "smooth" });
   });
 
-  function applyHomeFilter(term = "") {
-    const normalized = term.trim().toLowerCase();
-    let shown = 0;
+  function renderSuggestions(items: string[]) {
+    if (!suggestions) return;
+    suggestions.innerHTML = "";
+    suggestions.toggleAttribute("hidden", items.length === 0);
 
-    results.forEach((item) => {
-      const haystack = `${item.dataset.title ?? ""} ${item.dataset.tags ?? ""}`;
-      const match = !normalized || haystack.includes(normalized) || (normalized.includes("15") && Number(item.dataset.time) <= 15);
-      const visible = match;
-      item.classList.toggle("is-hidden", !visible);
-      if (visible) shown += 1;
+    items.forEach((item) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "suggestion-chip";
+      button.textContent = item;
+      button.addEventListener("click", () => {
+        if (query) query.value = item;
+        applyHomeFilter(item);
+      });
+      suggestions.append(button);
+    });
+  }
+
+  function applyHomeFilter(term = "") {
+    const hasQuery = term.trim().length > 0;
+    const searchResult = recipeSearch.search({ query: term, sort: hasQuery ? "relevance" : "time" });
+    const visibleIds = new Set(searchResult.ids);
+
+    results.forEach((item) => item.classList.toggle("is-hidden", !visibleIds.has(item.dataset.recipeId ?? "")));
+    searchResult.ids.forEach((id) => {
+      const card = cardById.get(id);
+      if (card) resultList?.append(card);
     });
 
-    if (shown === 0) {
-      results.forEach((item) => item.classList.remove("is-hidden"));
-      shown = results.length;
-    }
-
+    const shown = searchResult.ids.length;
     if (count) count.textContent = `${shown} ${shown === 1 ? "wynik" : "wyniki"}`;
+    empty?.toggleAttribute("hidden", shown !== 0);
+    renderSuggestions(searchResult.suggestions);
 
     if (viewport && isMobile()) {
       viewport.scrollTo({ top: 0, behavior: "smooth" });
@@ -596,6 +640,35 @@ const recipes = (await getCollection("recipes")).sort((a, b) => a.data.timeMinut
   .result-list {
     display: grid;
     gap: 12px;
+  }
+
+  .empty-state {
+    margin: 12px 0 0;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 253, 248, 0.88);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 850;
+    text-align: center;
+  }
+
+  .suggestions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .suggestion-chip {
+    min-height: 34px;
+    padding: 0 11px;
+    border-radius: 999px;
+    background: var(--text);
+    color: white;
+    font-size: 12px;
+    font-weight: 950;
   }
 
   /* Arrow buttons at top and bottom */

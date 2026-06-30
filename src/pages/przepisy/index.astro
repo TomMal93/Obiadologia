@@ -5,6 +5,22 @@ import RecipeCard from "@components/RecipeCard.astro";
 import RecipeFilters from "@components/RecipeFilters.astro";
 
 const recipes = await getCollection("recipes");
+const searchDocuments = recipes.map(({ id, data }) => ({
+  id,
+  title: data.title,
+  summary: data.summary,
+  description: data.description,
+  timeMinutes: data.timeMinutes,
+  tags: data.tags,
+  categories: data.categories,
+  mainIngredients: data.mainIngredients,
+  searchAliases: data.searchAliases,
+  effort: data.effort,
+  mood: data.mood,
+  cost: data.cost,
+  equipment: data.equipment ?? [],
+  diet: data.diet ?? []
+}));
 ---
 
 <BaseLayout
@@ -46,6 +62,11 @@ const recipes = await getCollection("recipes");
           <span><strong data-result-count>{recipes.length} przepisów</strong> w katalogu</span>
         </div>
 
+        <label class="catalog-search">
+          <span class="sr-only">Szukaj przepisu</span>
+          <input data-catalog-query type="search" placeholder="ryz, kurczak, wege, malo garow..." autocomplete="off" />
+        </label>
+
         <div class="toolbar-actions">
           <select class="sort-select" data-sort aria-label="Sortowanie">
             <option value="time">Sortuj: najkrótszy czas</option>
@@ -59,6 +80,7 @@ const recipes = await getCollection("recipes");
       </div>
 
       <div class="active-filters" data-active-filters aria-label="Aktywne filtry"></div>
+      <div class="suggestions" data-catalog-suggestions hidden aria-label="Podpowiedzi wyszukiwania"></div>
     </div>
   </section>
 
@@ -86,7 +108,11 @@ const recipes = await getCollection("recipes");
   </section>
 </BaseLayout>
 
+<script type="application/json" data-recipe-search-docs set:html={JSON.stringify(searchDocuments)}></script>
+
 <script>
+  import { createRecipeSearch } from "../../lib/recipeSearch";
+
   const cards = [...document.querySelectorAll<HTMLElement>("[data-recipe-card]")];
   const grid = document.querySelector<HTMLElement>("[data-recipe-grid]");
   const count = document.querySelector<HTMLElement>("[data-result-count]");
@@ -94,7 +120,13 @@ const recipes = await getCollection("recipes");
   const empty = document.querySelector<HTMLElement>("[data-empty-state]");
   const sheet = document.querySelector<HTMLElement>("[data-mobile-sheet]");
   const sort = document.querySelector<HTMLSelectElement>("[data-sort]");
+  const query = document.querySelector<HTMLInputElement>("[data-catalog-query]");
+  const suggestions = document.querySelector<HTMLElement>("[data-catalog-suggestions]");
   const inputs = [...document.querySelectorAll<HTMLInputElement>("[data-filter-input]")];
+  const recipeDocuments = JSON.parse(document.querySelector("[data-recipe-search-docs]")?.textContent ?? "[]");
+  const recipeSearch = createRecipeSearch(recipeDocuments);
+  const cardById = new Map(cards.map((card) => [card.dataset.recipeId, card]));
+  let sortTouched = false;
 
   function selectedFilters() {
     return [...new Set(inputs.filter((input) => input.checked).map((input) => input.value))];
@@ -106,18 +138,8 @@ const recipes = await getCollection("recipes");
     });
   }
 
-  function matchesFilter(card: HTMLElement, filter: string) {
-    const tags = card.dataset.tags ?? "";
-    const effort = card.dataset.effort ?? "";
-    const mood = card.dataset.mood ?? "";
-    const cost = card.dataset.cost ?? "";
-    const time = Number(card.dataset.time);
-
-    if (filter === "do 15 minut") return time <= 15;
-    if (filter === "do 30 minut") return time <= 30;
-    if (filter === "do 45 minut") return time <= 45;
-    if (filter === "tanie") return cost === "tanie" || tags.includes("tanie");
-    return tags.includes(filter) || effort.includes(filter) || mood.includes(filter);
+  function matchesFilter(_card: HTMLElement, _filter: string) {
+    return true;
   }
 
   function renderActive(filters: string[]) {
@@ -159,8 +181,47 @@ const recipes = await getCollection("recipes");
     return visibleCards;
   }
 
+  function renderSuggestions(items: string[]) {
+    if (!suggestions) return;
+    suggestions.innerHTML = "";
+    suggestions.toggleAttribute("hidden", items.length === 0);
+
+    items.forEach((item) => {
+      const button = document.createElement("button");
+      button.className = "suggestion-chip";
+      button.type = "button";
+      button.textContent = item;
+      button.addEventListener("click", () => {
+        if (query) query.value = item;
+        applyCatalog();
+      });
+      suggestions.append(button);
+    });
+  }
+
   function applyCatalog() {
     const filters = selectedFilters();
+    {
+    const searchTerm = query?.value ?? "";
+    const hasQuery = searchTerm.trim().length > 0;
+    const sortMode = (hasQuery && !sortTouched ? "relevance" : sort?.value ?? "time") as "relevance" | "time" | "title" | "low-cost" | "effort";
+    const searchResult = recipeSearch.search({ query: searchTerm, filters, sort: sortMode });
+    const visibleIds = new Set(searchResult.ids);
+
+    cards.forEach((card) => card.classList.toggle("is-hidden", !visibleIds.has(card.dataset.recipeId ?? "")));
+    searchResult.ids.forEach((id) => {
+      const card = cardById.get(id);
+      if (card) grid?.append(card);
+    });
+
+    renderActive(filters);
+    renderSuggestions(searchResult.suggestions);
+    const visible = searchResult.ids.length;
+    if (count) count.textContent = `${visible} ${visible === 1 ? "przepis" : "przepisów"}`;
+    empty?.toggleAttribute("hidden", visible !== 0);
+    return;
+    }
+
     let visible = 0;
 
     cards.forEach((card) => {
@@ -192,7 +253,11 @@ const recipes = await getCollection("recipes");
   document.querySelectorAll("[data-clear-filters]").forEach((button) => button.addEventListener("click", clearFilters));
   document.querySelectorAll("[data-sheet-close]").forEach((button) => button.addEventListener("click", () => sheet?.setAttribute("hidden", "")));
   document.querySelector("[data-open-filters]")?.addEventListener("click", () => sheet?.removeAttribute("hidden"));
-  sort?.addEventListener("change", applyCatalog);
+  sort?.addEventListener("change", () => {
+    sortTouched = true;
+    applyCatalog();
+  });
+  query?.addEventListener("input", applyCatalog);
 
   inputs.forEach((input) => input.addEventListener("change", () => {
     const filters = selectedFilters();
@@ -204,6 +269,10 @@ const recipes = await getCollection("recipes");
   const initial = params.get("tag");
   if (initial) {
     syncInputs([initial]);
+  }
+  const initialQuery = params.get("q");
+  if (initialQuery && query) {
+    query.value = initialQuery;
   }
 
   applyCatalog();
@@ -225,6 +294,18 @@ const recipes = await getCollection("recipes");
   .toolbar-main {
     display: grid;
     gap: 10px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .toolbar-count {
@@ -249,6 +330,24 @@ const recipes = await getCollection("recipes");
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 10px;
+  }
+
+  .catalog-search input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 850;
+    outline: none;
+  }
+
+  .catalog-search input::placeholder {
+    color: rgba(122, 102, 88, 0.82);
+    font-weight: 700;
   }
 
   .sort-select {
@@ -301,6 +400,22 @@ const recipes = await getCollection("recipes");
     background: var(--soft);
     color: var(--muted);
     border: 1px solid var(--border);
+  }
+
+  .suggestions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .suggestion-chip {
+    min-height: 34px;
+    padding: 0 11px;
+    border-radius: 999px;
+    background: var(--text);
+    color: white;
+    font-size: 12px;
+    font-weight: 950;
   }
 
   .catalog-layout {
@@ -365,7 +480,7 @@ const recipes = await getCollection("recipes");
 
   @media (min-width: 700px) {
     .toolbar-main {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr minmax(220px, 0.8fr) auto;
       align-items: center;
     }
 

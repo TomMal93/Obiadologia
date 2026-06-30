@@ -9,6 +9,11 @@
   "cost": "średnie",
   "mood": "konkretnie",
   "tags": ["bez mięsa", "ryż", "warzywa", "na dwa dni", "jednogarnkowe"],
+  "searchAliases": ["wege", "wegetarianskie", "bez miesa", "warzywne", "na jutro", "meal prep", "malo garow"],
+  "categories": ["bez-miesa", "jednogarnkowe", "na-dwa-dni", "do-30-minut"],
+  "mainIngredients": ["ryz", "warzywa", "mleczko kokosowe"],
+  "equipment": ["garnek"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Ryż", "amount": "1 szklanka" },
     { "name": "Warzywa", "amount": "3 szklanki" },

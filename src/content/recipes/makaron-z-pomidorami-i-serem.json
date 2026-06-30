@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "bez planu",
   "tags": ["makaron", "pomidory", "ser", "tanie", "mało zmywania"],
+  "searchAliases": ["pasta", "spaghetti", "budzetowe", "oszczedne", "za grosze", "bez zmywania", "malo garow", "bez zakupow"],
+  "categories": ["tanie", "malo-zmywania", "do-30-minut", "bez-zakupow"],
+  "mainIngredients": ["makaron", "pomidory", "ser"],
+  "equipment": ["garnek", "patelnia"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Makaron", "amount": "200 g" },
     { "name": "Pomidory", "amount": "1 puszka" },

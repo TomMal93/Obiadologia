@@ -14,6 +14,11 @@ const recipe = defineCollection({
     cost: z.string(),
     mood: z.string(),
     tags: z.array(z.string()),
+    searchAliases: z.array(z.string()).default([]),
+    categories: z.array(z.string()).default([]),
+    mainIngredients: z.array(z.string()).default([]),
+    equipment: z.array(z.string()).optional(),
+    diet: z.array(z.string()).optional(),
     ingredients: z.array(
       z.object({
         name: z.string(),

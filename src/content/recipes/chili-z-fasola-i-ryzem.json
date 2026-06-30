@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "na dwa dni",
   "tags": ["fasola", "ryż", "na dwa dni", "tanie", "jednogarnkowe"],
+  "searchAliases": ["chilli", "fasolka", "na jutro", "meal prep", "budzetowe", "oszczedne", "za grosze", "malo garow"],
+  "categories": ["tanie", "jednogarnkowe", "na-dwa-dni", "do-45-minut"],
+  "mainIngredients": ["fasola", "ryz", "pomidory"],
+  "equipment": ["garnek"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Fasola", "amount": "2 puszki" },
     { "name": "Pomidory", "amount": "1 puszka" },

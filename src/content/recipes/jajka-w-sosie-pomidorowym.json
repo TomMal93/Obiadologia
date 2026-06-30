@@ -9,6 +9,11 @@
   "cost": "tanie",
   "mood": "bez zakupów",
   "tags": ["jajka", "pomidory", "tanie", "jedna patelnia", "do 30 minut"],
+  "searchAliases": ["szakszuka", "shakshuka", "budzetowe", "oszczedne", "za grosze", "jedna patelnia", "malo garow", "bez zmywania"],
+  "categories": ["tanie", "jedna-patelnia", "do-30-minut", "bez-zakupow"],
+  "mainIngredients": ["jajka", "pomidory", "cebula"],
+  "equipment": ["patelnia"],
+  "diet": ["bez-miesa", "wegetarianskie"],
   "ingredients": [
     { "name": "Jajka", "amount": "4 sztuki" },
     { "name": "Pomidory", "amount": "1 puszka" },
