@@ -34,7 +34,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <span class="home-subtitle-main">Obiadologia rozwiązuje odwieczny dylemat: co dziś ugotować, co dokupić i jak bez narady usiąść do stołu.</span>
         <span class="home-subtitle-rotator">
           <span class="home-subtitle-label">Obiadologia gwarantuje Ci</span>
-          <span class="home-subtitle-mode" data-home-subtitle-mode>konkret.</span>
+          <span class="home-subtitle-mode" data-home-subtitle-mode>
+            <span data-home-subtitle-current>konkret.</span>
+            <span data-home-subtitle-next aria-hidden="true"></span>
+          </span>
         </span>
       </p>
     </div>
@@ -304,13 +307,15 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   const decisionLauncher = document.querySelector<HTMLElement>("[data-decision-launcher]");
   const mobileSurface = document.querySelector<HTMLElement>('[data-decision-surface="mobile"]');
   const homeSubtitleMode = document.querySelector<HTMLElement>("[data-home-subtitle-mode]");
+  const homeSubtitleCurrent = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-current]");
+  const homeSubtitleNext = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-next]");
   const homeSubtitleModes = [
     "konkret.",
-    "spokój.",
-    "plan.",
+    "decyzję.",
+    "pomysły.",
+    "porządek.",
     "odpowiedź.",
-    "mniej narad.",
-    "pełny talerz."
+    "kierunek."
   ];
   let touchStartY = 0;
   let touchStartX = 0;
@@ -325,23 +330,20 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   function rotateHomeSubtitleMode() {
-    if (!homeSubtitleMode) return;
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!homeSubtitleMode || !homeSubtitleCurrent || !homeSubtitleNext) return;
 
     window.setInterval(() => {
       homeSubtitleModeIndex = (homeSubtitleModeIndex + 1) % homeSubtitleModes.length;
-      if (!prefersReducedMotion) homeSubtitleMode.classList.add("is-leaving");
+      const nextMode = homeSubtitleModes[homeSubtitleModeIndex];
+
+      homeSubtitleNext.textContent = nextMode;
+      homeSubtitleMode.classList.add("is-changing");
 
       window.setTimeout(() => {
-        homeSubtitleMode.textContent = homeSubtitleModes[homeSubtitleModeIndex];
-        if (!prefersReducedMotion) {
-          homeSubtitleMode.classList.remove("is-leaving");
-          homeSubtitleMode.classList.add("is-entering");
-          homeSubtitleMode.getBoundingClientRect();
-          window.setTimeout(() => homeSubtitleMode.classList.remove("is-entering"), 30);
-        }
-      }, prefersReducedMotion ? 0 : 260);
+      homeSubtitleCurrent.textContent = nextMode;
+      homeSubtitleNext.textContent = "";
+      homeSubtitleMode.classList.remove("is-changing");
+      }, 780);
     }, 5500);
   }
 
@@ -636,23 +638,24 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .home-subtitle {
     position: relative;
     max-width: 640px;
-    margin: clamp(52px, 8vh, 72px) auto 0;
+    margin: clamp(42px, 6.8vh, 62px) auto 0;
     padding: 16px 20px 17px;
     border: 0;
     border-radius: 14px;
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(255, 241, 219, 0.42)),
-      rgba(255, 253, 248, 0.32);
+      radial-gradient(circle at 12% 0%, rgba(255, 200, 87, 0.14), transparent 38%),
+      linear-gradient(135deg, rgba(255, 253, 248, 0.42), rgba(255, 241, 219, 0.28));
     backdrop-filter: blur(14px) saturate(1.16);
     -webkit-backdrop-filter: blur(14px) saturate(1.16);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.72),
-      inset 0 0 0 1px rgba(255, 90, 61, 0.1),
-      0 8px 20px rgba(37, 26, 20, 0.07);
-    color: var(--muted);
-    font-size: clamp(15px, 3.9vw, 19px);
-    font-weight: 760;
-    line-height: 1.32;
+      inset 0 0 0 1px rgba(37, 26, 20, 0.045),
+      inset 0 -1px 0 rgba(37, 26, 20, 0.075),
+      0 10px 26px rgba(37, 26, 20, 0.055);
+    color: rgba(37, 26, 20, 0.72);
+    font-size: clamp(18px, 4.3vw, 23px);
+    font-weight: 650;
+    line-height: 1.36;
     letter-spacing: 0;
     text-wrap: balance;
   }
@@ -673,13 +676,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .home-subtitle::after {
     content: "";
     position: absolute;
-    inset: auto 1px 1px auto;
+    inset: auto 5px 5px auto;
     z-index: 2;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-right: 3px solid var(--accent);
     border-bottom: 3px solid var(--accent);
-    border-radius: 0 0 14px 0;
+    border-radius: 0 0 10px 0;
     pointer-events: none;
   }
 
@@ -705,40 +708,106 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .home-subtitle-label {
     flex: 0 0 auto;
     color: var(--text);
-    font-size: clamp(14px, 3.6vw, 17px);
-    font-weight: 850;
+    font-size: clamp(17px, 4vw, 21px);
+    font-weight: 720;
     line-height: 1.1;
+    letter-spacing: 0;
   }
 
   .home-subtitle-mode {
-    display: block;
+    position: relative;
+    display: inline-grid;
     flex: 0 1 auto;
-    min-width: 9ch;
+    min-width: 10ch;
     min-height: 1.05em;
-    color: var(--accent);
-    font-size: clamp(18px, 4.8vw, 25px);
-    font-weight: 950;
-    line-height: 1;
-    letter-spacing: -0.02em;
+    overflow: hidden;
+    color: #c7432f;
+    font-size: clamp(19px, 4.6vw, 24px);
+    font-weight: 820;
+    line-height: 1.05;
+    letter-spacing: 0;
     transform: translateY(0);
     transition: opacity 260ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
     will-change: opacity, transform;
   }
 
-  .home-subtitle-mode.is-leaving {
-    opacity: 0;
-    transform: translateY(-8px);
+  .home-subtitle-mode > span {
+    grid-area: 1 / 1;
+    display: block;
+    white-space: nowrap;
+    will-change: opacity, transform, clip-path;
   }
 
-  .home-subtitle-mode.is-entering {
+  .home-subtitle-mode [data-home-subtitle-next] {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateX(-115%);
+  }
+
+  .home-subtitle-mode::after {
+    content: "";
+    position: absolute;
+    inset: -20% auto -20% -35%;
+    width: 36%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+    opacity: 0;
+    transform: skewX(-18deg);
+    pointer-events: none;
+  }
+
+  .home-subtitle-mode.is-changing [data-home-subtitle-current] {
+    animation: subtitleWordCurrentOut 780ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .home-subtitle-mode.is-changing [data-home-subtitle-next] {
+    animation: subtitleWordNextIn 780ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .home-subtitle-mode.is-changing::after {
+    animation: subtitleWordSweep 780ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes subtitleWordCurrentOut {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(44%, 0, 0);
+    }
+  }
+
+  @keyframes subtitleWordNextIn {
+    0% {
+      opacity: 0;
+      transform: translate3d(-44%, 0, 0);
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes subtitleWordSweep {
+    0% {
+      opacity: 0;
+      left: -36%;
+    }
+    40% {
+      opacity: 0.45;
+    }
+    100% {
+      opacity: 0;
+      left: 108%;
+    }
   }
 
   @media (max-width: 430px) {
     .home-subtitle {
-      font-size: 15px;
-      margin-top: 48px;
+      margin-top: 40px;
       padding: 14px 16px 15px;
     }
 
@@ -1343,7 +1412,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle {
-      margin-top: clamp(56px, 8vh, 78px);
+      margin-top: clamp(46px, 6.8vh, 68px);
     }
 
     .decision-preview {

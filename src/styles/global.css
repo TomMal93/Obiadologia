@@ -542,4 +542,11 @@ h2 span {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+
+  .home-subtitle-mode,
+  .home-subtitle-mode::after,
+  .home-subtitle-mode > span {
+    animation-duration: 780ms !important;
+    transition-duration: 260ms !important;
+  }
 }
