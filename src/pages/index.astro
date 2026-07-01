@@ -30,6 +30,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   <section class="hero home-decision screen-section">
     <div class="home-hero-copy">
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
+      <p class="home-subtitle">
+        <span class="home-subtitle-main">Obiadologia rozwiązuje odwieczny dylemat: co dziś ugotować, co dokupić i jak bez narady usiąść do stołu.</span>
+        <span class="home-subtitle-rotator">
+          <span class="home-subtitle-label">Obiadologia gwarantuje Ci</span>
+          <span class="home-subtitle-mode" data-home-subtitle-mode>konkret.</span>
+        </span>
+      </p>
     </div>
 
     <div class="decision-preview" data-decision-launcher aria-label="Szybki wybór obiadu">
@@ -296,8 +303,18 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   const overlay = document.querySelector<HTMLElement>("[data-decision-overlay]");
   const decisionLauncher = document.querySelector<HTMLElement>("[data-decision-launcher]");
   const mobileSurface = document.querySelector<HTMLElement>('[data-decision-surface="mobile"]');
+  const homeSubtitleMode = document.querySelector<HTMLElement>("[data-home-subtitle-mode]");
+  const homeSubtitleModes = [
+    "konkret.",
+    "spokój.",
+    "plan.",
+    "odpowiedź.",
+    "mniej narad.",
+    "pełny talerz."
+  ];
   let touchStartY = 0;
   let touchStartX = 0;
+  let homeSubtitleModeIndex = 0;
 
   function isMobileViewport() {
     return window.matchMedia("(max-width: 959px)").matches;
@@ -305,6 +322,27 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   function getResultLabel(count: number) {
     return `${count} ${count === 1 ? "wynik" : "wyniki"}`;
+  }
+
+  function rotateHomeSubtitleMode() {
+    if (!homeSubtitleMode) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    window.setInterval(() => {
+      homeSubtitleModeIndex = (homeSubtitleModeIndex + 1) % homeSubtitleModes.length;
+      if (!prefersReducedMotion) homeSubtitleMode.classList.add("is-leaving");
+
+      window.setTimeout(() => {
+        homeSubtitleMode.textContent = homeSubtitleModes[homeSubtitleModeIndex];
+        if (!prefersReducedMotion) {
+          homeSubtitleMode.classList.remove("is-leaving");
+          homeSubtitleMode.classList.add("is-entering");
+          homeSubtitleMode.getBoundingClientRect();
+          window.setTimeout(() => homeSubtitleMode.classList.remove("is-entering"), 30);
+        }
+      }, prefersReducedMotion ? 0 : 260);
+    }, 5500);
   }
 
   function createDecisionSurface(surface: HTMLElement) {
@@ -465,6 +503,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   const surfaces = [...document.querySelectorAll<HTMLElement>("[data-decision-surface]")].map(createDecisionSurface);
   const mobileController = mobileSurface ? surfaces.find((_, index) => document.querySelectorAll("[data-decision-surface]")[index] === mobileSurface) : undefined;
+  rotateHomeSubtitleMode();
 
   function openDecision(mode: "search" | "map", filter = "") {
     if (!overlay || !mobileController || !isMobileViewport()) return;
@@ -592,6 +631,113 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   .home-hero-copy .home-title {
     padding: 6px 12px 10px;
+  }
+
+  .home-subtitle {
+    max-width: 640px;
+    margin: 6px auto 0;
+    padding: 0 12px;
+    color: var(--muted);
+    font-size: clamp(15px, 3.9vw, 19px);
+    font-weight: 760;
+    line-height: 1.32;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  .home-subtitle-main {
+    display: block;
+  }
+
+  .home-subtitle-rotator {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    max-width: 100%;
+    margin: 14px auto 0;
+    padding: 12px 18px 13px;
+    border: 0;
+    border-radius: 12px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(255, 241, 219, 0.42)),
+      rgba(255, 253, 248, 0.32);
+    backdrop-filter: blur(14px) saturate(1.16);
+    -webkit-backdrop-filter: blur(14px) saturate(1.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      inset 0 0 0 1px rgba(255, 90, 61, 0.1),
+      0 8px 20px rgba(37, 26, 20, 0.07);
+    text-align: left;
+  }
+
+  .home-subtitle-rotator::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 22px;
+    height: 22px;
+    border-top: 3px solid var(--accent);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px 0 0 0;
+    pointer-events: none;
+  }
+
+  .home-subtitle-rotator::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-right: 3px solid var(--accent);
+    border-bottom: 3px solid var(--accent);
+    border-radius: 0 0 12px 0;
+    pointer-events: none;
+  }
+
+  .home-subtitle-label {
+    flex: 0 0 auto;
+    color: var(--text);
+    font-size: clamp(14px, 3.6vw, 17px);
+    font-weight: 850;
+    line-height: 1.1;
+  }
+
+  .home-subtitle-mode {
+    display: block;
+    flex: 0 1 auto;
+    min-width: 9ch;
+    min-height: 1.05em;
+    color: var(--accent);
+    font-size: clamp(18px, 4.8vw, 25px);
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    transform: translateY(0);
+    transition: opacity 260ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform;
+  }
+
+  .home-subtitle-mode.is-leaving {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  .home-subtitle-mode.is-entering {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  @media (max-width: 430px) {
+    .home-subtitle {
+      font-size: 15px;
+    }
+
+    .home-subtitle-rotator {
+      gap: 5px;
+      padding: 10px 12px 11px;
+    }
   }
 
   .decision-preview {
@@ -1187,6 +1333,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
     .home-hero-copy .home-title {
       padding: 0;
+    }
+
+    .home-subtitle {
+      padding: 0;
+      margin-top: 10px;
     }
 
     .decision-preview {
