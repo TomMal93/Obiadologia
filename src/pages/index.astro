@@ -32,11 +32,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
       <p class="home-subtitle">
         <span class="home-subtitle-main">
-          <span style="display: block; margin-bottom: 6px;">Ten dylemat potrafi zmęczyć jeszcze przed wejściem do kuchni.</span>
-          <span>Zdejmujemy z Twojej głowy planowanie obiadów. Ty wybierasz, na co masz ochotę, my podajemy przepis i listę zakupów.</span>
+          <span style="display: block; margin-bottom: 6px;">Odwieczny problem z tym, co ugotować, nie musi już psuć apetytu.</span>
+          <span>Zdejmujemy z Ciebie ciężar codziennego wymyślania posiłków i wyznaczamy najkrótszą drogę od "nie wiem, co zjeść" do pełnego talerza.</span>
         </span>
         <span class="home-subtitle-rotator">
-          <span class="home-subtitle-label">Obiadologia gwarantuje Ci</span>
+          <span class="home-subtitle-label">Od razu dostajesz: </span>
           <span class="home-subtitle-mode" data-home-subtitle-mode>
             <span data-home-subtitle-current>konkret.</span>
             <span data-home-subtitle-next aria-hidden="true"></span>
@@ -47,27 +47,28 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
     <div class="decision-preview" data-decision-launcher aria-label="Szybki wybór obiadu">
       <div class="decision-preview-copy">
-        <h2>Wybierz, od czego zaczynamy</h2>
-        <p>Podpowiemy obiad po składniku, klimacie albo sytuacji.</p>
+        <span class="decision-preview-label">Mniej myślenia</span>
+        <h2>Daj nam punkt zaczepienia.</h2>
+        <p>Podaj nam jakikolwiek punkt zaczepienia – smak, czas lub składnik – i pozwól nam dopasować idealny przepis.</p>
       </div>
 
-      <div class="decision-paths" aria-label="Sposoby wyboru obiadu">
-        <button class="decision-path" type="button" data-open-decision="search">
-          <strong>Wyszukiwarka</strong>
-          <span>Mam składnik</span>
-        </button>
-        <button class="decision-path" type="button" data-scroll-to-categories>
-          <strong>Kategorie</strong>
-          <span>Mam sytuację</span>
-        </button>
-        <button class="decision-path" type="button" data-open-decision="map">
-          <strong>Mapa</strong>
-          <span>Mam klimat</span>
-        </button>
+      <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
+        <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
+        <div class="decision-option-list">
+          <button class="decision-option" type="button" data-open-decision="search">
+            <span>Składnik</span>
+            <strong>co masz pod ręką</strong>
+          </button>
+          <button class="decision-option" type="button" data-open-decision="map">
+            <span>Smak</span>
+            <strong>na co masz ochotę</strong>
+          </button>
+          <button class="decision-option" type="button" data-scroll-to-categories>
+            <span>Czas lub sytuacja</span>
+            <strong>ile masz siły i minut</strong>
+          </button>
+        </div>
       </div>
-
-      <button class="preview-primary" type="button" data-open-decision="search">Pomóż mi wybrać</button>
-      <button class="preview-secondary" type="button" data-scroll-to-categories>Pokaż kategorie</button>
     </div>
   </section>
 
@@ -314,11 +315,9 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   const homeSubtitleNext = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-next]");
   const homeSubtitleModes = [
     "konkret.",
-    "decyzję.",
+    "przepis.",
     "pomysły.",
-    "porządek.",
-    "odpowiedź.",
-    "kierunek."
+    "decyzję."
   ];
   let touchStartY = 0;
   let touchStartX = 0;
@@ -705,14 +704,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .home-subtitle-rotator {
     position: relative;
     z-index: 1;
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 8px;
+    display: block;
     max-width: 100%;
-    margin: 9px auto 0;
+    margin: 12px auto 0;
     padding: 0;
-    text-align: left;
+    text-align: center;
   }
 
   .home-subtitle-label {
@@ -821,9 +817,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       padding: 14px 16px 15px;
     }
 
-    .home-subtitle-rotator {
-      gap: 5px;
-    }
+
   }
 
   .decision-preview {
@@ -831,14 +825,18 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     grid-row: 3;
     margin-top: 0;
     margin-bottom: 0;
-    padding: 14px;
+    padding: 15px;
     border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.78);
+    background:
+      radial-gradient(circle at 12% 0%, rgba(255, 200, 87, 0.2), transparent 35%),
+      linear-gradient(145deg, rgba(255, 253, 248, 0.9), rgba(255, 241, 219, 0.82));
     border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(16px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      0 18px 44px rgba(37, 26, 20, 0.11);
+    backdrop-filter: blur(16px) saturate(1.08);
     display: grid;
-    gap: 12px;
+    gap: 14px;
     text-align: left;
     transition:
       transform 260ms ease,
@@ -880,12 +878,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       font-size: clamp(38px, 12.6vw, 46px);
     }
 
-    .home-subtitle-rotator {
-      display: grid;
-      justify-items: center;
-      gap: 4px;
-      text-align: center;
-    }
+
 
     .home-subtitle-mode {
       min-width: 0;
@@ -899,78 +892,111 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .decision-preview-copy h2 {
-    margin: 0;
-    font-size: 22px;
-    line-height: 0.98;
-    letter-spacing: -0.055em;
+    margin: 6px 0 0;
+    max-width: 13ch;
+    font-size: clamp(24px, 7.2vw, 31px);
+    line-height: 0.94;
+    letter-spacing: -0.065em;
+  }
+
+  .decision-preview-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #c7432f;
+    font-size: 12px;
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  .decision-preview-label::before {
+    content: "";
+    width: 18px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--accent);
   }
 
   .decision-preview-copy p {
-    margin: 8px 0 0;
+    margin: 9px 0 0;
+    max-width: 42ch;
     color: var(--muted);
     font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
+    font-weight: 760;
+    line-height: 1.38;
   }
 
-  .decision-paths {
+  .decision-start {
+    display: grid;
+    gap: 9px;
+  }
+
+  .decision-start > span {
+    color: rgba(37, 26, 20, 0.72);
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  .decision-option-list {
     display: grid;
     gap: 8px;
   }
 
-  .decision-path {
-    padding: 11px 12px;
+  .decision-option {
+    position: relative;
+    min-height: 54px;
+    padding: 10px 40px 10px 13px;
     border-radius: 18px;
-    background: #fff8ef;
+    background: rgba(255, 253, 248, 0.74);
     border: 1px solid rgba(37, 26, 20, 0.08);
+    color: var(--text);
     display: grid;
-    gap: 3px;
-    color: inherit;
+    gap: 2px;
+    justify-items: start;
     text-align: left;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68);
     transition:
       transform 0.18s ease,
-      border-color 0.18s ease,
-      background 0.18s ease;
+      background 0.18s ease,
+      border-color 0.18s ease;
   }
 
-  .decision-path:active {
-    transform: scale(0.98);
-    background: #fff1db;
-    border-color: rgba(255, 90, 61, 0.24);
+  .decision-option::after {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--text);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    font-weight: 950;
+    line-height: 1;
+    transform: translateY(-50%);
   }
 
-  .decision-path strong {
-    font-size: 13px;
+  .decision-option span {
+    font-size: 15px;
+    font-weight: 950;
     line-height: 1.05;
-    letter-spacing: -0.025em;
   }
 
-  .decision-path span {
+  .decision-option strong {
     color: var(--muted);
-    font-size: 12px;
-    font-weight: 800;
+    font-size: 11px;
+    font-weight: 850;
     line-height: 1.2;
   }
 
-  .preview-primary,
-  .preview-secondary {
-    min-height: 50px;
-    border-radius: 18px;
-    font-weight: 950;
-  }
-
-  .preview-primary {
-    background: var(--text);
-    color: white;
-    box-shadow: 0 14px 30px rgba(37, 26, 20, 0.16);
-  }
-
-  .preview-secondary {
-    min-height: 44px;
+  .decision-option:active {
+    transform: scale(0.985);
     background: #fff8ef;
-    border: 1px solid rgba(37, 26, 20, 0.08);
-    color: var(--muted);
-    font-size: 13px;
+    border-color: rgba(255, 90, 61, 0.24);
   }
 
   @media (max-width: 430px) {
@@ -1520,10 +1546,6 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       margin-top: 0;
       margin-bottom: 0;
       padding: 16px;
-    }
-
-    .decision-paths {
-      grid-template-columns: repeat(3, 1fr);
     }
 
     .search-box {
