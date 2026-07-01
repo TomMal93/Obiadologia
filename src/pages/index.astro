@@ -634,32 +634,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .home-subtitle {
-    max-width: 640px;
-    margin: 6px auto 0;
-    padding: 0 12px;
-    color: var(--muted);
-    font-size: clamp(15px, 3.9vw, 19px);
-    font-weight: 760;
-    line-height: 1.32;
-    letter-spacing: 0;
-    text-wrap: balance;
-  }
-
-  .home-subtitle-main {
-    display: block;
-  }
-
-  .home-subtitle-rotator {
     position: relative;
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 8px;
-    max-width: 100%;
-    margin: 14px auto 0;
-    padding: 12px 18px 13px;
+    max-width: 640px;
+    margin: clamp(52px, 8vh, 72px) auto 0;
+    padding: 16px 20px 17px;
     border: 0;
-    border-radius: 12px;
+    border-radius: 14px;
     background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(255, 241, 219, 0.42)),
       rgba(255, 253, 248, 0.32);
@@ -669,31 +649,57 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       inset 0 1px 0 rgba(255, 255, 255, 0.72),
       inset 0 0 0 1px rgba(255, 90, 61, 0.1),
       0 8px 20px rgba(37, 26, 20, 0.07);
-    text-align: left;
+    color: var(--muted);
+    font-size: clamp(15px, 3.9vw, 19px);
+    font-weight: 760;
+    line-height: 1.32;
+    letter-spacing: 0;
+    text-wrap: balance;
   }
 
-  .home-subtitle-rotator::before {
+  .home-subtitle::before {
     content: "";
     position: absolute;
-    inset: 0 auto auto 0;
-    width: 22px;
-    height: 22px;
+    inset: 1px auto auto 1px;
+    z-index: 2;
+    width: 26px;
+    height: 26px;
     border-top: 3px solid var(--accent);
     border-left: 3px solid var(--accent);
-    border-radius: 12px 0 0 0;
+    border-radius: 14px 0 0 0;
     pointer-events: none;
   }
 
-  .home-subtitle-rotator::after {
+  .home-subtitle::after {
     content: "";
     position: absolute;
-    inset: auto 0 0 auto;
-    width: 22px;
-    height: 22px;
+    inset: auto 1px 1px auto;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
     border-right: 3px solid var(--accent);
     border-bottom: 3px solid var(--accent);
-    border-radius: 0 0 12px 0;
+    border-radius: 0 0 14px 0;
     pointer-events: none;
+  }
+
+  .home-subtitle-main {
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  .home-subtitle-rotator {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    max-width: 100%;
+    margin: 9px auto 0;
+    padding: 0;
+    text-align: left;
   }
 
   .home-subtitle-label {
@@ -732,16 +738,17 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   @media (max-width: 430px) {
     .home-subtitle {
       font-size: 15px;
+      margin-top: 48px;
+      padding: 14px 16px 15px;
     }
 
     .home-subtitle-rotator {
       gap: 5px;
-      padding: 10px 12px 11px;
     }
   }
 
   .decision-preview {
-    margin-top: 10svh;
+    margin-top: clamp(28px, 4.5svh, 46px);
     margin-bottom: 0;
     padding: 14px;
     border-radius: var(--radius-lg);
@@ -1336,12 +1343,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle {
-      padding: 0;
-      margin-top: 10px;
+      margin-top: clamp(56px, 8vh, 78px);
     }
 
     .decision-preview {
-      margin-top: 10svh;
+      margin-top: clamp(34px, 5svh, 54px);
       margin-bottom: 0;
       padding: 16px;
     }
