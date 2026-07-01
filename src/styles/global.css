@@ -11,6 +11,9 @@
   --shadow: 0 18px 50px rgba(37, 26, 20, 0.12);
   --radius-lg: 28px;
   --container: 760px;
+  --home-title-top: clamp(76px, 14.3svh, 118px);
+  --site-header-bar-size: 52px;
+  --home-title-offset: calc(var(--home-title-top) - var(--site-header-bar-size));
 }
 
 * { box-sizing: border-box; }
@@ -152,12 +155,8 @@ main {
 }
 
 .site-header {
-  height: auto;
-  min-height: 52px;
-  padding: calc(6px + env(safe-area-inset-top)) 18px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: var(--site-header-bar-size);
+  padding: 8px 18px 0;
 }
 
 .logo {
@@ -252,7 +251,7 @@ h1 {
 }
 
 h1.home-title {
-  font-size: clamp(40px, 13.5vw, 86px);
+  font-size: clamp(44px, 14.5vw, 92px);
   line-height: 0.88;
   white-space: nowrap;
 }
@@ -500,7 +499,9 @@ h2 span {
 
   .site-header {
     height: auto;
-    padding-top: 28px;
+    min-height: 0;
+    margin-top: 0;
+    padding: 28px 18px 0;
   }
 
   .site-nav {

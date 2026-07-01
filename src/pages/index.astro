@@ -617,12 +617,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .home-decision.screen-section {
-    min-height: calc(100svh - 78px);
+    height: calc(100svh - var(--site-header-bar-size));
+    min-height: auto;
     display: grid;
-    grid-template-rows: minmax(0, auto) clamp(26px, 5.8svh, 44px) auto minmax(0, 1fr);
-    align-content: start;
+    grid-template-rows: minmax(0, auto) minmax(18px, 1fr) auto;
+    align-content: stretch;
     justify-content: stretch;
-    padding-block: 18px 18px;
+    padding-block: var(--home-title-offset) 10px;
   }
 
   .home-hero-copy {
@@ -643,7 +644,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .home-subtitle {
     position: relative;
     max-width: 640px;
-    margin: 36px auto 0;
+    margin: 48px auto 0;
     padding: 16px 20px 17px;
     border: 0;
     border-radius: 14px;
@@ -823,7 +824,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   }
 
   .decision-preview {
-    align-self: start;
+    align-self: end;
     grid-row: 3;
     margin-top: 0;
     margin-bottom: 0;
@@ -844,9 +845,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   @media (max-width: 959px) and (max-height: 740px) {
     .home-decision.screen-section {
-      min-height: calc(100svh - 70px);
-      grid-template-rows: auto clamp(16px, 3.8svh, 28px) auto minmax(0, 1fr);
-      padding-bottom: 14px;
+      min-height: auto;
+      height: calc(100svh - var(--site-header-bar-size));
+      grid-template-rows: auto minmax(12px, 1fr) auto;
+      padding-bottom: 8px;
     }
 
     .home-hero-copy .home-title {
@@ -854,7 +856,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle {
-      margin-top: 22px;
+      margin-top: 38px;
       padding: 12px 14px 13px;
       font-size: clamp(15px, 4vw, 18px);
       line-height: 1.28;
@@ -992,6 +994,93 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     border: 1px solid rgba(37, 26, 20, 0.08);
     color: var(--muted);
     font-size: 13px;
+  }
+
+  @media (max-width: 430px) {
+    .home-decision.screen-section {
+      height: calc(100svh - var(--site-header-bar-size));
+      grid-template-rows: auto minmax(12px, 1fr) auto;
+      padding-block: var(--home-title-offset) 8px;
+    }
+
+    h1.home-title {
+      font-size: clamp(42px, 13.2vw, 50px);
+    }
+
+    .home-hero-copy .home-title {
+      padding: 3px 8px 6px;
+    }
+
+    .home-subtitle {
+      margin-top: 30px;
+      padding: 12px 14px;
+      font-size: 15px;
+      line-height: 1.28;
+    }
+
+    .home-subtitle::before,
+    .home-subtitle::after {
+      width: 20px;
+      height: 20px;
+      border-width: 2px;
+    }
+
+    .home-subtitle-rotator {
+      margin-top: 7px;
+    }
+
+    .home-subtitle-label {
+      font-size: 15px;
+    }
+
+    .home-subtitle-mode {
+      font-size: 17px;
+    }
+
+    .decision-preview {
+      gap: 10px;
+      padding: 12px;
+      border-radius: 22px;
+    }
+
+    .decision-preview-copy h2 {
+      font-size: 19px;
+    }
+
+    .decision-preview-copy p {
+      display: none;
+    }
+
+    .decision-paths {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .decision-path {
+      min-height: 56px;
+      padding: 8px;
+      border-radius: 14px;
+      align-content: center;
+      text-align: center;
+    }
+
+    .decision-path strong {
+      font-size: 12px;
+      overflow-wrap: normal;
+    }
+
+    .decision-path span {
+      font-size: 11px;
+      white-space: normal;
+    }
+
+    .preview-primary {
+      min-height: 42px;
+    }
+
+    .preview-secondary {
+      min-height: 38px;
+    }
   }
 
   .decision-surface--desktop {
@@ -1520,6 +1609,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   @media (min-width: 960px) {
     .home-decision.screen-section {
+      height: auto;
       min-height: 100svh;
       display: flex;
       flex-direction: column;
