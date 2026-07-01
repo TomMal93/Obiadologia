@@ -30,41 +30,42 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   <section class="hero home-decision screen-section">
     <div class="home-hero-copy">
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
-      <p class="home-subtitle">
-        <span class="home-subtitle-main">
-          <span style="display: block; margin-bottom: 6px;">Odwieczny problem z tym, co ugotować, nie musi już psuć apetytu.</span>
-          <span>Zdejmujemy z Ciebie ten ciężar, wyznaczając najkrótszą drogę<br />od burczenia w brzuchu do pełnego talerza.</span>
-        </span>
-        <span class="home-subtitle-rotator">
-          <span class="home-subtitle-label">Od razu dostajesz:</span>
-          <span class="home-subtitle-mode" data-home-subtitle-mode>
-            <span data-home-subtitle-current>konkret.</span>
-            <span data-home-subtitle-next aria-hidden="true"></span>
-          </span>
-        </span>
-      </p>
     </div>
 
-    <div class="decision-preview" data-decision-launcher aria-label="Szybki wybór obiadu">
-      <div class="decision-preview-copy">
-        <p>Podaj nam jakikolwiek punkt zaczepienia – smak, czas lub składnik – i pozwól nam dopasować idealny przepis.</p>
-      </div>
+    <div class="home-subtitle" data-decision-launcher aria-label="Szybki wybór obiadu">
+      <span class="home-subtitle-main">
+        <span style="display: block; margin-bottom: 6px;">Odwieczny problem z tym, co ugotować, nie musi już psuć apetytu.</span>
+        <span>Zdejmujemy z Ciebie ten ciężar, wyznaczając najkrótszą drogę<br />od burczenia w brzuchu do pełnego talerza.</span>
+      </span>
+      <span class="home-subtitle-rotator">
+        <span class="home-subtitle-label">Od razu dostajesz:</span>
+        <span class="home-subtitle-mode" data-home-subtitle-mode>
+          <span data-home-subtitle-current>konkret.</span>
+          <span data-home-subtitle-next aria-hidden="true"></span>
+        </span>
+      </span>
 
-      <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
-        <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
-        <div class="decision-option-list">
-          <button class="decision-option" type="button" data-open-decision="search">
-            <span>Składnik</span>
-            <strong>co masz pod ręką</strong>
-          </button>
-          <button class="decision-option" type="button" data-open-decision="map">
-            <span>Smak</span>
-            <strong>na co masz ochotę</strong>
-          </button>
-          <button class="decision-option" type="button" data-scroll-to-categories>
-            <span>Czas lub sytuacja</span>
-            <strong>ile masz siły i minut</strong>
-          </button>
+      <div class="decision-preview">
+        <div class="decision-preview-copy">
+          <p>Podaj nam jakikolwiek punkt zaczepienia – smak, czas lub składnik – i pozwól nam dopasować idealny przepis.</p>
+        </div>
+
+        <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
+          <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
+          <div class="decision-option-list">
+            <button class="decision-option" type="button" data-open-decision="search">
+              <span>Składnik</span>
+              <strong>co masz pod ręką</strong>
+            </button>
+            <button class="decision-option" type="button" data-open-decision="map">
+              <span>Smak</span>
+              <strong>na co masz ochotę</strong>
+            </button>
+            <button class="decision-option" type="button" data-scroll-to-categories>
+              <span>Czas lub sytuacja</span>
+              <strong>ile masz siły i minut</strong>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -620,7 +621,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     height: calc(100svh - var(--site-header-bar-size));
     min-height: auto;
     display: grid;
-    grid-template-rows: minmax(0, auto) 10svh minmax(clamp(250px, 32svh, 340px), 1fr);
+    grid-template-rows: minmax(0, auto) minmax(0, 1fr);
     align-content: stretch;
     justify-content: stretch;
     padding-block: var(--home-title-offset) 22px;
@@ -643,8 +644,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   .home-subtitle {
     position: relative;
+    grid-row: 2;
+    align-self: center;
     max-width: 640px;
-    margin: 48px auto 0;
+    width: 100%;
+    margin: 0 auto;
     padding: 16px 20px 17px;
     border: 0;
     border-radius: 14px;
@@ -664,6 +668,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     line-height: 1.36;
     letter-spacing: 0;
     text-wrap: balance;
+    display: grid;
+    gap: 17px;
+    transition:
+      transform 260ms ease,
+      opacity 260ms ease,
+      box-shadow 260ms ease;
   }
 
   .home-subtitle::before {
@@ -816,7 +826,6 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   @media (max-width: 430px) {
     .home-subtitle {
-      margin-top: 32px;
       padding: 14px 16px 15px;
     }
 
@@ -825,40 +834,29 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   .decision-preview {
     position: relative;
-    align-self: stretch;
-    grid-row: 3;
+    align-self: auto;
     margin-top: 0;
     margin-bottom: 0;
     min-height: 0;
-    height: 100%;
-    padding: 16px 20px 17px;
-    border-radius: 14px;
-    background:
-      radial-gradient(circle at 12% 0%, rgba(255, 200, 87, 0.14), transparent 38%),
-      linear-gradient(135deg, rgba(255, 253, 248, 0.42), rgba(255, 241, 219, 0.28));
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
     border: 0;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.72),
-      inset 0 0 0 1px rgba(37, 26, 20, 0.025),
-      inset 0 -1px 0 rgba(37, 26, 20, 0.04),
-      0 10px 26px rgba(37, 26, 20, 0.055);
-    backdrop-filter: blur(14px) saturate(1.16);
-    -webkit-backdrop-filter: blur(14px) saturate(1.16);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     display: grid;
-    align-content: space-between;
+    align-content: start;
     gap: 13px;
     text-align: left;
-    transition:
-      transform 260ms ease,
-      opacity 260ms ease,
-      box-shadow 260ms ease;
   }
 
   @media (max-width: 959px) and (max-height: 740px) {
     .home-decision.screen-section {
       min-height: auto;
       height: calc(100svh - var(--site-header-bar-size));
-      grid-template-rows: auto 8svh minmax(clamp(220px, 30svh, 260px), 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
       padding-bottom: 18px;
     }
 
@@ -871,10 +869,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle {
-      margin-top: 38px;
       padding: 12px 14px 13px;
       font-size: clamp(15px, 4vw, 18px);
       line-height: 1.28;
+      gap: 13px;
     }
 
     .decision-preview-copy p {
@@ -904,7 +902,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
   }
 
-  .decision-preview.is-expanding {
+  .home-subtitle.is-expanding {
     opacity: 0.72;
     transform: translateY(8px) scale(0.985);
     box-shadow: 0 10px 30px rgba(37, 26, 20, 0.08);
@@ -997,7 +995,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   @media (max-width: 430px) {
     .home-decision.screen-section {
       height: calc(100svh - var(--site-header-bar-size));
-      grid-template-rows: auto 10svh minmax(clamp(250px, 32svh, 340px), 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
       padding-block: var(--home-title-offset) 18px;
     }
 
@@ -1010,10 +1008,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle {
-      margin-top: 30px;
       padding: 12px 14px;
       font-size: 15px;
       line-height: 1.28;
+      gap: 12px;
     }
 
     .decision-preview-copy p {
@@ -1044,7 +1042,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   @media (max-width: 430px) and (max-height: 740px) {
     .home-decision.screen-section {
-      grid-template-rows: auto 8svh minmax(clamp(220px, 30svh, 260px), 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
     }
 
     .decision-preview {
@@ -1549,13 +1547,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle {
-      margin-top: 46px;
-    }
-
-    .decision-preview {
-      margin-top: 0;
-      margin-bottom: 0;
-      padding: 16px 20px;
+      margin: 0 auto;
     }
 
     .search-box {
