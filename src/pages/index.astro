@@ -31,7 +31,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     <div class="home-hero-copy">
       <h1 class="home-title">Co dziś <span>jemy?</span></h1>
       <p class="home-subtitle">
-        <span class="home-subtitle-main">Obiadologia rozwiązuje odwieczny dylemat: co dziś ugotować, co dokupić i jak bez narady usiąść do stołu.</span>
+        <span class="home-subtitle-main">
+          <span style="display: block; margin-bottom: 6px;">Ten dylemat potrafi zmęczyć jeszcze przed wejściem do kuchni.</span>
+          <span>Zdejmujemy z Twojej głowy planowanie obiadów. Ty wybierasz, na co masz ochotę, my podajemy przepis i listę zakupów.</span>
+        </span>
         <span class="home-subtitle-rotator">
           <span class="home-subtitle-label">Obiadologia gwarantuje Ci</span>
           <span class="home-subtitle-mode" data-home-subtitle-mode>
@@ -623,7 +626,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     grid-template-rows: minmax(0, auto) minmax(18px, 1fr) auto;
     align-content: stretch;
     justify-content: stretch;
-    padding-block: var(--home-title-offset) 10px;
+    padding-block: var(--home-title-offset) 22px;
   }
 
   .home-hero-copy {
@@ -848,7 +851,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       min-height: auto;
       height: calc(100svh - var(--site-header-bar-size));
       grid-template-rows: auto minmax(12px, 1fr) auto;
-      padding-bottom: 8px;
+      padding-bottom: 18px;
     }
 
     .home-hero-copy .home-title {
@@ -1000,7 +1003,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .home-decision.screen-section {
       height: calc(100svh - var(--site-header-bar-size));
       grid-template-rows: auto minmax(12px, 1fr) auto;
-      padding-block: var(--home-title-offset) 8px;
+      padding-block: var(--home-title-offset) 18px;
     }
 
     h1.home-title {
