@@ -1648,6 +1648,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-cue {
       --cue-rgb: 255, 198, 58;
       --cue-line: rgba(126, 76, 0, 0.22);
+      --cue-edge: 12%;
       position: relative;
       min-height: 0;
       padding: 15px 4px 31px;
@@ -1665,22 +1666,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       position: absolute;
       inset: 6px 0 26px;
       z-index: -1;
-      clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+      clip-path: polygon(0 0, 100% 0, calc(100% - var(--cue-edge)) 100%, var(--cue-edge) 100%);
       background:
         linear-gradient(180deg, rgba(var(--cue-rgb), 0.18), rgba(var(--cue-rgb), 0.045)),
         rgba(255, 255, 255, 0.08);
       border-top: 1px solid rgba(var(--cue-rgb), 0.16);
       opacity: 0.96;
-    }
-
-    .decision-cue::after {
-      content: "";
-      position: absolute;
-      inset: 8px 9% 27px;
-      z-index: -1;
-      border-inline: 1px solid var(--cue-line);
-      transform: perspective(80px) rotateX(0deg);
-      pointer-events: none;
     }
 
     .decision-cue--craving {
