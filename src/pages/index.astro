@@ -51,12 +51,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
         <svg class="decision-start-guides" viewBox="0 0 340 170" preserveAspectRatio="none" aria-hidden="true">
-          <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C100 11 72 24 54 46" />
-          <path class="decision-start-guide decision-start-guide--pantry" d="M61 122 C66 133 62 142 57 150" />
-          <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C162 30 162 40 165 46" />
-          <path class="decision-start-guide decision-start-guide--craving" d="M173 122 C174 132 173 142 170 150" />
-          <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C240 11 268 24 286 46" />
-          <path class="decision-start-guide decision-start-guide--speed" d="M279 122 C274 133 278 142 283 150" />
+          <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C104 10 82 19 66 34" />
+          <path class="decision-start-guide decision-start-guide--pantry" d="M61 140 C61 144 59 147 57 150" />
+          <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C165 22 164 30 166 34" />
+          <path class="decision-start-guide decision-start-guide--craving" d="M171 140 C172 144 171 147 170 150" />
+          <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C236 10 258 19 274 34" />
+          <path class="decision-start-guide decision-start-guide--speed" d="M279 140 C279 144 281 147 283 150" />
           <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M57 150 L48 144 L53 160 Z" />
           <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 150 L162 142 L170 162 L178 142 Z" />
           <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M283 150 L292 144 L287 160 Z" />
@@ -1341,7 +1341,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       text-align: center;
       text-wrap: balance;
       margin-top: auto;
-      transform: translateY(10px);
+      transform: translateY(-2px);
       position: relative;
       z-index: 2;
     }
@@ -1400,7 +1400,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       margin-inline: auto;
       gap: 7px;
       font-size: 11px;
-      transform: translateY(-6px);
+      transform: translateY(-13px);
     }
 
     .decision-cue {
