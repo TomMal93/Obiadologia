@@ -51,9 +51,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
         <svg class="decision-start-guides" viewBox="0 0 340 170" preserveAspectRatio="none" aria-hidden="true">
-          <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C72 14 26 62 55 108 C68 130 62 140 57 150" />
-          <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C156 60 184 98 170 150" />
-          <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C268 14 314 62 285 108 C272 130 278 140 283 150" />
+          <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C100 11 72 24 54 46" />
+          <path class="decision-start-guide decision-start-guide--pantry" d="M61 122 C66 133 62 142 57 150" />
+          <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C162 30 162 40 165 46" />
+          <path class="decision-start-guide decision-start-guide--craving" d="M173 122 C174 132 173 142 170 150" />
+          <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C240 11 268 24 286 46" />
+          <path class="decision-start-guide decision-start-guide--speed" d="M279 122 C274 133 278 142 283 150" />
           <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M57 150 L48 144 L53 160 Z" />
           <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 150 L162 142 L170 162 L178 142 Z" />
           <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M283 150 L292 144 L287 160 Z" />
@@ -1039,20 +1042,6 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     transform: rotate(6deg);
   }
 
-  .decision-cue::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -8px;
-    width: 18px;
-    height: 10px;
-    background: linear-gradient(180deg, rgba(255, 198, 58, 0.08), rgba(255, 198, 58, 0.18));
-    clip-path: polygon(50% 100%, 0 0, 100% 0);
-    opacity: 0.88;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-
   .decision-cue > span:not(.decision-cue-arrow) {
     display: block;
   }
@@ -1064,19 +1053,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       rgba(255, 255, 255, 0.08);
   }
 
-  .decision-cue--craving::after {
-    background: linear-gradient(180deg, rgba(255, 90, 61, 0.08), rgba(255, 90, 61, 0.16));
-  }
-
   .decision-cue--speed .decision-cue-shape {
     --decision-cue-edge: rgba(21, 82, 49, 0.2);
     background:
       linear-gradient(180deg, rgba(47, 143, 91, 0.16), rgba(47, 143, 91, 0.04)),
       rgba(255, 255, 255, 0.08);
-  }
-
-  .decision-cue--speed::after {
-    background: linear-gradient(180deg, rgba(47, 143, 91, 0.08), rgba(47, 143, 91, 0.16));
   }
 
   .decision-option-list {
@@ -1419,6 +1400,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       margin-inline: auto;
       gap: 7px;
       font-size: 11px;
+      transform: translateY(-6px);
     }
 
     .decision-cue {
