@@ -1348,22 +1348,25 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option {
-      min-height: 76px;
+      min-height: 78px;
       align-content: center;
       justify-items: center;
       overflow: hidden;
-      padding: 12px 8px;
-      border-radius: 10px;
+      padding: 11px 8px 13px;
+      border-radius: 12px;
       border-width: 1px;
       border-style: solid;
       text-align: center;
+      isolation: isolate;
       box-shadow:
-        0 18px 34px rgba(37, 26, 20, 0.16),
-        0 4px 9px rgba(37, 26, 20, 0.1),
+        0 22px 34px rgba(37, 26, 20, 0.18),
+        0 7px 13px rgba(37, 26, 20, 0.13),
+        0 2px 0 var(--option-lift),
+        inset 0 1px 0 var(--option-top),
         inset 0 0 0 1px var(--option-glass-edge),
-        inset 0 -12px 22px var(--option-depth);
-      backdrop-filter: blur(22px) saturate(1.42) contrast(1.04);
-      -webkit-backdrop-filter: blur(22px) saturate(1.42) contrast(1.04);
+        inset 0 -16px 22px var(--option-depth);
+      backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
+      -webkit-backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
     }
 
     .decision-start .decision-option:nth-child(3) {
@@ -1372,42 +1375,51 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option:nth-child(1) {
-      --option-glow: rgba(117, 190, 255, 0.38);
-      --option-depth: rgba(10, 80, 160, 0.18);
-      --option-glass-edge: rgba(117, 190, 255, 0.2);
-      --option-sheen: rgba(117, 190, 255, 0.32);
-      --option-sheen-strong: rgba(70, 170, 255, 0.58);
-      border-color: rgba(18, 104, 190, 0.5);
+      --option-top: rgba(203, 232, 255, 0.42);
+      --option-lift: rgba(66, 135, 205, 0.24);
+      --option-depth: rgba(43, 117, 191, 0.16);
+      --option-glass-edge: rgba(177, 218, 255, 0.28);
+      --option-sheen: rgba(204, 233, 255, 0.24);
+      --option-sheen-strong: rgba(141, 203, 255, 0.42);
+      --option-text: #356f9f;
+      --option-text-shadow: rgba(242, 249, 255, 0.7);
+      border-color: rgba(91, 154, 217, 0.38);
       background:
-        radial-gradient(100% 130% at 16% 8%, rgba(119, 196, 255, 0.42), transparent 60%),
-        linear-gradient(145deg, rgba(71, 165, 247, 0.44) 0%, rgba(32, 137, 230, 0.28) 46%, rgba(14, 91, 176, 0.2) 100%),
-        rgba(32, 137, 230, 0.34);
+        radial-gradient(120% 95% at 18% 0%, rgba(210, 236, 255, 0.56), transparent 50%),
+        linear-gradient(160deg, rgba(151, 213, 255, 0.46) 0%, rgba(103, 177, 236, 0.3) 48%, rgba(54, 134, 210, 0.2) 100%),
+        rgba(171, 218, 255, 0.26);
     }
 
     .decision-start .decision-option:nth-child(2) {
-      --option-glow: rgba(203, 148, 255, 0.36);
-      --option-depth: rgba(82, 38, 145, 0.18);
-      --option-glass-edge: rgba(203, 148, 255, 0.2);
-      --option-sheen: rgba(203, 148, 255, 0.3);
-      --option-sheen-strong: rgba(182, 112, 255, 0.54);
-      border-color: rgba(118, 60, 190, 0.48);
+      --option-top: rgba(238, 217, 255, 0.42);
+      --option-lift: rgba(142, 96, 197, 0.24);
+      --option-depth: rgba(116, 70, 172, 0.16);
+      --option-glass-edge: rgba(223, 190, 255, 0.28);
+      --option-sheen: rgba(240, 219, 255, 0.23);
+      --option-sheen-strong: rgba(209, 158, 255, 0.4);
+      --option-text: #704c9d;
+      --option-text-shadow: rgba(250, 244, 255, 0.68);
+      border-color: rgba(146, 91, 200, 0.36);
       background:
-        radial-gradient(100% 130% at 16% 8%, rgba(206, 152, 255, 0.4), transparent 60%),
-        linear-gradient(145deg, rgba(182, 112, 255, 0.42) 0%, rgba(156, 89, 235, 0.28) 46%, rgba(91, 43, 153, 0.2) 100%),
-        rgba(156, 89, 235, 0.32);
+        radial-gradient(120% 95% at 18% 0%, rgba(237, 216, 255, 0.52), transparent 50%),
+        linear-gradient(160deg, rgba(211, 169, 255, 0.42) 0%, rgba(172, 124, 225, 0.3) 48%, rgba(126, 82, 183, 0.2) 100%),
+        rgba(211, 181, 246, 0.24);
     }
 
     .decision-start .decision-option:nth-child(3) {
-      --option-glow: rgba(104, 224, 150, 0.36);
-      --option-depth: rgba(10, 99, 49, 0.18);
-      --option-glass-edge: rgba(104, 224, 150, 0.2);
-      --option-sheen: rgba(104, 224, 150, 0.3);
-      --option-sheen-strong: rgba(67, 210, 126, 0.54);
-      border-color: rgba(20, 132, 72, 0.48);
+      --option-top: rgba(211, 246, 222, 0.42);
+      --option-lift: rgba(63, 151, 98, 0.24);
+      --option-depth: rgba(35, 128, 73, 0.16);
+      --option-glass-edge: rgba(182, 236, 202, 0.28);
+      --option-sheen: rgba(218, 248, 228, 0.23);
+      --option-sheen-strong: rgba(142, 226, 174, 0.4);
+      --option-text: #33764d;
+      --option-text-shadow: rgba(245, 255, 248, 0.68);
+      border-color: rgba(72, 157, 105, 0.36);
       background:
-        radial-gradient(100% 130% at 16% 8%, rgba(104, 224, 150, 0.4), transparent 60%),
-        linear-gradient(145deg, rgba(67, 210, 126, 0.42) 0%, rgba(37, 176, 98, 0.28) 46%, rgba(15, 111, 58, 0.2) 100%),
-        rgba(37, 176, 98, 0.32);
+        radial-gradient(120% 95% at 18% 0%, rgba(215, 247, 226, 0.52), transparent 50%),
+        linear-gradient(160deg, rgba(154, 228, 181, 0.42) 0%, rgba(102, 190, 136, 0.3) 48%, rgba(48, 137, 83, 0.2) 100%),
+        rgba(187, 235, 205, 0.24);
     }
 
     .decision-start .decision-option::after {
@@ -1417,11 +1429,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-start .decision-option::before {
       display: block;
       background:
-        radial-gradient(80% 70% at 22% 8%, var(--option-glass-edge), transparent 62%),
-        linear-gradient(112deg, transparent 0 32%, var(--option-sheen) 42%, var(--option-sheen-strong) 50%, var(--option-sheen) 58%, transparent 70%);
-      background-size: 240% 100%;
+        radial-gradient(70% 58% at 22% 4%, var(--option-top), transparent 62%),
+        linear-gradient(112deg, transparent 0 30%, var(--option-sheen) 42%, var(--option-sheen-strong) 50%, var(--option-sheen) 58%, transparent 72%);
+      background-size: 100% 100%, 240% 100%;
       background-position: 0 0, 145% 0;
-      opacity: 0.82;
+      opacity: 0.9;
     }
 
     .decision-start .decision-option span {
@@ -1432,23 +1444,26 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       border-radius: 0;
       background: transparent;
       box-shadow: none;
-      color: #251a14;
-      font-size: 15px;
-      font-weight: 950;
-      line-height: 1.12;
+      color: var(--option-text);
+      font-size: 16px;
+      font-weight: 980;
+      line-height: 1;
       letter-spacing: 0;
+      text-shadow:
+        0 1px 0 var(--option-text-shadow),
+        0 10px 18px rgba(37, 26, 20, 0.16);
     }
 
     .decision-start .decision-option:nth-child(1) span {
-      color: #075fba;
+      color: var(--option-text);
     }
 
     .decision-start .decision-option:nth-child(2) span {
-      color: #7334b8;
+      color: var(--option-text);
     }
 
     .decision-start .decision-option:nth-child(3) span {
-      color: #0f7a3e;
+      color: var(--option-text);
     }
 
     .decision-start .home-subtitle-rotator {
@@ -1846,19 +1861,20 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
     .decision-start .decision-option {
       min-height: 76px;
-      padding: 10px 6px;
+      padding: 10px 6px 12px;
       display: grid;
       place-items: center;
-      border-radius: 10px;
+      border-radius: 12px;
       text-align: center;
       box-shadow:
-        0 14px 28px rgba(37, 26, 20, 0.15),
-        0 3px 7px rgba(37, 26, 20, 0.09),
-        inset 0 1px 0 rgba(255, 255, 255, 0.96),
-        inset 0 0 0 1px rgba(37, 26, 20, 0.07),
-        inset 0 -1px 0 rgba(37, 26, 20, 0.13);
-      backdrop-filter: blur(18px) saturate(1.2);
-      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+        0 18px 30px rgba(37, 26, 20, 0.17),
+        0 6px 12px rgba(37, 26, 20, 0.12),
+        0 2px 0 var(--option-lift),
+        inset 0 1px 0 var(--option-top),
+        inset 0 0 0 1px var(--option-glass-edge),
+        inset 0 -14px 20px var(--option-depth);
+      backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
+      -webkit-backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
     }
 
     .decision-start .decision-option::after {
@@ -1866,9 +1882,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option span {
-      font-size: 15px;
-      font-weight: 950;
-      line-height: 1.1;
+      color: var(--option-text);
+      font-size: 16px;
+      font-weight: 980;
+      line-height: 1;
+      text-shadow:
+        0 1px 0 var(--option-text-shadow),
+        0 10px 18px rgba(37, 26, 20, 0.16);
     }
 
     .decision-start .home-subtitle-rotator-copy {
