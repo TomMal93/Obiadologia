@@ -1630,7 +1630,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start > span.decision-start-helper {
-      margin-top: -6px;
+      margin-top: 5px;
       color: rgba(37, 26, 20, 0.58);
       font-size: 15px;
       font-weight: 650;
@@ -1643,7 +1643,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       display: block;
       width: min(100%, 408px);
       height: 36px;
-      margin: -4px auto -11px;
+      margin: -10px auto -24px;
       pointer-events: none;
     }
 
@@ -1677,7 +1677,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-start .home-subtitle-rotator {
       width: 100%;
       max-width: 408px;
-      margin: 0 auto;
+      margin: -14px auto 0;
       padding: 0;
       display: grid;
       grid-template-rows: 142px 76px 51px;
@@ -1790,8 +1790,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       transform: translateX(-50%);
     }
 
-    .decision-cue-arrow::before,
-    .decision-cue-arrow::after {
+    .decision-cue-arrow::before {
       content: "";
       position: absolute;
       left: 50%;
@@ -1807,13 +1806,15 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-cue-arrow::after {
-      bottom: 0;
-      width: 0;
-      height: 0;
-      background: transparent;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 14px solid var(--cue-line);
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 2px;
+      width: 14px;
+      height: 18px;
+      background: var(--cue-line);
+      clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 18%, 50% 100%, 0 18%);
+      transform: translateX(-50%);
     }
 
     .decision-start .decision-option-list {
