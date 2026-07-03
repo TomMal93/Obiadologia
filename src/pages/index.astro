@@ -51,7 +51,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span class="decision-start-frame" aria-hidden="true"></span>
         <span>Wybierz najbliższą myśl:</span>
-        <span class="decision-start-helper">Nie wiem co ugotować, ale:</span>
+        <span class="decision-start-helper">Do obiadu prowadzi mnie:</span>
         <span class="decision-start-guides" aria-hidden="true">
           <svg class="decision-start-guides-svg" viewBox="0 0 408 46" preserveAspectRatio="none" focusable="false">
             <path class="decision-start-guide decision-start-guide--map" d="M176 2 C124 8 83 17 56 43" />
@@ -62,20 +62,23 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
             <span class="decision-cue decision-cue--pantry">
-              <span>Prowadź mnie</span>
-              <span>co ugotować</span>
+              <span>Poszukiwania</span>
               <span>inspiracja</span>
+              <span>nastrój</span>
               <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--craving">
-              <span>Mam składnik</span>
-              <span>chcę znaleźć</span>
-              <span>mam ochotę</span>
+              <span>składnik</span>
+              <span>ochota</span>
+              <span>konkretne danie</span>
+              <span>smak</span>
               <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--speed">
-              <span>konkretna okazja</span>
-              <span>gotowe sytuacje</span>
+              <span>okazja</span>
+              <span>sytuacja</span>
+              <span>wena</span>
+              <span>tempo</span>
               <span class="decision-cue-arrow"></span>
             </span>
           </div>
@@ -1740,11 +1743,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-cue--craving {
       --cue-rgb: 156, 89, 235;
       --cue-line: rgba(118, 60, 190, 0.28);
+      grid-template-rows: repeat(4, 1fr);
     }
 
     .decision-cue--speed {
       --cue-rgb: 37, 176, 98;
       --cue-line: rgba(20, 132, 72, 0.28);
+      grid-template-rows: repeat(4, 1fr);
     }
 
     .decision-cue > span:not(.decision-cue-arrow) {
@@ -1773,12 +1778,24 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       transform: translate(-7px, -2px) rotate(-6deg);
     }
 
+    .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(4) {
+      transform: translate(4px, -1px) rotate(5deg);
+    }
+
     .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(1) {
-      transform: translate(5px, 2px) rotate(-7deg);
+      transform: translate(-8px, 2px) rotate(-9deg);
     }
 
     .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(2) {
-      transform: translate(-6px, -2px) rotate(6deg);
+      transform: translate(8px, -2px) rotate(8deg);
+    }
+
+    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(3) {
+      transform: translate(-4px, 1px) rotate(5deg);
+    }
+
+    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(4) {
+      transform: translate(5px, -2px) rotate(-7deg);
     }
 
     .decision-cue-arrow {
