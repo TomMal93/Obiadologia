@@ -51,6 +51,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
         <div class="home-subtitle-rotator">
+          <div class="decision-cues" aria-hidden="true">
+            <span>mam w domu</span>
+            <span>chce mi się</span>
+            <span>robię szybko</span>
+          </div>
           <div class="decision-option-list">
             <button class="decision-option" type="button" data-open-decision="search">
               <span>Zapasy</span>
@@ -939,9 +944,29 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   .decision-start > span {
     color: rgba(37, 26, 20, 0.72);
-    font-size: 12px;
+    font-size: clamp(14px, 3.7vw, 17px);
     font-weight: 900;
-    line-height: 1.25;
+    line-height: 1.22;
+  }
+
+  .decision-cues {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    color: rgba(37, 26, 20, 0.62);
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.18;
+    text-align: center;
+  }
+
+  .decision-cues span {
+    display: grid;
+    place-items: end center;
+    min-height: 30px;
+    padding: 0 4px 6px;
+    border-bottom: 2px solid rgba(255, 90, 61, 0.24);
+    text-wrap: balance;
   }
 
   .decision-option-list {
@@ -1144,6 +1169,25 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       min-height: 280px;
       height: 100%;
       padding: 14px 14px 0;
+    }
+
+    .decision-start > span {
+      font-size: clamp(16px, 4.5vw, 19px);
+      line-height: 1.18;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .decision-cues {
+      width: min(100%, 340px);
+      margin-inline: auto;
+      gap: 7px;
+      font-size: 12px;
+    }
+
+    .decision-cues span {
+      min-height: 32px;
+      padding-inline: 2px;
     }
 
     .decision-start .decision-option-list {
