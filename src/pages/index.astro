@@ -27,58 +27,112 @@ function getRecipeCountLabel(count: number) {
   return `${count} przepisów`;
 }
 
-const categoryTiles = [
+type CategoryTile = {
+  title: string;
+  label: string;
+  icon: string;
+  tone: string;
+  filter: { type: "all" } | { type: "tag" | "query"; value: string };
+};
+
+function getCategoryCount(category: CategoryTile) {
+  if (category.filter.type === "all") return recipes.length;
+
+  const value = category.filter.value.toLowerCase();
+  return recipes.filter((recipe) => {
+    const searchable = [
+      recipe.data.title,
+      recipe.data.summary,
+      recipe.data.description,
+      recipe.data.effort,
+      recipe.data.mood,
+      recipe.data.cost,
+      ...recipe.data.tags,
+      ...recipe.data.mainIngredients,
+      ...recipe.data.searchAliases
+    ].join(" ").toLowerCase();
+
+    if (category.filter.type === "tag") return recipe.data.tags.includes(category.filter.value);
+    return searchable.includes(value);
+  }).length;
+}
+
+function getCategoryHref(category: CategoryTile) {
+  if (category.filter.type === "all") return "/przepisy";
+
+  const param = category.filter.type === "tag" ? "tag" : "q";
+  return `/przepisy?${param}=${encodeURIComponent(category.filter.value)}`;
+}
+
+const categoryModes = [
   {
-    title: "Gotowe w 15 minut",
-    label: "ratunek na szybko",
-    tag: "do 15 minut",
-    icon: "15",
-    tone: "fire"
+    id: "daily",
+    title: "Codziennie",
+    helper: "Najprostsze wejścia, kiedy po prostu trzeba coś zjeść.",
+    tiles: [
+      { title: "Wszystkie", label: "pełna lista pomysłów", filter: { type: "all" }, icon: "all", tone: "fire" },
+      { title: "Szybkie", label: "bez długiego stania", filter: { type: "tag", value: "do 30 minut" }, icon: "30", tone: "blue" },
+      { title: "Tanie", label: "bez dużych zakupów", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
+      { title: "Mało zmywania", label: "mniej garów po wszystkim", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" }
+    ]
   },
   {
-    title: "Tanie obiady",
-    label: "bez dużych zakupów",
-    tag: "tanie",
-    icon: "zł",
-    tone: "sun"
+    id: "breakfast",
+    title: "Śniadanie",
+    helper: "Rzeczy na mniejszy głód, jajka, pieczywo i szybkie patelnie.",
+    tiles: [
+      { title: "Jajka", label: "na ciepło albo z patelni", filter: { type: "query", value: "jajka" }, icon: "egg", tone: "sun" },
+      { title: "Pieczywo", label: "gdy trzeba zużyć chleb", filter: { type: "query", value: "pieczywo" }, icon: "chleb", tone: "tomato" },
+      { title: "Serowe", label: "tosty, tortilla, dodatki", filter: { type: "query", value: "ser" }, icon: "ser", tone: "blue" },
+      { title: "Do 15 minut", label: "szybki start dnia", filter: { type: "tag", value: "do 15 minut" }, icon: "15", tone: "fire" }
+    ]
   },
   {
-    title: "Mało zmywania",
-    label: "mniej garów po obiedzie",
-    tag: "mało zmywania",
-    icon: "1",
-    tone: "leaf"
+    id: "dinner",
+    title: "Obiad",
+    helper: "Konkretniej, cieplej, bardziej sycąco.",
+    tiles: [
+      { title: "Jednogarnkowe", label: "wszystko w jednym", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "blue" },
+      { title: "Bez mięsa", label: "warzywa grają pierwsze", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" },
+      { title: "Ryż", label: "miska, curry albo patelnia", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
+      { title: "Na dwa dni", label: "obiad plus lunch", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" }
+    ]
   },
   {
-    title: "Jednogarnkowe",
-    label: "wszystko w jednym",
-    tag: "jednogarnkowe",
-    icon: "gar",
-    tone: "blue"
+    id: "party",
+    title: "Impreza",
+    helper: "Proste rzeczy do postawienia na stole albo zrobienia hurtowo.",
+    tiles: [
+      { title: "Do podziału", label: "wrapy, patelnie, miski", filter: { type: "query", value: "tortilla" }, icon: "share", tone: "fire" },
+      { title: "Tanie", label: "więcej porcji bez dramatu", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
+      { title: "Bez mięsa", label: "dla różnych gości", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" },
+      { title: "Mało zmywania", label: "łatwiejszy koniec wieczoru", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" }
+    ]
   },
   {
-    title: "Na dwa dni",
-    label: "obiad plus lunch",
-    tag: "na dwa dni",
-    icon: "2",
-    tone: "tomato"
-  },
-  {
-    title: "Bez mięsa",
-    label: "warzywa grają pierwsze",
-    tag: "bez mięsa",
-    icon: "wege",
-    tone: "green"
+    id: "tomorrow",
+    title: "Na jutro",
+    helper: "Dania, które nie obrażają się na pudełko i odgrzewanie.",
+    tiles: [
+      { title: "Na dwa dni", label: "dzisiaj i do pracy", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" },
+      { title: "Ryż", label: "dobry do pudełka", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "blue" },
+      { title: "Jednogarnkowe", label: "mniej pilnowania", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "green" },
+      { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "sun" }
+    ]
   }
-].map((category) => {
-  const count = recipes.filter((recipe) => recipe.data.tags.includes(category.tag)).length;
-  return {
-    ...category,
-    href: `/przepisy?tag=${encodeURIComponent(category.tag)}`,
-    count,
-    countLabel: getRecipeCountLabel(count)
-  };
-});
+].map((mode) => ({
+  ...mode,
+  tiles: mode.tiles.map((category) => {
+    const count = getCategoryCount(category);
+    return {
+      ...category,
+      href: getCategoryHref(category),
+      count,
+      countLabel: getRecipeCountLabel(count)
+    };
+  })
+}));
+
 ---
 
 <BaseLayout
@@ -364,20 +418,50 @@ const categoryTiles = [
 
   <section class="section screen-section" data-categories-section>
     <div class="section-head">
-      <h2>Wybierz według sytuacji</h2>
+      <h2>Wybierz tryb</h2>
       <p>
-        Najkrótsza droga do obiadu zaczyna się od tego, jaki masz dziś dzień.
+        Najpierw nazwij sytuację, potem wybierz najkrótszą ścieżkę do jedzenia.
       </p>
     </div>
 
-    <div class="category-row">
-      {categoryTiles.map((category) => (
-        <a class:list={["category", `category--${category.tone}`]} href={category.href}>
-          <span class="category-icon" aria-hidden="true">{category.icon}</span>
-          <strong>{category.title}</strong>
-          <span class="category-label">{category.label}</span>
-          <span class="category-count">{category.countLabel}</span>
-        </a>
+    <div class="category-mode-picker" role="tablist" aria-label="Tryby sytuacji">
+      {categoryModes.map((mode, index) => (
+        <button
+          class:list={["category-mode", { "is-active": index === 0 }]}
+          type="button"
+          role="tab"
+          id={`category-mode-${mode.id}`}
+          aria-selected={index === 0 ? "true" : "false"}
+          aria-controls={`category-panel-${mode.id}`}
+          data-category-mode={mode.id}
+        >
+          {mode.title}
+        </button>
+      ))}
+    </div>
+
+    <div class="category-panels">
+      {categoryModes.map((mode, index) => (
+        <div
+          class:list={["category-panel", { "is-active": index === 0 }]}
+          id={`category-panel-${mode.id}`}
+          role="tabpanel"
+          aria-labelledby={`category-mode-${mode.id}`}
+          data-category-panel={mode.id}
+          hidden={index !== 0}
+        >
+          <p class="category-panel-helper">{mode.helper}</p>
+          <div class="category-row">
+            {mode.tiles.map((category) => (
+              <a class:list={["category", `category--${category.tone}`]} href={category.href}>
+                <span class="category-icon" aria-hidden="true">{category.icon}</span>
+                <strong>{category.title}</strong>
+                <span class="category-label">{category.label}</span>
+                <span class="category-count">{category.countLabel}</span>
+              </a>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   </section>
@@ -397,6 +481,8 @@ const categoryTiles = [
   const homeSubtitleMode = document.querySelector<HTMLElement>("[data-home-subtitle-mode]");
   const homeSubtitleCurrent = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-current]");
   const homeSubtitleNext = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-next]");
+  const categoryModeButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-category-mode]")];
+  const categoryPanels = [...document.querySelectorAll<HTMLElement>("[data-category-panel]")];
   const homeSubtitleModes = [
     "konkret",
     "przepis",
@@ -640,6 +726,24 @@ const categoryTiles = [
   document.querySelectorAll<HTMLButtonElement>("[data-scroll-to-categories]").forEach((button) => {
     button.addEventListener("click", () => {
       document.querySelector<HTMLElement>("[data-categories-section]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  categoryModeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const mode = button.dataset.categoryMode ?? "";
+
+      categoryModeButtons.forEach((item) => {
+        const isActive = item === button;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+
+      categoryPanels.forEach((panel) => {
+        const isActive = panel.dataset.categoryPanel === mode;
+        panel.classList.toggle("is-active", isActive);
+        panel.toggleAttribute("hidden", !isActive);
+      });
     });
   });
 
@@ -2634,6 +2738,77 @@ const categoryTiles = [
     bottom: -20px;
   }
 
+  .category-mode-picker {
+    display: flex;
+    gap: 8px;
+    margin: 0 -18px 14px;
+    padding: 2px 18px 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .category-mode-picker::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-mode {
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding: 0 14px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 26, 20, 0.1);
+    background:
+      linear-gradient(145deg, rgba(255, 253, 248, 0.72), rgba(255, 241, 219, 0.28)),
+      rgba(255, 253, 248, 0.62);
+    color: rgba(37, 26, 20, 0.66);
+    box-shadow:
+      0 8px 20px rgba(37, 26, 20, 0.045),
+      inset 0 1px 0 rgba(255, 255, 255, 0.62);
+    font-size: 13px;
+    font-weight: 950;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .category-mode.is-active {
+    background: var(--text);
+    border-color: transparent;
+    color: white;
+    box-shadow:
+      0 14px 28px rgba(37, 26, 20, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .category-mode:active {
+    transform: scale(0.96);
+  }
+
+  .category-panels {
+    display: grid;
+  }
+
+  .category-panel {
+    min-width: 0;
+    animation: categoryPanelIn 220ms ease both;
+  }
+
+  .category-panel[hidden] {
+    display: none;
+  }
+
+  .category-panel-helper {
+    margin: 0 0 12px;
+    max-width: 330px;
+    color: rgba(37, 26, 20, 0.58);
+    font-size: 13px;
+    font-weight: 760;
+    line-height: 1.3;
+  }
+
   .category-row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2709,6 +2884,10 @@ const categoryTiles = [
     --category-rgb: 37, 176, 98;
   }
 
+  .category--purple {
+    --category-rgb: 135, 90, 190;
+  }
+
   .category-icon {
     width: 34px;
     height: 34px;
@@ -2763,6 +2942,18 @@ const categoryTiles = [
     to { translate: 0 -3px; }
   }
 
+  @keyframes categoryPanelIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media (min-width: 700px) {
     .home-hero-copy {
       padding: 0;
@@ -2791,6 +2982,17 @@ const categoryTiles = [
     .map-card h2 { max-width: 320px; }
     .search-card p,
     .map-card p { max-width: 330px; }
+
+    .category-mode-picker {
+      margin-inline: 0;
+      padding-inline: 0;
+      justify-content: center;
+    }
+
+    .category-panel-helper {
+      margin-inline: auto;
+      text-align: center;
+    }
 
     .category-row {
       grid-template-columns: repeat(3, minmax(0, 1fr));
