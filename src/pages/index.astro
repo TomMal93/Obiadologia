@@ -50,13 +50,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
-        <svg class="decision-start-guides" viewBox="0 0 340 58" preserveAspectRatio="none" aria-hidden="true">
-          <path class="decision-start-guide decision-start-guide--pantry" d="M132 3 C80 4 36 20 55 52" />
-          <path class="decision-start-guide decision-start-guide--craving" d="M170 3 C156 17 186 33 170 52" />
-          <path class="decision-start-guide decision-start-guide--speed" d="M208 3 C260 4 304 20 285 52" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M55 52 L46 48 L51 58 Z" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 52 L162 47 L170 58 L178 47 Z" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M285 52 L294 48 L289 58 Z" />
+        <svg class="decision-start-guides" viewBox="0 0 340 170" preserveAspectRatio="none" aria-hidden="true">
+          <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C72 14 26 62 55 108 C68 130 62 140 57 150" />
+          <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C156 60 184 98 170 150" />
+          <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C268 14 314 62 285 108 C272 130 278 140 283 150" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M57 150 L48 144 L53 160 Z" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 150 L162 142 L170 162 L178 142 Z" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M283 150 L292 144 L287 160 Z" />
         </svg>
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
@@ -1368,12 +1368,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-start-guides {
       display: block;
       width: min(100%, 340px);
-      height: 54px;
-      margin: 2px auto -24px;
+      height: 170px;
+      margin: -9px auto -170px;
       overflow: visible;
       pointer-events: none;
       position: relative;
-      z-index: 1;
+      z-index: 0;
     }
 
     .decision-start-guide {
@@ -1413,6 +1413,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-cues {
+      position: relative;
+      z-index: 1;
       width: min(100%, 340px);
       margin-inline: auto;
       gap: 7px;
@@ -1425,6 +1427,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option-list {
+      position: relative;
+      z-index: 2;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 7px;
     }
