@@ -1355,13 +1355,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       border-style: solid;
       text-align: center;
       box-shadow:
-        0 16px 34px rgba(37, 26, 20, 0.15),
-        0 3px 7px rgba(37, 26, 20, 0.09),
-        inset 0 1px 0 rgba(255, 255, 255, 1),
-        inset 0 0 0 1px rgba(37, 26, 20, 0.07),
-        inset 0 -1px 0 rgba(37, 26, 20, 0.13);
-      backdrop-filter: blur(18px) saturate(1.22);
-      -webkit-backdrop-filter: blur(18px) saturate(1.22);
+        0 18px 34px rgba(37, 26, 20, 0.16),
+        0 4px 9px rgba(37, 26, 20, 0.1),
+        inset 0 0 0 1px var(--option-glass-edge),
+        inset 0 -12px 22px var(--option-depth);
+      backdrop-filter: blur(22px) saturate(1.42) contrast(1.04);
+      -webkit-backdrop-filter: blur(22px) saturate(1.42) contrast(1.04);
     }
 
     .decision-start .decision-option:nth-child(3) {
@@ -1370,34 +1369,56 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option:nth-child(1) {
-      border-color: rgba(30, 92, 150, 0.44);
+      --option-glow: rgba(117, 190, 255, 0.38);
+      --option-depth: rgba(10, 80, 160, 0.18);
+      --option-glass-edge: rgba(117, 190, 255, 0.2);
+      --option-sheen: rgba(117, 190, 255, 0.32);
+      --option-sheen-strong: rgba(70, 170, 255, 0.58);
+      border-color: rgba(18, 104, 190, 0.5);
       background:
-        radial-gradient(130% 90% at 20% -30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2) 34%, rgba(255, 255, 255, 0) 60%),
-        linear-gradient(118deg, rgba(255, 255, 255, 0) 0 36%, rgba(255, 255, 255, 0.22) 48%, rgba(255, 255, 255, 0.04) 57%, rgba(255, 255, 255, 0) 68%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(199, 226, 255, 0.48)),
-        rgba(62, 142, 213, 0.34);
+        radial-gradient(100% 130% at 16% 8%, rgba(119, 196, 255, 0.42), transparent 60%),
+        linear-gradient(145deg, rgba(71, 165, 247, 0.44) 0%, rgba(32, 137, 230, 0.28) 46%, rgba(14, 91, 176, 0.2) 100%),
+        rgba(32, 137, 230, 0.34);
     }
 
     .decision-start .decision-option:nth-child(2) {
-      border-color: rgba(121, 29, 13, 0.42);
+      --option-glow: rgba(203, 148, 255, 0.36);
+      --option-depth: rgba(82, 38, 145, 0.18);
+      --option-glass-edge: rgba(203, 148, 255, 0.2);
+      --option-sheen: rgba(203, 148, 255, 0.3);
+      --option-sheen-strong: rgba(182, 112, 255, 0.54);
+      border-color: rgba(118, 60, 190, 0.48);
       background:
-        radial-gradient(130% 90% at 20% -30%, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.18) 34%, rgba(255, 255, 255, 0) 60%),
-        linear-gradient(118deg, rgba(255, 255, 255, 0) 0 36%, rgba(255, 255, 255, 0.2) 48%, rgba(255, 255, 255, 0.04) 57%, rgba(255, 255, 255, 0) 68%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 214, 199, 0.46)),
-        rgba(255, 90, 61, 0.34);
+        radial-gradient(100% 130% at 16% 8%, rgba(206, 152, 255, 0.4), transparent 60%),
+        linear-gradient(145deg, rgba(182, 112, 255, 0.42) 0%, rgba(156, 89, 235, 0.28) 46%, rgba(91, 43, 153, 0.2) 100%),
+        rgba(156, 89, 235, 0.32);
     }
 
     .decision-start .decision-option:nth-child(3) {
-      border-color: rgba(21, 82, 49, 0.42);
+      --option-glow: rgba(104, 224, 150, 0.36);
+      --option-depth: rgba(10, 99, 49, 0.18);
+      --option-glass-edge: rgba(104, 224, 150, 0.2);
+      --option-sheen: rgba(104, 224, 150, 0.3);
+      --option-sheen-strong: rgba(67, 210, 126, 0.54);
+      border-color: rgba(20, 132, 72, 0.48);
       background:
-        radial-gradient(130% 90% at 20% -30%, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.18) 34%, rgba(255, 255, 255, 0) 60%),
-        linear-gradient(118deg, rgba(255, 255, 255, 0) 0 36%, rgba(255, 255, 255, 0.2) 48%, rgba(255, 255, 255, 0.04) 57%, rgba(255, 255, 255, 0) 68%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(211, 241, 220, 0.48)),
-        rgba(47, 143, 91, 0.34);
+        radial-gradient(100% 130% at 16% 8%, rgba(104, 224, 150, 0.4), transparent 60%),
+        linear-gradient(145deg, rgba(67, 210, 126, 0.42) 0%, rgba(37, 176, 98, 0.28) 46%, rgba(15, 111, 58, 0.2) 100%),
+        rgba(37, 176, 98, 0.32);
     }
 
     .decision-start .decision-option::after {
       display: none;
+    }
+
+    .decision-start .decision-option::before {
+      display: block;
+      background:
+        radial-gradient(80% 70% at 22% 8%, var(--option-glass-edge), transparent 62%),
+        linear-gradient(112deg, transparent 0 32%, var(--option-sheen) 42%, var(--option-sheen-strong) 50%, var(--option-sheen) 58%, transparent 70%);
+      background-size: 240% 100%;
+      background-position: 0 0, 145% 0;
+      opacity: 0.82;
     }
 
     .decision-start .decision-option span {
@@ -1416,15 +1437,15 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option:nth-child(1) span {
-      color: #1b5a91;
+      color: #075fba;
     }
 
     .decision-start .decision-option:nth-child(2) span {
-      color: #84200f;
+      color: #7334b8;
     }
 
     .decision-start .decision-option:nth-child(3) span {
-      color: #185b36;
+      color: #0f7a3e;
     }
 
     .decision-start .home-subtitle-rotator {
@@ -1634,15 +1655,15 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start-guide--map {
-      stroke: rgba(62, 142, 213, 0.72);
+      stroke: rgba(32, 137, 230, 0.82);
     }
 
     .decision-start-guide--craving {
-      stroke: rgba(255, 90, 61, 0.7);
+      stroke: rgba(156, 89, 235, 0.78);
     }
 
     .decision-start-guide--speed {
-      stroke: rgba(47, 143, 91, 0.72);
+      stroke: rgba(37, 176, 98, 0.82);
     }
 
     .decision-start .home-subtitle-rotator {
@@ -1673,8 +1694,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-cue {
-      --cue-rgb: 62, 142, 213;
-      --cue-line: rgba(30, 92, 150, 0.22);
+      --cue-rgb: 32, 137, 230;
+      --cue-line: rgba(18, 104, 190, 0.28);
       --cue-edge: 12%;
       position: relative;
       min-height: 0;
@@ -1709,13 +1730,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-cue--craving {
-      --cue-rgb: 255, 90, 61;
-      --cue-line: rgba(121, 29, 13, 0.21);
+      --cue-rgb: 156, 89, 235;
+      --cue-line: rgba(118, 60, 190, 0.28);
     }
 
     .decision-cue--speed {
-      --cue-rgb: 47, 143, 91;
-      --cue-line: rgba(21, 82, 49, 0.21);
+      --cue-rgb: 37, 176, 98;
+      --cue-line: rgba(20, 132, 72, 0.28);
     }
 
     .decision-cue > span:not(.decision-cue-arrow) {
