@@ -1102,6 +1102,32 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       padding: 20px 14px 15px;
     }
 
+    .home-subtitle-card::before,
+    .home-subtitle-card::after,
+    .decision-start::before,
+    .decision-start::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+    }
+
+    .home-subtitle-card::before {
+      inset: 1px auto auto 1px;
+      border-top: 2px solid rgba(255, 90, 61, 0.58);
+      border-left: 2px solid rgba(255, 90, 61, 0.58);
+      border-radius: 14px 0 0 0;
+    }
+
+    .home-subtitle-card::after {
+      inset: 1px 1px auto auto;
+      border-top: 2px solid rgba(255, 90, 61, 0.58);
+      border-right: 2px solid rgba(255, 90, 61, 0.58);
+      border-radius: 0 14px 0 0;
+    }
+
     .decision-preview {
       gap: 12px;
     }
@@ -1109,6 +1135,20 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-start {
       gap: 9px;
       padding: 14px;
+    }
+
+    .decision-start::before {
+      inset: auto auto 1px 1px;
+      border-bottom: 2px solid rgba(255, 90, 61, 0.58);
+      border-left: 2px solid rgba(255, 90, 61, 0.58);
+      border-radius: 0 0 0 14px;
+    }
+
+    .decision-start::after {
+      inset: auto 1px 1px auto;
+      border-right: 2px solid rgba(255, 90, 61, 0.58);
+      border-bottom: 2px solid rgba(255, 90, 61, 0.58);
+      border-radius: 0 0 14px 0;
     }
 
     .home-subtitle-rotator {
