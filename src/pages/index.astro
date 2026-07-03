@@ -52,14 +52,14 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
         <svg class="decision-start-guides" viewBox="0 0 340 170" preserveAspectRatio="none" aria-hidden="true">
           <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C104 10 82 19 66 34" />
-          <path class="decision-start-guide decision-start-guide--pantry" d="M61 132 C61 136 59 139 57 142" />
+          <path class="decision-start-guide decision-start-guide--tip-match-pantry" d="M57 132 L57 142" />
           <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C165 22 164 30 166 34" />
-          <path class="decision-start-guide decision-start-guide--craving" d="M171 132 C172 136 171 139 170 142" />
+          <path class="decision-start-guide decision-start-guide--tip-match-craving" d="M170 132 L170 142" />
           <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C236 10 258 19 274 34" />
-          <path class="decision-start-guide decision-start-guide--speed" d="M279 132 C279 136 281 139 283 142" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M57 142 L48 136 L53 152 Z" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 142 L162 134 L170 154 L178 134 Z" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M283 142 L292 136 L287 152 Z" />
+          <path class="decision-start-guide decision-start-guide--tip-match-speed" d="M283 132 L283 142" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M57 154 L48 140 L66 140 Z" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 154 L161 140 L179 140 Z" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M283 154 L274 140 L292 140 Z" />
         </svg>
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
@@ -1385,12 +1385,27 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       fill: rgba(126, 76, 0, 0.32);
     }
 
+    .decision-start-guide--tip-match-pantry {
+      opacity: 1;
+      stroke: rgba(126, 76, 0, 0.23);
+    }
+
     .decision-start-guide-tip--craving {
       fill: rgba(121, 29, 13, 0.3);
     }
 
+    .decision-start-guide--tip-match-craving {
+      opacity: 1;
+      stroke: rgba(121, 29, 13, 0.216);
+    }
+
     .decision-start-guide-tip--speed {
       fill: rgba(21, 82, 49, 0.3);
+    }
+
+    .decision-start-guide--tip-match-speed {
+      opacity: 1;
+      stroke: rgba(21, 82, 49, 0.216);
     }
 
     .decision-cues {
