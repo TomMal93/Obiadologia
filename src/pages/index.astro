@@ -61,21 +61,20 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
             <span class="decision-cue decision-cue--pantry">
-              <span>nie chcę zakupów</span>
-              <span>kilka składników</span>
-              <span>mam w domu</span>
+              <span>Prowadź mnie</span>
+              <span>co ugotować</span>
+              <span>inspiracja</span>
               <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--craving">
-              <span>bez listy dań</span>
-              <span>na jakiś klimat</span>
+              <span>Mam składnik</span>
+              <span>chcę znaleźć</span>
               <span>mam ochotę</span>
               <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--speed">
-              <span>bez planowania</span>
-              <span>chcę zjeść szybko</span>
-              <span>mam chwilę</span>
+              <span>konkretna okazja</span>
+              <span>gotowe sytuacje</span>
               <span class="decision-cue-arrow"></span>
             </span>
           </div>
@@ -1743,6 +1742,34 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       display: block;
       position: relative;
       z-index: 1;
+    }
+
+    .decision-cue > span:not(.decision-cue-arrow):nth-child(1) {
+      transform: translate(-7px, 2px) rotate(-8deg);
+    }
+
+    .decision-cue > span:not(.decision-cue-arrow):nth-child(2) {
+      transform: translate(7px, -2px) rotate(6deg);
+    }
+
+    .decision-cue > span:not(.decision-cue-arrow):nth-child(3) {
+      transform: translate(-3px, 1px) rotate(-5deg);
+    }
+
+    .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(1) {
+      transform: translate(6px, 1px) rotate(7deg);
+    }
+
+    .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(2) {
+      transform: translate(-7px, -2px) rotate(-6deg);
+    }
+
+    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(1) {
+      transform: translate(5px, 2px) rotate(-7deg);
+    }
+
+    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(2) {
+      transform: translate(-6px, -2px) rotate(6deg);
     }
 
     .decision-cue-arrow {
