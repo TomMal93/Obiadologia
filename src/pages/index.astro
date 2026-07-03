@@ -1217,12 +1217,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       --home-subtitle-card-min-height: 164px;
       align-self: stretch;
       grid-template-rows: auto minmax(0, 1fr);
+      margin: 22px auto 0;
       padding: 0;
       background: transparent;
       box-shadow: none;
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
-      gap: 66px;
+      gap: 38px;
       overflow: visible;
     }
 
@@ -1263,6 +1264,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       line-height: 1.28;
       text-align: center;
       text-wrap: balance;
+      transform: translateY(24px);
     }
 
     .home-subtitle-card::before,
