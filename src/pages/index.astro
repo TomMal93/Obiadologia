@@ -52,9 +52,27 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
-            <span>mam w domu</span>
-            <span>chce mi się</span>
-            <span>robię szybko</span>
+            <span class="decision-cue decision-cue--pantry">
+              <span class="decision-cue-shape"></span>
+              <span>nie chcę zakupów</span>
+              <span>kilka składników</span>
+              <span>mam w domu</span>
+              <span class="decision-cue-arrow">↓</span>
+            </span>
+            <span class="decision-cue decision-cue--craving">
+              <span class="decision-cue-shape"></span>
+              <span>bez listy dań</span>
+              <span>na jakiś klimat</span>
+              <span>mam ochotę</span>
+              <span class="decision-cue-arrow">↓</span>
+            </span>
+            <span class="decision-cue decision-cue--speed">
+              <span class="decision-cue-shape"></span>
+              <span>bez planowania</span>
+              <span>chcę zjeść szybko</span>
+              <span>mam chwilę</span>
+              <span class="decision-cue-arrow">↓</span>
+            </span>
           </div>
           <div class="decision-option-list">
             <button class="decision-option" type="button" data-open-decision="search">
@@ -953,20 +971,75 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 7px;
-    color: rgba(37, 26, 20, 0.62);
-    font-size: 12px;
-    font-weight: 850;
+    color: rgba(37, 26, 20, 0.58);
+    font-size: 11px;
+    font-weight: 780;
     line-height: 1.18;
     text-align: center;
   }
 
-  .decision-cues span {
+  .decision-cue {
+    position: relative;
     display: grid;
-    place-items: end center;
-    min-height: 30px;
-    padding: 0 4px 6px;
-    border-bottom: 2px solid rgba(255, 90, 61, 0.24);
+    align-content: end;
+    justify-items: center;
+    gap: 3px;
+    min-height: 88px;
+    padding: 0 7px 2px;
     text-wrap: balance;
+  }
+
+  .decision-cue > span:not(.decision-cue-shape) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .decision-cue-shape {
+    content: "";
+    position: absolute;
+    inset: 8px 0 17px;
+    background:
+      linear-gradient(180deg, rgba(255, 198, 58, 0.18), rgba(255, 198, 58, 0.045)),
+      rgba(255, 255, 255, 0.1);
+    clip-path: polygon(0 0, 100% 0, 64% 100%, 36% 100%);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .decision-cue > span:not(.decision-cue-arrow) {
+    display: block;
+  }
+
+  .decision-cue-arrow {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 18px;
+    margin-top: 1px;
+    color: rgba(126, 76, 0, 0.72);
+    font-size: 15px;
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  .decision-cue--craving .decision-cue-shape {
+    background:
+      linear-gradient(180deg, rgba(255, 90, 61, 0.16), rgba(255, 90, 61, 0.04)),
+      rgba(255, 255, 255, 0.08);
+  }
+
+  .decision-cue--craving .decision-cue-arrow {
+    color: rgba(121, 29, 13, 0.7);
+  }
+
+  .decision-cue--speed .decision-cue-shape {
+    background:
+      linear-gradient(180deg, rgba(47, 143, 91, 0.16), rgba(47, 143, 91, 0.04)),
+      rgba(255, 255, 255, 0.08);
+  }
+
+  .decision-cue--speed .decision-cue-arrow {
+    color: rgba(21, 82, 49, 0.72);
   }
 
   .decision-option-list {
@@ -1196,11 +1269,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       width: min(100%, 340px);
       margin-inline: auto;
       gap: 7px;
-      font-size: 12px;
+      font-size: 11px;
     }
 
-    .decision-cues span {
-      min-height: 32px;
+    .decision-cue {
+      min-height: 96px;
       padding-inline: 2px;
     }
 
@@ -1312,23 +1385,41 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       grid-template-columns: max-content 6.8ch;
       justify-content: center;
       align-items: baseline;
-      gap: 1px;
-      width: fit-content;
+      gap: 4px;
+      width: min(100%, 360px);
       margin-inline: auto;
+      padding: 11px 14px 12px;
+      border: 1px solid rgba(121, 29, 13, 0.32);
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 238, 230, 0.4)),
+        rgba(255, 90, 61, 0.16);
+      box-shadow:
+        0 16px 34px rgba(37, 26, 20, 0.13),
+        0 3px 7px rgba(37, 26, 20, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96),
+        inset 0 0 0 1px rgba(37, 26, 20, 0.055),
+        inset 0 -1px 0 rgba(37, 26, 20, 0.1);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
       white-space: nowrap;
     }
 
     .decision-start .home-subtitle-label {
       justify-self: end;
       text-align: right;
-      font-size: 16px;
+      color: rgba(37, 26, 20, 0.86);
+      font-size: 15px;
+      font-weight: 850;
     }
 
     .decision-start .home-subtitle-mode {
       justify-self: start;
       text-align: left;
       width: 6.8ch;
-      font-size: 16px;
+      color: #8f2b1a;
+      font-size: 15px;
+      font-weight: 950;
     }
 
     .decision-start .home-subtitle-mode > span {
