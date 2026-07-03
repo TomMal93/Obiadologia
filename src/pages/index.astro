@@ -35,15 +35,14 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     <div class="home-subtitle" data-decision-launcher aria-label="Szybki wybór obiadu">
       <div class="home-subtitle-card">
         <span class="home-subtitle-main">
-          <span style="display: block; margin-bottom: 6px;">Odwieczny problem z tym, co ugotować, nie musi już psuć apetytu.</span>
-          <span>Zdejmujemy z Ciebie ten ciężar, wyznaczając najkrótszą drogę<br />od burczenia w brzuchu do pełnego talerza.</span>
+          <span style="display: block;">Odwieczny problem z tym, co ugotować, nie musi już psuć Ci apetytu.</span>
         </span>
 
         <div class="decision-preview">
           <span class="home-subtitle-separator" aria-hidden="true"></span>
 
           <div class="decision-preview-copy">
-            <p>Podaj nam jakikolwiek punkt zaczepienia – smak, czas lub składnik – i pozwól nam dopasować idealny przepis.</p>
+            <p>Zdejmujemy z Ciebie ciężar decyzji, wyznaczając najkrótszą drogę od burczenia w brzuchu do pełnego talerza.</p>
           </div>
         </div>
 
@@ -69,7 +68,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <span class="home-subtitle-rotator">
           <span class="home-subtitle-label">Od razu dostajesz:</span>
           <span class="home-subtitle-mode" data-home-subtitle-mode>
-            <span data-home-subtitle-current>konkret.</span>
+            <span data-home-subtitle-current>konkret</span>
             <span data-home-subtitle-next aria-hidden="true"></span>
           </span>
         </span>
@@ -319,10 +318,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   const homeSubtitleCurrent = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-current]");
   const homeSubtitleNext = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-next]");
   const homeSubtitleModes = [
-    "konkret.",
-    "przepis.",
-    "pomysły.",
-    "decyzję."
+    "konkret",
+    "przepis",
+    "pomysły",
+    "decyzję"
   ];
   let touchStartY = 0;
   let touchStartX = 0;
@@ -1099,13 +1098,30 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .home-subtitle-card {
-      gap: 20px;
+      gap: 12px;
       padding: 20px 14px 15px;
+    }
+
+    .decision-preview {
+      gap: 12px;
     }
 
     .decision-start {
       gap: 9px;
       padding: 14px;
+    }
+
+    .home-subtitle-rotator {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .home-subtitle-label,
+    .home-subtitle-mode,
+    .home-subtitle-mode > span {
+      justify-self: center;
+      text-align: center;
     }
   }
 
