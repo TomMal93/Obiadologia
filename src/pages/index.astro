@@ -53,7 +53,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
         <span class="decision-start-guides" aria-hidden="true">
           <svg class="decision-start-guides-svg" viewBox="0 0 408 46" preserveAspectRatio="none" focusable="false">
-            <path class="decision-start-guide decision-start-guide--pantry" d="M176 2 C124 8 83 17 56 43" />
+            <path class="decision-start-guide decision-start-guide--map" d="M176 2 C124 8 83 17 56 43" />
             <path class="decision-start-guide decision-start-guide--craving" d="M204 1 C198 13 212 24 204 44" />
             <path class="decision-start-guide decision-start-guide--speed" d="M232 2 C284 7 326 18 352 43" />
           </svg>
@@ -80,14 +80,14 @@ const searchDocuments = recipes.map(({ id, data }) => ({
             </span>
           </div>
           <div class="decision-option-list">
-            <button class="decision-option" type="button" data-open-decision="search">
-              <span>Zapasy</span>
-            </button>
             <button class="decision-option" type="button" data-open-decision="map">
-              <span>Ochota</span>
+              <span>Mapa</span>
+            </button>
+            <button class="decision-option" type="button" data-open-decision="search">
+              <span>Szukaj</span>
             </button>
             <button class="decision-option" type="button" data-scroll-to-categories>
-              <span>Tempo</span>
+              <span>Kategorie</span>
             </button>
           </div>
 
@@ -1370,12 +1370,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option:nth-child(1) {
-      border-color: rgba(126, 76, 0, 0.48);
+      border-color: rgba(30, 92, 150, 0.44);
       background:
         radial-gradient(130% 90% at 20% -30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2) 34%, rgba(255, 255, 255, 0) 60%),
         linear-gradient(118deg, rgba(255, 255, 255, 0) 0 36%, rgba(255, 255, 255, 0.22) 48%, rgba(255, 255, 255, 0.04) 57%, rgba(255, 255, 255, 0) 68%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 238, 196, 0.46)),
-        rgba(255, 198, 58, 0.38);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(199, 226, 255, 0.48)),
+        rgba(62, 142, 213, 0.34);
     }
 
     .decision-start .decision-option:nth-child(2) {
@@ -1416,7 +1416,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start .decision-option:nth-child(1) span {
-      color: #6f3f00;
+      color: #1b5a91;
     }
 
     .decision-start .decision-option:nth-child(2) span {
@@ -1633,8 +1633,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       opacity: 0.62;
     }
 
-    .decision-start-guide--pantry {
-      stroke: rgba(255, 198, 58, 0.72);
+    .decision-start-guide--map {
+      stroke: rgba(62, 142, 213, 0.72);
     }
 
     .decision-start-guide--craving {
@@ -1673,8 +1673,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-cue {
-      --cue-rgb: 255, 198, 58;
-      --cue-line: rgba(126, 76, 0, 0.22);
+      --cue-rgb: 62, 142, 213;
+      --cue-line: rgba(30, 92, 150, 0.22);
       --cue-edge: 12%;
       position: relative;
       min-height: 0;
