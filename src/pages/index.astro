@@ -50,7 +50,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span class="decision-start-frame" aria-hidden="true"></span>
-        <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
+        <span>Wybierz najbliższą myśl:</span>
+        <span class="decision-start-helper">Nie wiem co ugotować, ale:</span>
         <span class="decision-start-guides" aria-hidden="true">
           <svg class="decision-start-guides-svg" viewBox="0 0 408 46" preserveAspectRatio="none" focusable="false">
             <path class="decision-start-guide decision-start-guide--map" d="M176 2 C124 8 83 17 56 43" />
@@ -1626,6 +1627,14 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       text-align: center;
       text-wrap: balance;
       transform: none;
+    }
+
+    .decision-start > span.decision-start-helper {
+      margin-top: -6px;
+      color: rgba(37, 26, 20, 0.58);
+      font-size: 15px;
+      font-weight: 650;
+      line-height: 1.12;
     }
 
     .decision-start-guides {
