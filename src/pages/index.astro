@@ -51,36 +51,25 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span class="decision-start-frame" aria-hidden="true"></span>
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
-        <svg class="decision-start-guides" viewBox="0 0 340 170" preserveAspectRatio="none" aria-hidden="true">
-          <path class="decision-start-guide decision-start-guide--pantry" d="M132 8 C104 10 82 19 66 34" />
-          <path class="decision-start-guide decision-start-guide--tip-match-pantry" d="M57 132 L57 142" />
-          <path class="decision-start-guide decision-start-guide--craving" d="M170 8 C165 22 164 30 166 34" />
-          <path class="decision-start-guide decision-start-guide--tip-match-craving" d="M170 132 L170 142" />
-          <path class="decision-start-guide decision-start-guide--speed" d="M208 8 C236 10 258 19 274 34" />
-          <path class="decision-start-guide decision-start-guide--tip-match-speed" d="M283 132 L283 142" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M57 154 L48 140 L66 140 Z" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 154 L161 140 L179 140 Z" />
-          <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M283 154 L274 140 L292 140 Z" />
-        </svg>
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
             <span class="decision-cue decision-cue--pantry">
-              <span class="decision-cue-shape"></span>
               <span>nie chcę zakupów</span>
               <span>kilka składników</span>
               <span>mam w domu</span>
+              <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--craving">
-              <span class="decision-cue-shape"></span>
               <span>bez listy dań</span>
               <span>na jakiś klimat</span>
               <span>mam ochotę</span>
+              <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--speed">
-              <span class="decision-cue-shape"></span>
               <span>bez planowania</span>
               <span>chcę zjeść szybko</span>
               <span>mam chwilę</span>
+              <span class="decision-cue-arrow"></span>
             </span>
           </div>
           <div class="decision-option-list">
@@ -976,10 +965,6 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     line-height: 1.22;
   }
 
-  .decision-start-guides {
-    display: none;
-  }
-
   .decision-start-frame {
     display: none;
   }
@@ -1008,61 +993,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     text-wrap: balance;
   }
 
-  .decision-cue > span:not(.decision-cue-shape) {
+  .decision-cue > span:not(.decision-cue-arrow) {
     position: relative;
     z-index: 1;
   }
 
-  .decision-cue-shape {
-    content: "";
-    position: absolute;
-    inset: 8px 0 0;
-    --decision-cue-edge: rgba(126, 76, 0, 0.2);
-    background:
-      linear-gradient(180deg, rgba(255, 198, 58, 0.18), rgba(255, 198, 58, 0.045)),
-      rgba(255, 255, 255, 0.1);
-    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-    opacity: 0.9;
-    pointer-events: none;
-  }
-
-  .decision-cue-shape::before,
-  .decision-cue-shape::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(180deg, transparent, var(--decision-cue-edge) 24%, var(--decision-cue-edge) 68%, transparent);
-    transform-origin: bottom center;
-  }
-
-  .decision-cue-shape::before {
-    left: 10%;
-    transform: rotate(-6deg);
-  }
-
-  .decision-cue-shape::after {
-    right: 10%;
-    transform: rotate(6deg);
-  }
-
   .decision-cue > span:not(.decision-cue-arrow) {
     display: block;
-  }
-
-  .decision-cue--craving .decision-cue-shape {
-    --decision-cue-edge: rgba(121, 29, 13, 0.2);
-    background:
-      linear-gradient(180deg, rgba(255, 90, 61, 0.16), rgba(255, 90, 61, 0.04)),
-      rgba(255, 255, 255, 0.08);
-  }
-
-  .decision-cue--speed .decision-cue-shape {
-    --decision-cue-edge: rgba(21, 82, 49, 0.2);
-    background:
-      linear-gradient(180deg, rgba(47, 143, 91, 0.16), rgba(47, 143, 91, 0.04)),
-      rgba(255, 255, 255, 0.08);
   }
 
   .decision-option-list {
@@ -1374,68 +1311,6 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       z-index: 2;
     }
 
-    .decision-start-guides {
-      display: block;
-      width: min(100%, 340px);
-      height: 170px;
-      margin: -9px auto -170px;
-      overflow: visible;
-      pointer-events: none;
-      position: relative;
-      z-index: 0;
-    }
-
-    .decision-start-guide {
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-width: 1.5;
-      opacity: 0.7;
-    }
-
-    .decision-start-guide-tip {
-      opacity: 0.72;
-    }
-
-    .decision-start-guide--pantry {
-      stroke: rgba(126, 76, 0, 0.34);
-    }
-
-    .decision-start-guide--craving {
-      stroke: rgba(121, 29, 13, 0.32);
-    }
-
-    .decision-start-guide--speed {
-      stroke: rgba(21, 82, 49, 0.32);
-    }
-
-    .decision-start-guide-tip--pantry {
-      fill: rgba(126, 76, 0, 0.32);
-    }
-
-    .decision-start-guide--tip-match-pantry {
-      opacity: 1;
-      stroke: rgba(126, 76, 0, 0.23);
-    }
-
-    .decision-start-guide-tip--craving {
-      fill: rgba(121, 29, 13, 0.3);
-    }
-
-    .decision-start-guide--tip-match-craving {
-      opacity: 1;
-      stroke: rgba(121, 29, 13, 0.216);
-    }
-
-    .decision-start-guide-tip--speed {
-      fill: rgba(21, 82, 49, 0.3);
-    }
-
-    .decision-start-guide--tip-match-speed {
-      opacity: 1;
-      stroke: rgba(21, 82, 49, 0.216);
-    }
-
     .decision-cues {
       position: relative;
       z-index: 1;
@@ -1629,6 +1504,318 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .home-subtitle-mode > span {
       justify-self: center;
       text-align: center;
+    }
+  }
+
+  @media (max-width: 699px) {
+    .home-subtitle {
+      grid-template-rows: auto auto;
+      align-content: center;
+    }
+
+    .decision-start {
+      isolation: isolate;
+      width: 100%;
+      max-width: 440px;
+      min-height: 0;
+      margin-inline: auto;
+      align-self: start;
+      padding: 13px 10px 14px;
+      display: grid;
+      grid-template-rows: auto auto auto;
+      gap: 13px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255, 200, 87, 0.18), transparent 42%),
+        linear-gradient(135deg, rgba(255, 253, 248, 0.5), rgba(255, 241, 219, 0.34));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.72),
+        inset 0 0 0 1px rgba(37, 26, 20, 0.035),
+        inset 0 -1px 0 rgba(37, 26, 20, 0.05),
+        0 12px 28px rgba(37, 26, 20, 0.07);
+      backdrop-filter: blur(14px) saturate(1.16);
+      -webkit-backdrop-filter: blur(14px) saturate(1.16);
+    }
+
+    .decision-start::before,
+    .decision-start::after {
+      width: 22px;
+      height: 22px;
+      border-color: rgba(255, 90, 61, 0.62);
+      border-width: 2px;
+    }
+
+    .decision-start::before {
+      inset: 0 auto auto 0;
+      border-top-style: solid;
+      border-left-style: solid;
+      border-bottom: 0;
+      border-right: 0;
+      border-radius: 14px 0 0 0;
+    }
+
+    .decision-start::after {
+      inset: 0 0 auto auto;
+      border-top-style: solid;
+      border-right-style: solid;
+      border-bottom: 0;
+      border-left: 0;
+      border-radius: 0 14px 0 0;
+    }
+
+    .decision-start-frame {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: block;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .decision-start-frame::before,
+    .decision-start-frame::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 22px;
+      height: 22px;
+      border-color: rgba(255, 90, 61, 0.62);
+      border-width: 2px;
+      pointer-events: none;
+    }
+
+    .decision-start-frame::before {
+      left: 0;
+      border-bottom-style: solid;
+      border-left-style: solid;
+      border-top: 0;
+      border-right: 0;
+      border-radius: 0 0 0 14px;
+    }
+
+    .decision-start-frame::after {
+      right: 0;
+      border-right-style: solid;
+      border-bottom-style: solid;
+      border-top: 0;
+      border-left: 0;
+      border-radius: 0 0 14px 0;
+    }
+
+    .decision-start > span:not(.decision-start-frame) {
+      margin: 0 auto;
+      max-width: 280px;
+      color: rgba(37, 26, 20, 0.76);
+      font-size: 17px;
+      font-weight: 950;
+      line-height: 1.08;
+      text-align: center;
+      text-wrap: balance;
+      transform: none;
+    }
+
+    .decision-start .home-subtitle-rotator {
+      width: 100%;
+      max-width: 408px;
+      margin: 0 auto;
+      padding: 0;
+      display: grid;
+      grid-template-rows: 142px 76px 51px;
+      gap: 10px;
+      align-items: stretch;
+      white-space: normal;
+    }
+
+    .decision-cues {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      font-size: 9.5px;
+      font-weight: 850;
+      line-height: 1.12;
+      text-align: center;
+      transform: none;
+    }
+
+    .decision-cue {
+      --cue-rgb: 255, 198, 58;
+      --cue-line: rgba(126, 76, 0, 0.22);
+      position: relative;
+      min-height: 0;
+      padding: 15px 4px 31px;
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      align-items: center;
+      justify-items: center;
+      gap: 2px;
+      color: rgba(37, 26, 20, 0.58);
+      text-wrap: balance;
+    }
+
+    .decision-cue::before {
+      content: "";
+      position: absolute;
+      inset: 6px 0 26px;
+      z-index: -1;
+      clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+      background:
+        linear-gradient(180deg, rgba(var(--cue-rgb), 0.18), rgba(var(--cue-rgb), 0.045)),
+        rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(var(--cue-rgb), 0.16);
+      opacity: 0.96;
+    }
+
+    .decision-cue::after {
+      content: "";
+      position: absolute;
+      inset: 8px 9% 27px;
+      z-index: -1;
+      border-inline: 1px solid var(--cue-line);
+      transform: perspective(80px) rotateX(0deg);
+      pointer-events: none;
+    }
+
+    .decision-cue--craving {
+      --cue-rgb: 255, 90, 61;
+      --cue-line: rgba(121, 29, 13, 0.21);
+    }
+
+    .decision-cue--speed {
+      --cue-rgb: 47, 143, 91;
+      --cue-line: rgba(21, 82, 49, 0.21);
+    }
+
+    .decision-cue > span:not(.decision-cue-arrow) {
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .decision-cue-arrow {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 20px;
+      height: 24px;
+      transform: translateX(-50%);
+    }
+
+    .decision-cue-arrow::before,
+    .decision-cue-arrow::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cue-line);
+    }
+
+    .decision-cue-arrow::before {
+      top: 0;
+      width: 2px;
+      height: 13px;
+      border-radius: 999px;
+    }
+
+    .decision-cue-arrow::after {
+      bottom: 0;
+      width: 0;
+      height: 0;
+      background: transparent;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 14px solid var(--cue-line);
+    }
+
+    .decision-start .decision-option-list {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .decision-start .decision-option {
+      min-height: 76px;
+      padding: 10px 6px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow:
+        0 14px 28px rgba(37, 26, 20, 0.15),
+        0 3px 7px rgba(37, 26, 20, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96),
+        inset 0 0 0 1px rgba(37, 26, 20, 0.07),
+        inset 0 -1px 0 rgba(37, 26, 20, 0.13);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    }
+
+    .decision-start .decision-option::after {
+      display: none;
+    }
+
+    .decision-start .decision-option span {
+      font-size: 15px;
+      font-weight: 950;
+      line-height: 1.1;
+    }
+
+    .decision-start .home-subtitle-rotator-copy {
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      padding: 11px 14px;
+      display: grid;
+      grid-template-columns: max-content 6.8ch;
+      justify-content: center;
+      align-items: baseline;
+      gap: 6px;
+      border: 1px solid rgba(121, 29, 13, 0.32);
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 238, 230, 0.4)),
+        rgba(255, 90, 61, 0.16);
+      box-shadow:
+        0 14px 28px rgba(37, 26, 20, 0.12),
+        0 3px 7px rgba(37, 26, 20, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96),
+        inset 0 0 0 1px rgba(37, 26, 20, 0.055),
+        inset 0 -1px 0 rgba(37, 26, 20, 0.1);
+      white-space: nowrap;
+    }
+
+    .decision-start .home-subtitle-label {
+      justify-self: end;
+      color: rgba(37, 26, 20, 0.86);
+      font-size: 15px;
+      font-weight: 850;
+      line-height: 1.1;
+      text-align: right;
+    }
+
+    .decision-start .home-subtitle-mode {
+      justify-self: start;
+      width: 6.8ch;
+      color: #8f2b1a;
+      font-size: 15px;
+      font-weight: 950;
+      line-height: 1.1;
+      text-align: left;
+    }
+
+    .decision-start .home-subtitle-mode > span {
+      text-align: left;
     }
   }
 
