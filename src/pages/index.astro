@@ -50,6 +50,14 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
+        <svg class="decision-start-guides" viewBox="0 0 340 58" preserveAspectRatio="none" aria-hidden="true">
+          <path class="decision-start-guide decision-start-guide--pantry" d="M128 3 C58 8 118 36 55 52" />
+          <path class="decision-start-guide decision-start-guide--craving" d="M170 3 C156 17 186 33 170 52" />
+          <path class="decision-start-guide decision-start-guide--speed" d="M212 3 C282 8 222 36 285 52" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--pantry" d="M55 52 L47 47 L51 57 Z" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--craving" d="M170 52 L162 47 L170 58 L178 47 Z" />
+          <path class="decision-start-guide-tip decision-start-guide-tip--speed" d="M285 52 L293 47 L289 57 Z" />
+        </svg>
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
             <span class="decision-cue decision-cue--pantry">
@@ -964,6 +972,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     line-height: 1.22;
   }
 
+  .decision-start-guides {
+    display: none;
+  }
+
   .decision-cues {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1278,8 +1290,8 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       display: flex;
       flex-direction: column;
       gap: 9px;
-      min-height: 280px;
-      height: 100%;
+      min-height: 238px;
+      height: auto;
       padding: 14px 14px 0;
     }
 
@@ -1288,6 +1300,57 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       line-height: 1.18;
       text-align: center;
       text-wrap: balance;
+      margin-top: auto;
+      transform: translateY(10px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .decision-start-guides {
+      display: block;
+      width: min(100%, 340px);
+      height: 54px;
+      margin: 2px auto -24px;
+      overflow: visible;
+      pointer-events: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .decision-start-guide {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.5;
+      opacity: 0.7;
+    }
+
+    .decision-start-guide-tip {
+      opacity: 0.72;
+    }
+
+    .decision-start-guide--pantry {
+      stroke: rgba(126, 76, 0, 0.34);
+    }
+
+    .decision-start-guide--craving {
+      stroke: rgba(121, 29, 13, 0.32);
+    }
+
+    .decision-start-guide--speed {
+      stroke: rgba(21, 82, 49, 0.32);
+    }
+
+    .decision-start-guide-tip--pantry {
+      fill: rgba(126, 76, 0, 0.32);
+    }
+
+    .decision-start-guide-tip--craving {
+      fill: rgba(121, 29, 13, 0.3);
+    }
+
+    .decision-start-guide-tip--speed {
+      fill: rgba(21, 82, 49, 0.3);
     }
 
     .decision-cues {
