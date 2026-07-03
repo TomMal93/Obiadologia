@@ -57,21 +57,18 @@ const searchDocuments = recipes.map(({ id, data }) => ({
               <span>nie chcę zakupów</span>
               <span>kilka składników</span>
               <span>mam w domu</span>
-              <span class="decision-cue-arrow">↓</span>
             </span>
             <span class="decision-cue decision-cue--craving">
               <span class="decision-cue-shape"></span>
               <span>bez listy dań</span>
               <span>na jakiś klimat</span>
               <span>mam ochotę</span>
-              <span class="decision-cue-arrow">↓</span>
             </span>
             <span class="decision-cue decision-cue--speed">
               <span class="decision-cue-shape"></span>
               <span>bez planowania</span>
               <span>chcę zjeść szybko</span>
               <span>mam chwilę</span>
-              <span class="decision-cue-arrow">↓</span>
             </span>
           </div>
           <div class="decision-option-list">
@@ -981,11 +978,13 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .decision-cue {
     position: relative;
     display: grid;
-    align-content: end;
+    grid-template-rows: repeat(3, 1fr);
+    align-items: center;
+    align-content: stretch;
     justify-items: center;
-    gap: 3px;
+    gap: 2px;
     min-height: 88px;
-    padding: 0 7px 2px;
+    padding: 14px 7px 0;
     text-wrap: balance;
   }
 
@@ -997,49 +996,53 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .decision-cue-shape {
     content: "";
     position: absolute;
-    inset: 2px 0 10px;
+    inset: 8px 0 0;
+    --decision-cue-edge: rgba(126, 76, 0, 0.2);
     background:
       linear-gradient(180deg, rgba(255, 198, 58, 0.18), rgba(255, 198, 58, 0.045)),
       rgba(255, 255, 255, 0.1);
-    clip-path: polygon(0 0, 100% 0, 82% 100%, 18% 100%);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
     opacity: 0.9;
     pointer-events: none;
+  }
+
+  .decision-cue-shape::before,
+  .decision-cue-shape::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--decision-cue-edge) 24%, var(--decision-cue-edge) 68%, transparent);
+    transform-origin: bottom center;
+  }
+
+  .decision-cue-shape::before {
+    left: 10%;
+    transform: rotate(-6deg);
+  }
+
+  .decision-cue-shape::after {
+    right: 10%;
+    transform: rotate(6deg);
   }
 
   .decision-cue > span:not(.decision-cue-arrow) {
     display: block;
   }
 
-  .decision-cue-arrow {
-    display: grid;
-    place-items: center;
-    width: 20px;
-    height: 18px;
-    margin-top: 1px;
-    color: rgba(126, 76, 0, 0.72);
-    font-size: 15px;
-    font-weight: 950;
-    line-height: 1;
-  }
-
   .decision-cue--craving .decision-cue-shape {
+    --decision-cue-edge: rgba(121, 29, 13, 0.2);
     background:
       linear-gradient(180deg, rgba(255, 90, 61, 0.16), rgba(255, 90, 61, 0.04)),
       rgba(255, 255, 255, 0.08);
   }
 
-  .decision-cue--craving .decision-cue-arrow {
-    color: rgba(121, 29, 13, 0.7);
-  }
-
   .decision-cue--speed .decision-cue-shape {
+    --decision-cue-edge: rgba(21, 82, 49, 0.2);
     background:
       linear-gradient(180deg, rgba(47, 143, 91, 0.16), rgba(47, 143, 91, 0.04)),
       rgba(255, 255, 255, 0.08);
-  }
-
-  .decision-cue--speed .decision-cue-arrow {
-    color: rgba(21, 82, 49, 0.72);
   }
 
   .decision-option-list {
