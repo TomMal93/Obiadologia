@@ -20,6 +20,65 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   equipment: data.equipment ?? [],
   diet: data.diet ?? []
 }));
+
+function getRecipeCountLabel(count: number) {
+  if (count === 1) return "1 przepis";
+  if (count > 1 && count < 5) return `${count} przepisy`;
+  return `${count} przepisów`;
+}
+
+const categoryTiles = [
+  {
+    title: "Gotowe w 15 minut",
+    label: "ratunek na szybko",
+    tag: "do 15 minut",
+    icon: "15",
+    tone: "fire"
+  },
+  {
+    title: "Tanie obiady",
+    label: "bez dużych zakupów",
+    tag: "tanie",
+    icon: "zł",
+    tone: "sun"
+  },
+  {
+    title: "Mało zmywania",
+    label: "mniej garów po obiedzie",
+    tag: "mało zmywania",
+    icon: "1",
+    tone: "leaf"
+  },
+  {
+    title: "Jednogarnkowe",
+    label: "wszystko w jednym",
+    tag: "jednogarnkowe",
+    icon: "gar",
+    tone: "blue"
+  },
+  {
+    title: "Na dwa dni",
+    label: "obiad plus lunch",
+    tag: "na dwa dni",
+    icon: "2",
+    tone: "tomato"
+  },
+  {
+    title: "Bez mięsa",
+    label: "warzywa grają pierwsze",
+    tag: "bez mięsa",
+    icon: "wege",
+    tone: "green"
+  }
+].map((category) => {
+  const count = recipes.filter((recipe) => recipe.data.tags.includes(category.tag)).length;
+  return {
+    ...category,
+    href: `/przepisy?tag=${encodeURIComponent(category.tag)}`,
+    count,
+    countLabel: getRecipeCountLabel(count)
+  };
+});
 ---
 
 <BaseLayout
@@ -307,30 +366,19 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     <div class="section-head">
       <h2>Wybierz według sytuacji</h2>
       <p>
-        Kategorie odpowiadają na realny dzień: mało czasu, mało składników, mało chęci albo obiad na dwa dni.
+        Najkrótsza droga do obiadu zaczyna się od tego, jaki masz dziś dzień.
       </p>
     </div>
 
     <div class="category-row">
-      <a class="category" href="/przepisy?tag=do%2015%20minut">
-        <strong>Gotowe w 15 minut</strong>
-        <span>ratunek na szybko</span>
-      </a>
-
-      <a class="category" href="/przepisy?tag=jednogarnkowe">
-        <strong>Jednogarnkowe</strong>
-        <span>mniej zmywania</span>
-      </a>
-
-      <a class="category" href="/przepisy?tag=na%20dwa%20dni">
-        <strong>Na dwa dni</strong>
-        <span>obiad plus lunch</span>
-      </a>
-
-      <a class="category" href="/przepisy?tag=tanie">
-        <strong>Tanie obiady</strong>
-        <span>bez dużych zakupów</span>
-      </a>
+      {categoryTiles.map((category) => (
+        <a class:list={["category", `category--${category.tone}`]} href={category.href}>
+          <span class="category-icon" aria-hidden="true">{category.icon}</span>
+          <strong>{category.title}</strong>
+          <span class="category-label">{category.label}</span>
+          <span class="category-count">{category.countLabel}</span>
+        </a>
+      ))}
     </div>
   </section>
 </BaseLayout>
@@ -2588,42 +2636,126 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
   .category-row {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(168px, 72%);
-    gap: 14px;
-    overflow-x: auto;
-    padding: 2px 18px 20px;
-    margin-inline: -18px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
-  .category-row::-webkit-scrollbar { display: none; }
-
   .category {
-    min-height: 146px;
-    padding: 18px;
-    border-radius: 24px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    box-shadow: 0 14px 38px rgba(37, 26, 20, 0.08);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    scroll-snap-align: start;
+    --category-rgb: 255, 90, 61;
+    position: relative;
+    isolation: isolate;
+    min-height: 158px;
+    min-width: 0;
+    padding: 13px;
+    display: grid;
+    grid-template-rows: 34px minmax(42px, auto) auto 1fr;
+    align-items: start;
+    gap: 7px;
+    overflow: hidden;
+    border: 1px solid rgba(var(--category-rgb), 0.18);
+    border-radius: 18px;
+    background:
+      radial-gradient(100% 70% at 18% 0%, rgba(var(--category-rgb), 0.17), transparent 58%),
+      linear-gradient(145deg, rgba(255, 253, 248, 0.72), rgba(255, 241, 219, 0.28)),
+      rgba(255, 253, 248, 0.52);
+    box-shadow:
+      0 14px 32px rgba(37, 26, 20, 0.075),
+      inset 0 1px 0 rgba(255, 255, 255, 0.66),
+      inset 0 -12px 20px rgba(var(--category-rgb), 0.045);
+    backdrop-filter: blur(14px) saturate(1.14);
+    -webkit-backdrop-filter: blur(14px) saturate(1.14);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
+  .category::before {
+    content: "";
+    position: absolute;
+    inset: auto -18px -34px auto;
+    z-index: -1;
+    width: 94px;
+    height: 94px;
+    border-radius: 999px;
+    background: rgba(var(--category-rgb), 0.12);
+  }
+
+  .category::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.22), transparent 34%),
+      linear-gradient(180deg, transparent 58%, rgba(37, 26, 20, 0.035));
+    pointer-events: none;
+  }
+
+  .category--sun {
+    --category-rgb: 255, 200, 87;
+  }
+
+  .category--leaf {
+    --category-rgb: 47, 143, 91;
+  }
+
+  .category--blue {
+    --category-rgb: 32, 137, 230;
+  }
+
+  .category--tomato {
+    --category-rgb: 214, 62, 37;
+  }
+
+  .category--green {
+    --category-rgb: 37, 176, 98;
+  }
+
+  .category-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(var(--category-rgb), 0.16);
+    color: rgb(var(--category-rgb));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.54),
+      0 8px 18px rgba(var(--category-rgb), 0.12);
+    font-size: 12px;
+    font-weight: 980;
+    line-height: 1;
+  }
+
   .category strong {
-    font-size: 21px;
-    letter-spacing: -0.045em;
+    display: block;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 980;
+    letter-spacing: -0.04em;
     line-height: 1.02;
   }
 
-  .category span {
+  .category-label {
+    display: block;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 850;
+    line-height: 1.2;
+  }
+
+  .category-count {
+    align-self: end;
+    justify-self: start;
+    min-height: 25px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.68);
+    border: 1px solid rgba(var(--category-rgb), 0.16);
+    color: rgba(37, 26, 20, 0.64);
+    font-size: 11px;
+    font-weight: 950;
+    white-space: nowrap;
   }
 
   @keyframes dotFloat {
@@ -2660,7 +2792,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .search-card p,
     .map-card p { max-width: 330px; }
 
-    .category-row { grid-auto-columns: 240px; }
+    .category-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
   }
 
   @media (min-width: 960px) {
@@ -2734,14 +2869,11 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .result-list { grid-template-columns: repeat(2, 1fr); }
 
     .category-row {
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-flow: initial;
-      grid-auto-columns: initial;
-      overflow: visible;
-      padding: 0;
-      margin: 0;
+      grid-template-columns: repeat(3, 1fr);
     }
 
-    .category { min-height: 150px; }
+    .category {
+      min-height: 172px;
+    }
   }
 </style>
