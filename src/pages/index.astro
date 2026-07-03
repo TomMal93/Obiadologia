@@ -50,28 +50,27 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span>Zacznij od tego, co najłatwiej Ci wskazać:</span>
-        <div class="decision-option-list">
-          <button class="decision-option" type="button" data-open-decision="search">
-            <span>Składnik</span>
-            <strong>co masz pod ręką</strong>
-          </button>
-          <button class="decision-option" type="button" data-open-decision="map">
-            <span>Smak</span>
-            <strong>na co masz ochotę</strong>
-          </button>
-          <button class="decision-option" type="button" data-scroll-to-categories>
-            <span>Czas lub sytuacja</span>
-            <strong>ile masz siły i minut</strong>
-          </button>
-        </div>
+        <div class="home-subtitle-rotator">
+          <div class="decision-option-list">
+            <button class="decision-option" type="button" data-open-decision="search">
+              <span>Zapasy</span>
+            </button>
+            <button class="decision-option" type="button" data-open-decision="map">
+              <span>Ochota</span>
+            </button>
+            <button class="decision-option" type="button" data-scroll-to-categories>
+              <span>Tempo</span>
+            </button>
+          </div>
 
-        <span class="home-subtitle-rotator">
-          <span class="home-subtitle-label">Od razu dostajesz:</span>
-          <span class="home-subtitle-mode" data-home-subtitle-mode>
-            <span data-home-subtitle-current>konkret</span>
-            <span data-home-subtitle-next aria-hidden="true"></span>
+          <span class="home-subtitle-rotator-copy">
+            <span class="home-subtitle-label">Od razu dostajesz:</span>
+            <span class="home-subtitle-mode" data-home-subtitle-mode>
+              <span data-home-subtitle-current>konkret</span>
+              <span data-home-subtitle-next aria-hidden="true"></span>
+            </span>
           </span>
-        </span>
+        </div>
       </div>
     </div>
   </section>
@@ -1147,14 +1146,115 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       padding: 14px 14px 0;
     }
 
+    .decision-start .decision-option-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .decision-start .decision-option {
+      min-height: 104px;
+      align-content: center;
+      justify-items: center;
+      overflow: hidden;
+      padding: 16px 7px;
+      border-radius: 16px;
+      border-width: 2px;
+      border-style: solid;
+      text-align: center;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.76),
+        inset 0 0 0 1px rgba(255, 253, 248, 0.44),
+        0 9px 18px rgba(37, 26, 20, 0.08);
+    }
+
+    .decision-start .decision-option:nth-child(3) {
+      grid-column: auto;
+      min-height: 104px;
+    }
+
+    .decision-start .decision-option:nth-child(1) {
+      border-color: rgba(126, 76, 0, 0.66);
+      background:
+        radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.72), transparent 28%),
+        linear-gradient(145deg, rgba(255, 200, 87, 0.92), rgba(255, 245, 211, 0.82));
+    }
+
+    .decision-start .decision-option:nth-child(2) {
+      border-color: rgba(121, 29, 13, 0.62);
+      background:
+        radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.7), transparent 28%),
+        linear-gradient(145deg, rgba(255, 90, 61, 0.86), rgba(255, 220, 207, 0.82));
+    }
+
+    .decision-start .decision-option:nth-child(3) {
+      border-color: rgba(21, 82, 49, 0.62);
+      background:
+        radial-gradient(circle at 16% 10%, rgba(255, 255, 255, 0.7), transparent 28%),
+        linear-gradient(145deg, rgba(47, 143, 91, 0.84), rgba(216, 241, 222, 0.82));
+    }
+
+    .decision-start .decision-option::before {
+      display: none;
+    }
+
+    .decision-start .decision-option::after {
+      display: none;
+    }
+
+    .decision-start .decision-option span {
+      display: grid;
+      place-items: center;
+      min-height: 36px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 253, 248, 0.7);
+      box-shadow:
+        inset 0 0 0 1px rgba(37, 26, 20, 0.07),
+        0 5px 10px rgba(37, 26, 20, 0.06);
+      color: #251a14;
+      font-size: 16px;
+      font-weight: 950;
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+    }
+
+    .decision-start .decision-option:nth-child(1) span {
+      color: #6f3f00;
+    }
+
+    .decision-start .decision-option:nth-child(2) span {
+      color: #84200f;
+    }
+
+    .decision-start .decision-option:nth-child(3) span {
+      color: #185b36;
+    }
+
     .decision-start .home-subtitle-rotator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      margin-top: auto;
+      padding-bottom: 15px;
+      width: 100%;
+      white-space: normal;
+    }
+
+    .decision-start .home-subtitle-rotator .decision-option-list {
+      width: 100%;
+      max-width: 360px;
+      margin-inline: auto;
+    }
+
+    .decision-start .home-subtitle-rotator-copy {
       display: grid;
       grid-template-columns: max-content 6.8ch;
       justify-content: center;
       align-items: baseline;
       gap: 1px;
-      margin-top: auto;
-      padding-bottom: 10px;
+      width: fit-content;
+      margin-inline: auto;
       white-space: nowrap;
     }
 
