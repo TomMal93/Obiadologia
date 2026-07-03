@@ -1027,6 +1027,20 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     transform: rotate(6deg);
   }
 
+  .decision-cue::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    width: 18px;
+    height: 10px;
+    background: linear-gradient(180deg, rgba(255, 198, 58, 0.08), rgba(255, 198, 58, 0.18));
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    opacity: 0.88;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
   .decision-cue > span:not(.decision-cue-arrow) {
     display: block;
   }
@@ -1038,11 +1052,19 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       rgba(255, 255, 255, 0.08);
   }
 
+  .decision-cue--craving::after {
+    background: linear-gradient(180deg, rgba(255, 90, 61, 0.08), rgba(255, 90, 61, 0.16));
+  }
+
   .decision-cue--speed .decision-cue-shape {
     --decision-cue-edge: rgba(21, 82, 49, 0.2);
     background:
       linear-gradient(180deg, rgba(47, 143, 91, 0.16), rgba(47, 143, 91, 0.04)),
       rgba(255, 255, 255, 0.08);
+  }
+
+  .decision-cue--speed::after {
+    background: linear-gradient(180deg, rgba(47, 143, 91, 0.08), rgba(47, 143, 91, 0.16));
   }
 
   .decision-option-list {
