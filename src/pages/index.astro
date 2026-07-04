@@ -73,7 +73,9 @@ const categoryModes = [
       { title: "Wszystkie", label: "pełna lista pomysłów", filter: { type: "all" }, icon: "all", tone: "fire" },
       { title: "Szybkie", label: "bez długiego stania", filter: { type: "tag", value: "do 30 minut" }, icon: "30", tone: "blue" },
       { title: "Tanie", label: "bez dużych zakupów", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
-      { title: "Mało zmywania", label: "mniej garów po wszystkim", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" }
+      { title: "Mało zmywania", label: "mniej garów po wszystkim", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" },
+      { title: "Bez zakupów", label: "z tego, co już masz", filter: { type: "tag", value: "bez zakupów" }, icon: "dom", tone: "green" },
+      { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "tomato" }
     ]
   },
   {
@@ -485,9 +487,7 @@ const categoryModes = [
             <div class="category-row">
               {mode.tiles.map((category) => (
                 <a class:list={["category", `category--${category.tone}`]} href={category.href}>
-                  <span class="category-icon" aria-hidden="true">{category.icon}</span>
                   <strong>{category.title}</strong>
-                  <span class="category-label">{category.label}</span>
                   <span class="category-count">{category.countLabel}</span>
                 </a>
               ))}
@@ -3022,13 +3022,13 @@ const categoryModes = [
     --category-rgb: 255, 90, 61;
     position: relative;
     isolation: isolate;
-    min-height: 158px;
+    min-height: 132px;
     min-width: 0;
     padding: 13px;
     display: grid;
-    grid-template-rows: 34px minmax(42px, auto) auto 1fr;
-    align-items: start;
+    place-items: center;
     gap: 7px;
+    text-align: center;
     overflow: hidden;
     border: 1px solid rgba(var(--category-rgb), 0.18);
     border-radius: 18px;
@@ -3109,6 +3109,7 @@ const categoryModes = [
 
   .category strong {
     display: block;
+    transform: translateY(-8px);
     color: var(--text);
     font-size: 18px;
     font-weight: 980;
@@ -3116,17 +3117,10 @@ const categoryModes = [
     line-height: 1.02;
   }
 
-  .category-label {
-    display: block;
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 850;
-    line-height: 1.2;
-  }
-
   .category-count {
-    align-self: end;
-    justify-self: start;
+    position: absolute;
+    inset: auto 13px 13px;
+    justify-self: center;
     min-height: 25px;
     display: inline-grid;
     place-items: center;
@@ -3395,8 +3389,7 @@ const categoryModes = [
     }
 
     .category-frame .category {
-      min-height: 124px;
-      grid-template-rows: 30px minmax(34px, auto) auto 1fr;
+      min-height: 108px;
       gap: 5px;
     }
 
@@ -3408,11 +3401,9 @@ const categoryModes = [
 
     .category-frame .category strong {
       font-size: 16px;
+      transform: translateY(-6px);
     }
 
-    .category-frame .category-label {
-      font-size: 11px;
-    }
   }
 
   @media (min-width: 960px) {
@@ -3490,7 +3481,7 @@ const categoryModes = [
     }
 
     .category {
-      min-height: 172px;
+      min-height: 146px;
     }
   }
 </style>
