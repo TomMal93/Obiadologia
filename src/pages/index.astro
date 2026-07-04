@@ -465,7 +465,13 @@ const categoryModes = [
       <div class="category-mode-summary" aria-live="polite">
         <span>Wybrano</span>
         <strong data-category-mode-title>{categoryModes[0].title}</strong>
-        <p>Teraz wybierz skrót, który najlepiej pasuje do Twojego obiadu.</p>
+      </div>
+
+      <div class="category-mode-action">
+        <svg class="category-mode-action-divider" viewBox="0 0 260 28" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M6 15 C48 2 84 26 126 14 C166 2 198 26 254 13" />
+        </svg>
+        <p>Teraz wybierz konkretny skrót do przepisów.</p>
       </div>
 
       <div class="category-panels">
@@ -2899,6 +2905,41 @@ const categoryModes = [
     text-wrap: balance;
   }
 
+  .category-mode-action {
+    margin: 10px auto 0;
+    max-width: 320px;
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    text-align: center;
+  }
+
+  .category-mode-action-divider {
+    display: block;
+    width: min(86%, 280px);
+    height: 9px;
+    overflow: visible;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.42));
+  }
+
+  .category-mode-action-divider path {
+    fill: none;
+    stroke: rgba(255, 90, 61, 0.48);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .category-mode-action p {
+    margin: 0;
+    color: rgba(37, 26, 20, 0.72);
+    font-size: clamp(16px, 4vw, 19px);
+    font-weight: 650;
+    line-height: 1.36;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
   .category-frame .category-mode-picker {
     margin: 0;
     padding: 0;
@@ -3164,6 +3205,10 @@ const categoryModes = [
       display: none;
     }
 
+    .category-mode-action {
+      display: none;
+    }
+
     .category-mode-intro {
       margin-bottom: 12px;
       font-size: 13px;
@@ -3324,12 +3369,30 @@ const categoryModes = [
         0 10px 18px rgba(37, 26, 20, 0.16);
     }
 
-    .category-mode-summary p {
-      display: none;
+    .category-mode-action {
+      order: 5;
+      grid-column: 1 / -1;
+      display: grid;
+      margin: 8px auto 0;
+      max-width: 310px;
+      gap: 8px;
+    }
+
+    .category-mode-action-divider {
+      width: min(82%, 240px);
+      height: 9px;
+    }
+
+    .category-mode-action p {
+      color: rgba(37, 26, 20, 0.72);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.36;
+      letter-spacing: 0;
     }
 
     .category-panels {
-      order: 5;
+      order: 6;
       grid-column: 1 / -1;
       margin-top: 6px;
     }
