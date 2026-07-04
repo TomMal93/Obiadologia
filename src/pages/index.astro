@@ -425,6 +425,12 @@ const categoryModes = [
     </div>
 
     <div class="category-frame category-frame--modes">
+      <div class="category-mode-summary" aria-live="polite">
+        <span>Wybrano</span>
+        <strong data-category-mode-title>{categoryModes[0].title}</strong>
+        <p data-category-mode-helper>{categoryModes[0].helper}</p>
+      </div>
+
       <div class="category-mode-picker" role="tablist" aria-label="Tryby sytuacji">
         {categoryModes.map((mode, index) => (
           <button
@@ -435,6 +441,8 @@ const categoryModes = [
             aria-selected={index === 0 ? "true" : "false"}
             aria-controls={`category-panel-${mode.id}`}
             data-category-mode={mode.id}
+            data-category-title={mode.title}
+            data-category-helper={mode.helper}
           >
             {mode.title}
           </button>
@@ -487,6 +495,8 @@ const categoryModes = [
   const homeSubtitleNext = homeSubtitleMode?.querySelector<HTMLElement>("[data-home-subtitle-next]");
   const categoryModeButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-category-mode]")];
   const categoryPanels = [...document.querySelectorAll<HTMLElement>("[data-category-panel]")];
+  const categoryModeTitle = document.querySelector<HTMLElement>("[data-category-mode-title]");
+  const categoryModeHelper = document.querySelector<HTMLElement>("[data-category-mode-helper]");
   const homeSubtitleModes = [
     "konkret",
     "przepis",
@@ -736,6 +746,9 @@ const categoryModes = [
   categoryModeButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const mode = button.dataset.categoryMode ?? "";
+
+      if (categoryModeTitle) categoryModeTitle.textContent = button.dataset.categoryTitle ?? button.textContent ?? "";
+      if (categoryModeHelper) categoryModeHelper.textContent = button.dataset.categoryHelper ?? "";
 
       categoryModeButtons.forEach((item) => {
         const isActive = item === button;
@@ -2809,13 +2822,50 @@ const categoryModes = [
   }
 
   .category-mode-picker {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
-    margin: 0 -18px 14px;
-    padding: 2px 18px 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .category-mode-summary {
+    margin: 0 0 10px;
+    padding: 12px 13px;
+    border-radius: 14px;
+    background:
+      linear-gradient(145deg, rgba(37, 26, 20, 0.95), rgba(68, 45, 32, 0.92)),
+      var(--text);
+    color: white;
+    box-shadow:
+      0 14px 30px rgba(37, 26, 20, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .category-mode-summary span {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .category-mode-summary strong {
+    display: block;
+    font-size: 20px;
+    font-weight: 980;
+    line-height: 1.05;
+  }
+
+  .category-mode-summary p {
+    margin: 6px 0 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12px;
+    font-weight: 760;
+    line-height: 1.25;
   }
 
   .category-frame .category-mode-picker {
@@ -2828,9 +2878,9 @@ const categoryModes = [
   }
 
   .category-mode {
-    flex: 0 0 auto;
-    min-height: 42px;
-    padding: 0 14px;
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 10px;
     display: inline-grid;
     place-items: center;
     border-radius: 999px;
@@ -2842,10 +2892,11 @@ const categoryModes = [
     box-shadow:
       0 8px 20px rgba(37, 26, 20, 0.045),
       inset 0 1px 0 rgba(255, 255, 255, 0.62);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 950;
+    line-height: 1.05;
+    text-align: center;
     white-space: nowrap;
-    scroll-snap-align: start;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
@@ -2854,8 +2905,12 @@ const categoryModes = [
     border-color: transparent;
     color: white;
     box-shadow:
-      0 14px 28px rgba(37, 26, 20, 0.16),
+      0 10px 22px rgba(37, 26, 20, 0.13),
       inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .category-mode:last-child {
+    grid-column: 1 / -1;
   }
 
   .category-mode:active {
@@ -2876,6 +2931,7 @@ const categoryModes = [
   }
 
   .category-panel-helper {
+    display: none;
     margin: 0 0 12px;
     max-width: 330px;
     color: rgba(37, 26, 20, 0.58);
@@ -3059,12 +3115,41 @@ const categoryModes = [
     .map-card p { max-width: 330px; }
 
     .category-mode-picker {
+      display: flex;
+      gap: 8px;
       margin-inline: 0;
       padding-inline: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
       justify-content: center;
     }
 
+    .category-mode-summary {
+      display: none;
+    }
+
+    .category-mode {
+      flex: 0 0 auto;
+      min-height: 42px;
+      padding: 0 14px;
+      font-size: 13px;
+      scroll-snap-align: start;
+    }
+
+    .category-mode.is-active {
+      grid-column: auto;
+      min-height: 42px;
+      padding-inline: 14px;
+      font-size: 13px;
+    }
+
+    .category-mode:last-child {
+      grid-column: auto;
+    }
+
     .category-panel-helper {
+      display: block;
       margin-inline: auto;
       text-align: center;
     }
