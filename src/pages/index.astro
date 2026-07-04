@@ -3266,6 +3266,12 @@ const categoryModes = [
     }
 
     .category-mode-summary {
+      --option-top: rgba(255, 216, 196, 0.46);
+      --option-lift: rgba(255, 90, 61, 0.22);
+      --option-depth: rgba(214, 62, 37, 0.14);
+      --option-glass-edge: rgba(255, 146, 112, 0.26);
+      --option-text: #9a4a35;
+      --option-text-shadow: rgba(255, 246, 239, 0.72);
       grid-column: 2 / 4;
       grid-row: 3 / 5;
       min-width: 0;
@@ -3274,23 +3280,48 @@ const categoryModes = [
       padding: 9px 10px;
       display: grid;
       place-content: center;
+      gap: 5px;
+      border: 1px solid rgba(255, 90, 61, 0.34);
       border-radius: 18px;
       background:
-        radial-gradient(120% 90% at 50% -45%, rgba(255, 90, 61, 0.22), transparent 58%),
-        linear-gradient(145deg, rgba(255, 253, 248, 0.9), rgba(255, 241, 219, 0.48));
+        radial-gradient(120% 95% at 18% 0%, rgba(255, 225, 207, 0.54), transparent 50%),
+        linear-gradient(160deg, rgba(255, 164, 128, 0.38) 0%, rgba(255, 112, 82, 0.26) 48%, rgba(214, 62, 37, 0.17) 100%),
+        rgba(255, 186, 151, 0.22);
+      box-shadow:
+        0 18px 30px rgba(37, 26, 20, 0.17),
+        0 6px 12px rgba(37, 26, 20, 0.12),
+        0 2px 0 var(--option-lift),
+        inset 0 1px 0 var(--option-top),
+        inset 0 0 0 1px var(--option-glass-edge),
+        inset 0 -14px 20px var(--option-depth);
+      backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
+      -webkit-backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
     }
 
     .category-mode-summary span {
-      margin-bottom: 5px;
-      font-size: 9px;
+      margin: 0;
+      color: rgba(154, 74, 53, 0.72);
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0;
+      text-shadow: 0 1px 0 var(--option-text-shadow);
+      text-transform: none;
     }
 
     .category-mode-summary strong {
       min-width: 0;
-      font-size: clamp(15px, 4.2vw, 18px);
+      color: var(--option-text);
+      font-size: clamp(16px, 4.35vw, 18px);
+      font-weight: 980;
+      line-height: 1;
+      letter-spacing: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-shadow:
+        0 1px 0 var(--option-text-shadow),
+        0 10px 18px rgba(37, 26, 20, 0.16);
     }
 
     .category-mode-summary p {
