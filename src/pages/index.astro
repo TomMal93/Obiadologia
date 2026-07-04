@@ -424,45 +424,49 @@ const categoryModes = [
       </p>
     </div>
 
-    <div class="category-mode-picker" role="tablist" aria-label="Tryby sytuacji">
-      {categoryModes.map((mode, index) => (
-        <button
-          class:list={["category-mode", { "is-active": index === 0 }]}
-          type="button"
-          role="tab"
-          id={`category-mode-${mode.id}`}
-          aria-selected={index === 0 ? "true" : "false"}
-          aria-controls={`category-panel-${mode.id}`}
-          data-category-mode={mode.id}
-        >
-          {mode.title}
-        </button>
-      ))}
+    <div class="category-frame category-frame--modes">
+      <div class="category-mode-picker" role="tablist" aria-label="Tryby sytuacji">
+        {categoryModes.map((mode, index) => (
+          <button
+            class:list={["category-mode", { "is-active": index === 0 }]}
+            type="button"
+            role="tab"
+            id={`category-mode-${mode.id}`}
+            aria-selected={index === 0 ? "true" : "false"}
+            aria-controls={`category-panel-${mode.id}`}
+            data-category-mode={mode.id}
+          >
+            {mode.title}
+          </button>
+        ))}
+      </div>
     </div>
 
-    <div class="category-panels">
-      {categoryModes.map((mode, index) => (
-        <div
-          class:list={["category-panel", { "is-active": index === 0 }]}
-          id={`category-panel-${mode.id}`}
-          role="tabpanel"
-          aria-labelledby={`category-mode-${mode.id}`}
-          data-category-panel={mode.id}
-          hidden={index !== 0}
-        >
-          <p class="category-panel-helper">{mode.helper}</p>
-          <div class="category-row">
-            {mode.tiles.map((category) => (
-              <a class:list={["category", `category--${category.tone}`]} href={category.href}>
-                <span class="category-icon" aria-hidden="true">{category.icon}</span>
-                <strong>{category.title}</strong>
-                <span class="category-label">{category.label}</span>
-                <span class="category-count">{category.countLabel}</span>
-              </a>
-            ))}
+    <div class="category-frame category-frame--panels">
+      <div class="category-panels">
+        {categoryModes.map((mode, index) => (
+          <div
+            class:list={["category-panel", { "is-active": index === 0 }]}
+            id={`category-panel-${mode.id}`}
+            role="tabpanel"
+            aria-labelledby={`category-mode-${mode.id}`}
+            data-category-panel={mode.id}
+            hidden={index !== 0}
+          >
+            <p class="category-panel-helper">{mode.helper}</p>
+            <div class="category-row">
+              {mode.tiles.map((category) => (
+                <a class:list={["category", `category--${category.tone}`]} href={category.href}>
+                  <span class="category-icon" aria-hidden="true">{category.icon}</span>
+                  <strong>{category.title}</strong>
+                  <span class="category-label">{category.label}</span>
+                  <span class="category-count">{category.countLabel}</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -804,6 +808,67 @@ const categoryModes = [
 
   .section.screen-section {
     margin-top: 0;
+  }
+
+  [data-categories-section].screen-section {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-block: var(--home-title-offset) clamp(24px, 5vh, 52px);
+  }
+
+  [data-categories-section] .section-head {
+    text-align: center;
+  }
+
+  .category-frame {
+    position: relative;
+    width: min(100%, 760px);
+    padding: clamp(18px, 4vw, 26px);
+    border: 0;
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(255, 200, 87, 0.14), transparent 38%),
+      linear-gradient(135deg, rgba(255, 253, 248, 0.42), rgba(255, 241, 219, 0.28));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      inset 0 0 0 1px rgba(37, 26, 20, 0.025),
+      inset 0 -1px 0 rgba(37, 26, 20, 0.04),
+      0 10px 26px rgba(37, 26, 20, 0.055);
+    backdrop-filter: blur(14px) saturate(1.16);
+    -webkit-backdrop-filter: blur(14px) saturate(1.16);
+  }
+
+  .category-frame--modes {
+    margin: clamp(20px, 4.5vh, 46px) auto 0;
+    padding: 10px;
+  }
+
+  .category-frame--panels {
+    margin: 14px auto 0;
+  }
+
+  .category-frame::before,
+  .category-frame::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 26px;
+    height: 26px;
+    border-top: 3px solid rgba(255, 90, 61, 0.58);
+    border-left: 3px solid rgba(255, 90, 61, 0.58);
+    border-radius: 14px 0 0 0;
+    pointer-events: none;
+  }
+
+  .category-frame::before {
+    inset: 1px auto auto 1px;
+  }
+
+  .category-frame::after {
+    inset: auto 1px 1px auto;
+    transform: rotate(180deg);
   }
 
   .home-decision.screen-section {
@@ -2753,6 +2818,11 @@ const categoryModes = [
     scroll-snap-type: x proximity;
   }
 
+  .category-frame .category-mode-picker {
+    margin: 0;
+    padding: 0;
+  }
+
   .category-mode-picker::-webkit-scrollbar {
     display: none;
   }
@@ -3002,6 +3072,28 @@ const categoryModes = [
     .category-row {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
+    }
+  }
+
+  @media (max-width: 699px) {
+    .category-frame .category {
+      min-height: 124px;
+      grid-template-rows: 30px minmax(34px, auto) auto 1fr;
+      gap: 5px;
+    }
+
+    .category-frame .category-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+    }
+
+    .category-frame .category strong {
+      font-size: 16px;
+    }
+
+    .category-frame .category-label {
+      font-size: 11px;
     }
   }
 
