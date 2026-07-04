@@ -425,11 +425,7 @@ const categoryModes = [
     </div>
 
     <div class="category-frame category-frame--modes">
-      <div class="category-mode-summary" aria-live="polite">
-        <span>Wybrano</span>
-        <strong data-category-mode-title>{categoryModes[0].title}</strong>
-        <p data-category-mode-helper>{categoryModes[0].helper}</p>
-      </div>
+      <p class="category-mode-intro">Zacznij od sytuacji. Każdy tryb podmienia zestaw skrótów poniżej.</p>
 
       <div class="category-mode-picker" role="tablist" aria-label="Tryby sytuacji">
         {categoryModes.map((mode, index) => (
@@ -451,6 +447,12 @@ const categoryModes = [
     </div>
 
     <div class="category-frame category-frame--panels">
+      <div class="category-mode-summary" aria-live="polite">
+        <span>Wybrano</span>
+        <strong data-category-mode-title>{categoryModes[0].title}</strong>
+        <p data-category-mode-helper>{categoryModes[0].helper}</p>
+      </div>
+
       <div class="category-panels">
         {categoryModes.map((mode, index) => (
           <div
@@ -856,10 +858,17 @@ const categoryModes = [
   .category-frame--modes {
     margin: clamp(20px, 4.5vh, 46px) auto 0;
     padding: 10px;
+    border-radius: 14px 14px 0 0;
   }
 
   .category-frame--panels {
-    margin: 14px auto 0;
+    margin: 0 auto;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .category-frame--modes::after,
+  .category-frame--panels::before {
+    display: none;
   }
 
   .category-frame::before,
@@ -2823,15 +2832,27 @@ const categoryModes = [
 
   .category-mode-picker {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     width: 100%;
     margin: 0;
     padding: 0;
+    justify-self: center;
+  }
+
+  .category-mode-intro {
+    margin: 0 4px 12px;
+    color: rgba(37, 26, 20, 0.72);
+    font-size: clamp(16px, 4vw, 19px);
+    font-weight: 650;
+    line-height: 1.36;
+    letter-spacing: 0;
+    text-align: center;
+    text-wrap: balance;
   }
 
   .category-mode-summary {
-    margin: 0 0 10px;
+    margin: 0 0 14px;
     padding: 12px 13px;
     border-radius: 14px;
     background:
@@ -2907,10 +2928,6 @@ const categoryModes = [
     box-shadow:
       0 10px 22px rgba(37, 26, 20, 0.13),
       inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  }
-
-  .category-mode:last-child {
-    grid-column: 1 / -1;
   }
 
   .category-mode:active {
@@ -3117,6 +3134,7 @@ const categoryModes = [
     .category-mode-picker {
       display: flex;
       gap: 8px;
+      width: 100%;
       margin-inline: 0;
       padding-inline: 0;
       overflow-x: auto;
@@ -3127,6 +3145,11 @@ const categoryModes = [
 
     .category-mode-summary {
       display: none;
+    }
+
+    .category-mode-intro {
+      margin-bottom: 12px;
+      font-size: 13px;
     }
 
     .category-mode {
@@ -3142,10 +3165,6 @@ const categoryModes = [
       min-height: 42px;
       padding-inline: 14px;
       font-size: 13px;
-    }
-
-    .category-mode:last-child {
-      grid-column: auto;
     }
 
     .category-panel-helper {
