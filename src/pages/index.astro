@@ -64,6 +64,29 @@ function getCategoryHref(category: CategoryTile) {
   return `/przepisy?${param}=${encodeURIComponent(category.filter.value)}`;
 }
 
+const categoryIconPaths: Record<string, string> = {
+  all: '<rect x="4" y="4" width="6" height="6" rx="1.5" /><rect x="14" y="4" width="6" height="6" rx="1.5" /><rect x="4" y="14" width="6" height="6" rx="1.5" /><rect x="14" y="14" width="6" height="6" rx="1.5" />',
+  "30": '<circle cx="12" cy="12" r="8" /><path d="M12 7v5l3 2" />',
+  "15": '<circle cx="12" cy="12" r="8" /><path d="M12 8v4" /><path d="M9.5 14.5h5" />',
+  "zł": '<circle cx="12" cy="12" r="8" /><path d="M9 9h6l-6 6h6" /><path d="M15 7l-6 10" />',
+  "1": '<path d="M7 9h10" /><path d="M8 9l1 9h6l1-9" /><path d="M10 6c.8-1.2 3.2-1.2 4 0" />',
+  dom: '<path d="M4 11.5 12 5l8 6.5" /><path d="M7 10.5V19h10v-8.5" /><path d="M10 19v-5h4v5" />',
+  mix: '<path d="M7 7h3a4 4 0 0 1 4 4v5" /><path d="m11 13 3 3 3-3" /><path d="M17 7h-2.5A4.5 4.5 0 0 0 10 11.5V17" /><path d="m13 14-3 3-3-3" />',
+  egg: '<path d="M17 14c0 4-2.4 6-5 6s-5-2-5-6c0-3.3 2.1-9 5-9s5 5.7 5 9Z" />',
+  chleb: '<path d="M5 11c0-3 2.5-5 7-5s7 2 7 5v7H5z" /><path d="M8 11h.01" /><path d="M12 10h.01" /><path d="M16 11h.01" />',
+  ser: '<path d="m5 11 8-5 6 5v7H5z" /><path d="M9 14h.01" /><path d="M14 12h.01" /><path d="M16 16h.01" />',
+  gar: '<path d="M6 10h12" /><path d="M8 10v7a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-7" /><path d="M9 7h6" /><path d="M4 13h2" /><path d="M18 13h2" />',
+  wege: '<path d="M19 5c-7 0-12 4-12 10 0 2.2 1.8 4 4 4 6 0 8-7 8-14Z" /><path d="M7 19c2.5-5 6-8 10-10" />',
+  "ryż": '<path d="M5 11h14l-1.2 5.8A4 4 0 0 1 13.9 20h-3.8a4 4 0 0 1-3.9-3.2z" /><path d="M8 8c1-1 2-1 3 0" /><path d="M13 8c1-1 2-1 3 0" />',
+  "2": '<rect x="5" y="6" width="14" height="12" rx="2" /><path d="M5 11h14" /><path d="M12 6v12" />',
+  share: '<circle cx="8" cy="12" r="2.5" /><circle cx="16" cy="7" r="2.5" /><circle cx="16" cy="17" r="2.5" /><path d="m10.2 10.8 3.6-2.4" /><path d="m10.2 13.2 3.6 2.4" />'
+};
+
+function getCategoryIcon(icon: string) {
+  const path = categoryIconPaths[icon] ?? categoryIconPaths.all;
+  return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${path}</svg>`;
+}
+
 const categoryModes = [
   {
     id: "daily",
@@ -487,6 +510,7 @@ const categoryModes = [
             <div class="category-row">
               {mode.tiles.map((category) => (
                 <a class:list={["category", `category--${category.tone}`]} href={category.href}>
+                  <span class="category-icon" aria-hidden="true" set:html={getCategoryIcon(category.icon)} />
                   <strong>{category.title}</strong>
                   <span class="category-count">{category.countLabel}</span>
                 </a>
@@ -3030,17 +3054,17 @@ const categoryModes = [
     --category-text-shadow: rgba(255, 246, 239, 0.72);
     position: relative;
     isolation: isolate;
-    min-height: 118px;
+    min-height: 128px;
     min-width: 0;
-    padding: 14px 10px 12px;
+    padding: 13px 10px 12px;
     display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
     align-content: stretch;
     place-items: center;
     gap: 8px;
     text-align: center;
     overflow: hidden;
-    border: 1px solid rgba(var(--category-rgb), 0.18);
+    border: 1.5px solid rgba(var(--category-rgb), 0.28);
     border-radius: 13px;
     background:
       radial-gradient(120% 95% at 18% 0%, rgba(var(--category-rgb), 0.12), transparent 50%),
@@ -3050,6 +3074,7 @@ const categoryModes = [
       0 12px 22px rgba(37, 26, 20, 0.07),
       0 2px 6px rgba(37, 26, 20, 0.045),
       0 1px 0 var(--category-lift),
+      0 0 0 1px rgba(255, 255, 255, 0.42),
       inset 0 1px 0 var(--category-top),
       inset 0 0 0 1px var(--category-glass-edge),
       inset 0 -12px 18px var(--category-depth);
@@ -3082,12 +3107,12 @@ const categoryModes = [
   .category::after {
     content: "";
     position: absolute;
-    inset: auto 10px 9px;
+    inset: auto 10px 8px;
     z-index: 0;
-    height: 1px;
+    height: 2px;
     background:
-      linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
-    opacity: 0.34;
+      linear-gradient(90deg, transparent, rgba(var(--category-rgb), 0.24), rgba(255, 255, 255, 0.64), rgba(var(--category-rgb), 0.18), transparent);
+    opacity: 0.68;
     pointer-events: none;
   }
 
@@ -3137,26 +3162,32 @@ const categoryModes = [
   }
 
   .category-icon {
-    width: 34px;
-    height: 34px;
+    position: relative;
+    z-index: 1;
+    width: 27px;
+    height: 27px;
     display: grid;
     place-items: center;
-    border-radius: 12px;
-    background: rgba(var(--category-rgb), 0.16);
-    color: rgb(var(--category-rgb));
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.54),
-      0 8px 18px rgba(var(--category-rgb), 0.12);
-    font-size: 12px;
-    font-weight: 980;
-    line-height: 1;
+    color: var(--category-text);
+    filter: drop-shadow(0 1px 0 rgba(255, 253, 248, 0.72));
+  }
+
+  .category-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.15;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .category strong {
     position: relative;
     z-index: 1;
     display: block;
-    align-self: end;
+    align-self: center;
     max-width: 10ch;
     color: rgba(37, 26, 20, 0.84);
     font-size: clamp(16px, 4vw, 19px);
@@ -3192,13 +3223,14 @@ const categoryModes = [
 
   .category:hover,
   .category:focus-visible {
-    border-color: rgba(var(--category-rgb), 0.26);
+    border-color: rgba(var(--category-rgb), 0.42);
     filter: saturate(1.02);
     transform: translateY(-2px);
     box-shadow:
       0 16px 28px rgba(37, 26, 20, 0.09),
       0 4px 8px rgba(37, 26, 20, 0.06),
       0 2px 0 var(--category-lift),
+      0 0 0 1px rgba(255, 255, 255, 0.5),
       inset 0 1px 0 var(--category-top),
       inset 0 0 0 1px var(--category-glass-edge),
       inset 0 -12px 18px var(--category-depth);
