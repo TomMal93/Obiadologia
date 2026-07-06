@@ -3001,9 +3001,11 @@ const categoryModes = [
 
   .category-panels {
     --category-panels-bg-top: -102px;
+    --category-panels-min-height: auto;
     position: relative;
     isolation: isolate;
     display: grid;
+    min-height: var(--category-panels-min-height);
     margin-top: 14px;
   }
 
@@ -3252,12 +3254,10 @@ const categoryModes = [
   @keyframes categoryPanelIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
     }
 
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 
@@ -3490,9 +3490,14 @@ const categoryModes = [
 
     .category-panels {
       --category-panels-bg-top: -96px;
+      --category-panels-min-height: 368px;
       order: 6;
       grid-column: 1 / -1;
       margin-top: 6px;
+    }
+
+    .category-panel {
+      min-height: 368px;
     }
 
     .category-frame .category {
