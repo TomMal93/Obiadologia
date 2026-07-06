@@ -1,0 +1,973 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  recipes: CollectionEntry<"recipes">[];
+}
+
+type CategoryFilter =
+  | { type: "all" }
+  | { type: "query" | "tag"; value: string };
+
+type CategoryTone = "blue" | "fire" | "green" | "leaf" | "sun" | "tomato";
+
+interface CategoryTileConfig {
+  title: string;
+  label: string;
+  icon: string;
+  tone: CategoryTone;
+  filter: CategoryFilter;
+}
+
+interface CategoryModeConfig {
+  id: string;
+  title: string;
+  helper: string;
+  tiles: CategoryTileConfig[];
+}
+
+interface CategoryTile extends CategoryTileConfig {
+  href: string;
+  countLabel: string;
+}
+
+interface CategoryMode extends Omit<CategoryModeConfig, "tiles"> {
+  tiles: CategoryTile[];
+}
+
+const { recipes } = Astro.props;
+
+const placeholderModes = [
+  { title: "Lunch", mobileSlot: "lunch" },
+  { title: "Kolacja", mobileSlot: "dinner" },
+  { title: "Plan", mobileSlot: "plan" }
+] as const;
+
+const categoryIconPaths: Record<string, string> = {
+  all: '<rect x="4" y="4" width="6" height="6" rx="1.5" /><rect x="14" y="4" width="6" height="6" rx="1.5" /><rect x="4" y="14" width="6" height="6" rx="1.5" /><rect x="14" y="14" width="6" height="6" rx="1.5" />',
+  "30": '<circle cx="12" cy="12" r="8" /><path d="M12 7v5l3 2" />',
+  "15": '<circle cx="12" cy="12" r="8" /><path d="M12 8v4" /><path d="M9.5 14.5h5" />',
+  "zł": '<circle cx="12" cy="12" r="8" /><path d="M9 9h6l-6 6h6" /><path d="M15 7l-6 10" />',
+  "1": '<path d="M7 9h10" /><path d="M8 9l1 9h6l1-9" /><path d="M10 6c.8-1.2 3.2-1.2 4 0" />',
+  dom: '<path d="M4 11.5 12 5l8 6.5" /><path d="M7 10.5V19h10v-8.5" /><path d="M10 19v-5h4v5" />',
+  mix: '<path d="M7 7h3a4 4 0 0 1 4 4v5" /><path d="m11 13 3 3 3-3" /><path d="M17 7h-2.5A4.5 4.5 0 0 0 10 11.5V17" /><path d="m13 14-3 3-3-3" />',
+  egg: '<path d="M17 14c0 4-2.4 6-5 6s-5-2-5-6c0-3.3 2.1-9 5-9s5 5.7 5 9Z" />',
+  chleb: '<path d="M5 11c0-3 2.5-5 7-5s7 2 7 5v7H5z" /><path d="M8 11h.01" /><path d="M12 10h.01" /><path d="M16 11h.01" />',
+  ser: '<path d="m5 11 8-5 6 5v7H5z" /><path d="M9 14h.01" /><path d="M14 12h.01" /><path d="M16 16h.01" />',
+  gar: '<path d="M6 10h12" /><path d="M8 10v7a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-7" /><path d="M9 7h6" /><path d="M4 13h2" /><path d="M18 13h2" />',
+  wege: '<path d="M19 5c-7 0-12 4-12 10 0 2.2 1.8 4 4 4 6 0 8-7 8-14Z" /><path d="M7 19c2.5-5 6-8 10-10" />',
+  "ryż": '<path d="M5 11h14l-1.2 5.8A4 4 0 0 1 13.9 20h-3.8a4 4 0 0 1-3.9-3.2z" /><path d="M8 8c1-1 2-1 3 0" /><path d="M13 8c1-1 2-1 3 0" />',
+  "2": '<rect x="5" y="6" width="14" height="12" rx="2" /><path d="M5 11h14" /><path d="M12 6v12" />',
+  share: '<circle cx="8" cy="12" r="2.5" /><circle cx="16" cy="7" r="2.5" /><circle cx="16" cy="17" r="2.5" /><path d="m10.2 10.8 3.6-2.4" /><path d="m10.2 13.2 3.6 2.4" />'
+};
+
+const categoryModeConfigs: CategoryModeConfig[] = [
+  {
+    id: "daily",
+    title: "Codziennie",
+    helper: "Najprostsze wejścia, kiedy po prostu trzeba coś zjeść.",
+    tiles: [
+      { title: "Wszystkie", label: "pełna lista pomysłów", filter: { type: "all" }, icon: "all", tone: "fire" },
+      { title: "Szybkie", label: "bez długiego stania", filter: { type: "tag", value: "do 30 minut" }, icon: "30", tone: "blue" },
+      { title: "Tanie", label: "bez dużych zakupów", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
+      { title: "Mało zmywania", label: "mniej garów po wszystkim", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" },
+      { title: "Bez zakupów", label: "z tego, co już masz", filter: { type: "tag", value: "bez zakupów" }, icon: "dom", tone: "green" },
+      { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "tomato" }
+    ]
+  },
+  {
+    id: "breakfast",
+    title: "Śniadanie",
+    helper: "Rzeczy na mniejszy głód, jajka, pieczywo i szybkie patelnie.",
+    tiles: [
+      { title: "Jajka", label: "na ciepło albo z patelni", filter: { type: "query", value: "jajka" }, icon: "egg", tone: "sun" },
+      { title: "Pieczywo", label: "gdy trzeba zużyć chleb", filter: { type: "query", value: "pieczywo" }, icon: "chleb", tone: "tomato" },
+      { title: "Serowe", label: "tosty, tortilla, dodatki", filter: { type: "query", value: "ser" }, icon: "ser", tone: "blue" },
+      { title: "Do 15 minut", label: "szybki start dnia", filter: { type: "tag", value: "do 15 minut" }, icon: "15", tone: "fire" }
+    ]
+  },
+  {
+    id: "dinner",
+    title: "Obiad",
+    helper: "Konkretniej, cieplej, bardziej sycąco.",
+    tiles: [
+      { title: "Jednogarnkowe", label: "wszystko w jednym", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "blue" },
+      { title: "Bez mięsa", label: "warzywa grają pierwsze", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" },
+      { title: "Ryż", label: "miska, curry albo patelnia", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
+      { title: "Na dwa dni", label: "obiad plus lunch", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" }
+    ]
+  },
+  {
+    id: "party",
+    title: "Impreza",
+    helper: "Proste rzeczy do postawienia na stole albo zrobienia hurtowo.",
+    tiles: [
+      { title: "Do podziału", label: "wrapy, patelnie, miski", filter: { type: "query", value: "tortilla" }, icon: "share", tone: "fire" },
+      { title: "Tanie", label: "więcej porcji bez dramatu", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
+      { title: "Bez mięsa", label: "dla różnych gości", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" },
+      { title: "Mało zmywania", label: "łatwiejszy koniec wieczoru", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" }
+    ]
+  },
+  {
+    id: "tomorrow",
+    title: "Na jutro",
+    helper: "Dania, które nie obrażają się na pudełko i odgrzewanie.",
+    tiles: [
+      { title: "Na dwa dni", label: "dzisiaj i do pracy", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" },
+      { title: "Ryż", label: "dobry do pudełka", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "blue" },
+      { title: "Jednogarnkowe", label: "mniej pilnowania", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "green" },
+      { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "sun" }
+    ]
+  }
+];
+
+function getRecipeCountLabel(count: number) {
+  if (count === 1) return "1 przepis";
+  if (count > 1 && count < 5) return `${count} przepisy`;
+  return `${count} przepisów`;
+}
+
+function getRecipeSearchText(recipe: CollectionEntry<"recipes">) {
+  return [
+    recipe.data.title,
+    recipe.data.summary,
+    recipe.data.description,
+    recipe.data.effort,
+    recipe.data.mood,
+    recipe.data.cost,
+    ...recipe.data.tags,
+    ...recipe.data.mainIngredients,
+    ...recipe.data.searchAliases
+  ].join(" ").toLowerCase();
+}
+
+function matchesCategoryFilter(recipe: CollectionEntry<"recipes">, filter: CategoryFilter) {
+  if (filter.type === "all") return true;
+  if (filter.type === "tag") return recipe.data.tags.includes(filter.value);
+
+  return getRecipeSearchText(recipe).includes(filter.value.toLowerCase());
+}
+
+function getCategoryHref(filter: CategoryFilter) {
+  if (filter.type === "all") return "/przepisy";
+
+  const param = filter.type === "tag" ? "tag" : "q";
+  return `/przepisy?${param}=${encodeURIComponent(filter.value)}`;
+}
+
+function getCategoryIcon(icon: string) {
+  const path = categoryIconPaths[icon] ?? categoryIconPaths.all;
+  return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="#9a4a35" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+}
+
+function buildCategoryMode(mode: CategoryModeConfig): CategoryMode {
+  return {
+    ...mode,
+    tiles: mode.tiles.map((tile) => {
+      const count = recipes.filter((recipe) => matchesCategoryFilter(recipe, tile.filter)).length;
+
+      return {
+        ...tile,
+        href: getCategoryHref(tile.filter),
+        countLabel: getRecipeCountLabel(count)
+      };
+    })
+  };
+}
+
+const categoryModes = categoryModeConfigs.map(buildCategoryMode);
+const initialMode = categoryModes[0];
+---
+
+<section class="section screen-section" id="tryby" data-categories-section data-category-panels-root>
+  <div class="section-head">
+    <h2>Wybierz tryb</h2>
+  </div>
+
+  <div class="category-frame category-frame--modes">
+    <p class="category-mode-intro">Zacznij od sytuacji. Każdy tryb podmienia zestaw skrótów poniżej.</p>
+
+    <div class="category-mode-picker" role="tablist" aria-label="Tryby sytuacji">
+      {categoryModes.map((mode, index) => (
+        <button
+          class:list={["category-mode", { "is-active": index === 0 }]}
+          type="button"
+          role="tab"
+          id={`category-mode-${mode.id}`}
+          aria-selected={index === 0 ? "true" : "false"}
+          aria-controls={`category-panel-${mode.id}`}
+          data-category-mode={mode.id}
+          data-category-title={mode.title}
+        >
+          {mode.title}
+        </button>
+      ))}
+      {placeholderModes.map((mode) => (
+        <button
+          class:list={[
+            "category-mode",
+            "category-mode--placeholder",
+            `category-mode--placeholder-${mode.mobileSlot}`
+          ]}
+          type="button"
+          disabled
+          aria-disabled="true"
+        >
+          {mode.title}
+        </button>
+      ))}
+    </div>
+
+    <div class="category-mode-summary" aria-live="polite">
+      <span>Wybrano</span>
+      <strong data-category-mode-title>{initialMode.title}</strong>
+    </div>
+
+    <div class="category-mode-action">
+      <p>Teraz wybierz konkretny skrót do przepisów.</p>
+    </div>
+
+    <div class="category-panels">
+      {categoryModes.map((mode, index) => (
+        <div
+          class:list={["category-panel", { "is-active": index === 0 }]}
+          id={`category-panel-${mode.id}`}
+          role="tabpanel"
+          aria-labelledby={`category-mode-${mode.id}`}
+          data-category-panel={mode.id}
+          hidden={index !== 0}
+        >
+          <p class="category-panel-helper">{mode.helper}</p>
+          <div class="category-row">
+            {mode.tiles.map((category) => (
+              <a class:list={["category", `category--${category.tone}`]} href={category.href} aria-label={`${category.title}: ${category.label}`}>
+                <span class="category-icon" aria-hidden="true" set:html={getCategoryIcon(category.icon)} />
+                <strong>{category.title}</strong>
+                <span class="category-count">{category.countLabel}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const panelRoots = document.querySelectorAll<HTMLElement>("[data-category-panels-root]");
+
+  function setActiveMode(root: HTMLElement, selectedButton: HTMLButtonElement) {
+    const selectedMode = selectedButton.dataset.categoryMode ?? "";
+    const modeButtons = root.querySelectorAll<HTMLButtonElement>("[data-category-mode]");
+    const modePanels = root.querySelectorAll<HTMLElement>("[data-category-panel]");
+    const modeTitle = root.querySelector<HTMLElement>("[data-category-mode-title]");
+
+    if (modeTitle) {
+      modeTitle.textContent = selectedButton.dataset.categoryTitle ?? selectedButton.textContent ?? "";
+    }
+
+    modeButtons.forEach((button) => {
+      const isSelected = button === selectedButton;
+      button.classList.toggle("is-active", isSelected);
+      button.setAttribute("aria-selected", String(isSelected));
+    });
+
+    modePanels.forEach((panel) => {
+      const isSelected = panel.dataset.categoryPanel === selectedMode;
+      panel.classList.toggle("is-active", isSelected);
+      panel.toggleAttribute("hidden", !isSelected);
+    });
+  }
+
+  panelRoots.forEach((root) => {
+    root.querySelectorAll<HTMLButtonElement>("[data-category-mode]").forEach((button) => {
+      button.addEventListener("click", () => setActiveMode(root, button));
+    });
+  });
+</script>
+
+<style>
+  [data-categories-section].screen-section {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 0;
+    padding-block: var(--home-title-offset) clamp(24px, 5vh, 52px);
+  }
+
+  [data-categories-section] .section-head {
+    text-align: center;
+  }
+
+  .category-frame {
+    position: relative;
+    width: min(100%, 760px);
+    margin: clamp(20px, 4.5vh, 46px) auto 0;
+    padding: clamp(14px, 4vw, 26px);
+    border: 1px solid rgba(255, 90, 61, 0.12);
+    border-radius: 14px;
+    background:
+      radial-gradient(120% 80% at 50% -22%, rgba(255, 90, 61, 0.13), transparent 58%),
+      radial-gradient(circle at 12% 0%, rgba(255, 200, 87, 0.12), transparent 38%),
+      linear-gradient(145deg, rgba(255, 253, 248, 0.66), rgba(255, 241, 219, 0.34)),
+      rgba(255, 253, 248, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.78),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+      inset 0 -1px 0 rgba(37, 26, 20, 0.04),
+      0 12px 28px rgba(255, 90, 61, 0.08),
+      0 10px 26px rgba(37, 26, 20, 0.04);
+    backdrop-filter: blur(14px) saturate(1.16);
+    -webkit-backdrop-filter: blur(14px) saturate(1.16);
+  }
+
+  .category-frame--modes {
+    padding: 10px;
+  }
+
+  .category-frame::before,
+  .category-frame::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 26px;
+    height: 26px;
+    border-top: 3px solid rgba(255, 90, 61, 0.58);
+    border-left: 3px solid rgba(255, 90, 61, 0.58);
+    border-radius: 14px 0 0 0;
+    pointer-events: none;
+  }
+
+  .category-frame::before {
+    inset: 1px auto auto 1px;
+  }
+
+  .category-frame::after {
+    inset: auto 1px 1px auto;
+    transform: rotate(180deg);
+  }
+
+  .category-mode-picker {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    justify-self: center;
+  }
+
+  .category-mode-picker::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-mode-intro {
+    margin: 0 4px 12px;
+    color: rgba(37, 26, 20, 0.72);
+    font-size: clamp(16px, 4vw, 19px);
+    font-weight: 650;
+    line-height: 1.36;
+    letter-spacing: 0;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .category-mode-summary {
+    margin: 12px 0 0;
+    padding: 13px 14px;
+    border: 1px solid rgba(255, 90, 61, 0.18);
+    border-radius: 16px;
+    background:
+      radial-gradient(120% 90% at 50% -35%, rgba(255, 90, 61, 0.2), transparent 56%),
+      linear-gradient(145deg, rgba(255, 253, 248, 0.86), rgba(255, 241, 219, 0.46)),
+      rgba(255, 253, 248, 0.72);
+    color: var(--text);
+    box-shadow:
+      0 12px 24px rgba(255, 90, 61, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    text-align: center;
+  }
+
+  .category-mode-summary span {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(255, 90, 61, 0.86);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .category-mode-summary strong {
+    display: block;
+    font-size: 20px;
+    font-weight: 980;
+    line-height: 1.05;
+  }
+
+  .category-mode-action {
+    margin: 10px auto 0;
+    max-width: 320px;
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    padding-top: 14px;
+    text-align: center;
+  }
+
+  .category-mode-action p {
+    margin: 0;
+    color: rgba(37, 26, 20, 0.72);
+    font-size: clamp(16px, 4vw, 19px);
+    font-weight: 650;
+    line-height: 1.36;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  .category-mode {
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 7px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 26, 20, 0.1);
+    background:
+      linear-gradient(145deg, rgba(255, 253, 248, 0.72), rgba(255, 241, 219, 0.28)),
+      rgba(255, 253, 248, 0.62);
+    color: rgba(37, 26, 20, 0.66);
+    box-shadow:
+      0 8px 20px rgba(37, 26, 20, 0.045),
+      inset 0 1px 0 rgba(255, 255, 255, 0.62);
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1.05;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .category-mode.is-active {
+    background: var(--text);
+    border-color: transparent;
+    color: white;
+    box-shadow:
+      0 10px 22px rgba(37, 26, 20, 0.13),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .category-mode--placeholder {
+    color: rgba(37, 26, 20, 0.34);
+    cursor: default;
+    opacity: 0.72;
+  }
+
+  .category-mode:active {
+    transform: scale(0.96);
+  }
+
+  .category-panels {
+    --category-panels-bg-top: -102px;
+    --category-panels-min-height: auto;
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    min-height: var(--category-panels-min-height);
+    margin-top: 14px;
+  }
+
+  .category-panels::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: var(--category-panels-bg-top) -8px -14px;
+    border-radius: 22px;
+    background: rgba(255, 112, 82, 0.21);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 11 C24 10 36 12 50 11 S78 10 100 11.5 L100 100 L0 100 Z' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 11 C24 10 36 12 50 11 S78 10 100 11.5 L100 100 L0 100 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    pointer-events: none;
+  }
+
+  .category-panel {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    animation: categoryPanelIn 220ms ease both;
+  }
+
+  .category-panel[hidden] {
+    display: none;
+  }
+
+  .category-panel-helper {
+    display: none;
+    margin: 0 0 12px;
+    max-width: 330px;
+    color: rgba(37, 26, 20, 0.58);
+    font-size: 13px;
+    font-weight: 760;
+    line-height: 1.3;
+  }
+
+  .category-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .category {
+    --category-rgb: 255, 90, 61;
+    --category-top: rgba(255, 255, 255, 0.62);
+    --category-lift: rgba(var(--category-rgb), 0.13);
+    --category-depth: rgba(var(--category-rgb), 0.055);
+    --category-glass-edge: rgba(var(--category-rgb), 0.14);
+    --category-sheen: rgba(255, 255, 255, 0.18);
+    --category-sheen-strong: rgba(255, 255, 255, 0.42);
+    --category-text: #9a4a35;
+    --category-text-shadow: rgba(255, 246, 239, 0.72);
+    position: relative;
+    isolation: isolate;
+    min-height: 128px;
+    min-width: 0;
+    padding: 13px 10px 12px;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    align-content: stretch;
+    place-items: center;
+    gap: 8px;
+    text-align: center;
+    overflow: hidden;
+    border: 1.5px solid rgba(var(--category-rgb), 0.28);
+    border-radius: 13px;
+    background:
+      radial-gradient(120% 95% at 18% 0%, rgba(var(--category-rgb), 0.12), transparent 50%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.58), rgba(255, 253, 248, 0.32)),
+      rgba(255, 253, 248, 0.28);
+    box-shadow:
+      0 12px 22px rgba(37, 26, 20, 0.07),
+      0 2px 6px rgba(37, 26, 20, 0.045),
+      0 1px 0 var(--category-lift),
+      0 0 0 1px rgba(255, 255, 255, 0.42),
+      inset 0 1px 0 var(--category-top),
+      inset 0 0 0 1px var(--category-glass-edge),
+      inset 0 -12px 18px var(--category-depth);
+    backdrop-filter: blur(18px) saturate(1.12);
+    -webkit-backdrop-filter: blur(18px) saturate(1.12);
+    transform: translateY(0);
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      border-color 0.18s ease,
+      filter 0.18s ease;
+  }
+
+  .category::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: 0;
+    border-radius: 12px;
+    background:
+      radial-gradient(70% 58% at 22% 4%, var(--category-top), transparent 62%),
+      linear-gradient(112deg, transparent 0 30%, var(--category-sheen) 42%, var(--category-sheen-strong) 50%, var(--category-sheen) 58%, transparent 72%);
+    background-size: 100% 100%, 240% 100%;
+    background-position: 0 0, 145% 0;
+    opacity: 0.58;
+    pointer-events: none;
+    animation: decision-option-lustre 8s ease-in-out infinite;
+  }
+
+  .category:nth-child(2)::before,
+  .category:nth-child(5)::before {
+    animation-delay: 0.55s;
+  }
+
+  .category:nth-child(3)::before,
+  .category:nth-child(6)::before {
+    animation-delay: 1.1s;
+  }
+
+  .category--sun {
+    --category-rgb: 255, 200, 87;
+    --category-text: #80601a;
+    --category-text-shadow: rgba(255, 251, 233, 0.76);
+  }
+
+  .category--leaf {
+    --category-rgb: 47, 143, 91;
+    --category-text: #31764b;
+    --category-text-shadow: rgba(245, 255, 248, 0.72);
+  }
+
+  .category--blue {
+    --category-rgb: 32, 137, 230;
+    --category-text: #2f76a8;
+    --category-text-shadow: rgba(242, 249, 255, 0.72);
+  }
+
+  .category--tomato {
+    --category-rgb: 214, 62, 37;
+    --category-text: #9a4a35;
+  }
+
+  .category--green {
+    --category-rgb: 37, 176, 98;
+    --category-text: #31764b;
+    --category-text-shadow: rgba(245, 255, 248, 0.72);
+  }
+
+  .category-icon {
+    position: relative;
+    z-index: 1;
+    width: 27px;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    color: #9a4a35;
+    filter: drop-shadow(0 1px 0 rgba(255, 253, 248, 0.72));
+  }
+
+  .category-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .category strong {
+    position: relative;
+    z-index: 1;
+    display: block;
+    align-self: center;
+    max-width: 10ch;
+    color: rgba(37, 26, 20, 0.84);
+    font-size: clamp(16px, 4vw, 19px);
+    font-weight: 980;
+    letter-spacing: 0;
+    line-height: 1;
+    text-wrap: balance;
+    text-shadow: 0 1px 0 rgba(255, 253, 248, 0.76);
+  }
+
+  .category-count {
+    position: relative;
+    z-index: 1;
+    justify-self: center;
+    min-height: 24px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0 9px;
+    border-radius: 9px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.16)),
+      rgba(255, 253, 248, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    color: var(--category-text);
+    font-size: 11px;
+    font-weight: 950;
+    white-space: nowrap;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.58),
+      inset 0 0 0 1px rgba(37, 26, 20, 0.035);
+  }
+
+  .category-count::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: min(52px, 74%);
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(var(--category-rgb), 0.64), transparent);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .category:hover,
+  .category:focus-visible {
+    border-color: rgba(var(--category-rgb), 0.42);
+    filter: saturate(1.02);
+    transform: translateY(-2px);
+    box-shadow:
+      0 16px 28px rgba(37, 26, 20, 0.09),
+      0 4px 8px rgba(37, 26, 20, 0.06),
+      0 2px 0 var(--category-lift),
+      0 0 0 1px rgba(255, 255, 255, 0.5),
+      inset 0 1px 0 var(--category-top),
+      inset 0 0 0 1px var(--category-glass-edge),
+      inset 0 -12px 18px var(--category-depth);
+  }
+
+  @keyframes categoryPanelIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes decision-option-lustre {
+    0% {
+      background-position: 0 0, 145% 0;
+      opacity: 0.62;
+    }
+
+    9% {
+      opacity: 0.84;
+    }
+
+    18% {
+      background-position: 0 0, -52% 0;
+      opacity: 0.58;
+    }
+
+    24%,
+    100% {
+      background-position: 0 0, -52% 0;
+      opacity: 0.62;
+    }
+  }
+
+  @media (min-width: 700px) {
+    .category-mode-picker {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
+      justify-content: center;
+    }
+
+    .category-mode-summary,
+    .category-mode-action {
+      display: none;
+    }
+
+    .category-mode-intro {
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .category-mode {
+      flex: 0 0 auto;
+      min-height: 42px;
+      padding: 0 14px;
+      font-size: 13px;
+      scroll-snap-align: start;
+    }
+
+    .category-mode.is-active {
+      grid-column: auto;
+      min-height: 42px;
+      padding-inline: 14px;
+      font-size: 13px;
+    }
+
+    .category-panel-helper {
+      display: block;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .category-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+  }
+
+  @media (max-width: 699px) {
+    .category-frame--modes {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-rows: auto repeat(3, minmax(42px, auto)) auto;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .category-mode-intro {
+      order: 1;
+      grid-column: 1 / -1;
+      margin: 0 4px 4px;
+      font-size: 13px;
+    }
+
+    .category-mode-picker {
+      display: contents;
+    }
+
+    .category-mode {
+      min-height: 42px;
+      padding: 0 7px;
+      font-size: clamp(10px, 3vw, 12px);
+      white-space: normal;
+      overflow-wrap: anywhere;
+      scroll-snap-align: none;
+    }
+
+    [data-category-mode="daily"] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    [data-category-mode="breakfast"] {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    [data-category-mode="dinner"] {
+      grid-column: 3;
+      grid-row: 2;
+    }
+
+    [data-category-mode="party"] {
+      grid-column: 4;
+      grid-row: 2;
+    }
+
+    [data-category-mode="tomorrow"] {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    .category-mode--placeholder-lunch {
+      grid-column: 1;
+      grid-row: 4;
+    }
+
+    .category-mode--placeholder-dinner {
+      grid-column: 4;
+      grid-row: 4;
+    }
+
+    .category-mode--placeholder-plan {
+      grid-column: 4;
+      grid-row: 3;
+    }
+
+    .category-mode-summary {
+      --option-top: rgba(255, 216, 196, 0.46);
+      --option-lift: rgba(255, 90, 61, 0.22);
+      --option-depth: rgba(214, 62, 37, 0.14);
+      --option-glass-edge: rgba(255, 146, 112, 0.26);
+      --option-text: #9a4a35;
+      --option-text-shadow: rgba(255, 246, 239, 0.72);
+      grid-column: 2 / 4;
+      grid-row: 3 / 5;
+      min-width: 0;
+      min-height: 92px;
+      margin: 0;
+      padding: 9px 10px;
+      display: grid;
+      place-content: center;
+      gap: 5px;
+      border: 1px solid rgba(255, 90, 61, 0.34);
+      border-radius: 18px;
+      background:
+        radial-gradient(120% 95% at 18% 0%, rgba(255, 225, 207, 0.54), transparent 50%),
+        linear-gradient(160deg, rgba(255, 164, 128, 0.38) 0%, rgba(255, 112, 82, 0.26) 48%, rgba(214, 62, 37, 0.17) 100%),
+        rgba(255, 186, 151, 0.22);
+      box-shadow:
+        0 18px 30px rgba(37, 26, 20, 0.17),
+        0 6px 12px rgba(37, 26, 20, 0.12),
+        0 2px 0 var(--option-lift),
+        inset 0 1px 0 var(--option-top),
+        inset 0 0 0 1px var(--option-glass-edge),
+        inset 0 -14px 20px var(--option-depth);
+      backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
+      -webkit-backdrop-filter: blur(24px) saturate(1.48) contrast(1.06);
+    }
+
+    .category-mode-summary span {
+      margin: 0;
+      color: rgba(154, 74, 53, 0.72);
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0;
+      text-shadow: 0 1px 0 var(--option-text-shadow);
+      text-transform: none;
+    }
+
+    .category-mode-summary strong {
+      min-width: 0;
+      color: var(--option-text);
+      font-size: clamp(16px, 4.35vw, 18px);
+      font-weight: 980;
+      line-height: 1;
+      letter-spacing: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow:
+        0 1px 0 var(--option-text-shadow),
+        0 10px 18px rgba(37, 26, 20, 0.16);
+    }
+
+    .category-mode-action {
+      order: 5;
+      grid-column: 1 / -1;
+      display: grid;
+      margin: 8px auto 0;
+      max-width: 310px;
+      gap: 8px;
+      padding-top: 13px;
+    }
+
+    .category-mode-action p {
+      color: rgba(37, 26, 20, 0.72);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.36;
+      letter-spacing: 0;
+    }
+
+    .category-panels {
+      --category-panels-bg-top: -96px;
+      --category-panels-min-height: 368px;
+      order: 6;
+      grid-column: 1 / -1;
+      margin-top: 6px;
+    }
+
+    .category-panel {
+      min-height: 368px;
+    }
+
+    .category {
+      min-height: 116px;
+      gap: 7px;
+    }
+
+    .category-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+    }
+
+    .category strong {
+      max-width: 10ch;
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .category-row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .category {
+      min-height: 146px;
+    }
+  }
+</style>
