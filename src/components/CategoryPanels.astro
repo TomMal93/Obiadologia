@@ -42,6 +42,7 @@ const placeholderModes = [
   { title: "Kolacja", mobileSlot: "dinner" },
   { title: "Plan", mobileSlot: "plan" }
 ] as const;
+const categoryPanelTileCount = 6;
 
 const categoryIconPaths: Record<string, string> = {
   all: '<rect x="4" y="4" width="6" height="6" rx="1.5" /><rect x="14" y="4" width="6" height="6" rx="1.5" /><rect x="4" y="14" width="6" height="6" rx="1.5" /><rect x="14" y="14" width="6" height="6" rx="1.5" />',
@@ -177,6 +178,10 @@ function buildCategoryMode(mode: CategoryModeConfig): CategoryMode {
 
 const categoryModes = categoryModeConfigs.map(buildCategoryMode);
 const initialMode = categoryModes[0];
+
+function getCategoryPanelPlaceholders(tileCount: number) {
+  return Array.from({ length: Math.max(0, categoryPanelTileCount - tileCount) });
+}
 ---
 
 <section class="section screen-section" id="tryby" data-categories-section data-category-panels-root>
@@ -245,6 +250,9 @@ const initialMode = categoryModes[0];
                 <strong>{category.title}</strong>
                 <span class="category-count">{category.countLabel}</span>
               </a>
+            ))}
+            {getCategoryPanelPlaceholders(mode.tiles.length).map(() => (
+              <div class="category category--tile-placeholder" aria-hidden="true"></div>
             ))}
           </div>
         </div>
@@ -341,11 +349,11 @@ const initialMode = categoryModes[0];
   }
 
   .category-frame::before {
-    inset: 1px auto auto 1px;
+    inset: 1px auto auto var(--category-frame-corner-x, 1px);
   }
 
   .category-frame::after {
-    inset: auto 1px 1px auto;
+    inset: auto var(--category-frame-corner-x, 1px) 1px auto;
     transform: rotate(180deg);
   }
 
@@ -626,6 +634,30 @@ const initialMode = categoryModes[0];
     --category-text-shadow: rgba(245, 255, 248, 0.72);
   }
 
+  .category--tile-placeholder {
+    --category-rgb: 255, 112, 82;
+    border-style: dashed;
+    opacity: 0.46;
+    pointer-events: none;
+  }
+
+  .category--tile-placeholder::before {
+    animation: none;
+    opacity: 0.24;
+  }
+
+  .category--tile-placeholder::after {
+    content: "";
+    position: relative;
+    z-index: 1;
+    width: min(44px, 46%);
+    height: 3px;
+    align-self: center;
+    grid-row: 2;
+    border-radius: 999px;
+    background: rgba(154, 74, 53, 0.22);
+  }
+
   .category-icon {
     position: relative;
     z-index: 1;
@@ -792,6 +824,7 @@ const initialMode = categoryModes[0];
 
   @media (max-width: 699px) {
     .category-frame--modes {
+      --category-frame-corner-x: -2px;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       grid-template-rows: auto repeat(3, minmax(42px, auto)) auto;
@@ -800,7 +833,7 @@ const initialMode = categoryModes[0];
     }
 
     .category-frame::after {
-      inset: 1px 1px auto auto;
+      inset: 1px var(--category-frame-corner-x) auto auto;
       transform: rotate(90deg);
     }
 
