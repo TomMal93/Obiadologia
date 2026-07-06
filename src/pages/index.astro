@@ -490,9 +490,6 @@ const categoryModes = [
       </div>
 
       <div class="category-mode-action">
-        <svg class="category-mode-action-divider" viewBox="0 0 260 28" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <path d="M6 15 C48 2 84 26 126 14 C166 2 198 26 254 13" />
-        </svg>
         <p>Teraz wybierz konkretny skrót do przepisów.</p>
       </div>
 
@@ -2937,23 +2934,8 @@ const categoryModes = [
     display: grid;
     justify-items: center;
     gap: 5px;
+    padding-top: 14px;
     text-align: center;
-  }
-
-  .category-mode-action-divider {
-    display: block;
-    width: min(86%, 280px);
-    height: 9px;
-    overflow: visible;
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.42));
-  }
-
-  .category-mode-action-divider path {
-    fill: none;
-    stroke: rgba(255, 90, 61, 0.48);
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
   }
 
   .category-mode-action p {
@@ -3018,11 +3000,32 @@ const categoryModes = [
   }
 
   .category-panels {
+    --category-panels-bg-top: -102px;
+    position: relative;
+    isolation: isolate;
     display: grid;
     margin-top: 14px;
   }
 
+  .category-panels::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: var(--category-panels-bg-top) -8px -14px;
+    border-radius: 22px;
+    background: rgba(255, 112, 82, 0.21);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 11 C24 10 36 12 50 11 S78 10 100 11.5 L100 100 L0 100 Z' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 11 C24 10 36 12 50 11 S78 10 100 11.5 L100 100 L0 100 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    pointer-events: none;
+  }
+
   .category-panel {
+    position: relative;
+    z-index: 1;
     min-width: 0;
     animation: categoryPanelIn 220ms ease both;
   }
@@ -3474,11 +3477,7 @@ const categoryModes = [
       margin: 8px auto 0;
       max-width: 310px;
       gap: 8px;
-    }
-
-    .category-mode-action-divider {
-      width: min(82%, 240px);
-      height: 9px;
+      padding-top: 13px;
     }
 
     .category-mode-action p {
@@ -3490,6 +3489,7 @@ const categoryModes = [
     }
 
     .category-panels {
+      --category-panels-bg-top: -96px;
       order: 6;
       grid-column: 1 / -1;
       margin-top: 6px;
