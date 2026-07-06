@@ -301,6 +301,7 @@ const initialMode = categoryModes[0];
   }
 
   .category-frame {
+    --category-frame-accent: rgba(255, 90, 61, 0.58);
     position: relative;
     width: min(100%, 760px);
     margin: clamp(20px, 4.5vh, 46px) auto 0;
@@ -333,8 +334,8 @@ const initialMode = categoryModes[0];
     z-index: 2;
     width: 26px;
     height: 26px;
-    border-top: 3px solid rgba(255, 90, 61, 0.58);
-    border-left: 3px solid rgba(255, 90, 61, 0.58);
+    border-top: 3px solid var(--category-frame-accent);
+    border-left: 3px solid var(--category-frame-accent);
     border-radius: 14px 0 0 0;
     pointer-events: none;
   }
@@ -469,7 +470,9 @@ const initialMode = categoryModes[0];
   }
 
   .category-panels {
+    --category-panels-accent: var(--category-frame-accent);
     --category-panels-bg-top: -102px;
+    --category-panels-bg-x: -12px;
     --category-panels-min-height: auto;
     position: relative;
     isolation: isolate;
@@ -482,9 +485,10 @@ const initialMode = categoryModes[0];
     content: "";
     position: absolute;
     z-index: -1;
-    inset: var(--category-panels-bg-top) -8px -14px;
+    inset: var(--category-panels-bg-top) var(--category-panels-bg-x) -14px;
     border-radius: 22px;
     background: rgba(255, 112, 82, 0.21);
+    box-shadow: inset 0 0 0 3px var(--category-panels-accent);
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 11 C24 10 36 12 50 11 S78 10 100 11.5 L100 100 L0 100 Z' fill='black'/%3E%3C/svg%3E");
     mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 11 C24 10 36 12 50 11 S78 10 100 11.5 L100 100 L0 100 Z' fill='black'/%3E%3C/svg%3E");
     -webkit-mask-repeat: no-repeat;
@@ -793,6 +797,11 @@ const initialMode = categoryModes[0];
       grid-template-rows: auto repeat(3, minmax(42px, auto)) auto;
       align-items: stretch;
       gap: 8px;
+    }
+
+    .category-frame::after {
+      inset: 1px 1px auto auto;
+      transform: rotate(90deg);
     }
 
     .category-mode-intro {
