@@ -1052,13 +1052,20 @@ const categoryModes = [
     width: 8.4ch;
     min-height: 1.05em;
     overflow: hidden;
-    color: #c7432f;
+    color: #c96a57;
     font-size: clamp(19px, 4.6vw, 24px);
     font-weight: 820;
     line-height: 1.05;
     letter-spacing: 0;
+    text-shadow:
+      0 1px 0 rgba(255, 246, 239, 0.72),
+      0 10px 18px rgba(214, 62, 37, 0.14);
     transform: translateY(0);
-    transition: opacity 260ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition:
+      color 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      text-shadow 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
     will-change: opacity, transform;
   }
 
@@ -1851,7 +1858,6 @@ const categoryModes = [
       justify-self: start;
       text-align: left;
       width: 6.8ch;
-      color: #8a5a1f;
       font-size: 15px;
       font-weight: 900;
     }
@@ -2349,7 +2355,6 @@ const categoryModes = [
     .decision-start .home-subtitle-mode {
       justify-self: start;
       width: 6.8ch;
-      color: #8a5a1f;
       font-size: 15px;
       font-weight: 900;
       line-height: 1.1;
