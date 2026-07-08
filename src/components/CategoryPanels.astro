@@ -608,6 +608,9 @@ function getCategoryRowTone(index: number) {
     --category-sheen-strong: rgba(255, 255, 255, 0.42);
     --category-text: #9a4a35;
     --category-text-shadow: rgba(255, 246, 239, 0.72);
+    --category-border: rgba(var(--category-rgb), 0.28);
+    --category-inner-border: rgba(var(--category-rgb), 0.24);
+    --category-border-hover: rgba(var(--category-rgb), 0.42);
     position: relative;
     isolation: isolate;
     min-height: 128px;
@@ -620,7 +623,7 @@ function getCategoryRowTone(index: number) {
     gap: 8px;
     text-align: center;
     overflow: hidden;
-    border: 1.5px solid rgba(var(--category-rgb), 0.28);
+    border: 1.5px solid var(--category-border);
     border-radius: 13px;
     background:
       radial-gradient(120% 95% at 18% 0%, rgba(var(--category-rgb), 0.12), transparent 50%),
@@ -675,7 +678,7 @@ function getCategoryRowTone(index: number) {
     position: absolute;
     inset: 8px;
     z-index: 0;
-    border: 1px solid rgba(var(--category-rgb), 0.24);
+    border: 1px solid var(--category-inner-border);
     border-radius: 8px;
     pointer-events: none;
   }
@@ -690,6 +693,9 @@ function getCategoryRowTone(index: number) {
     --category-rgb: 255, 200, 87;
     --category-text: #80601a;
     --category-text-shadow: rgba(255, 251, 233, 0.76);
+    --category-border: rgba(224, 151, 22, 0.5);
+    --category-inner-border: rgba(224, 151, 22, 0.42);
+    --category-border-hover: rgba(224, 151, 22, 0.66);
   }
 
   .category--leaf {
@@ -807,7 +813,7 @@ function getCategoryRowTone(index: number) {
 
   .category:hover,
   .category:focus-visible {
-    border-color: rgba(var(--category-rgb), 0.42);
+    border-color: var(--category-border-hover);
     filter: saturate(1.02);
     transform: translateY(-2px);
     box-shadow:
