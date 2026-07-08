@@ -258,6 +258,9 @@ function getCategoryPanelPlaceholders(tileCount: number) {
         </div>
       ))}
     </div>
+
+    <span class="category-frame-corner category-frame-corner--bottom-left" aria-hidden="true"></span>
+    <span class="category-frame-corner category-frame-corner--bottom-right" aria-hidden="true"></span>
   </div>
 </section>
 
@@ -340,8 +343,8 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     content: "";
     position: absolute;
     z-index: 2;
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     border-top: 3px solid var(--category-frame-accent);
     border-left: 3px solid var(--category-frame-accent);
     border-radius: 14px 0 0 0;
@@ -355,6 +358,15 @@ function getCategoryPanelPlaceholders(tileCount: number) {
   .category-frame::after {
     inset: auto var(--category-frame-corner-x, 1px) 1px auto;
     transform: rotate(180deg);
+  }
+
+  .category-frame-corner {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
   }
 
   .category-mode-picker {
@@ -486,6 +498,7 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     position: relative;
     isolation: isolate;
     display: grid;
+    box-sizing: border-box;
     width: calc(100% + (var(--category-frame-padding) * 2));
     min-height: var(--category-panels-min-height);
     margin: 14px calc(var(--category-frame-padding) * -1) calc(var(--category-frame-padding) * -1);
@@ -840,6 +853,25 @@ function getCategoryPanelPlaceholders(tileCount: number) {
       transform: rotate(90deg);
     }
 
+    .category-frame--modes .category-frame-corner {
+      display: block;
+      bottom: 1px;
+    }
+
+    .category-frame-corner--bottom-left {
+      left: var(--category-frame-corner-x);
+      border-bottom: 3px solid var(--category-frame-accent);
+      border-left: 3px solid var(--category-frame-accent);
+      border-radius: 0 0 0 14px;
+    }
+
+    .category-frame-corner--bottom-right {
+      right: var(--category-frame-corner-x);
+      border-right: 3px solid var(--category-frame-accent);
+      border-bottom: 3px solid var(--category-frame-accent);
+      border-radius: 0 0 14px 0;
+    }
+
     .category-mode-intro {
       order: 1;
       grid-column: 1 / -1;
@@ -977,7 +1009,7 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     }
 
     .category-panels {
-      --category-panels-bg-top: -10px;
+      --category-panels-bg-top: -64px;
       --category-panels-bg-x: 0px;
       --category-panels-min-height: 368px;
       order: 6;
@@ -987,9 +1019,10 @@ function getCategoryPanelPlaceholders(tileCount: number) {
 
     .category-panels::before {
       inset: var(--category-panels-bg-top) 0 0;
+      border-radius: 0 0 14px 14px;
       background:
-        linear-gradient(180deg, rgba(255, 112, 82, 0.08) 0%, rgba(255, 112, 82, 0.18) 5%, rgba(255, 112, 82, 0.23) 10%, rgba(255, 112, 82, 0.24) 100%);
-      box-shadow: inset 0 0 0 2px rgba(255, 90, 61, 0.2);
+        linear-gradient(180deg, rgba(255, 112, 82, 0) 0%, rgba(255, 112, 82, 0.075) 10%, rgba(255, 112, 82, 0.16) 20%, rgba(255, 112, 82, 0.215) 32%, rgba(255, 112, 82, 0.24) 100%);
+      box-shadow: none;
       -webkit-mask-image: none;
       mask-image: none;
     }
