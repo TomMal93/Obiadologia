@@ -182,6 +182,11 @@ const initialMode = categoryModes[0];
 function getCategoryPanelPlaceholders(tileCount: number) {
   return Array.from({ length: Math.max(0, categoryPanelTileCount - tileCount) });
 }
+
+function getCategoryRowTone(index: number) {
+  const rowTones = ["sun", "tomato", "green"] as const;
+  return rowTones[Math.floor(index / 2) % rowTones.length];
+}
 ---
 
 <section class="section screen-section" id="tryby" data-categories-section data-category-panels-root>
@@ -244,15 +249,15 @@ function getCategoryPanelPlaceholders(tileCount: number) {
         >
           <p class="category-panel-helper">{mode.helper}</p>
           <div class="category-row">
-            {mode.tiles.map((category) => (
-              <a class:list={["category", `category--${category.tone}`]} href={category.href} aria-label={`${category.title}: ${category.label}`}>
+            {mode.tiles.map((category, categoryIndex) => (
+              <a class:list={["category", `category--${getCategoryRowTone(categoryIndex)}`]} href={category.href} aria-label={`${category.title}: ${category.label}`}>
                 <span class="category-icon" aria-hidden="true" set:html={getCategoryIcon(category.icon)} />
                 <strong>{category.title}</strong>
                 <span class="category-count">{category.countLabel}</span>
               </a>
             ))}
-            {getCategoryPanelPlaceholders(mode.tiles.length).map(() => (
-              <div class="category category--tile-placeholder" aria-hidden="true"></div>
+            {getCategoryPanelPlaceholders(mode.tiles.length).map((_, placeholderIndex) => (
+              <div class:list={["category", "category--tile-placeholder", `category--${getCategoryRowTone(mode.tiles.length + placeholderIndex)}`]} aria-hidden="true"></div>
             ))}
           </div>
         </div>
@@ -621,6 +626,12 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     animation-delay: 1.1s;
   }
 
+  .category--fire {
+    --category-rgb: 255, 90, 61;
+    --category-text: #9a4a35;
+    --category-text-shadow: rgba(255, 246, 239, 0.72);
+  }
+
   .category--sun {
     --category-rgb: 255, 200, 87;
     --category-text: #80601a;
@@ -651,7 +662,6 @@ function getCategoryPanelPlaceholders(tileCount: number) {
   }
 
   .category--tile-placeholder {
-    --category-rgb: 255, 112, 82;
     border-style: dashed;
     opacity: 0.46;
     pointer-events: none;
@@ -835,6 +845,18 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     .category-row {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
+    }
+
+    .category-row .category:nth-child(-n + 3) {
+      --category-rgb: 255, 200, 87;
+      --category-text: #80601a;
+      --category-text-shadow: rgba(255, 251, 233, 0.76);
+    }
+
+    .category-row .category:nth-child(n + 4):nth-child(-n + 6) {
+      --category-rgb: 214, 62, 37;
+      --category-text: #9a4a35;
+      --category-text-shadow: rgba(255, 246, 239, 0.72);
     }
   }
 
