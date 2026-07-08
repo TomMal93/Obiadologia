@@ -184,14 +184,14 @@ function getCategoryPanelPlaceholders(tileCount: number) {
 }
 
 function getCategoryRowTone(index: number) {
-  const rowTones = ["sun", "tomato", "green"] as const;
+  const rowTones = ["sun", "tomato", "leaf"] as const;
   return rowTones[Math.floor(index / 2) % rowTones.length];
 }
 ---
 
 <section class="section screen-section" id="tryby" data-categories-section data-category-panels-root>
   <div class="section-head">
-    <h2>Wybierz tryb</h2>
+    <h2>Wybierz <span>tryb</span></h2>
   </div>
 
   <div class="category-frame category-frame--modes">
@@ -314,6 +314,20 @@ function getCategoryRowTone(index: number) {
 
   [data-categories-section] .section-head {
     text-align: center;
+  }
+
+  [data-categories-section] .section-head h2 {
+    margin: 0 auto;
+    max-width: 620px;
+    color: var(--accent);
+    font-size: clamp(38px, 10.5vw, 64px);
+    font-weight: 650;
+    line-height: 0.9;
+    letter-spacing: -0.08em;
+  }
+
+  [data-categories-section] .section-head h2 span {
+    color: var(--text);
   }
 
   .category-frame {
