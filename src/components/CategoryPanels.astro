@@ -1,13 +1,16 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import {
+  getCategoryRecipes,
+  getRecipeCategory,
+  getRecipeCountLabel,
+  matchesCategoryFilter,
+  type CategoryFilter
+} from "../lib/categories";
 
 interface Props {
   recipes: CollectionEntry<"recipes">[];
 }
-
-type CategoryFilter =
-  | { type: "all" }
-  | { type: "query" | "tag"; value: string };
 
 type CategoryTone = "blue" | "fire" | "green" | "leaf" | "sun" | "tomato";
 
@@ -16,7 +19,8 @@ interface CategoryTileConfig {
   label: string;
   icon: string;
   tone: CategoryTone;
-  filter: CategoryFilter;
+  categorySlug?: string;
+  filter?: CategoryFilter;
 }
 
 interface CategoryModeConfig {
@@ -65,11 +69,11 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     helper: "Najprostsze wejścia, kiedy po prostu trzeba coś zjeść.",
     tiles: [
       { title: "Wszystkie", label: "pełna lista pomysłów", filter: { type: "all" }, icon: "all", tone: "fire" },
-      { title: "Szybkie", label: "bez długiego stania", filter: { type: "tag", value: "do 30 minut" }, icon: "30", tone: "blue" },
-      { title: "Tanie", label: "bez dużych zakupów", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
-      { title: "Mało zmywania", label: "mniej garów po wszystkim", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" },
-      { title: "Bez zakupów", label: "z tego, co już masz", filter: { type: "tag", value: "bez zakupów" }, icon: "dom", tone: "green" },
-      { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "tomato" }
+      { title: "Szybkie", label: "bez długiego stania", categorySlug: "szybkie", icon: "30", tone: "blue" },
+      { title: "Tanie", label: "bez dużych zakupów", categorySlug: "tanie", icon: "zł", tone: "sun" },
+      { title: "Mało zmywania", label: "mniej garów po wszystkim", categorySlug: "malo-zmywania", icon: "1", tone: "leaf" },
+      { title: "Bez zakupów", label: "z tego, co już masz", categorySlug: "bez-zakupow", icon: "dom", tone: "green" },
+      { title: "Z resztek", label: "drugie życie lodówki", categorySlug: "z-resztek", icon: "mix", tone: "tomato" }
     ]
   },
   {
@@ -77,10 +81,10 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Śniadanie",
     helper: "Rzeczy na mniejszy głód, jajka, pieczywo i szybkie patelnie.",
     tiles: [
-      { title: "Jajka", label: "na ciepło albo z patelni", filter: { type: "query", value: "jajka" }, icon: "egg", tone: "sun" },
-      { title: "Pieczywo", label: "gdy trzeba zużyć chleb", filter: { type: "query", value: "pieczywo" }, icon: "chleb", tone: "tomato" },
-      { title: "Serowe", label: "tosty, tortilla, dodatki", filter: { type: "query", value: "ser" }, icon: "ser", tone: "blue" },
-      { title: "Do 15 minut", label: "szybki start dnia", filter: { type: "tag", value: "do 15 minut" }, icon: "15", tone: "fire" }
+      { title: "Jajka", label: "na ciepło albo z patelni", categorySlug: "jajka", icon: "egg", tone: "sun" },
+      { title: "Pieczywo", label: "gdy trzeba zużyć chleb", categorySlug: "pieczywo", icon: "chleb", tone: "tomato" },
+      { title: "Serowe", label: "tosty, tortilla, dodatki", categorySlug: "serowe", icon: "ser", tone: "blue" },
+      { title: "Do 15 minut", label: "szybki start dnia", categorySlug: "do-15-minut", icon: "15", tone: "fire" }
     ]
   },
   {
@@ -88,10 +92,10 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Obiad",
     helper: "Konkretniej, cieplej, bardziej sycąco.",
     tiles: [
-      { title: "Jednogarnkowe", label: "wszystko w jednym", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "blue" },
-      { title: "Bez mięsa", label: "warzywa grają pierwsze", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" },
-      { title: "Ryż", label: "miska, curry albo patelnia", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
-      { title: "Na dwa dni", label: "obiad plus lunch", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" }
+      { title: "Jednogarnkowe", label: "wszystko w jednym", categorySlug: "jednogarnkowe", icon: "gar", tone: "blue" },
+      { title: "Bez mięsa", label: "warzywa grają pierwsze", categorySlug: "bez-miesa", icon: "wege", tone: "green" },
+      { title: "Ryż", label: "miska, curry albo patelnia", categorySlug: "ryz", icon: "ryż", tone: "leaf" },
+      { title: "Na dwa dni", label: "obiad plus lunch", categorySlug: "na-dwa-dni", icon: "2", tone: "tomato" }
     ]
   },
   {
@@ -99,10 +103,10 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Kolacja",
     helper: "Lżejsze rzeczy na wieczór, bez wielkiego gotowania.",
     tiles: [
-      { title: "Do 15 minut", label: "bez czekania", filter: { type: "tag", value: "do 15 minut" }, icon: "15", tone: "sun" },
-      { title: "Pieczywo", label: "tosty i szybkie składanie", filter: { type: "query", value: "pieczywo" }, icon: "chleb", tone: "tomato" },
-      { title: "Serowe", label: "ciepłe, proste, sycące", filter: { type: "query", value: "ser" }, icon: "ser", tone: "leaf" },
-      { title: "Bez mięsa", label: "lżej na koniec dnia", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" }
+      { title: "Do 15 minut", label: "bez czekania", categorySlug: "do-15-minut", icon: "15", tone: "sun" },
+      { title: "Pieczywo", label: "tosty i szybkie składanie", categorySlug: "pieczywo", icon: "chleb", tone: "tomato" },
+      { title: "Serowe", label: "ciepłe, proste, sycące", categorySlug: "serowe", icon: "ser", tone: "leaf" },
+      { title: "Bez mięsa", label: "lżej na koniec dnia", categorySlug: "bez-miesa", icon: "wege", tone: "green" }
     ]
   },
   {
@@ -110,10 +114,10 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Dla gości",
     helper: "Proste rzeczy do postawienia na stole albo zrobienia hurtowo.",
     tiles: [
-      { title: "Do podziału", label: "wrapy, patelnie, miski", filter: { type: "query", value: "tortilla" }, icon: "share", tone: "fire" },
-      { title: "Tanie", label: "więcej porcji bez dramatu", filter: { type: "tag", value: "tanie" }, icon: "zł", tone: "sun" },
-      { title: "Bez mięsa", label: "dla różnych gości", filter: { type: "tag", value: "bez mięsa" }, icon: "wege", tone: "green" },
-      { title: "Mało zmywania", label: "łatwiejszy koniec wieczoru", filter: { type: "tag", value: "mało zmywania" }, icon: "1", tone: "leaf" }
+      { title: "Do podziału", label: "wrapy, patelnie, miski", categorySlug: "do-podzialu", icon: "share", tone: "fire" },
+      { title: "Tanie", label: "więcej porcji bez dramatu", categorySlug: "tanie", icon: "zł", tone: "sun" },
+      { title: "Bez mięsa", label: "dla różnych gości", categorySlug: "bez-miesa", icon: "wege", tone: "green" },
+      { title: "Mało zmywania", label: "łatwiejszy koniec wieczoru", categorySlug: "malo-zmywania", icon: "1", tone: "leaf" }
     ]
   },
   {
@@ -121,10 +125,10 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Na dziś",
     helper: "Dania, które nie obrażają się na pudełko i odgrzewanie.",
     tiles: [
-      { title: "Na dwa dni", label: "dzisiaj i do pracy", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" },
-      { title: "Ryż", label: "dobry do pudełka", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "blue" },
-      { title: "Jednogarnkowe", label: "mniej pilnowania", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "green" },
-      { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "sun" }
+      { title: "Na dwa dni", label: "dzisiaj i do pracy", categorySlug: "na-dwa-dni", icon: "2", tone: "tomato" },
+      { title: "Ryż", label: "dobry do pudełka", categorySlug: "ryz", icon: "ryż", tone: "blue" },
+      { title: "Jednogarnkowe", label: "mniej pilnowania", categorySlug: "jednogarnkowe", icon: "gar", tone: "green" },
+      { title: "Z resztek", label: "drugie życie lodówki", categorySlug: "z-resztek", icon: "mix", tone: "sun" }
     ]
   },
   {
@@ -132,10 +136,10 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Dla dzieci",
     helper: "Łagodniejsze pewniaki, które łatwiej przechodzą przy stole.",
     tiles: [
-      { title: "Dla dzieci", label: "łagodne i znane smaki", filter: { type: "tag", value: "dla dzieci" }, icon: "dom", tone: "sun" },
-      { title: "Kurczak", label: "prosty obiad bez kombinowania", filter: { type: "query", value: "kurczak" }, icon: "gar", tone: "tomato" },
-      { title: "Ryż", label: "bezpieczna baza obiadu", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
-      { title: "Do 30 minut", label: "szybko na głód", filter: { type: "tag", value: "do 30 minut" }, icon: "30", tone: "green" }
+      { title: "Dla dzieci", label: "łagodne i znane smaki", categorySlug: "dla-dzieci", icon: "dom", tone: "sun" },
+      { title: "Kurczak", label: "prosty obiad bez kombinowania", categorySlug: "kurczak", icon: "gar", tone: "tomato" },
+      { title: "Ryż", label: "bezpieczna baza obiadu", categorySlug: "ryz", icon: "ryż", tone: "leaf" },
+      { title: "Do 30 minut", label: "szybko na głód", categorySlug: "szybkie", icon: "30", tone: "green" }
     ]
   },
   {
@@ -143,46 +147,26 @@ const categoryModeConfigs: CategoryModeConfig[] = [
     title: "Na dwa dni",
     helper: "Dania do pudełka, na jutro albo na więcej niż jeden posiłek.",
     tiles: [
-      { title: "Na dwa dni", label: "dzisiaj i później", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" },
-      { title: "Jednogarnkowe", label: "łatwo odgrzać", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "sun" },
-      { title: "Ryż", label: "dobry do pudełka", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
-      { title: "Z resztek", label: "zostaje coś na później", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "green" }
+      { title: "Na dwa dni", label: "dzisiaj i później", categorySlug: "na-dwa-dni", icon: "2", tone: "tomato" },
+      { title: "Jednogarnkowe", label: "łatwo odgrzać", categorySlug: "jednogarnkowe", icon: "gar", tone: "sun" },
+      { title: "Ryż", label: "dobry do pudełka", categorySlug: "ryz", icon: "ryż", tone: "leaf" },
+      { title: "Z resztek", label: "zostaje coś na później", categorySlug: "z-resztek", icon: "mix", tone: "green" }
     ]
   }
 ];
 
-function getRecipeCountLabel(count: number) {
-  if (count === 1) return "1 przepis";
-  if (count > 1 && count < 5) return `${count} przepisy`;
-  return `${count} przepisów`;
+function getTileFilter(tile: CategoryTileConfig) {
+  if (tile.filter) return tile.filter;
+
+  const category = tile.categorySlug ? getRecipeCategory(tile.categorySlug) : undefined;
+  return category?.filter ?? { type: "all" };
 }
 
-function getRecipeSearchText(recipe: CollectionEntry<"recipes">) {
-  return [
-    recipe.data.title,
-    recipe.data.summary,
-    recipe.data.description,
-    recipe.data.effort,
-    recipe.data.mood,
-    recipe.data.cost,
-    ...recipe.data.tags,
-    ...recipe.data.mainIngredients,
-    ...recipe.data.searchAliases
-  ].join(" ").toLowerCase();
-}
+function getCategoryHref(tile: CategoryTileConfig) {
+  if (tile.filter?.type === "all") return "/przepisy";
+  if (!tile.categorySlug) return "/przepisy";
 
-function matchesCategoryFilter(recipe: CollectionEntry<"recipes">, filter: CategoryFilter) {
-  if (filter.type === "all") return true;
-  if (filter.type === "tag") return recipe.data.tags.includes(filter.value);
-
-  return getRecipeSearchText(recipe).includes(filter.value.toLowerCase());
-}
-
-function getCategoryHref(filter: CategoryFilter) {
-  if (filter.type === "all") return "/przepisy";
-
-  const param = filter.type === "tag" ? "tag" : "q";
-  return `/przepisy?${param}=${encodeURIComponent(filter.value)}`;
+  return `/kategorie/${tile.categorySlug}`;
 }
 
 function getCategoryIcon(icon: string) {
@@ -194,11 +178,14 @@ function buildCategoryMode(mode: CategoryModeConfig): CategoryMode {
   return {
     ...mode,
     tiles: mode.tiles.map((tile) => {
-      const count = recipes.filter((recipe) => matchesCategoryFilter(recipe, tile.filter)).length;
+      const category = tile.categorySlug ? getRecipeCategory(tile.categorySlug) : undefined;
+      const count = category
+        ? getCategoryRecipes(recipes, category).length
+        : recipes.filter((recipe) => matchesCategoryFilter(recipe, getTileFilter(tile))).length;
 
       return {
         ...tile,
-        href: getCategoryHref(tile.filter),
+        href: getCategoryHref(tile),
         countLabel: getRecipeCountLabel(count)
       };
     })

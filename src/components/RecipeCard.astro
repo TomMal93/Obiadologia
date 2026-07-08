@@ -8,6 +8,7 @@ interface Props {
   variant?: "catalog" | "result";
   homeResult?: boolean;
   initiallyHidden?: boolean;
+  fullWidthContent?: boolean;
 }
 
 const {
@@ -16,7 +17,8 @@ const {
   compact = false,
   variant = "catalog",
   homeResult = false,
-  initiallyHidden = false
+  initiallyHidden = false,
+  fullWidthContent = false
 } = Astro.props;
 const tone = `tone-${(index % 5) + 1}`;
 const href = `/przepisy/${recipe.id}`;
@@ -30,7 +32,7 @@ const tags = variant === "result" ? resultTags : catalogTags;
 ---
 
 <a
-  class:list={["recipe-card", `recipe-card--${variant}`, tone, { compact, "is-hidden": initiallyHidden }]}
+  class:list={["recipe-card", `recipe-card--${variant}`, tone, { compact, "is-hidden": initiallyHidden, "full-width-content": fullWidthContent }]}
   href={href}
   data-recipe-card
   data-recipe-id={recipe.id}
@@ -44,10 +46,10 @@ const tags = variant === "result" ? resultTags : catalogTags;
   data-effort={recipe.data.effort}
   data-mood={recipe.data.mood}
 >
+  <div class="meta-row">
+    {tags.map((tag) => <span class="meta">{tag}</span>)}
+  </div>
   <div class="recipe-content">
-    <div class="meta-row">
-      {tags.map((tag) => <span class="meta">{tag}</span>)}
-    </div>
     <h3>{recipe.data.title}</h3>
     <p>{recipe.data.summary}</p>
     {variant === "catalog" && <span class="recipe-action">Zobacz przepis</span>}
@@ -75,7 +77,20 @@ const tags = variant === "result" ? resultTags : catalogTags;
     min-width: 0;
   }
 
+  .recipe-card.full-width-content {
+    grid-template-columns: 1fr;
+  }
+
+  .recipe-card.full-width-content .recipe-content {
+    width: 100%;
+  }
+
+  .recipe-card.full-width-content .recipe-thumb {
+    display: none;
+  }
+
   .meta-row {
+    grid-column: 1 / -1;
     margin-bottom: 9px;
   }
 
