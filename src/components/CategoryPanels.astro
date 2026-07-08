@@ -37,10 +37,7 @@ interface CategoryMode extends Omit<CategoryModeConfig, "tiles"> {
 
 const { recipes } = Astro.props;
 
-const placeholderModes = [
-  { title: "Lunch", mobileSlot: "lunch" },
-  { title: "Plan", mobileSlot: "plan" }
-] as const;
+const placeholderModes = [] as const;
 const categoryPanelTileCount = 6;
 
 const categoryIconPaths: Record<string, string> = {
@@ -110,7 +107,7 @@ const categoryModeConfigs: CategoryModeConfig[] = [
   },
   {
     id: "party",
-    title: "Impreza",
+    title: "Dla gości",
     helper: "Proste rzeczy do postawienia na stole albo zrobienia hurtowo.",
     tiles: [
       { title: "Do podziału", label: "wrapy, patelnie, miski", filter: { type: "query", value: "tortilla" }, icon: "share", tone: "fire" },
@@ -128,6 +125,28 @@ const categoryModeConfigs: CategoryModeConfig[] = [
       { title: "Ryż", label: "dobry do pudełka", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "blue" },
       { title: "Jednogarnkowe", label: "mniej pilnowania", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "green" },
       { title: "Z resztek", label: "drugie życie lodówki", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "sun" }
+    ]
+  },
+  {
+    id: "kids",
+    title: "Dla dzieci",
+    helper: "Łagodniejsze pewniaki, które łatwiej przechodzą przy stole.",
+    tiles: [
+      { title: "Dla dzieci", label: "łagodne i znane smaki", filter: { type: "tag", value: "dla dzieci" }, icon: "dom", tone: "sun" },
+      { title: "Kurczak", label: "prosty obiad bez kombinowania", filter: { type: "query", value: "kurczak" }, icon: "gar", tone: "tomato" },
+      { title: "Ryż", label: "bezpieczna baza obiadu", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
+      { title: "Do 30 minut", label: "szybko na głód", filter: { type: "tag", value: "do 30 minut" }, icon: "30", tone: "green" }
+    ]
+  },
+  {
+    id: "future",
+    title: "Na dwa dni",
+    helper: "Dania do pudełka, na jutro albo na więcej niż jeden posiłek.",
+    tiles: [
+      { title: "Na dwa dni", label: "dzisiaj i później", filter: { type: "tag", value: "na dwa dni" }, icon: "2", tone: "tomato" },
+      { title: "Jednogarnkowe", label: "łatwo odgrzać", filter: { type: "tag", value: "jednogarnkowe" }, icon: "gar", tone: "sun" },
+      { title: "Ryż", label: "dobry do pudełka", filter: { type: "query", value: "ryż" }, icon: "ryż", tone: "leaf" },
+      { title: "Z resztek", label: "zostaje coś na później", filter: { type: "tag", value: "z resztek" }, icon: "mix", tone: "green" }
     ]
   }
 ];
@@ -960,7 +979,7 @@ function getCategoryRowTone(index: number) {
 
     [data-category-mode="party"] {
       grid-column: 1;
-      grid-row: 3;
+      grid-row: 4;
     }
 
     [data-category-mode="tomorrow"] {
@@ -968,12 +987,12 @@ function getCategoryRowTone(index: number) {
       grid-row: 3;
     }
 
-    .category-mode--placeholder-lunch {
+    [data-category-mode="kids"] {
       grid-column: 1;
-      grid-row: 4;
+      grid-row: 3;
     }
 
-    .category-mode--placeholder-plan {
+    [data-category-mode="future"] {
       grid-column: 4;
       grid-row: 4;
     }
