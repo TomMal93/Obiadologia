@@ -228,11 +228,11 @@ function getCategoryPanelPlaceholders(tileCount: number) {
       <strong data-category-mode-title>{initialMode.title}</strong>
     </div>
 
-    <div class="category-mode-action">
-      <p>Teraz wybierz konkretny skrót do przepisów.</p>
-    </div>
-
     <div class="category-panels">
+      <div class="category-mode-action">
+        <p>Teraz wybierz konkretny skrót do przepisów.</p>
+      </div>
+
       {categoryModes.map((mode, index) => (
         <div
           class:list={["category-panel", { "is-active": index === 0 }]}
@@ -417,7 +417,7 @@ function getCategoryPanelPlaceholders(tileCount: number) {
 
   .category-mode-action {
     margin: 10px auto 0;
-    max-width: 320px;
+    width: 100%;
     display: grid;
     justify-items: center;
     gap: 5px;
@@ -482,11 +482,14 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     --category-panels-bg-top: -102px;
     --category-panels-bg-x: -12px;
     --category-panels-min-height: auto;
+    --category-frame-padding: 10px;
     position: relative;
     isolation: isolate;
     display: grid;
+    width: calc(100% + (var(--category-frame-padding) * 2));
     min-height: var(--category-panels-min-height);
-    margin-top: 14px;
+    margin: 14px calc(var(--category-frame-padding) * -1) calc(var(--category-frame-padding) * -1);
+    padding: 0 var(--category-frame-padding) var(--category-frame-padding);
   }
 
   .category-panels::before {
@@ -957,13 +960,12 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     }
 
     .category-mode-action {
-      order: 5;
+      order: 0;
       grid-column: 1 / -1;
       display: grid;
-      margin: 8px auto 0;
-      max-width: 310px;
+      margin: 0 auto 12px;
       gap: 8px;
-      padding-top: 13px;
+      padding-top: 0;
     }
 
     .category-mode-action p {
@@ -975,11 +977,21 @@ function getCategoryPanelPlaceholders(tileCount: number) {
     }
 
     .category-panels {
-      --category-panels-bg-top: -96px;
+      --category-panels-bg-top: -10px;
+      --category-panels-bg-x: 0px;
       --category-panels-min-height: 368px;
       order: 6;
       grid-column: 1 / -1;
       margin-top: 6px;
+    }
+
+    .category-panels::before {
+      inset: var(--category-panels-bg-top) 0 0;
+      background:
+        linear-gradient(180deg, rgba(255, 112, 82, 0.08) 0%, rgba(255, 112, 82, 0.18) 5%, rgba(255, 112, 82, 0.23) 10%, rgba(255, 112, 82, 0.24) 100%);
+      box-shadow: inset 0 0 0 2px rgba(255, 90, 61, 0.2);
+      -webkit-mask-image: none;
+      mask-image: none;
     }
 
     .category-panel {
