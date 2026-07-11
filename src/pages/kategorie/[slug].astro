@@ -40,7 +40,7 @@ const categoryRecipes = getCategoryRecipes(recipes, category);
   <section class="category-layout">
     {categoryRecipes.length > 0 ? (
       <div class="recipe-grid">
-        {categoryRecipes.map((recipe, index) => <RecipeCard recipe={recipe} index={index} fullWidthContent />)}
+        {categoryRecipes.map((recipe, index) => <RecipeCard recipe={recipe} index={index} variant="category" fullWidthContent />)}
       </div>
     ) : (
       <p class="empty-state">Ta kategoria czeka jeszcze na pierwsze przepisy.</p>
@@ -85,6 +85,7 @@ const categoryRecipes = getCategoryRecipes(recipes, category);
   .recipe-grid {
     display: grid;
     gap: 12px;
+    grid-template-columns: 1fr;
   }
 
   .empty-state {
@@ -122,6 +123,7 @@ const categoryRecipes = getCategoryRecipes(recipes, category);
   @media (min-width: 700px) {
     .recipe-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
   }
 
