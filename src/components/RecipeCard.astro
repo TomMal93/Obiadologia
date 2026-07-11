@@ -46,14 +46,31 @@ const tags = variant === "result" ? resultTags : catalogTags;
   data-effort={recipe.data.effort}
   data-mood={recipe.data.mood}
 >
-  <div class="meta-row">
-    {tags.map((tag) => <span class="meta">{tag}</span>)}
-  </div>
-  <div class="recipe-content">
-    <h3>{recipe.data.title}</h3>
-    <p>{recipe.data.summary}</p>
-    {variant === "catalog" && <span class="recipe-action">Zobacz przepis</span>}
-  </div>
+  {fullWidthContent ? (
+    <>
+      <div class="recipe-content">
+        <h3>{recipe.data.title}</h3>
+        <p>{recipe.data.summary}</p>
+      </div>
+      <div class="recipe-footer">
+        <div class="meta-row">
+          {tags.map((tag) => <span class="meta">{tag}</span>)}
+        </div>
+        {variant === "catalog" && <span class="recipe-action">Zobacz przepis</span>}
+      </div>
+    </>
+  ) : (
+    <>
+      <div class="meta-row">
+        {tags.map((tag) => <span class="meta">{tag}</span>)}
+      </div>
+      <div class="recipe-content">
+        <h3>{recipe.data.title}</h3>
+        <p>{recipe.data.summary}</p>
+        {variant === "catalog" && <span class="recipe-action">Zobacz przepis</span>}
+      </div>
+    </>
+  )}
   <div class="recipe-thumb" aria-hidden="true"></div>
 </a>
 
@@ -83,6 +100,10 @@ const tags = variant === "result" ? resultTags : catalogTags;
 
   .recipe-card.full-width-content .recipe-content {
     width: 100%;
+  }
+
+  .recipe-footer {
+    grid-column: 1 / -1;
   }
 
   .recipe-card.full-width-content .recipe-thumb {
@@ -189,6 +210,54 @@ const tags = variant === "result" ? resultTags : catalogTags;
   @media (min-width: 960px) {
     .recipe-card--result:first-child {
       grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 699px) {
+    .recipe-card.full-width-content {
+      grid-template-columns: 1fr;
+    }
+
+    .recipe-card.full-width-content .recipe-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 12px 0 0;
+    }
+
+    .recipe-card.full-width-content .meta-row {
+      min-width: 0;
+      flex: 1 1 auto;
+      margin: 0;
+      gap: 0;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: start;
+      justify-content: start;
+    }
+
+    .recipe-card.full-width-content .meta {
+      padding: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .recipe-card.full-width-content .meta:not(:last-child)::after {
+      content: none;
+    }
+
+    .recipe-card.full-width-content .recipe-action {
+      flex: 0 0 auto;
+      width: max-content;
+      min-height: 0;
+      height: calc(3 * 12px * 1.35);
+      align-self: flex-start;
+      margin-top: 0;
     }
   }
 </style>
