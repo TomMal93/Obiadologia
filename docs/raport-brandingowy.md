@@ -46,7 +46,7 @@ Paleta (`global.css:1-17`): krem `#fff7ea`, tekst `#251a14`, pomarańcz `#ff5a3d
 | Teksty `rgba(37,26,20,.58)` (helpery, cues 11–13 px) | **4.12** | ❌ FAIL przy tym rozmiarze |
 | `#2f76a8` / niebieskie szkło (przycisk „Mapa", 16 px bold) | 4.37 | ❌ o włos poniżej AA |
 
-Wniosek: **główny kolor akcji jest za jasny do roli, którą pełni**. `#ff5a3d` z białym tekstem na każdym CTA to systemowy fail dostępności. Wystarczy przyciemnić akcent interakcji (np. w stronę `#e8452a`–`#d63e25`) albo dawać ciemny tekst na jasnym akcencie — bez zmiany charakteru palety.
+Wniosek: **główny kolor akcji jest za jasny do roli, którą pełni**. `#ff5a3d` z białym tekstem na każdym CTA to systemowy fail dostępności. Wystarczy przyciemnić akcent interakcji do `#cf3b22` (biały tekst: **4.88:1** ✅, a jako tekst na kremie: **4.59:1** ✅ — pomiar skryptem) albo dawać ciemny tekst na jasnym akcencie — bez zmiany charakteru palety.
 
 Drugi problem: kolory są **rozmyte przez rgba i szkło**. Realnie na stronie występują dziesiątki pochodnych (`rgba(37,26,20,.58/.66/.7/.72/.84)`, `#9a4a35`, `#80601a`, `#2f76a8`, `#c96a57`…), niezdefiniowanych w `:root`. Nie ma jednego źródła prawdy o kolorze marki.
 
@@ -110,7 +110,7 @@ Wspólny mianownik wszystkich kierunków (rzeczy obowiązkowe niezależnie od wy
 
 - **Sygnet:** talerz-kompas — okrąg talerza z igłą/widelcem wskazującym kierunek (dosłowna metafora decyzyjnika). Prosty, geometryczny, działa w 16 px favicony i w 512 px OG. Logotyp: „Obiadologia" nowym krojem display, kropka nad „i" w kolorze akcentu.
 - **Typografia:** nagłówki **Bricolage Grotesque** (Google Fonts, zmienny, pełne polskie znaki, charakterny ale kulinarnie ciepły; self-hosted przez `astro-font` lub woff2 w repo) — waga 700–800, tracking −0.02 do −0.04 em (koniec z −0.08). Tekst: zostaje Inter (variable), ale w zdyscyplinowanej skali: 12 / 14 / 16 / 18 / 21 / 28 / 40 / 64 px i tylko 3 wagi (450, 600, 750).
-- **Kolor:** paleta zostaje, ale z rolami: `#fff7ea` tło · `#251a14` tekst · **`#e8452a` akcja** (biały na nim: 4.6:1 ✅) · `#ff5a3d` tylko dekoracyjnie/duże napisy na ciemnym · `#ffc857` podkreślenia i tła chipów · `#2f8f5b` sukces/wege. Wszystkie pochodne rgba zastąpione 8–10 nazwanymi tokenami.
+- **Kolor:** paleta zostaje, ale z rolami: `#fff7ea` tło · `#251a14` tekst · **`#cf3b22` akcja** (biały na nim: 4.88:1 ✅) · `#ff5a3d` tylko dekoracyjnie/duże napisy na ciemnym · `#ffc857` podkreślenia i tła chipów · `#2f8f5b` sukces/wege. Wszystkie pochodne rgba zastąpione 8–10 nazwanymi tokenami.
 - **Ilustracje potraw:** spójny zestaw SVG w stylu „duotone na kremie" (linia `#251a14` + wypełnienia z palety) — miska ryżu, patelnia, garnek, tost, curry… Generowalne raz, ważą kilobajty, nie wymagają sesji foto i skalują się na OG images per przepis (tytuł + ilustracja na kremowym tle).
 - **Szkło → papier:** jeden poziom kart („papier" `#fffdf8`, 1 px border, jeden token cienia), glassmorphism zostaje **tylko** w jednym miejscu-bohaterze (kafle Mapa/Szukaj/Kategorie), identyczny na mobile i desktopie.
 - **Ruch:** marquee pytań zostaje jako podpis marki, ale wyciszony (desktop: opacity ≤ 0.03, większy rozmiar, 3–4 rzędy zamiast 8) i tylko na stronie głównej. Jedna sygnaturowa animacja: „igła kompasu" w sygnecie wskazująca wynik po wyszukaniu.
@@ -132,7 +132,7 @@ Wspólny mianownik wszystkich kierunków (rzeczy obowiązkowe niezależnie od wy
 **Idea:** pełny flat, grube obrysy 2–3 px, naklejkowe kafle, mocne kolory — energia aplikacji, nie strony.
 
 - Typografia: zaokrąglony grotesk o dużym charakterze (np. **Baloo 2** / **Hanken Grotesk** black) + krótkie, krzykliwe copy (już jest!).
-- Kolor: podbita paleta — pomidor `#e8452a`, masło `#ffd166`, szpinak `#2f8f5b`, krem — używane w dużych, płaskich plamach; cienie twarde (offset bez blura).
+- Kolor: podbita paleta — pomidor `#cf3b22`, masło `#ffd166`, szpinak `#2f8f5b`, krem — używane w dużych, płaskich plamach; cienie twarde (offset bez blura).
 - Ilustracje: sticker-style potraw z białym obrysem; badge'y „15 MIN!", „1 GARNEK!" jak naklejki na słoiku.
 - Wow: interfejs „lodówki z magnesami" — kafle kategorii jak magnesy, drag-scroll.
 - Ryzyko: łatwo o infantylność; wymaga bardzo konsekwentnej ręki ilustratorskiej. **Koszt średni-wysoki.**
@@ -153,7 +153,7 @@ Wspólny mianownik wszystkich kierunków (rzeczy obowiązkowe niezależnie od wy
 
 1. **Favicona + apple-touch-icon** — nawet tymczasowa, z inicjałem „O" na pomarańczy.
 2. **`og:image`** — jeden statyczny obraz 1200×630 (tytuł + paleta marki) w `BaseLayout.astro`.
-3. **Kontrast przycisków:** akcent interakcji `#ff5a3d` → `#e8452a` (biały tekst: 4.6:1 ✅). Jedna zmienna w `:root`.
+3. **Kontrast przycisków:** akcent interakcji `#ff5a3d` → `#cf3b22` (biały tekst: 4.88:1 ✅). Jedna zmienna w `:root`.
 4. **Łamanie wyrazów:** usunąć `overflow-wrap: anywhere` z `h1–h3` (`global.css:237-242`), zostawić na akapitach; dla H1 dodać `text-wrap: balance`. Naprawia „pomidoram / i" i „Śniadani / e".
 5. **Ucięte pigułki trybów na desktopie:** w `.category-mode-picker` (media ≥700 px, `CategoryPanels.astro`) zamienić `justify-content:center` na `safe center` lub margines auto na trackach.
 6. **Footer:** logo, 4 linki nawigacji, mail kontaktowy, © — 30 minut pracy, duży skok wiarygodności.
