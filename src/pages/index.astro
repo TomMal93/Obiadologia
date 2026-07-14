@@ -37,7 +37,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     <div class="home-subtitle" data-decision-launcher aria-label="Szybki wybór obiadu">
       <div class="home-subtitle-card">
         <span class="home-subtitle-main">
-          <span style="display: block;">Odwieczny problem z tym, co ugotować, nie musi już psuć Ci apetytu.</span>
+          <span style="display: block;">Odwieczny problem z tym, co ugotować, nie musi psuć Ci apetytu.</span>
         </span>
 
         <div class="decision-preview">
@@ -46,7 +46,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
           </svg>
 
           <div class="decision-preview-copy">
-            <p>Zdejmujemy z Ciebie ciężar decyzji, wyznaczając najkrótszą drogę od burczenia w brzuchu do pełnego talerza.</p>
+            <p>Zdejmujemy z Ciebie ciężar decyzji — od burczenia w brzuchu do pełnego talerza.</p>
           </div>
         </div>
 
@@ -54,8 +54,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
       <div class="decision-start" aria-label="Sposoby rozpoczęcia wyboru obiadu">
         <span class="decision-start-frame" aria-hidden="true"></span>
-        <span>Wybierz najbliższą myśl:</span>
-        <span class="decision-start-helper">Do obiadu prowadzi mnie:</span>
+        <span>Zależy…</span>
         <span class="decision-start-guides" aria-hidden="true">
           <svg class="decision-start-guides-svg" viewBox="0 0 408 46" preserveAspectRatio="none" focusable="false">
             <path class="decision-start-guide decision-start-guide--map" d="M176 2 C124 8 83 17 56 43" />
@@ -66,34 +65,35 @@ const searchDocuments = recipes.map(({ id, data }) => ({
         <div class="home-subtitle-rotator">
           <div class="decision-cues" aria-hidden="true">
             <span class="decision-cue decision-cue--pantry">
-              <span>Poszukiwania</span>
-              <span>inspiracja</span>
-              <span>nastrój</span>
+              <span class="decision-cue-title">od czasu i siły</span>
+              <span>„konkretny obiad”</span>
+              <span>„coś lekkiego”</span>
+              <span>„byle szybko”</span>
               <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--craving">
-              <span>konkretne danie</span>
-              <span>składnik</span>
-              <span>ochota</span>
-              <span>smak</span>
+              <span class="decision-cue-title">od tego, co mam</span>
+              <span>„resztki z wczoraj”</span>
+              <span>„makaron?”</span>
+              <span>„kurczak?”</span>
               <span class="decision-cue-arrow"></span>
             </span>
             <span class="decision-cue decision-cue--speed">
-              <span>okazja</span>
-              <span>sytuacja</span>
-              <span>wena</span>
-              <span>tempo</span>
+              <span class="decision-cue-title">od okazji</span>
+              <span>„na dwa dni”</span>
+              <span>„śniadanie”</span>
+              <span>„goście”</span>
               <span class="decision-cue-arrow"></span>
             </span>
           </div>
           <div class="decision-option-list">
-            <button class="decision-option" type="button" data-open-decision="map">
+            <button class="decision-option" type="button" data-open-decision="map" aria-label="Mapa smaków — gdy zależy od czasu i siły">
               <span>Mapa</span>
             </button>
-            <button class="decision-option" type="button" data-open-decision="search">
+            <button class="decision-option" type="button" data-open-decision="search" aria-label="Szukaj — gdy zależy od tego, co masz">
               <span>Szukaj</span>
             </button>
-            <button class="decision-option" type="button" data-scroll-to-categories>
+            <button class="decision-option" type="button" data-scroll-to-categories aria-label="Kategorie — gdy zależy od okazji">
               <span>Kategorie</span>
             </button>
           </div>
@@ -989,7 +989,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
   .decision-cue {
     position: relative;
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: auto repeat(3, 1fr);
     align-items: center;
     align-content: stretch;
     justify-items: center;
@@ -997,6 +997,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     min-height: 88px;
     padding: 14px 7px 0;
     text-wrap: balance;
+  }
+
+  .decision-cue-title {
+    font-weight: 800;
   }
 
   .decision-cue > span:not(.decision-cue-arrow) {
@@ -1223,6 +1227,10 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       transform: translateY(10px);
     }
 
+    .home-hero-copy .home-title span {
+      color: #cf3b22;
+    }
+
     .home-subtitle::before,
     .home-subtitle::after {
       display: none;
@@ -1285,15 +1293,15 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
     .home-subtitle-card::before {
       inset: 1px auto auto 1px;
-      border-top: 2px solid rgba(255, 90, 61, 0.58);
-      border-left: 2px solid rgba(255, 90, 61, 0.58);
+      border-top: 2px solid rgba(207, 59, 34, 0.62);
+      border-left: 2px solid rgba(207, 59, 34, 0.62);
       border-radius: 14px 0 0 0;
     }
 
     .home-subtitle-card::after {
       inset: 1px 1px auto auto;
-      border-top: 2px solid rgba(255, 90, 61, 0.58);
-      border-right: 2px solid rgba(255, 90, 61, 0.58);
+      border-top: 2px solid rgba(207, 59, 34, 0.62);
+      border-right: 2px solid rgba(207, 59, 34, 0.62);
       border-radius: 0 14px 0 0;
     }
 
@@ -1571,15 +1579,15 @@ const searchDocuments = recipes.map(({ id, data }) => ({
 
     .decision-start::before {
       inset: auto auto 1px 1px;
-      border-bottom: 2px solid rgba(255, 90, 61, 0.58);
-      border-left: 2px solid rgba(255, 90, 61, 0.58);
+      border-bottom: 2px solid rgba(207, 59, 34, 0.62);
+      border-left: 2px solid rgba(207, 59, 34, 0.62);
       border-radius: 0 0 0 14px;
     }
 
     .decision-start::after {
       inset: auto 1px 1px auto;
-      border-right: 2px solid rgba(255, 90, 61, 0.58);
-      border-bottom: 2px solid rgba(255, 90, 61, 0.58);
+      border-right: 2px solid rgba(207, 59, 34, 0.62);
+      border-bottom: 2px solid rgba(207, 59, 34, 0.62);
       border-radius: 0 0 14px 0;
     }
 
@@ -1649,7 +1657,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       z-index: 2;
       width: 22px;
       height: 22px;
-      border-color: rgba(255, 90, 61, 0.62);
+      border-color: rgba(207, 59, 34, 0.62);
       border-width: 2px;
       pointer-events: none;
     }
@@ -1720,7 +1728,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       bottom: 0;
       width: 22px;
       height: 22px;
-      border-color: rgba(255, 90, 61, 0.62);
+      border-color: rgba(207, 59, 34, 0.62);
       border-width: 2px;
       pointer-events: none;
     }
@@ -1747,20 +1755,12 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       margin: 0 auto;
       max-width: 280px;
       color: rgba(37, 26, 20, 0.76);
-      font-size: 17px;
+      font-size: 19px;
       font-weight: 950;
       line-height: 1.08;
       text-align: center;
       text-wrap: balance;
       transform: none;
-    }
-
-    .decision-start > span.decision-start-helper {
-      margin-top: 5px;
-      color: rgba(37, 26, 20, 0.58);
-      font-size: 15px;
-      font-weight: 650;
-      line-height: 1.12;
     }
 
     .decision-start-guides {
@@ -1835,12 +1835,18 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       min-height: 0;
       padding: 14px 5px 31px;
       display: grid;
-      grid-template-rows: repeat(3, 1fr);
+      grid-template-rows: auto repeat(3, 1fr);
       align-items: center;
       justify-items: center;
       gap: 2px;
-      color: rgba(37, 26, 20, 0.58);
+      color: #28648f;
       text-wrap: balance;
+    }
+
+    .decision-cue-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      line-height: 1.1;
     }
 
     .decision-cue::before,
@@ -1868,27 +1874,27 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       clip-path: polygon(0 0, 100% 0, calc(100% - var(--cue-edge)) 100%, var(--cue-edge) 100%);
       background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent 42%),
-        linear-gradient(90deg, rgba(var(--cue-rgb), 0.2) 0 1px, transparent 1px calc(100% - 1px), rgba(var(--cue-rgb), 0.2) calc(100% - 1px));
-      opacity: 0.52;
+        linear-gradient(90deg, rgba(var(--cue-rgb), 0.42) 0 1.5px, transparent 1.5px calc(100% - 1.5px), rgba(var(--cue-rgb), 0.42) calc(100% - 1.5px));
+      opacity: 0.72;
     }
 
     .decision-cue--pantry,
     .decision-cue--craving,
     .decision-cue--speed {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 650;
     }
 
     .decision-cue--craving {
       --cue-rgb: 255, 90, 61;
       --cue-line: rgba(214, 62, 37, 0.32);
-      grid-template-rows: repeat(4, 1fr);
+      color: #9a4a35;
     }
 
     .decision-cue--speed {
       --cue-rgb: 37, 176, 98;
       --cue-line: rgba(20, 132, 72, 0.28);
-      grid-template-rows: repeat(4, 1fr);
+      color: #2a6841;
     }
 
     .decision-cue > span:not(.decision-cue-arrow) {
@@ -1897,48 +1903,28 @@ const searchDocuments = recipes.map(({ id, data }) => ({
       z-index: 1;
     }
 
-    .decision-cue > span:not(.decision-cue-arrow):nth-child(1) {
-      transform: translate(-5px, 2px) rotate(-5deg);
-    }
-
     .decision-cue > span:not(.decision-cue-arrow):nth-child(2) {
-      transform: translate(6px, -1px) rotate(4deg);
+      transform: translate(-5px, 1px) rotate(-4deg);
     }
 
     .decision-cue > span:not(.decision-cue-arrow):nth-child(3) {
+      transform: translate(6px, 0) rotate(4deg);
+    }
+
+    .decision-cue > span:not(.decision-cue-arrow):nth-child(4) {
       transform: translate(-2px, 1px) rotate(-3deg);
     }
 
-    .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(1) {
-      transform: translate(-3px, 1px) rotate(4deg);
-    }
-
     .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(2) {
-      transform: translate(-5px, 4px) rotate(-4deg);
+      transform: translate(4px, 1px) rotate(3deg);
     }
 
     .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(3) {
-      transform: translate(10px, 7px) rotate(-3deg);
-    }
-
-    .decision-cue--craving > span:not(.decision-cue-arrow):nth-child(4) {
-      transform: translate(-10px, -4px) rotate(7deg);
-    }
-
-    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(1) {
-      transform: translate(-6px, 2px) rotate(-5deg);
-    }
-
-    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(2) {
-      transform: translate(6px, -2px) rotate(5deg);
-    }
-
-    .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(3) {
-      transform: translate(-3px, 1px) rotate(3deg);
+      transform: translate(-6px, 1px) rotate(-4deg);
     }
 
     .decision-cue--speed > span:not(.decision-cue-arrow):nth-child(4) {
-      transform: translate(4px, -2px) rotate(-4deg);
+      transform: translate(4px, 0) rotate(3deg);
     }
 
     .decision-cue-arrow {
@@ -2058,6 +2044,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     .decision-start .home-subtitle-mode {
       justify-self: start;
       width: 6.8ch;
+      color: #cf3b22;
       font-size: 15px;
       font-weight: 900;
       line-height: 1.1;
@@ -2090,12 +2077,7 @@ const searchDocuments = recipes.map(({ id, data }) => ({
     }
 
     .decision-start > span:not(.decision-start-frame) {
-      font-size: 16px;
-    }
-
-    .decision-start > span.decision-start-helper {
-      margin-top: 2px;
-      font-size: 14px;
+      font-size: 17px;
     }
 
     .home-subtitle-card .home-subtitle-main,
