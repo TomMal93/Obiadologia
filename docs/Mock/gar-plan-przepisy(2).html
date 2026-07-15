@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Gar Plan — Wszystkie przepisy</title>
+
+  <style>
+    :root {
+      --bg: #fff7ea;
+      --text: #251a14;
+      --muted: #7a6658;
+      --card: #fffdf8;
+      --soft: #fff1db;
+      --accent: #ff5a3d;
+      --accent-2: #ffc857;
+      --green: #2f8f5b;
+      --border: rgba(37, 26, 20, 0.12);
+      --shadow: 0 18px 50px rgba(37, 26, 20, 0.12);
+      --radius-lg: 28px;
+      --container: 760px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a, button, input, select, label {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, label { cursor: pointer; }
+
+    .page { position: relative; min-height: 100vh; overflow: hidden; }
+
+    .background-questions {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      padding: 24px;
+      opacity: 0.055;
+      transform: rotate(-8deg) scale(1.12);
+      pointer-events: none;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .blob {
+      position: fixed;
+      z-index: -1;
+      width: 360px;
+      height: 360px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 200, 87, 0.55), transparent 68%);
+      top: -130px;
+      right: -140px;
+      pointer-events: none;
+    }
+
+    .blob.second {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 90, 61, 0.22), transparent 70%);
+      left: -160px;
+      bottom: -140px;
+    }
+
+    header {
+      width: min(100%, var(--container));
+      margin: 0 auto;
+      padding: 18px 18px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 950;
+      letter-spacing: -0.04em;
+      font-size: 20px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 26px rgba(255, 90, 61, 0.32);
+    }
+
+    .menu-button {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.58);
+      border-radius: 999px;
+      padding: 9px 13px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    nav { display: none; }
+
+    main {
+      width: min(100%, var(--container));
+      margin: 0 auto;
+      padding: 34px 18px 74px;
+    }
+
+    .hero { text-align: center; }
+
+    .eyebrow {
+      width: fit-content;
+      margin: 0 auto 14px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 253, 248, 0.78);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      box-shadow: 0 10px 26px rgba(37, 26, 20, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      margin: 0 auto;
+      max-width: 760px;
+      font-size: clamp(50px, 16vw, 86px);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+      font-weight: 950;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .lead {
+      margin: 20px auto 0;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.52;
+      text-align: center;
+    }
+
+    .toolbar {
+      margin-top: 28px;
+      padding: 12px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      display: grid;
+      gap: 10px;
+    }
+
+    .toolbar-main { display: grid; gap: 10px; }
+
+    .toolbar-count {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      border-radius: 17px;
+      background: #fff8ef;
+      border: 1px solid rgba(37, 26, 20, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .toolbar-count strong { color: var(--text); font-weight: 950; }
+
+    .toolbar-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .sort-select {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--card);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      outline: none;
+    }
+
+    .filter-toggle {
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      padding: 0 16px;
+      border-radius: 17px;
+      background: var(--text);
+      color: white;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .active-filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .active-filters::-webkit-scrollbar { display: none; }
+
+    .active-chip {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: var(--text);
+      color: white;
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .active-chip.clear {
+      background: var(--soft);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .catalog-layout {
+      display: grid;
+      gap: 18px;
+      margin-top: 32px;
+      align-items: start;
+    }
+
+    .desktop-filters { display: none; }
+
+    .filter-panel {
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 253, 248, 0.9);
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 34px rgba(37, 26, 20, 0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .filter-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-panel h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+    }
+
+    .filter-clear-link {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .filter-group {
+      padding-top: 16px;
+      margin-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .filter-group:first-of-type {
+      padding-top: 0;
+      margin-top: 0;
+      border-top: 0;
+    }
+
+    .filter-group-title {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: -0.035em;
+    }
+
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-chip input,
+    #filtersOpen {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .filter-chip span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
+      transition: 0.18s ease;
+    }
+
+    .filter-chip input:checked + span {
+      background: var(--text);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(37, 26, 20, 0.14);
+    }
+
+    .filter-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .filter-apply,
+    .filter-clear {
+      min-height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .filter-apply {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 14px 30px rgba(255, 90, 61, 0.24);
+    }
+
+    .filter-clear {
+      background: var(--soft);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .mobile-sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+    }
+
+    #filtersOpen:checked ~ .mobile-sheet { display: block; }
+
+    .sheet-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(37, 26, 20, 0.32);
+    }
+
+    .sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-height: 86vh;
+      padding: 14px 14px 22px;
+      border-radius: 30px 30px 0 0;
+      background: var(--bg);
+      box-shadow: 0 -22px 70px rgba(37, 26, 20, 0.24);
+      overflow-y: auto;
+    }
+
+    .sheet-handle {
+      width: 42px;
+      height: 5px;
+      margin: 0 auto 12px;
+      border-radius: 999px;
+      background: rgba(37, 26, 20, 0.18);
+    }
+
+    .sheet-close {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .recipe-list { min-width: 0; }
+
+    .recipe-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .recipe-card {
+      min-height: 154px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr 106px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(255, 253, 248, 0.88);
+      box-shadow: 0 12px 34px rgba(37, 26, 20, 0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .recipe-content { min-width: 0; }
+
+    .meta-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 9px;
+    }
+
+    .meta {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .recipe-card h3 {
+      margin: 0;
+      font-size: 21px;
+      letter-spacing: -0.045em;
+      line-height: 1.02;
+    }
+
+    .recipe-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .recipe-action {
+      display: inline-grid;
+      place-items: center;
+      min-height: 34px;
+      margin-top: 12px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .recipe-thumb {
+      width: 106px;
+      height: 112px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 35% 35%, #ffd79a 0 13%, transparent 14%),
+        radial-gradient(circle at 62% 42%, #ff795f 0 11%, transparent 12%),
+        radial-gradient(circle at 50% 58%, #2f8f5b 0 9%, transparent 10%),
+        linear-gradient(135deg, #ffe5b8, #ffc857);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .recipe-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 999px;
+      border: 9px solid rgba(255, 253, 248, 0.85);
+    }
+
+    .recipe-card:nth-child(2) .recipe-thumb,
+    .recipe-card:nth-child(7) .recipe-thumb {
+      background:
+        radial-gradient(circle at 38% 38%, #ffefb8 0 13%, transparent 14%),
+        radial-gradient(circle at 62% 55%, #2f8f5b 0 10%, transparent 11%),
+        linear-gradient(135deg, #ffd79a, #ff8a66);
+    }
+
+    .recipe-card:nth-child(3) .recipe-thumb,
+    .recipe-card:nth-child(8) .recipe-thumb {
+      background:
+        radial-gradient(circle at 32% 46%, #fff1db 0 12%, transparent 13%),
+        radial-gradient(circle at 62% 40%, #ffc857 0 11%, transparent 12%),
+        linear-gradient(135deg, #2f8f5b, #b7d88a);
+    }
+
+    .recipe-card:nth-child(4) .recipe-thumb,
+    .recipe-card:nth-child(9) .recipe-thumb {
+      background:
+        radial-gradient(circle at 42% 34%, #fff1db 0 10%, transparent 11%),
+        radial-gradient(circle at 58% 62%, #ff5a3d 0 9%, transparent 10%),
+        linear-gradient(135deg, #ffc857, #fff1db);
+    }
+
+    .recipe-card:nth-child(5) .recipe-thumb,
+    .recipe-card:nth-child(10) .recipe-thumb {
+      background:
+        radial-gradient(circle at 36% 46%, #2f8f5b 0 11%, transparent 12%),
+        radial-gradient(circle at 64% 40%, #ffd79a 0 12%, transparent 13%),
+        linear-gradient(135deg, #ffe5b8, #ff795f);
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .page-link {
+      min-width: 38px;
+      min-height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .page-link.active {
+      background: var(--text);
+      color: white;
+      border-color: transparent;
+    }
+
+    .cta-card {
+      margin-top: 52px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: var(--text);
+      color: white;
+      box-shadow: 0 22px 54px rgba(37, 26, 20, 0.2);
+      display: grid;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .cta-card h2 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 0.95;
+      letter-spacing: -0.065em;
+    }
+
+    .cta-card p {
+      margin: 9px 0 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .cta-button {
+      min-height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-size: 14px;
+      font-weight: 950;
+      box-shadow: 0 14px 30px rgba(255, 90, 61, 0.28);
+    }
+
+    @media (min-width: 700px) {
+      .background-questions {
+        grid-template-columns: repeat(3, 1fr);
+        font-size: 20px;
+      }
+
+      .toolbar-main {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+
+      .toolbar-actions { grid-template-columns: 220px auto; }
+
+      .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .recipe-card { grid-template-columns: 1fr; }
+
+      .recipe-thumb {
+        width: 100%;
+        height: 142px;
+        order: -1;
+      }
+
+      .cta-card {
+        grid-template-columns: 1fr auto;
+        padding: 22px;
+      }
+
+      .cta-button {
+        min-width: 180px;
+        padding: 0 24px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      :root { --container: 1120px; }
+
+      .background-questions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        padding: 40px;
+        font-size: 22px;
+      }
+
+      .blob {
+        width: 520px;
+        height: 520px;
+        top: -160px;
+        right: -120px;
+      }
+
+      .blob.second {
+        width: 460px;
+        height: 460px;
+        left: -140px;
+        bottom: -160px;
+      }
+
+      header { padding-top: 28px; }
+
+      nav {
+        display: flex;
+        gap: 22px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .menu-button,
+      .filter-toggle,
+      .mobile-sheet {
+        display: none !important;
+      }
+
+      main { padding-top: 52px; }
+      .lead { font-size: 20px; }
+
+      .catalog-layout {
+        grid-template-columns: 280px 1fr;
+        gap: 22px;
+      }
+
+      .desktop-filters {
+        position: sticky;
+        top: 22px;
+        display: block;
+      }
+
+      .recipe-grid { grid-template-columns: repeat(3, 1fr); }
+
+      .recipe-card,
+      .filter-panel {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .recipe-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 50px rgba(37, 26, 20, 0.11);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="blob"></div>
+    <div class="blob second"></div>
+
+    <div class="background-questions" aria-hidden="true">
+      <span>wszystkie przepisy</span>
+      <span>gotowe w 15 minut</span>
+      <span>jedna patelnia</span>
+      <span>bez mięsa</span>
+      <span>tanie obiady</span>
+      <span>na dwa dni</span>
+      <span>mało zmywania</span>
+      <span>z resztek</span>
+      <span>kurczak</span>
+      <span>makaron</span>
+      <span>ryż</span>
+      <span>dla dzieci</span>
+    </div>
+
+    <input type="checkbox" id="filtersOpen" />
+
+    <section class="mobile-sheet" aria-label="Filtry">
+      <label class="sheet-backdrop" for="filtersOpen" aria-label="Zamknij filtry"></label>
+
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+
+        <div class="filter-panel">
+          <div class="filter-panel-head">
+            <h2>Filtry</h2>
+            <label class="sheet-close" for="filtersOpen" aria-label="Zamknij">×</label>
+          </div>
+
+          <div class="filter-group">
+            <strong class="filter-group-title">Czas</strong>
+            <div class="filter-options">
+              <label class="filter-chip"><input type="checkbox" checked /><span>do 15 minut</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>do 30 minut</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>do 45 minut</span></label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <strong class="filter-group-title">Typ</strong>
+            <div class="filter-options">
+              <label class="filter-chip"><input type="checkbox" /><span>jednogarnkowe</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>jedna patelnia</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>bez mięsa</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>dla dzieci</span></label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <strong class="filter-group-title">Sytuacja</strong>
+            <div class="filter-options">
+              <label class="filter-chip"><input type="checkbox" /><span>mało zmywania</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>tanie</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>na dwa dni</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>z resztek</span></label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <strong class="filter-group-title">Główny składnik</strong>
+            <div class="filter-options">
+              <label class="filter-chip"><input type="checkbox" /><span>kurczak</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>makaron</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>ryż</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>jajka</span></label>
+              <label class="filter-chip"><input type="checkbox" /><span>warzywa</span></label>
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <label class="filter-apply" for="filtersOpen">Pokaż wyniki</label>
+            <a class="filter-clear" href="#">Wyczyść</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <header>
+      <a href="gar-plan-index-1.html" class="logo" aria-label="Gar Plan — strona główna">
+        <div class="logo-mark">🍳</div>
+        Gar Plan
+      </a>
+
+      <button class="menu-button">Menu</button>
+
+      <nav aria-label="Główna nawigacja">
+        <a href="gar-plan-index-1.html">Strona główna</a>
+        <a href="gar-plan-przepisy.html">Przepisy</a>
+        <a href="gar-plan-o-nas.html">O nas</a>
+        <a href="gar-plan-kontakt.html">Kontakt</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Przepisy</div>
+
+        <h1>Wszystkie <span>przepisy.</span></h1>
+
+        <p class="lead">
+          Pełna lista pomysłów z Gar Planu. Filtruj po czasie, typie obiadu, składnikach i sytuacji.
+        </p>
+
+        <div class="toolbar">
+          <div class="toolbar-main">
+            <div class="toolbar-count">
+              <span><strong>24 przepisy</strong> w katalogu</span>
+            </div>
+
+            <div class="toolbar-actions">
+              <select class="sort-select" aria-label="Sortowanie">
+                <option>Sortuj: najkrótszy czas</option>
+                <option>Sortuj: najnowsze</option>
+                <option>Sortuj: najmniej zmywania</option>
+                <option>Sortuj: najtańsze</option>
+              </select>
+
+              <label class="filter-toggle" for="filtersOpen">Filtry</label>
+            </div>
+          </div>
+
+          <div class="active-filters" aria-label="Aktywne filtry">
+            <span class="active-chip">do 15 minut</span>
+            <span class="active-chip">mało zmywania</span>
+            <a class="active-chip clear" href="#">Wyczyść</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="catalog-layout">
+        <aside class="desktop-filters" aria-label="Filtry przepisów">
+          <div class="filter-panel">
+            <div class="filter-panel-head">
+              <h2>Filtry</h2>
+              <a class="filter-clear-link" href="#">Wyczyść</a>
+            </div>
+
+            <div class="filter-group">
+              <strong class="filter-group-title">Czas</strong>
+              <div class="filter-options">
+                <label class="filter-chip"><input type="checkbox" checked /><span>do 15 minut</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>do 30 minut</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>do 45 minut</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <strong class="filter-group-title">Typ</strong>
+              <div class="filter-options">
+                <label class="filter-chip"><input type="checkbox" /><span>jednogarnkowe</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>jedna patelnia</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>bez mięsa</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>dla dzieci</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <strong class="filter-group-title">Sytuacja</strong>
+              <div class="filter-options">
+                <label class="filter-chip"><input type="checkbox" /><span>mało zmywania</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>tanie</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>na dwa dni</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>z resztek</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <strong class="filter-group-title">Główny składnik</strong>
+              <div class="filter-options">
+                <label class="filter-chip"><input type="checkbox" /><span>kurczak</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>makaron</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>ryż</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>jajka</span></label>
+                <label class="filter-chip"><input type="checkbox" /><span>warzywa</span></label>
+              </div>
+            </div>
+
+            <div class="filter-actions">
+              <a class="filter-apply" href="#">Zastosuj</a>
+              <a class="filter-clear" href="#">Wyczyść</a>
+            </div>
+          </div>
+        </aside>
+
+        <section class="recipe-list" aria-label="Lista przepisów">
+          <div class="recipe-grid">
+            <a class="recipe-card" href="gar-plan-przepis.html">
+              <div class="recipe-content">
+                <div class="meta-row">
+                  <span class="meta">25 min</span>
+                  <span class="meta">1 patelnia</span>
+                  <span class="meta">z resztek</span>
+                </div>
+                <h3>Ryż smażony z jajkiem i warzywami</h3>
+                <p>Szybki obiad z rzeczy, które często są już w kuchni. Dobry sposób na ryż z wczoraj.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">20 min</span><span class="meta">proste</span></div>
+                <h3>Makaron z pomidorami i serem</h3>
+                <p>Opcja bez kombinowania, dobra na dzień bez planu i bez dużych zakupów.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">30 min</span><span class="meta">bez mięsa</span></div>
+                <h3>Curry z warzywami i ryżem</h3>
+                <p>Ciepłe, sycące i wygodne do zrobienia na dwa dni.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">15 min</span><span class="meta">mało zmywania</span></div>
+                <h3>Quesadilla z serem i warzywami</h3>
+                <p>Szybka rzecz z patelni. Działa z tortillą, serem i czymkolwiek chrupiącym.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">35 min</span><span class="meta">na dwa dni</span></div>
+                <h3>Chili z fasolą i ryżem</h3>
+                <p>Prosty garnek, który dobrze znosi odgrzewanie. Dobry na obiad i lunch następnego dnia.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">18 min</span><span class="meta">tanie</span></div>
+                <h3>Jajka w sosie pomidorowym</h3>
+                <p>Coś między szakszuką a obiadem z puszki pomidorów. Mało składników, dużo smaku.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">22 min</span><span class="meta">kurczak</span></div>
+                <h3>Kurczak z ryżem i brokułem</h3>
+                <p>Klasyk na szybko. Jeden obiad, który można łatwo doprawić po swojemu.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">12 min</span><span class="meta">z resztek</span></div>
+                <h3>Tosty francuskie na słono</h3>
+                <p>Dobry ratunek dla starszego pieczywa, jajek i końcówki sera.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+
+            <a class="recipe-card" href="#">
+              <div class="recipe-content">
+                <div class="meta-row"><span class="meta">28 min</span><span class="meta">jednogarnkowe</span></div>
+                <h3>Kasza z pieczarkami i cebulą</h3>
+                <p>Prosty, tani obiad bez mięsa. Dobrze pasuje do ogórka kiszonego albo surówki.</p>
+                <span class="recipe-action">Zobacz przepis</span>
+              </div>
+              <div class="recipe-thumb"></div>
+            </a>
+          </div>
+
+          <nav class="pagination" aria-label="Paginacja">
+            <a class="page-link active" href="#">1</a>
+            <a class="page-link" href="#">2</a>
+            <a class="page-link" href="#">3</a>
+          </nav>
+        </section>
+      </section>
+
+      <section class="cta-card">
+        <div>
+          <h2>Nie chcesz przeglądać listy?</h2>
+          <p>Wróć do strony głównej i użyj decyzyjnika. Tam szybciej zawęzisz wybór.</p>
+        </div>
+
+        <a class="cta-button" href="gar-plan-index-1.html">Wróć do decyzyjnika</a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Gar Plan — Ryż smażony z jajkiem i warzywami</title>
+
+  <style>
+    :root {
+      --bg: #fff7ea;
+      --text: #251a14;
+      --muted: #7a6658;
+      --card: #fffdf8;
+      --soft: #fff1db;
+      --accent: #ff5a3d;
+      --accent-2: #ffc857;
+      --green: #2f8f5b;
+      --border: rgba(37, 26, 20, 0.12);
+      --shadow: 0 18px 50px rgba(37, 26, 20, 0.12);
+      --radius-lg: 28px;
+      --container: 760px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a,
+    button,
+    input {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .background-questions {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      padding: 24px;
+      opacity: 0.055;
+      transform: rotate(-8deg) scale(1.12);
+      pointer-events: none;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .blob {
+      position: fixed;
+      z-index: -1;
+      width: 360px;
+      height: 360px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 200, 87, 0.55), transparent 68%);
+      top: -130px;
+      right: -140px;
+      pointer-events: none;
+    }
+
+    .blob.second {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 90, 61, 0.22), transparent 70%);
+      left: -160px;
+      bottom: -140px;
+    }
+
+    header {
+      width: min(100%, var(--container));
+      margin: 0 auto;
+      padding: 18px 18px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 950;
+      letter-spacing: -0.04em;
+      font-size: 20px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 26px rgba(255, 90, 61, 0.32);
+    }
+
+    .menu-button {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.58);
+      border-radius: 999px;
+      padding: 9px 13px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      backdrop-filter: blur(12px);
+    }
+
+    nav {
+      display: none;
+    }
+
+    main {
+      width: min(100%, var(--container));
+      margin: 0 auto;
+      padding: 28px 18px 74px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 253, 248, 0.72);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 950;
+      backdrop-filter: blur(12px);
+    }
+
+    .recipe-hero {
+      display: grid;
+      gap: 14px;
+    }
+
+    .recipe-intro {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .eyebrow {
+      width: fit-content;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(44px, 13vw, 78px);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+      font-weight: 950;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .lead {
+      margin: 18px 0 0;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.52;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .meta {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .hero-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .primary-button,
+    .secondary-button {
+      min-height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      font-size: 14px;
+      font-weight: 950;
+      border: 0;
+    }
+
+    .primary-button {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 14px 30px rgba(255, 90, 61, 0.26);
+    }
+
+    .secondary-button {
+      background: #fff8ef;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .dish-card {
+      position: relative;
+      min-height: 260px;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .dish-visual {
+      position: relative;
+      min-height: 228px;
+      border-radius: 23px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 253, 248, 0.96) 0 30%, transparent 31%),
+        radial-gradient(circle at 40% 44%, #ffd79a 0 7%, transparent 8%),
+        radial-gradient(circle at 58% 42%, #ff795f 0 6%, transparent 7%),
+        radial-gradient(circle at 49% 58%, #2f8f5b 0 5%, transparent 6%),
+        radial-gradient(circle at 62% 60%, #ffc857 0 5%, transparent 6%),
+        linear-gradient(135deg, #ffe5b8, #ffc857);
+      border: 1px solid rgba(37, 26, 20, 0.08);
+      overflow: hidden;
+    }
+
+    .dish-visual::before {
+      content: "";
+      position: absolute;
+      inset: 42px;
+      border-radius: 999px;
+      border: 18px solid rgba(255, 253, 248, 0.9);
+      box-shadow: 0 22px 50px rgba(37, 26, 20, 0.12);
+    }
+
+    .dish-visual::after {
+      content: "🍳";
+      position: absolute;
+      right: 20px;
+      bottom: 18px;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--accent);
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 14px 30px rgba(255, 90, 61, 0.28);
+    }
+
+    .quick-note {
+      position: absolute;
+      left: 28px;
+      bottom: 28px;
+      max-width: 190px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 850;
+      backdrop-filter: blur(10px);
+    }
+
+    .content-grid {
+      display: grid;
+      gap: 18px;
+      margin-top: 28px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 34px rgba(37, 26, 20, 0.08);
+      backdrop-filter: blur(14px);
+      text-align: left;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 32px;
+      letter-spacing: -0.065em;
+      line-height: 0.95;
+    }
+
+    .ingredients {
+      display: grid;
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .ingredients li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px;
+      border-radius: 17px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .ingredients strong {
+      color: var(--text);
+      font-weight: 950;
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .steps li {
+      position: relative;
+      padding: 16px 16px 16px 58px;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--text);
+      color: white;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .steps strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .small-card {
+      padding: 16px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 38px rgba(37, 26, 20, 0.08);
+    }
+
+    .small-card h3 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .small-card p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .cta-card {
+      margin-top: 52px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: var(--text);
+      color: white;
+      box-shadow: 0 22px 54px rgba(37, 26, 20, 0.2);
+      display: grid;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .cta-card h2 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 0.95;
+      letter-spacing: -0.065em;
+    }
+
+    .cta-card p {
+      margin: 9px 0 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .cta-button {
+      min-height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-size: 14px;
+      font-weight: 950;
+      box-shadow: 0 14px 30px rgba(255, 90, 61, 0.28);
+    }
+
+    @media (min-width: 700px) {
+      .background-questions {
+        grid-template-columns: repeat(3, 1fr);
+        font-size: 20px;
+      }
+
+      .hero-actions {
+        grid-template-columns: auto auto;
+        justify-content: start;
+      }
+
+      .primary-button,
+      .secondary-button {
+        min-width: 150px;
+        padding: 0 22px;
+      }
+
+      .content-grid {
+        grid-template-columns: 0.86fr 1.14fr;
+      }
+
+      .cta-card {
+        grid-template-columns: 1fr auto;
+        padding: 22px;
+      }
+
+      .cta-button {
+        min-width: 180px;
+        padding: 0 24px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      :root {
+        --container: 920px;
+      }
+
+      .background-questions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        padding: 40px;
+        font-size: 22px;
+      }
+
+      .blob {
+        width: 520px;
+        height: 520px;
+        top: -160px;
+        right: -120px;
+      }
+
+      .blob.second {
+        width: 460px;
+        height: 460px;
+        left: -140px;
+        bottom: -160px;
+      }
+
+      header {
+        padding-top: 28px;
+      }
+
+      nav {
+        display: flex;
+        gap: 22px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .menu-button {
+        display: none;
+      }
+
+      main {
+        padding-top: 42px;
+      }
+
+      .recipe-hero {
+        grid-template-columns: 1.05fr 0.95fr;
+        align-items: stretch;
+      }
+
+      .recipe-intro,
+      .dish-card {
+        min-height: 430px;
+      }
+
+      .recipe-intro {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 28px;
+      }
+
+      .dish-visual {
+        min-height: 396px;
+      }
+
+      .lead {
+        font-size: 19px;
+      }
+
+      .panel,
+      .small-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .panel:hover,
+      .small-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 50px rgba(37, 26, 20, 0.11);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="blob"></div>
+    <div class="blob second"></div>
+
+    <div class="background-questions" aria-hidden="true">
+      <span>co dziś na obiad?</span>
+      <span>25 minut i gotowe</span>
+      <span>jedna patelnia</span>
+      <span>coś z ryżem?</span>
+      <span>mam jajka</span>
+      <span>warzywa z lodówki</span>
+      <span>bez kombinowania</span>
+      <span>obiad na szybko</span>
+      <span>co zjemy?</span>
+      <span>mało zmywania</span>
+      <span>robię to</span>
+      <span>prosty przepis</span>
+    </div>
+
+    <header>
+      <a href="gar-plan-index-1.html" class="logo" aria-label="Gar Plan — strona główna">
+        <div class="logo-mark">🍳</div>
+        Gar Plan
+      </a>
+
+      <button class="menu-button">Menu</button>
+
+      <nav aria-label="Główna nawigacja">
+        <a href="gar-plan-index-1.html">Strona główna</a>
+        <a href="gar-plan-o-nas.html">O nas</a>
+        <a href="gar-plan-kontakt.html">Kontakt</a>
+      </nav>
+    </header>
+
+    <main>
+      <a class="back-link" href="gar-plan-index-1.html">← Wróć do propozycji</a>
+
+      <section class="recipe-hero">
+        <article class="recipe-intro">
+          <div class="eyebrow">Przepis · szybki obiad</div>
+
+          <h1>Ryż smażony z jajkiem i <span>warzywami.</span></h1>
+
+          <p class="lead">
+            Prosty obiad z rzeczy, które często są już w kuchni. Działa z ryżem z wczoraj,
+            mrożonymi warzywami i tym, co zostało w lodówce.
+          </p>
+
+          <div class="meta-row">
+            <span class="meta">25 min</span>
+            <span class="meta">1 patelnia</span>
+            <span class="meta">2 porcje</span>
+            <span class="meta">łatwe</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="primary-button" href="#kroki">Robię to</a>
+            <a class="secondary-button" href="#skladniki">Sprawdź składniki</a>
+          </div>
+        </article>
+
+        <aside class="dish-card" aria-label="Ilustracja dania">
+          <div class="dish-visual"></div>
+          <div class="quick-note">Najlepiej wychodzi na zimnym ryżu. Świeży też da radę, ale będzie bardziej miękki.</div>
+        </aside>
+      </section>
+
+      <section class="content-grid">
+        <aside class="side-stack">
+          <article class="panel" id="skladniki">
+            <h2>Składniki</h2>
+
+            <ul class="ingredients">
+              <li><strong>Ryż</strong><span>2 szklanki ugotowanego</span></li>
+              <li><strong>Jajka</strong><span>2 sztuki</span></li>
+              <li><strong>Warzywa</strong><span>1,5 szklanki</span></li>
+              <li><strong>Cebula</strong><span>1 mała</span></li>
+              <li><strong>Czosnek</strong><span>1 ząbek</span></li>
+              <li><strong>Sos sojowy</strong><span>2 łyżki</span></li>
+              <li><strong>Olej</strong><span>2 łyżki</span></li>
+            </ul>
+          </article>
+
+          <article class="small-card">
+            <h3>Zamienniki</h3>
+            <p>Ryż możesz zamienić na kaszę albo makaron. Warzywa mogą być świeże, mrożone albo z wczorajszego obiadu.</p>
+            <div class="chips">
+              <span class="chip">kasza</span>
+              <span class="chip">makaron</span>
+              <span class="chip">mrożonki</span>
+            </div>
+          </article>
+
+          <article class="small-card">
+            <h3>Dobre dodatki</h3>
+            <p>Na końcu dorzuć szczypiorek, sezam, chili albo kilka kropli soku z limonki.</p>
+            <div class="chips">
+              <span class="chip">szczypiorek</span>
+              <span class="chip">chili</span>
+              <span class="chip">sezam</span>
+            </div>
+          </article>
+        </aside>
+
+        <article class="panel" id="kroki">
+          <h2>Kroki</h2>
+
+          <ol class="steps">
+            <li>
+              <strong>Przygotuj składniki</strong>
+              Pokrój cebulę i czosnek. Jeśli używasz mrożonych warzyw, nie musisz ich wcześniej rozmrażać.
+            </li>
+
+            <li>
+              <strong>Podsmaż bazę</strong>
+              Rozgrzej olej na dużej patelni. Wrzuć cebulę, po chwili czosnek i smaż krótko, aż zmiękną.
+            </li>
+
+            <li>
+              <strong>Dorzuć warzywa</strong>
+              Dodaj warzywa i smaż kilka minut. Mają być ciepłe, ale nie rozgotowane.
+            </li>
+
+            <li>
+              <strong>Dodaj ryż</strong>
+              Wrzuć ugotowany ryż. Rozbij grudki łopatką i smaż, aż ryż lekko się podsuszy.
+            </li>
+
+            <li>
+              <strong>Wbij jajka</strong>
+              Przesuń ryż na bok patelni. Wbij jajka, wymieszaj je jak jajecznicę, potem połącz z ryżem.
+            </li>
+
+            <li>
+              <strong>Dopraw i podawaj</strong>
+              Dodaj sos sojowy, wymieszaj i spróbuj. Jeśli trzeba, dopraw pieprzem albo odrobiną chili.
+            </li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="cta-card">
+        <div>
+          <h2>Nie ten obiad?</h2>
+          <p>Wróć do decyzyjnika i wybierz coś szybszego, tańszego albo bez mięsa.</p>
+        </div>
+
+        <a class="cta-button" href="gar-plan-index-1.html">Znajdź inny pomysł</a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
