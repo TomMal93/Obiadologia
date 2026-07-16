@@ -53,6 +53,7 @@ Cele dla 75. percentyla danych terenowych na urządzeniach mobilnych:
 - Element LCP nie może być ładowany leniwie; jego zasób powinien mieć właściwy priorytet.
 - Fonty powinny mieć ograniczoną liczbę odmian, preload tylko gdy uzasadniony i bez blokowania tekstu.
 - Wyszukiwanie i przesuwanie punktu mapy nie może blokować interfejsu. Wyszukiwanie może używać debounce około `200ms`; mapa powinna ograniczać częstotliwość obliczeń bez opóźniania wizualnego ruchu punktu.
+- Dla katalogu do 100 przepisów obliczenie wyników wyszukiwania po przygotowaniu indeksu powinno mieścić się w jednej klatce (`≤ 16ms` dla 95. percentyla na reprezentatywnym telefonie), a przygotowanie indeksu nie może utworzyć długiego zadania przekraczającego `50ms` na głównym wątku. Niespełnienie celu wymaga profilowania i ponownego rozważenia implementacji `RecipeSearch`.
 - Budżety rozmiaru paczek zostaną dopisane po wyborze frameworka i zmierzeniu pierwszego działającego pionowego wycinka.
 
 ## Odporność i stany danych
