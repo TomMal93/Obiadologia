@@ -96,9 +96,9 @@ Po wykonaniu co najmniej jednego wyboru strona pokazuje:
 
 - podsumowanie wybranych opcji,
 - od trzech do czterech początkowych propozycji,
-- przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
+- w drugiej fazie: przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
 
-Dokładne działanie „Pokaż więcej” pozostaje otwartą decyzją produktową. Do czasu jej rozstrzygnięcia prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
+„Pokaż więcej” nie należy do bieżącego MVP. W drugiej fazie prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane w specyfikacji tej podstrony. Do tego czasu prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
 
 Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md).
 

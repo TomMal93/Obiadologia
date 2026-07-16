@@ -28,7 +28,7 @@ Użytkownik wybiera po jednej opcji z trzech grup:
 - tempo,
 - okazja.
 
-Nie ma domyślnych wyborów. Wyniki pojawiają się po uzupełnieniu wszystkich trzech grup.
+Nie ma domyślnych wyborów. Wyniki pojawiają się po wybraniu co najmniej jednej opcji w dowolnej grupie, a niewybrane grupy nie ograniczają filtrowania.
 
 ### Discovery overlay
 
@@ -77,16 +77,20 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - lista zakupów,
 - panel administracyjny,
 - portal z artykułami,
+- podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
+- docelowy zestaw przykładowych przepisów i właściwa treść stron przepisów,
 - wiele wersji językowych.
+
+W drugiej fazie „Pokaż więcej” prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane razem z tą podstroną.
+
+Dobór reprezentatywnego zestawu przepisów zostaje odłożony do etapu tworzenia właściwej strony przepisu. Do tego czasu lokalny prototyp może korzystać wyłącznie z jawnie zastępczych danych potrzebnych do sprawdzenia bieżących przepływów.
 
 ## Nierozstrzygnięte
 
 Przed implementacją wymagają osobnej decyzji:
 
 - źródło danych o daniach,
-- liczba wszystkich dań w początkowym zbiorze,
-- sposób działania przycisku „Pokaż więcej”,
 - produkcyjne strojenie mechanizmu dopasowywania i kolejności wyników ponad reguły startowe z `data-model.md`.
 
 Agent nie powinien samodzielnie rozstrzygać tych punktów.
@@ -97,6 +101,7 @@ MVP jest kompletne, gdy:
 
 - każda z trzech dróg prowadzi do propozycji,
 - kategorie nie mają domyślnych wyborów,
+- co najmniej jeden wybór Kategorii pokazuje wyniki, a niewybrane grupy ich nie ograniczają,
 - wyszukiwarka reaguje na zapytanie użytkownika,
 - mapa startuje w neutralnym środku,
 - przełączanie trybów zachowuje stan otwartego overlaya,
