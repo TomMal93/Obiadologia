@@ -91,18 +91,27 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 
 ## Polecenia weryfikacyjne
 
-Repozytorium istnieje, a stos został wybrany w `TD-015` i ADR 0001, ale kod aplikacji oraz skrypty projektu jeszcze nie powstały. Z tego powodu nie istnieją jeszcze uczciwe polecenia instalacji, testów i budowania. Agent MUSI dopisać je tutaj po utworzeniu projektu aplikacji, wraz z katalogiem roboczym. Nie wolno wymyślać komend przed powstaniem rzeczywistych skryptów.
+Katalog roboczy: katalog główny repozytorium. Projekt przypina Node.js w `.node-version`, a wersję pnpm w polu `packageManager` pliku `package.json`.
 
-Minimalny docelowy zestaw:
+```powershell
+# instalacja zależności z istniejącego lockfile
+corepack pnpm install --frozen-lockfile
 
-```text
-Katalog roboczy: katalog główny repozytorium
-- instalacja zależności
-- lint i kontrola typów
-- testy jednostkowe/komponentowe
-- testy E2E
-- build produkcyjny
+# jednorazowo na stanowisku uruchamiającym E2E
+corepack pnpm exec playwright install chromium
+
+# osobne bramki
+corepack pnpm lint
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm test:e2e
+corepack pnpm build
+
+# pełny zestaw po przygotowaniu przeglądarki Playwright
+corepack pnpm verify
 ```
+
+`test` obejmuje Vitest oraz React Testing Library. `test:e2e` uruchamia Playwright w mobilnym Chromium i zawiera automatyczną kontrolę `axe-core`. Build MUSI generować statyczną stronę główną oraz dostępne trasy `/recipes/:slug`.
 
 ## Definition of Done
 

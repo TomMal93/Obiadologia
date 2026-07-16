@@ -1,0 +1,30 @@
+---
+import { DiscoveryExperience } from '@/components/DiscoveryExperience';
+import { prototypeRecipes } from '@/data/prototype-recipes';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Obiadologia — Co dziś jemy?"
+  description="Mobilny prototyp trzech sposobów odkrywania pomysłów na posiłek."
+>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Obiadologia — strona główna">
+      <span class="brand-mark" aria-hidden="true">O</span>
+      <span>Obiadologia</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="main-heading">
+      <p class="prototype-badge">Lokalny prototyp</p>
+      <h1 id="main-heading">Co dziś <span>jemy?</span></h1>
+    </section>
+
+    <DiscoveryExperience recipes={prototypeRecipes} client:load />
+  </main>
+
+  <footer>
+    <p>Obiadologia — prototyp interakcji MVP.</p>
+  </footer>
+</BaseLayout>

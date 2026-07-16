@@ -431,3 +431,7 @@ FodyWeavers.xsd
 # Astro
 .astro/
 dist/
+
+# Test reports
+playwright-report/
+test-results/

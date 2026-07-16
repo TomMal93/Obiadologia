@@ -1,0 +1,40 @@
+---
+import { prototypeRecipes } from '@/data/prototype-recipes';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import type { Recipe } from '@/domain/recipe';
+
+export function getStaticPaths() {
+  return prototypeRecipes
+    .filter((recipe) => recipe.status === 'published')
+    .map((recipe) => ({
+      params: { slug: recipe.slug },
+      props: { recipe },
+    }));
+}
+
+interface Props {
+  recipe: Recipe;
+}
+
+const { recipe } = Astro.props;
+---
+
+<BaseLayout
+  title={`${recipe.title} — Obiadologia`}
+  description={`Zastępczy ekran przepisu: ${recipe.title}.`}
+>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Obiadologia — strona główna">
+      <span class="brand-mark" aria-hidden="true">O</span>
+      <span>Obiadologia</span>
+    </a>
+  </header>
+
+  <main class="recipe-page">
+    <p class="prototype-badge">Ekran zastępczy</p>
+    <h1>{recipe.title}</h1>
+    <p>{recipe.description}</p>
+    <p><strong>Czas przygotowania:</strong> {recipe.preparationMinutes} min</p>
+    <a class="back-link" href="/">← Wróć do strony głównej</a>
+  </main>
+</BaseLayout>
