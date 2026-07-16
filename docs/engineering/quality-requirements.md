@@ -17,7 +17,7 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 
 - wybór narzędzi i dostawcy hostingu;
 - szczegółowa konfiguracja CI;
-- wymagania dla funkcji odłożonych na kolejne etapy: docelowe dane, strona przepisu, produkcyjne obrazy, analityka i pełne stany danych;
+- wymagania dla funkcji odłożonych na kolejne etapy: docelowe dane, strona przepisu, produkcyjne obrazy, analityka i pełne opracowanie wizualne stanów danych;
 - osobne układy tabletowe i desktopowe.
 
 ## Dostępność
@@ -55,9 +55,13 @@ Cele dla 75. percentyla danych terenowych na urządzeniach mobilnych:
 - Wyszukiwanie i przesuwanie punktu mapy nie może blokować interfejsu. Wyszukiwanie może używać debounce około `200ms`; mapa powinna ograniczać częstotliwość obliczeń bez opóźniania wizualnego ruchu punktu.
 - Budżety rozmiaru paczek zostaną dopisane po wyborze frameworka i zmierzeniu pierwszego działającego pionowego wycinka.
 
-## Odporność i stany — kolejny etap
+## Odporność i stany danych
 
-Pełne stany początku, ładowania, sukcesu, braku wyników, błędu i ponowienia zostaną zaprojektowane w kolejnym etapie. W bieżącym etapie interakcje mogą korzystać z danych zastępczych, ale nie mogą przedstawiać stanów zastępczych jako zatwierdzonego rozwiązania produkcyjnego. Awaria obrazu nie może zmieniać geometrii karty.
+Bieżący prototyp MUSI poprawnie odróżniać stan początkowy, sukces i brak dopasowań dla lokalnych danych zastępczych. Nie symuluje ładowania ani błędu, jeżeli nie wykonuje rzeczywistej operacji asynchronicznej.
+
+Po podłączeniu źródła asynchronicznego implementacja MUSI dodatkowo obsłużyć ładowanie, błąd i ponowienie bez utraty aktualnych kryteriów. Pełne opracowanie wizualne wszystkich stanów należy do kolejnego etapu; podstawowy kontrakt zachowania obowiązuje od chwili pojawienia się danego stanu w aplikacji.
+
+Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie mogą być przedstawiane jako zatwierdzone rozwiązanie produkcyjne. Awaria obrazu nie może zmieniać geometrii karty.
 
 ## Bezpieczeństwo i prywatność
 

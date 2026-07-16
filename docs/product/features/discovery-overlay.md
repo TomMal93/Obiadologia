@@ -1,83 +1,268 @@
 # Overlay Wyszukiwarki i Mapy
 
-> Status: obowiązujący  
+> Status: obowiązujący
+>
+> Opisywany stan: docelowy dla MVP
+>
 > Makiety: `search-overlay.png`, `map-overlay.png`
+>
+> Aktualizacja: przy zmianie wspólnej powłoki albo mechanizmu Wyszukiwarki lub Mapy
 
-# Discovery overlay
+## Cel i odpowiedzialność
 
-## Cel
+Discovery overlay łączy Wyszukiwarkę i Mapę preferencji w jednym komponencie z dwoma przełączanymi trybami. Tryby współdzielą powłokę, cykl życia, prezentację wyników i stany danych. Różnią się mechanizmem podawania kryteriów i sposobem dopasowania propozycji.
 
-Discovery overlay łączy wyszukiwarkę i mapę preferencji w jednym komponencie z dwoma przełączanymi trybami.
+Ten dokument jest źródłem prawdy dla zachowania całego discovery overlayu. Wspólne reguły wizualne i komponenty opisuje [ui-system.md](../../design/ui-system.md), model wyników oraz reguły dopasowania — [data-model.md](../../engineering/data-model.md), a wymagania przekrojowe — [quality-requirements.md](../../engineering/quality-requirements.md).
 
-Wspólne reguły wizualne opisuje [ui-system.md](../../design/ui-system.md).
+Makiety określają hierarchię, treści i kierunek wizualny. Przykładowe zapytania, położenie punktu oraz widoczne wyniki przedstawiają stany po interakcji i nie definiują stanu początkowego ani algorytmu.
+
+## W zakresie
+
+- otwieranie, zamykanie i przełączanie trybów;
+- stan sesji otwartego overlayu;
+- pole wyszukiwania i dynamiczne sugestie;
+- dwuwymiarowa Mapa preferencji;
+- wspólna lista propozycji;
+- podstawowe stany początkowy, ładowania, sukcesu, braku wyników i błędu;
+- obsługa klawiatury, dotyku i technologii asystujących.
+
+## Poza zakresem
+
+- wybór silnika wyszukiwania lub zewnętrznego API;
+- produkcyjne strojenie rankingu;
+- trwałe zapisywanie zapytania albo położenia Mapy;
+- historia wyszukiwania i personalizacja;
+- właściwa treść strony przepisu;
+- wyszukiwanie głosowe;
+- dodatkowe punkty na Mapie.
 
 ## Wspólna powłoka
 
-Overlay zawiera:
+Overlay:
 
-- logo,
-- przycisk zamknięcia,
-- przełącznik „Wyszukiwarka / Mapa”,
-- obszar właściwy dla aktywnego trybu,
-- listę propozycji.
+- jest pełnoekranowym dialogiem w granicach mobilnego kontenera aplikacji;
+- zawiera logo i nazwę „Obiadologia”;
+- zawiera przycisk zamknięcia;
+- zawiera jeden przełącznik „Wyszukiwarka / Mapa”;
+- zawiera obszar właściwy dla aktywnego trybu;
+- zawiera wspólną listę propozycji;
+- blokuje przewijanie i interakcję ze stroną pod spodem;
+- pozwala przewijać własną zawartość, gdy nie mieści się ona w viewporcie;
+- nie powoduje gwałtownego skoku wspólnych elementów podczas przełączania trybu.
 
-Zmiana trybu nie zamyka overlaya i nie powinna powodować skoku całego układu.
+Przycisk zamknięcia i klawisz `Escape` zamykają overlay. Akcja „Wstecz” przy otwartym overlayu najpierw go zamyka, zamiast opuszczać poprzedni widok strony.
 
-## Cykl życia stanu
+Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. Fokus pozostaje wewnątrz dialogu, a po zamknięciu wraca do elementu, który otworzył overlay.
 
-- Overlay otwiera się w trybie wskazanym przez akcję użytkownika.
-- Wyszukiwarka i mapa posiadają oddzielny stan.
-- Przełączenie trybu zachowuje stan obu trybów.
-- Zamknięcie overlaya kończy sesję i resetuje jego stan.
-- Ponowne otwarcie rozpoczyna nową sesję.
+## Otwieranie i cykl życia stanu
 
-## Tryb wyszukiwarki
+- Przycisk „Szukaj” otwiera overlay w trybie Wyszukiwarki.
+- Przycisk „Mapa” otwiera overlay w trybie Mapy.
+- Wyszukiwarka i Mapa posiadają oddzielny stan w ramach jednej sesji overlayu.
+- Przełączenie trybu nie zamyka overlayu i zachowuje stan obu trybów wraz z ich ostatnimi wynikami.
+- Zamknięcie overlayu kończy sesję oraz resetuje zapytanie, sugestie, wyniki i położenie Mapy.
+- Ponowne otwarcie rozpoczyna nową sesję w trybie wskazanym przez akcję użytkownika.
 
-### Cel
+## Wspólna lista wyników
 
-Użytkownik wpisuje składnik, nazwę dania, smak lub tag.
+Oba tryby korzystają z jednego modelu `Recipe` i wspólnego komponentu karty.
 
-### Elementy
+Sekcja wyników używa nagłówka „Propozycje”. Każda karta zawiera:
 
-- nagłówek „Masz trop? Wpisz go tutaj”,
-- opis „Składnik, danie, smak albo tag.”,
-- pole wyszukiwania,
-- dynamiczne sugestie,
-- lista propozycji.
+- zdjęcie potrawy albo wspólny placeholder;
+- nazwę przepisu;
+- opcjonalny krótki opis;
+- czas przygotowania;
+- od jednego do trzech tagów.
 
-### Zachowanie
+Cała karta jest linkiem do `/recipes/:slug`. Do czasu implementacji strony przepisu trasa pokazuje prosty ekran zastępczy z możliwością powrotu.
 
-- Zapytanie jest kontrolowane przez użytkownika.
-- Sugestia może uzupełnić lub zmienić zapytanie.
-- Wyniki odpowiadają aktualnemu zapytaniu.
-- Puste zapytanie nie może udawać wyników wyszukiwania.
-- Brak dopasowań pokazuje czytelny stan pusty.
-- Próg rozpoczęcia wyszukiwania i sposób rankingowania wymagają decyzji implementacyjnej.
+Kolejność wyników odpowiada aktualnym kryteriom aktywnego trybu. Starsza odpowiedź asynchroniczna nie może nadpisać wyników dla nowszego zapytania albo położenia Mapy.
 
-## Tryb mapy
+Zmiana wyników i ich liczby jest ogłaszana technologiom asystującym bez przenoszenia fokusu. Komunikaty nie mogą być emitowane tak często, aby utrudniały obsługę pola lub Mapy.
 
-### Cel
-
-Użytkownik wskazuje preferencję na mapie dwóch osi.
-
-### Osie
-
-Oś pozioma:
-
-- `x = 0`: szybko,
-- `x = 50`: neutralnie,
-- `x = 100`: bez pośpiechu.
-
-Oś pionowa:
-
-- `y = 0`: lekko,
-- `y = 50`: neutralnie,
-- `y = 100`: konkretnie.
+## Wspólne stany danych
 
 ### Stan początkowy
 
-Mapa rozpoczyna w punkcie:
+Każdy tryb pokazuje własną instrukcję i nie udaje kryteriów podanych przez użytkownika. Wyszukiwarka nie pokazuje wyników przed wpisaniem zapytania. Neutralny środek Mapy może pokazywać ogólne, zróżnicowane propozycje.
+
+### Ładowanie
+
+Podczas operacji asynchronicznej kryteria pozostają widoczne i możliwe do zmiany. Obszar wyników komunikuje ładowanie bez blokowania pola, Mapy, przełącznika ani zamknięcia. Kolejna zmiana kryteriów może zastąpić trwające wyszukiwanie.
+
+### Brak wyników
+
+Brak dopasowań jest poprawnym stanem, odróżnionym od błędu. Użytkownik zachowuje kryteria i może je od razu zmienić.
+
+### Błąd
+
+Błąd nie usuwa aktualnego zapytania ani położenia Mapy. Interfejs pokazuje zrozumiały komunikat i, jeżeli operację można powtórzyć, akcję ponowienia.
+
+W prototypie opartym wyłącznie na lokalnych danych nie należy sztucznie symulować ładowania ani błędu. Pełny projekt wizualny stanów danych należy do kolejnego etapu, ale implementacja rzeczywistego źródła asynchronicznego MUSI obsłużyć powyższe zachowania.
+
+## Tryb Wyszukiwarki
+
+### Cel i treści
+
+Wyszukiwarka jest przeznaczona dla użytkownika, który ma już trop: składnik, nazwę dania, smak, kategorię albo tag. Zapytanie nie musi być pełną ani dokładną nazwą przepisu.
+
+- nagłówek: „Masz trop? Wpisz go tutaj”;
+- opis: „Składnik, danie, smak albo tag.”;
+- etykieta lub dostępna nazwa pola: „Szukaj przepisu”;
+- placeholder: „np. kurczak, curry, szybko, bez mięsa”.
+
+### Stan początkowy
+
+Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
+
+- pole jest puste i otrzymuje fokus;
+- sugestie nie są widoczne;
+- lista wyników nie jest widoczna;
+- placeholder wyjaśnia obsługiwane rodzaje zapytań.
+
+Usunięcie całej treści przywraca ten stan.
+
+### Zapytanie i sugestie
+
+- Wyniki i sugestie aktualizują się po każdej zmianie zapytania, bez przeładowania strony i bez przycisku zatwierdzającego.
+- Zapytanie jest normalizowane zgodnie z regułami w `data-model.md`, w tym bez rozróżniania wielkości liter i z tolerancją polskich znaków.
+- Implementacja może zastosować krótkie opóźnienie około `200ms`, jeżeli zachowuje odczucie wyszukiwania na żywo.
+- Sugestie są powiązane z aktualnym zapytaniem i mogą reprezentować danie, składnik, smak, kategorię albo tag.
+- Sugestie są dostępne z klawiatury.
+- Wybranie sugestii ustawia ją jako jedno aktywne zapytanie i odświeża wyniki.
+- Sugestie nie są zestawem filtrów wielokrotnego wyboru.
+
+Kolor koralowy identyfikuje aktywną Wyszukiwarkę, fokus pola i aktywną sugestię, ale nie jest jedynym nośnikiem ich stanu.
+
+Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.”
+
+## Tryb Mapy
+
+### Cel i treści
+
+Mapa pomaga użytkownikowi, który nie zna nazwy dania, ale potrafi określić oczekiwany charakter posiłku.
+
+- nagłówek: „Wskaż klimat na mapie”;
+- opis: „Przesuń talerz tam, gdzie dziś Ci pasuje.”;
+- instrukcja: „Przeciągnij talerz”.
+
+### Osie i reprezentacja danych
+
+Współrzędne interfejsu mają zakres od `0` do `100`:
+
+| Kierunek | Współrzędna UI | Znaczenie |
+|---|---:|---|
+| lewo | `x = 0` | szybko |
+| środek poziomy | `x = 50` | tempo neutralne |
+| prawo | `x = 100` | bez pośpiechu |
+| góra | `y = 0` | lekko |
+| środek pionowy | `y = 50` | charakter neutralny |
+| dół | `y = 100` | konkretnie |
+
+Model `Recipe` używa pól `pace` i `lightness` w zakresie `0..1`. Mapowanie jest jawne:
 
 ```text
-x = 50
-y = 50
+pace = x / 100
+lightness = 1 - (y / 100)
+```
+
+Dzięki temu górna część Mapy odpowiada większej wartości `lightness`, a dolna — mniejszej.
+
+### Stan początkowy
+
+Po rozpoczęciu nowej sesji w trybie Mapy:
+
+- aktywny punkt znajduje się na środku: `x = 50`, `y = 50`;
+- podsumowanie opisuje oba wymiary jako neutralne;
+- widoczne są ogólne, zróżnicowane propozycje;
+- stan nie sugeruje żadnej ze skrajnych preferencji.
+
+Podsumowanie środka brzmi:
+
+> Wybrano: tempo neutralne · charakter neutralny
+
+### Przesuwanie punktu
+
+Użytkownik może zmienić położenie przez:
+
+- przeciągnięcie myszą;
+- przeciągnięcie dotykiem;
+- kliknięcie lub dotknięcie miejsca na Mapie;
+- klawisze strzałek po ustawieniu fokusu na punkcie.
+
+Punkt jest jeden, pozostaje wewnątrz granic Mapy i ma widoczny fokus. Klawisze `←` i `→` zmieniają tempo, a `↑` i `↓` zmieniają charakter. Krok klawiatury jest decyzją lokalnej implementacji, ale musi być równy, przewidywalny i pozwalać osiągnąć oba końce oraz środek osi.
+
+Położenie wizualne i podsumowanie aktualizują się natychmiast podczas ruchu. Wyniki również są przeliczane podczas przeciągania, bez przycisku zatwierdzającego. Implementacja może ograniczyć częstotliwość kosztownych obliczeń, jeżeli nie opóźnia ruchu punktu ani nie zmienia końcowego wyniku.
+
+Zmiana rozmiaru viewportu nie zmienia logicznych współrzędnych punktu.
+
+### Podsumowanie wyboru
+
+Po przesunięciu podsumowanie pokazuje dominujący kierunek każdej osi i procent jego nasilenia, na przykład:
+
+> Wybrano: szybko 72% · lekko 64%
+
+Dla osi poziomej:
+
+- `x < 50`: „szybko”, procent `100 - x`;
+- `x = 50`: „tempo neutralne”;
+- `x > 50`: „bez pośpiechu”, procent `x`.
+
+Dla osi pionowej:
+
+- `y < 50`: „lekko”, procent `100 - y`;
+- `y = 50`: „charakter neutralny”;
+- `y > 50`: „konkretnie”, procent `y`.
+
+Makieta nie jest źródłem dokładnych współrzędnych przykładowego punktu.
+
+Kolor niebieski identyfikuje Mapę, aktywny punkt, aktywny tryb i wartości podsumowania, ale położenie i stan są także przekazane tekstem, geometrią oraz semantyką.
+
+Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
+
+## Dostępność specyficzna dla discovery overlayu
+
+- Przełącznik przekazuje aktywny tryb technologiom asystującym.
+- Pole, sugestie, punkt Mapy, karty, przełącznik i zamknięcie są dostępne z klawiatury.
+- Punkt Mapy jest elementem fokusowalnym, a jego dostępna nazwa opisuje aktualne tempo i charakter.
+- Informacja o stanie nie opiera się wyłącznie na kolorze, położeniu albo efekcie świetlnym.
+- Otwarta klawiatura ekranowa nie może zasłaniać pola ani uniemożliwiać przewijania do wyników.
+- Mapa mieści się w szerokości overlayu bez poziomego przewijania i zachowuje obszar dotykowy odpowiedni do obsługi palcem.
+
+## Kryteria akceptacji
+
+### Wspólna powłoka
+
+- „Szukaj” i „Mapa” otwierają odpowiedni tryb jednego overlayu.
+- Przełączenie trybu nie zamyka overlayu ani nie resetuje stanu obu trybów.
+- Zamknięcie kończy sesję i resetuje oba tryby.
+- Przycisk zamknięcia, `Escape` i akcja „Wstecz” prawidłowo zamykają overlay.
+- Fokus pozostaje w dialogu i po zamknięciu wraca do elementu otwierającego.
+- Tło jest zablokowane, a własna zawartość overlayu pozostaje przewijalna.
+- Zmiana trybu nie powoduje gwałtownego skoku wspólnych elementów.
+- Starsza odpowiedź nie nadpisuje wyników nowszych kryteriów.
+- Brak wyników jest odróżniony od błędu.
+- Każda karta korzysta z `Recipe` i prowadzi do `/recipes/:slug`.
+
+### Wyszukiwarka
+
+- Po otwarciu pole jest puste, otrzymuje fokus i nie pokazuje przypadkowych wyników.
+- Zmiana zapytania automatycznie aktualizuje sugestie i wyniki.
+- Wybranie sugestii ustawia jedno aktywne zapytanie.
+- Wyczyszczenie pola przywraca stan początkowy.
+- Pole i sugestie są w pełni obsługiwalne klawiaturą.
+
+### Mapa
+
+- Mapa rozpoczyna w neutralnym środku i pokazuje ogólne propozycje.
+- Punkt można przesuwać myszą, dotykiem i klawiaturą, bez wyjścia poza granice.
+- Podsumowanie odpowiada współrzędnym i jest aktualizowane podczas ruchu.
+- Wyniki są aktualizowane podczas przeciągania, bez zatwierdzania.
+- Mapowanie współrzędnych UI na `pace` i `lightness` jest zgodne z opisanym wzorem.
+- Przełączenie trybu zachowuje położenie, a zamknięcie resetuje je do środka.
+
+### Jakość widoku
+
+- Widoki zachowują hierarchię i charakter właściwej makiety.
+- Overlay spełnia wymagania dostępności, responsywności i viewportów opisane w dokumentach przekrojowych.

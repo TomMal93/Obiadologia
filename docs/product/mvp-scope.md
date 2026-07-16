@@ -52,6 +52,8 @@ Karta wyniku zawiera co najmniej:
 
 Opis modelu danych: [data-model.md](../engineering/data-model.md).
 
+Cała karta prowadzi do `/recipes/:slug`. Do czasu powstania właściwej strony przepisu trasa pokazuje prosty ekran zastępczy z możliwością powrotu.
+
 ### Jakość podstawowa
 
 MVP musi być:
@@ -83,10 +85,9 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 Przed implementacją wymagają osobnej decyzji:
 
 - źródło danych o daniach,
-- zachowanie po wybraniu karty wyniku,
 - liczba wszystkich dań w początkowym zbiorze,
 - sposób działania przycisku „Pokaż więcej”,
-- mechanizm dopasowywania i kolejność wyników.
+- produkcyjne strojenie mechanizmu dopasowywania i kolejności wyników ponad reguły startowe z `data-model.md`.
 
 Agent nie powinien samodzielnie rozstrzygać tych punktów.
 
@@ -101,5 +102,5 @@ MVP jest kompletne, gdy:
 - przełączanie trybów zachowuje stan otwartego overlaya,
 - zamknięcie overlaya resetuje jego sesję,
 - wszystkie drogi korzystają ze wspólnego modelu danych,
-- podstawowe stany pusty, ładowania i błędu są obsłużone,
+- podstawowe stany pusty, ładowania i błędu są obsłużone, gdy odpowiadają rzeczywistemu źródłu danych; prototyp lokalny nie symuluje operacji asynchronicznych,
 - wymagania jakościowe zostały sprawdzone.

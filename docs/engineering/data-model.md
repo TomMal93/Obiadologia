@@ -81,10 +81,11 @@ MapPosition = { pace: 0..1, lightness: 0..1 }
 
 ### Kategorie
 
-- Użytkownik może wybrać najmniej po jednej wartości z `MealTime`, `Tempo` i `Occasion`.
-- Każda zmiana lub usunięcie wyboru natychmiast przelicza wyniki.
+- Użytkownik może wybrać maksymalnie po jednej wartości z `MealTime`, `Tempo` i `Occasion`.
+- Interfejs Kategorii pokazuje wyniki po wybraniu co najmniej jednej wartości w dowolnej grupie.
+- Od pierwszego wyboru każda zmiana natychmiast przelicza wyniki. Usunięcie ostatniego wyboru przywraca stan początkowy i ukrywa listę wyników.
 - Przepis pasuje do wszystkich aktualnie wybranych wartości — operator AND pomiędzy uzupełnionymi grupami.
-- Brak wyboru w danej grupie nie ogranicza wyników. Brak wszystkich wyborów pokazuje stan początkowy bez udawanych preferencji.
+- Brak wyboru w danej grupie nie ogranicza filtrowania. Dopiero brak wyborów we wszystkich grupach pokazuje stan początkowy bez wyników i bez udawanych preferencji.
 - Wyniki sortujemy najpierw według jakości dopasowania, następnie `editorialPriority`.
 - Nie ma domyślnych wyborów. Zaznaczenia widoczne na makiecie są przykładowym stanem po interakcji.
 
@@ -118,7 +119,7 @@ MapPosition = { pace: 0..1, lightness: 0..1 }
 |---|---|
 | walidacja przykładu | dane spełniają wszystkie wymagane typy i zakresy |
 | spójność ścieżek | ten sam przepis może być użyty w Kategoriach, Szukaj i Mapie |
-| filtr kategorii | wynik zawiera wszystkie aktualnie wybrane wartości i odświeża się po każdej zmianie |
+| filtr kategorii | co najmniej jeden wybór pokazuje wyniki zawierające wszystkie aktualnie wybrane wartości; każda zmiana odświeża wyniki, a usunięcie ostatniego wyboru je ukrywa |
 | wyszukiwanie na żywo | zmiana treści pola automatycznie przelicza wyniki |
 | przeciąganie mapy | ruch punktu aktualizuje wartości i kolejność wyników bez zatwierdzania |
 | neutralna mapa | środek zwraca różnorodne ogólne propozycje |

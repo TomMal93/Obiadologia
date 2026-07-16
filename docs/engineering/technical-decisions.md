@@ -32,7 +32,7 @@ Rejestr zapobiega cichym założeniom agentów. Rozdziela decyzje już uzgodnion
 | TD-007 | Kategorie i Wyszukiwarka przeliczają wyniki po każdej zmianie, a Mapa podczas przeciągania. | Interakcje nie wymagają osobnego przycisku zatwierdzającego. |
 | TD-008 | Cała karta jest linkiem do `/recipes/:slug`. Do czasu implementacji strony przepisu trasa pokazuje ekran zastępczy. | Zachowujemy docelowy kontrakt nawigacji bez rozszerzania bieżącego etapu o treść przepisu. |
 | TD-009 | Bieżący etap ma jeden układ mobilny `320–480px`; na szerszych ekranach jest wyśrodkowany w kontenerze `480px`. | Widoki pozostają wizualnie spójne bez projektowania wariantów tabletowych i desktopowych. |
-| TD-010 | Dane, strona przepisu, produkcyjne obrazy, analityka i pełne stany danych są odłożone do kolejnych etapów. | Najpierw dopracowujemy obecne pliki i podstawowe interakcje. |
+| TD-010 | Docelowe dane, treść strony przepisu, produkcyjne obrazy, analityka i pełne opracowanie wizualne stanów danych są odłożone do kolejnych etapów. | Prototyp używa jawnych danych zastępczych i podstawowych stanów zachowania, bez przedstawiania ich jako rozwiązania produkcyjnego. |
 
 ## Decyzje otwarte
 
@@ -42,9 +42,9 @@ Właściciel oznacza osobę, która zatwierdza kierunek. Do czasu decyzji agent 
 |---|---|---|---|---|
 | OPEN-001 | Framework, język i manager pakietów | struktura repo, typy, build, rekrutacja | właściciel produktu + osoba techniczna | nie generować projektu ani komend |
 | OPEN-002 | Rendering oraz stan filtrów i wyszukiwania w URL | SEO, powroty, udostępnianie wyników | osoba techniczna | routing musi obsłużyć `/recipes/:slug`; pozostałe zachowanie opisujemy niezależnie od frameworka |
-| OPEN-003 | Źródło przepisów: pliki, CMS czy API | model danych, wdrożenia, redakcja | właściciel produktu | traktować `Recipe` jako model koncepcyjny |
+| OPEN-003 | Źródło przepisów: pliki, CMS czy API | model danych, wdrożenia, redakcja | właściciel produktu | traktować `Recipe` jako model koncepcyjny; lokalny prototyp może używać jawnie oznaczonych danych przykładowych zgodnych z tym modelem |
 | OPEN-004 | Mechanizm wyszukiwania | trafność, polskie znaki, wydajność | produkt + osoba techniczna | stosować ranking opisany w modelu, bez wyboru silnika |
-| OPEN-005 | Źródło i licencje zdjęć | legalność, wydajność, jakość | właściciel produktu | makiety są referencją, nie biblioteką produkcyjną |
+| OPEN-005 | Źródło i licencje zdjęć | legalność, wydajność, jakość | właściciel produktu | makiety są referencją, nie biblioteką produkcyjną; prototyp używa neutralnych placeholderów albo materiałów dopuszczonych wyłącznie do prac lokalnych |
 | OPEN-006 | Hosting, CI/CD i obserwowalność | bezpieczeństwo, koszt, polecenia weryfikacji | osoba techniczna | nie tworzyć konfiguracji dostawcy |
 | OPEN-007 | Narzędzia testowe i wizualne | Definition of Done i czas CI | osoba techniczna | zachować poziomy testów z wymagań jakościowych |
 
@@ -79,8 +79,10 @@ Data: YYYY-MM-DD
 
 ## Kolejność prac
 
-Najpierw doprowadzamy bieżące pliki dokumentacji i makiety do spójnego, zatwierdzonego stanu. Następnie rozstrzygamy decyzje blokujące repozytorium i dopiero wtedy generujemy projekt oraz polecenia weryfikacyjne. Agent nie może traktować tej kolejności jako zgody na samodzielny wybór stosu.
+Najpierw doprowadzamy bieżące pliki dokumentacji i makiety do spójnego, zatwierdzonego stanu. Przed utworzeniem projektu trzeba rozstrzygnąć decyzje bezpośrednio definiujące jego strukturę i sposób weryfikacji: `OPEN-001`, `OPEN-002` oraz `OPEN-007`. Agent nie może traktować tej kolejności jako zgody na samodzielny wybór stosu.
+
+Lokalny pionowy wycinek może powstać przed rozstrzygnięciem `OPEN-003`, `OPEN-005` i `OPEN-006`, jeżeli korzysta wyłącznie z opisanych reguł tymczasowych: danych przykładowych zgodnych z `Recipe`, nieprodukcyjnych obrazów lub placeholderów i bez konfiguracji konkretnego hostingu. Te decyzje muszą zostać zamknięte przed podłączeniem docelowych danych, publikacją obrazów albo przygotowaniem wdrożenia.
 
 ## Ukończenie etapu projektowego
 
-Można rozpocząć tworzenie repozytorium, gdy co najmniej `OPEN-001`, `OPEN-002`, `OPEN-003`, `OPEN-005` i `OPEN-006` mają jawne decyzje, a wymagania jakościowe otrzymają prawdziwe polecenia uruchomienia i weryfikacji.
+Można rozpocząć tworzenie repozytorium, gdy `OPEN-001`, `OPEN-002` i `OPEN-007` mają jawne decyzje, a wymagania jakościowe mogą otrzymać prawdziwe polecenia uruchomienia i weryfikacji. Otwarte `OPEN-003`, `OPEN-005` i `OPEN-006` nie blokują lokalnego prototypu korzystającego z ich reguł tymczasowych, ale blokują odpowiednio integrację docelowych danych, użycie produkcyjnych obrazów i konfigurację wdrożenia.

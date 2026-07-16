@@ -13,11 +13,13 @@ Wspólne reguły wizualne opisuje [ui-system.md](../../design/ui-system.md).
 
 Strona zawiera:
 
-1. nagłówek z logo i menu,
+1. nagłówek z logo,
 2. główny komunikat „Co dziś jemy?”,
 3. kartę wyboru jednej z trzech dróg,
 4. sekcję kategorii,
 5. listę propozycji wynikających z wyboru kategorii.
+
+Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy do bieżącego przepływu MVP. Dopóki zakres oraz zawartość menu nie zostaną określone, implementacja nie renderuje jej jako pozornie działającego przycisku.
 
 ## Trzy drogi
 
@@ -56,7 +58,7 @@ Kliknięcie prowadzi do sekcji kategorii na stronie głównej.
 Nagłówek:
 
 - „Wybierz tryb”
-- „Połącz 3 wybory: pora dnia, tempo i okazja.”
+- „Wybierz co najmniej jedną opcję: porę dnia, tempo lub okazję.”
 
 ### Pora dnia
 
@@ -82,18 +84,21 @@ Nagłówek:
 - W każdej grupie można wybrać maksymalnie jedną opcję.
 - Wybranie innej opcji zastępuje poprzednią w tej samej grupie.
 - Ponowne użycie aktywnej opcji usuwa wybór.
-- Wyniki pojawiają się dopiero po wyborze jednej opcji z każdej grupy.
-- Zmiana dowolnego wyboru aktualizuje wyniki.
+- Wyniki pojawiają się po wyborze co najmniej jednej opcji w dowolnej grupie.
+- Od pierwszego wyboru zmiana dowolnej opcji aktualizuje wyniki.
+- Usunięcie ostatniego wyboru ukrywa wyniki i przywraca stan początkowy.
 
 Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 
 ## Wyniki
 
-Po wykonaniu trzech wyborów strona pokazuje:
+Po wykonaniu co najmniej jednego wyboru strona pokazuje:
 
 - podsumowanie wybranych opcji,
 - od trzech do czterech początkowych propozycji,
 - przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
+
+Dokładne działanie „Pokaż więcej” pozostaje otwartą decyzją produktową. Do czasu jej rozstrzygnięcia prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
 
 Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md).
 
@@ -103,7 +108,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
 - Kategorie prowadzą do odpowiedniej sekcji.
 - Żadna kategoria nie jest zaznaczona domyślnie.
-- Niekompletny wybór nie generuje filtrowanych wyników.
+- Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.
 - Użytkownik może usunąć aktywny wybór.
-- Wyniki aktualizują się po zmianie kompletu wyborów.
+- Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
 - Układ spełnia wymagania responsywności i dostępności.
