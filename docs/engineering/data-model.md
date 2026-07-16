@@ -32,7 +32,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `image` | image reference | zdjęcie i tekst alternatywny |
 | `preparationMinutes` | integer | dodatnia liczba minut |
 | `ingredients` | string[] | nazwy składników do wyszukiwania |
-| `tags` | string[] | cechy smaku, diety i sytuacji |
+| `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
 | `tempos` | Tempo[] | co najmniej jedno tempo |
 | `occasions` | Occasion[] | co najmniej jedna okazja |
@@ -101,14 +101,15 @@ MapPosition = { pace: 0..1, lightness: 0..1 }
 
 - Pozycja kursora jest parą `pace` i `lightness` w zakresie `0..1`.
 - Podstawowy ranking wynika z odległości euklidesowej od `mapPosition` przepisu.
-- W środku `(0.5, 0.5)` zwracane są ogólne, zróżnicowane propozycje zamiast preferowania skrajności.
+- W środku `(0.5, 0.5)` zwracane są od trzech do czterech unikalnych propozycji bez preferowania skrajności. Wyniki są wybierane według `editorialPriority`, z warunkiem różnorodności: jeżeli katalog pozwala utworzyć listę tej samej długości obejmującą wszystkie trzy wartości `MealTime`, lista MUSI je reprezentować.
 - `editorialPriority` rozstrzyga wyniki o podobnej odległości; lista nie powinna zawierać prawie identycznych dań.
 - Wyniki i wartości procentowe są aktualizowane podczas przeciągania punktu, bez dodatkowego zatwierdzania.
 
 ## Integralność danych
 
 - Tylko `published` może pojawić się użytkownikowi.
-- `slug`, `id`, czas i słowniki MUSZĄ być walidowane przed publikacją.
+- `slug`, `id`, czas, słowniki i obecność co najmniej jednego tagu MUSZĄ być walidowane przed publikacją.
+- Karta pokazuje od jednego do trzech pierwszych tagów zgodnie z kolejnością zapisaną w `tags`; pozostałe tagi nadal mogą uczestniczyć w wyszukiwaniu.
 - Każdy przepis MUSI mieć komplet danych potrzebny co najmniej jednej ścieżce oraz kartę możliwą do wyrenderowania bez dodatkowych wyjątków.
 - Nieznana wartość słownika jest błędem danych, a nie nową kategorią tworzoną automatycznie.
 - Brak obrazu nie może blokować wyniku; UI używa wspólnego placeholdera.
@@ -122,7 +123,7 @@ MapPosition = { pace: 0..1, lightness: 0..1 }
 | filtr kategorii | co najmniej jeden wybór pokazuje wyniki zawierające wszystkie aktualnie wybrane wartości; każda zmiana odświeża wyniki, a usunięcie ostatniego wyboru je ukrywa |
 | wyszukiwanie na żywo | zmiana treści pola automatycznie przelicza wyniki |
 | przeciąganie mapy | ruch punktu aktualizuje wartości i kolejność wyników bez zatwierdzania |
-| neutralna mapa | środek zwraca różnorodne ogólne propozycje |
+| neutralna mapa | środek zwraca od trzech do czterech unikalnych propozycji i, gdy pozwala na to katalog, reprezentuje wszystkie trzy wartości `MealTime` |
 | błędne dane | rekord nie trafia do widoku użytkownika, a błąd jest raportowany |
 
 Model jest gotowy do implementacji, gdy wybrany stos techniczny posiada jedną walidowaną reprezentację `Recipe`, współdzieloną przez wszystkie ścieżki.

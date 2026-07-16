@@ -50,7 +50,7 @@ Konkretne stabilne wersje Node.js, pnpm, Astro, Reacta i zależności zostaną p
 - publiczne strony mogą być hostowane jako statyczne pliki i serwowane z CDN;
 - JavaScript trafia tylko do obszarów wymagających interakcji;
 - dane przekazywane do `DiscoveryExperience` muszą być ograniczone do pól rzeczywiście potrzebnych w discovery, lecz nadal powstawać ze wspólnego modelu `Recipe`;
-- statyczny output jest wdrażany w Netlify zgodnie z `TD-016`, natomiast bramki CI i minimalna obserwowalność pozostają w `OPEN-006`;
+- statyczny output ma być wdrażany w wybranym Netlify zgodnie z `TD-016`; integracja nie jest jeszcze skonfigurowana, a bramki CI i minimalna obserwowalność pozostają w `OPEN-006`;
 - dodanie renderingu na żądanie wymaga adaptera Astro i ponownej oceny hostingu;
 - dodanie kont lub rozbudowanej warstwy transakcyjnej wymaga ponownej decyzji architektonicznej, a nie cichego rozszerzenia obecnego stosu;
 - pnpm utrzymuje jedyny obowiązujący plik blokady zależności.

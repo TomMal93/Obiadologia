@@ -41,7 +41,7 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 
 ## Wydajność
 
-Cele dla 75. percentyla danych terenowych na urządzeniach mobilnych:
+Docelowe cele po wdrożeniu produkcyjnym, mierzone dla 75. percentyla danych terenowych na urządzeniach mobilnych:
 
 | Metryka | Cel |
 |---|---:|
@@ -49,12 +49,14 @@ Cele dla 75. percentyla danych terenowych na urządzeniach mobilnych:
 | INP | `≤ 200ms` |
 | CLS | `≤ 0.1` |
 
+Do czasu wdrożenia zgodnego z zaakceptowanym mechanizmem pomiarowym powyższe wartości są celami produkcyjnymi, a nie możliwą do zebrania bramką danych terenowych. MVP MUSI przed wdrożeniem przejść pomiar laboratoryjny LCP i CLS dla reprezentatywnego profilu telefonu oraz sieci mobilnej; wynik, narzędzie i profil pomiaru należy zapisać razem z weryfikacją. Laboratoryjna ocena responsywności interakcji korzysta z budżetów wyszukiwania i pracy głównego wątku opisanych poniżej. Cel INP staje się mierzalną bramką terenową dopiero po osobnym zaakceptowaniu mechanizmu pomiarowego zgodnego z wymaganiami prywatności.
+
 - Obrazy MUSZĄ mieć prawidłowe wymiary, nowoczesny format i leniwe ładowanie poza pierwszym widokiem.
 - Element LCP nie może być ładowany leniwie; jego zasób powinien mieć właściwy priorytet.
 - Fonty powinny mieć ograniczoną liczbę odmian, preload tylko gdy uzasadniony i bez blokowania tekstu.
 - Wyszukiwanie i przesuwanie punktu mapy nie może blokować interfejsu. Wyszukiwanie może używać debounce około `200ms`; mapa powinna ograniczać częstotliwość obliczeń bez opóźniania wizualnego ruchu punktu.
 - Dla katalogu do 100 przepisów obliczenie wyników wyszukiwania po przygotowaniu indeksu powinno mieścić się w jednej klatce (`≤ 16ms` dla 95. percentyla na reprezentatywnym telefonie), a przygotowanie indeksu nie może utworzyć długiego zadania przekraczającego `50ms` na głównym wątku. Niespełnienie celu wymaga profilowania i ponownego rozważenia implementacji `RecipeSearch`.
-- Budżety rozmiaru paczek zostaną dopisane po wyborze frameworka i zmierzeniu pierwszego działającego pionowego wycinka.
+- Budżety rozmiaru paczek zostaną dopisane po utworzeniu i zmierzeniu pierwszego działającego pionowego wycinka w wybranym stosie.
 
 ## Odporność i stany danych
 
@@ -69,7 +71,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 - MVP nie wymaga konta ani danych wrażliwych; nie dodajemy ich bez osobnej decyzji.
 - Dane wejściowe są walidowane i kodowane na granicy systemu; renderowany tekst nie może wykonywać HTML ani skryptów.
 - Sekrety nie trafiają do kodu klienta, repozytorium ani dokumentacji.
-- Zależności i nagłówki bezpieczeństwa należy sprawdzać w CI po wyborze stosu i hostingu.
+- Zależności i nagłówki bezpieczeństwa należy sprawdzać w CI po utworzeniu kodu aplikacji i skonfigurowaniu wybranego hostingu.
 - Analityka i telemetria nie należą do bieżącego etapu. Ich późniejsze dodanie wymaga opisania celu, zakresu danych i retencji.
 
 ## SEO i lokalizacja
@@ -89,7 +91,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 
 ## Polecenia weryfikacyjne
 
-Projekt nie ma jeszcze repozytorium ani wybranego stosu, więc nie istnieją uczciwe polecenia instalacji, testów i budowania. Agent MUSI dopisać je tutaj po utworzeniu projektu, wraz z katalogiem roboczym. Nie wolno wymyślać komend przed wyborem narzędzi.
+Repozytorium istnieje, a stos został wybrany w `TD-015` i ADR 0001, ale kod aplikacji oraz skrypty projektu jeszcze nie powstały. Z tego powodu nie istnieją jeszcze uczciwe polecenia instalacji, testów i budowania. Agent MUSI dopisać je tutaj po utworzeniu projektu aplikacji, wraz z katalogiem roboczym. Nie wolno wymyślać komend przed powstaniem rzeczywistych skryptów.
 
 Minimalny docelowy zestaw:
 

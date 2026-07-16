@@ -23,7 +23,7 @@ Makiety określają hierarchię, treści i kierunek wizualny. Przykładowe zapyt
 - pole wyszukiwania i dynamiczne sugestie;
 - dwuwymiarowa Mapa preferencji;
 - wspólna lista propozycji;
-- podstawowe stany początkowy, ładowania, sukcesu, braku wyników i błędu;
+- podstawowe stany początkowy, sukcesu i braku wyników oraz — wyłącznie po podłączeniu rzeczywistej operacji asynchronicznej — ładowania i błędu;
 - obsługa klawiatury, dotyku i technologii asystujących.
 
 ## Poza zakresem
@@ -85,7 +85,7 @@ Zmiana wyników i ich liczby jest ogłaszana technologiom asystującym bez przen
 
 ### Stan początkowy
 
-Każdy tryb pokazuje własną instrukcję i nie udaje kryteriów podanych przez użytkownika. Wyszukiwarka nie pokazuje wyników przed wpisaniem zapytania. Neutralny środek Mapy może pokazywać ogólne, zróżnicowane propozycje.
+Każdy tryb pokazuje własną instrukcję i nie udaje kryteriów podanych przez użytkownika. Wyszukiwarka nie pokazuje wyników przed wpisaniem zapytania. Neutralny środek Mapy pokazuje od trzech do czterech ogólnych, zróżnicowanych propozycji zgodnie z regułą opisaną w `data-model.md`.
 
 ### Ładowanie
 
@@ -175,7 +175,7 @@ Po rozpoczęciu nowej sesji w trybie Mapy:
 
 - aktywny punkt znajduje się na środku: `x = 50`, `y = 50`;
 - podsumowanie opisuje oba wymiary jako neutralne;
-- widoczne są ogólne, zróżnicowane propozycje;
+- widoczne są od trzech do czterech ogólnych, zróżnicowanych propozycji zgodnie z regułą neutralnej Mapy z `data-model.md`;
 - stan nie sugeruje żadnej ze skrajnych preferencji.
 
 Podsumowanie środka brzmi:
@@ -243,6 +243,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 - Zmiana trybu nie powoduje gwałtownego skoku wspólnych elementów.
 - Starsza odpowiedź nie nadpisuje wyników nowszych kryteriów.
 - Brak wyników jest odróżniony od błędu.
+- Prototyp z lokalnymi danymi obsługuje stan początkowy, sukces i brak wyników, ale nie symuluje ładowania ani błędu; te stany stają się obowiązkowe wraz z rzeczywistą operacją asynchroniczną.
 - Każda karta korzysta z `Recipe` i prowadzi do `/recipes/:slug`.
 
 ### Wyszukiwarka
@@ -255,7 +256,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 
 ### Mapa
 
-- Mapa rozpoczyna w neutralnym środku i pokazuje ogólne propozycje.
+- Mapa rozpoczyna w neutralnym środku i pokazuje od trzech do czterech propozycji spełniających regułę różnorodności z `data-model.md`.
 - Punkt można przesuwać myszą, dotykiem i klawiaturą, bez wyjścia poza granice.
 - Podsumowanie odpowiada współrzędnym i jest aktualizowane podczas ruchu.
 - Wyniki są aktualizowane podczas przeciągania, bez zatwierdzania.

@@ -20,7 +20,9 @@ obiadologia-docs/
     ├── engineering/
     │   ├── technical-decisions.md
     │   ├── data-model.md
-    │   └── quality-requirements.md
+    │   ├── quality-requirements.md
+    │   └── adr/
+    │       └── 0001-stos-aplikacji.md
     └── assets/ui/
         ├── home-hero.png
         ├── home-browse-mode.png
@@ -39,6 +41,7 @@ obiadologia-docs/
 | kolory, typografia, odstępy, komponenty | [ui-system.md](design/ui-system.md) |
 | pola przepisu i reguły dopasowania | [data-model.md](engineering/data-model.md) |
 | framework, API, hosting lub test runner | [technical-decisions.md](engineering/technical-decisions.md) |
+| uzasadnienie zaakceptowanej decyzji kosztownej do odwrócenia | właściwy dokument w [`engineering/adr/`](engineering/adr/) wskazany przez rejestr decyzji |
 | dostępność, wydajność i Definition of Done | [quality-requirements.md](engineering/quality-requirements.md) |
 
 ## Źródła prawdy
@@ -50,7 +53,8 @@ obiadologia-docs/
 | zachowanie funkcji | właściwy plik w `product/features/` |
 | wspólne reguły wizualne | `design/ui-system.md` |
 | dane i dopasowanie | `engineering/data-model.md` |
-| decyzje implementacyjne | `engineering/technical-decisions.md`, później ADR-y |
+| rejestr decyzji implementacyjnych i decyzje otwarte | `engineering/technical-decisions.md` |
+| pełna treść zaakceptowanej decyzji kosztownej do odwrócenia | właściwy ADR wskazany przez `engineering/technical-decisions.md`; w razie różnicy ADR ma pierwszeństwo przed skrótem w rejestrze |
 | wymagania jakościowe | `engineering/quality-requirements.md` |
 | szczegóły faktycznie zaimplementowane | kod i testy, gdy powstaną |
 
