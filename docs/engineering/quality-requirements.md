@@ -85,7 +85,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 
 - Testy jednostkowe: normalizacja wyszukiwania, filtry kategorii, ranking mapy i walidacja `Recipe`.
 - Testy komponentów: wybory, aktualizacja wyników, karty, dialog i przełącznik trybu.
-- Testy E2E: trzy główne ścieżki od strony startowej do wyników, karta prowadząca do trasy przepisu, zamykanie overlayu przez przycisk, `Escape` i „Wstecz” oraz powrót fokusu.
+- Testy E2E: trzy główne ścieżki od strony startowej do wyników, karta prowadząca do trasy przepisu oraz powrót do zawieszonej sesji discovery, zamykanie overlayu przez przycisk, `Escape` i „Wstecz” bez dodatkowego wpisu do cofnięcia, zresetowane ponowne otwarcie przez „Dalej” oraz powrót fokusu. Normatywne zachowanie historii opisuje [discovery-overlay.md](../product/features/discovery-overlay.md).
 - Automatyczna dostępność nie zastępuje ręcznej obsługi klawiaturą i czytnikiem ekranu.
 - Porównanie wizualne obejmuje obowiązkowe szerokości mobilne oraz widok wyśrodkowanego kontenera na `768px`, ale nie powinno blokować przez nieistotne różnice antyaliasingu.
 

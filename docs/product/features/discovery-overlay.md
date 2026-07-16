@@ -50,7 +50,7 @@ Overlay:
 - pozwala przewijać własną zawartość, gdy nie mieści się ona w viewporcie;
 - nie powoduje gwałtownego skoku wspólnych elementów podczas przełączania trybu.
 
-Przycisk zamknięcia i klawisz `Escape` zamykają overlay. Akcja „Wstecz” przy otwartym overlayu najpierw go zamyka, zamiast opuszczać poprzedni widok strony.
+Przycisk zamknięcia, klawisz `Escape` i akcja „Wstecz” przy otwartym overlayu uruchamiają jeden wspólny kontrakt zamknięcia opisany poniżej. „Wstecz” najpierw zamyka overlay, zamiast opuszczać poprzedni widok strony.
 
 Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. Fokus pozostaje wewnątrz dialogu, a po zamknięciu wraca do elementu, który otworzył overlay.
 
@@ -60,8 +60,17 @@ Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. 
 - Przycisk „Mapa” otwiera overlay w trybie Mapy.
 - Wyszukiwarka i Mapa posiadają oddzielny stan w ramach jednej sesji overlayu.
 - Przełączenie trybu nie zamyka overlayu i zachowuje stan obu trybów wraz z ich ostatnimi wynikami.
-- Zamknięcie overlayu kończy sesję oraz resetuje zapytanie, sugestie, wyniki i położenie Mapy.
+- Jawne zamknięcie przez przycisk, `Escape` albo akcję „Wstecz” kończy sesję oraz resetuje zapytanie, sugestie, wyniki i położenie Mapy.
 - Ponowne otwarcie rozpoczyna nową sesję w trybie wskazanym przez akcję użytkownika.
+
+### Historia przeglądarki i powrót z przepisu
+
+- Otwarcie overlayu tworzy dokładnie jeden lokalny wpis historii oznaczający sesję discovery. Adres URL nie zawiera trybu ani kryteriów.
+- Przełączanie trybu i zmiany kryteriów aktualizują bieżącą sesję, ale nie tworzą kolejnych wpisów historii.
+- Przycisk zamknięcia i `Escape` cofają wpis historii. Overlay zamyka się dopiero w reakcji na tę samą zmianę historii, która obsługuje przeglądarkową akcję „Wstecz”; obsługa „Wstecz” nie wykonuje dodatkowego cofnięcia.
+- Jawnie zamknięta sesja jest zakończona. Jeżeli użytkownik wybierze później „Dalej” i wróci do jej wpisu, overlay rozpoczyna nową, zresetowaną sesję w trybie wskazanym przy pierwotnym otwarciu.
+- Przejście z karty do `/recipes/:slug` nie jest jawnym zamknięciem, lecz zawiesza bieżącą sesję. Powrót z przepisu przywraca overlay w aktywnym wcześniej trybie, z poprzednim zapytaniem, położeniem Mapy i wynikami.
+- Stan potrzebny do odtworzenia zawieszonej sesji pozostaje lokalny i nie ustanawia udostępnialnego kontraktu URL.
 
 ## Wspólna lista wyników
 
@@ -237,7 +246,10 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 - „Szukaj” i „Mapa” otwierają odpowiedni tryb jednego overlayu.
 - Przełączenie trybu nie zamyka overlayu ani nie resetuje stanu obu trybów.
 - Zamknięcie kończy sesję i resetuje oba tryby.
-- Przycisk zamknięcia, `Escape` i akcja „Wstecz” prawidłowo zamykają overlay.
+- Otwarcie tworzy jeden wpis historii; przełączanie trybu i zmiany kryteriów nie tworzą następnych.
+- Przycisk zamknięcia, `Escape` i akcja „Wstecz” zamykają overlay przez jedną zmianę historii, bez pozostawienia dodatkowego kroku „Wstecz”.
+- „Dalej” po jawnym zamknięciu otwiera nową, zresetowaną sesję w trybie pierwotnego otwarcia.
+- Powrót z trasy przepisu przywraca zawieszoną sesję wraz z aktywnym trybem, kryteriami i wynikami.
 - Fokus pozostaje w dialogu i po zamknięciu wraca do elementu otwierającego.
 - Tło jest zablokowane, a własna zawartość overlayu pozostaje przewijalna.
 - Zmiana trybu nie powoduje gwałtownego skoku wspólnych elementów.

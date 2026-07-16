@@ -29,7 +29,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `slug` | string | unikalny adresowy identyfikator |
 | `title` | string | wymagany, po polsku |
 | `description` | string | krótki opis dania |
-| `image` | image reference | zdjęcie i tekst alternatywny |
+| `image` | ImageReference \| null | zdjęcie i tekst alternatywny; `null` oznacza użycie wspólnego placeholdera |
 | `preparationMinutes` | integer | dodatnia liczba minut |
 | `ingredients` | string[] | nazwy składników do wyszukiwania |
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
@@ -47,6 +47,7 @@ MealTime = breakfast | lunch | dinner
 Tempo = now | today | two_days
 Occasion = kids | guests | grill
 MapPosition = { pace: 0..1, lightness: 0..1 }
+ImageReference = { src: string, alt: string }
 ```
 
 - `pace: 0` oznacza „szybko”, a `pace: 1` — „bez pośpiechu”.
@@ -112,13 +113,15 @@ MapPosition = { pace: 0..1, lightness: 0..1 }
 - Karta pokazuje od jednego do trzech pierwszych tagów zgodnie z kolejnością zapisaną w `tags`; pozostałe tagi nadal mogą uczestniczyć w wyszukiwaniu.
 - Każdy przepis MUSI mieć komplet danych potrzebny co najmniej jednej ścieżce oraz kartę możliwą do wyrenderowania bez dodatkowych wyjątków.
 - Nieznana wartość słownika jest błędem danych, a nie nową kategorią tworzoną automatycznie.
-- Brak obrazu nie może blokować wyniku; UI używa wspólnego placeholdera.
+- `image` może mieć wartość `null`; brak obrazu nie może blokować wyniku, a UI używa wtedy wspólnego placeholdera.
+- Jeżeli `image` istnieje, `src` i opisujący danie `alt` MUSZĄ być niepustymi wartościami. Placeholder dla `image: null` jest dekoracyjny i nie powiela dostępnej nazwy przepisu.
 
 ## Weryfikacja i ukończenie
 
 | Sprawdzenie | Kryterium |
 |---|---|
 | walidacja przykładu | dane spełniają wszystkie wymagane typy i zakresy |
+| obraz przepisu | poprawny `ImageReference` jest akceptowany, `null` uruchamia placeholder, a niepełny `ImageReference` jest odrzucany |
 | spójność ścieżek | ten sam przepis może być użyty w Kategoriach, Szukaj i Mapie |
 | filtr kategorii | co najmniej jeden wybór pokazuje wyniki zawierające wszystkie aktualnie wybrane wartości; każda zmiana odświeża wyniki, a usunięcie ostatniego wyboru je ukrywa |
 | wyszukiwanie na żywo | zmiana treści pola automatycznie przelicza wyniki |

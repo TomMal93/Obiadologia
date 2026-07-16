@@ -76,29 +76,27 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 
 - MUSI mieć widoczną etykietę lub poprawne `aria-label`.
 - Błąd i instrukcja nie mogą opierać się wyłącznie na placeholderze.
-- Czyszczenie pola i wysłanie zapytania muszą być dostępne z klawiatury.
+- Edycja i czyszczenie pola muszą być dostępne z klawiatury.
 
 ### Przełącznik trybu
 
 - Search i Mapa tworzą jeden przełącznik w overlayu.
 - Aktywny tryb ma kolor ścieżki, obramowanie i pogrubioną etykietę.
-- Przełączenie nie zamyka overlayu i nie usuwa stanu drugiego trybu w bieżącej sesji.
+- Zachowanie przełącznika i stan sesji definiuje [discovery-overlay.md](../product/features/discovery-overlay.md).
 
 ### Karta przepisu
 
 - Wspólny wzorzec dla wszystkich ścieżek: zdjęcie, tytuł, opcjonalny opis, czas i od 1 do 3 tagów.
-- Cała karta MUSI być linkiem do `/recipes/:slug`; nie wolno zagnieżdżać w niej konkurujących elementów interaktywnych bez wyraźnej potrzeby.
-- Do czasu powstania strony przepisu link prowadzi do prostego ekranu zastępczego zachowującego możliwość powrotu.
+- Karta ma jeden wyraźny obszar interakcji; nie wolno zagnieżdżać w nim konkurujących elementów interaktywnych bez wyraźnej potrzeby.
+- Zachowanie nawigacyjne i bieżący zakres trasy przepisu definiuje [mvp-scope.md](../product/mvp-scope.md).
 - Zdjęcie używa `object-fit: cover`, stałych proporcji i tekstu alternatywnego opisującego danie.
 - Brak zdjęcia MUSI mieć neutralny placeholder bez zmiany wymiarów karty.
 
 ### Overlay
 
 - Jest pełnoekranowym dialogiem z jednym wspólnym nagłówkiem, przełącznikiem Search/Mapa i przyciskiem zamknięcia.
-- MUSI blokować przewijanie tła, przenieść fokus do środka i przywrócić go elementowi otwierającemu.
-- `Escape` zamyka overlay; fokus pozostaje uwięziony w dialogu.
-- Akcja „Wstecz” przy otwartym overlayu zamyka go zamiast opuszczać poprzedni widok strony.
 - Powierzchnia wypełnia mobilny viewport. Na ekranie szerszym niż `480px` pozostaje częścią wyśrodkowanego kontenera mobilnego.
+- Zachowanie dialogu, nawigacji i fokusu definiuje [discovery-overlay.md](../product/features/discovery-overlay.md), a wymagania przekrojowe — [quality-requirements.md](../engineering/quality-requirements.md).
 
 ## Stany danych — kolejny etap
 
@@ -106,7 +104,7 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 
 | Stan | Docelowe zachowanie |
 |---|---|
-| początkowy | spokojna instrukcja, bez udawanych wyników |
+| początkowy | instrukcja i wyniki zgodne ze specyfikacją funkcji, bez udawania kryteriów podanych przez użytkownika |
 | ładowanie | zachowany układ; skeleton lub wskaźnik z etykietą dla czytnika |
 | sukces | krótka, uporządkowana lista dopasowań |
 | pusty | informacja „Brak dopasowań” i łatwa droga zmiany kryteriów |

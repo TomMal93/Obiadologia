@@ -51,20 +51,23 @@ obiadologia-docs/
 | cel i zasady produktu | `product-vision.md` |
 | granice pierwszej wersji | `mvp-scope.md` |
 | zachowanie funkcji | właściwy plik w `product/features/` |
-| wspólne reguły wizualne | `design/ui-system.md` |
+| wspólne reguły wizualne i prezentacja komponentów | `design/ui-system.md` |
 | dane i dopasowanie | `engineering/data-model.md` |
 | rejestr decyzji implementacyjnych i decyzje otwarte | `engineering/technical-decisions.md` |
 | pełna treść zaakceptowanej decyzji kosztownej do odwrócenia | właściwy ADR wskazany przez `engineering/technical-decisions.md`; w razie różnicy ADR ma pierwszeństwo przed skrótem w rejestrze |
 | wymagania jakościowe | `engineering/quality-requirements.md` |
 | szczegóły faktycznie zaimplementowane | kod i testy, gdy powstaną |
 
+Każdy kontrakt ma jedno normatywne źródło wskazane powyżej. Inne dokumenty mogą zawierać krótkie streszczenie albo kryterium weryfikacji, jeżeli odsyłają do tego źródła i nie dodają własnych szczegółów. Rejestr decyzji opisuje przyjęty kierunek techniczny i jego uzasadnienie, ale nie zastępuje specyfikacji zachowania.
+
 ## Najważniejsze kontrakty bieżącego etapu
 
-- „Wstecz” wraca do poprzedniego widoku, a przy otwartym overlayu najpierw go zamyka.
-- Kategorie i Wyszukiwarka odświeżają wyniki po każdej zmianie kryteriów.
-- Mapa odświeża wyniki podczas przeciągania punktu.
-- Cała karta przepisu prowadzi do trasy przepisu; do czasu powstania strony docelowej trasa pokazuje prosty ekran zastępczy.
-- Obowiązuje jeden układ mobilny od `320px` do `480px`. Na szerszym ekranie jest wyśrodkowany w kontenerze o maksymalnej szerokości `480px`, bez osobnego wariantu desktopowego.
+Poniższa lista jest wyłącznie skrótem nawigacyjnym; pełny kontrakt znajduje się w podlinkowanym źródle.
+
+- „Wstecz” przy otwartym overlayu najpierw go zamyka — [discovery-overlay.md](product/features/discovery-overlay.md).
+- Kategorie i Wyszukiwarka odświeżają wyniki po każdej zmianie kryteriów, a Mapa podczas przeciągania punktu — [home-page.md](product/features/home-page.md) i [discovery-overlay.md](product/features/discovery-overlay.md).
+- Cała karta przepisu prowadzi do trasy przepisu, której bieżący zakres opisuje [mvp-scope.md](product/mvp-scope.md).
+- Obowiązuje jeden wyśrodkowany układ mobilny — [ui-system.md](design/ui-system.md).
 
 Gdy dokumenty są sprzeczne, nie wybieraj wygodniejszej wersji. Zatrzymaj zmianę, wskaż konflikt i popraw właściwe źródło prawdy.
 
