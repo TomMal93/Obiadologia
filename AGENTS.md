@@ -1,21 +1,28 @@
-# Instrukcje dla agentów
+# Obiadologia — instrukcja dla agentów
 
-## Dokumentacja
+## Czytaj tylko to, czego wymaga zadanie
 
-Czytaj wyłącznie dokumenty potrzebne do bieżącego zadania. Nie wczytuj całego katalogu `docs/`.
+- orientacja i routing dokumentacji: `docs/README.md`
+- cel produktu i zakres MVP: `docs/product/`
+- strona główna: `docs/product/features/home-page.md`
+- wspólny overlay Mapa/Wyszukiwarka: `docs/product/features/discovery-overlay.md`
+- wygląd i komponenty: `docs/design/ui-system.md`
+- model danych: `docs/engineering/data-model.md`
+- nierozstrzygnięte decyzje techniczne: `docs/engineering/technical-decisions.md`
+- testy, dostępność i wydajność: `docs/engineering/quality-requirements.md`
 
-- Gdy zadanie dodaje funkcję, zmienia zachowanie użytkownika albo zakres produktu, przeczytaj [wizję produktu](docs/product/product-vision.md).
-- Przed implementacją nowej funkcji lub rozszerzeniem istniejącej przeczytaj [zakres MVP](docs/product/mvp-scope.md).
-- Gdy potrzebujesz znaleźć właściwy dokument, użyj [mapy dokumentacji](docs/README.md).
-- Przy zmianie czysto technicznej nie czytaj wizji produktu, jeżeli zmiana nie wpływa na zachowanie użytkownika.
-- Przy zmianach hero, sekcji „Wybierz tryb” lub listy propozycji przeczytaj [specyfikację strony głównej](docs/product/features/home-page.md).
-- Przy zmianach Wyszukiwarki lub wspólnego szkieletu overlayu przeczytaj [specyfikację Wyszukiwarki](docs/product/features/search-overlay.md).
-- Przy zmianach Mapy przeczytaj [specyfikację Mapy](docs/product/features/map-overlay.md).
+Nie wczytuj całego katalogu `docs/`, jeśli zadanie dotyczy jednego obszaru.
 
-## Zasady pracy
+## Reguły pracy
 
-- Przed zmianą sprawdź istniejący kod, testy i konfigurację.
-- Nie dodawaj funkcji ani zależności spoza zakresu zadania.
-- Nie wyprowadzaj kontraktów, algorytmów ani dokładnych wartości technicznych z makiet.
-- Jeśli wymagania są sprzeczne albo brakuje decyzji o dużym wpływie, opisz problem i poproś o rozstrzygnięcie.
-- Po zmianie uruchom kontrole właściwe dla zmienionego zakresu.
+1. Specyfikacja funkcji jest źródłem prawdy dla zachowania, a `ui-system.md` dla wspólnych reguł wizualnych.
+2. Nie duplikuj wspólnych reguł w specyfikacjach funkcji — linkuj do ich źródła.
+3. Zachowaj jeden model `Recipe` dla Kategorii, Wyszukiwarki i Mapy.
+4. Nie dodawaj domyślnych wyborów w trybie Kategorii. Stan z wybranymi wartościami na makiecie przedstawia przykład po interakcji. Mapa rozpoczyna w punkcie środkowym.
+5. Każdą istotną zmianę zachowania uzupełnij w odpowiedniej specyfikacji i kryteriach akceptacji.
+6. Nie podejmuj po cichu kosztownych decyzji technicznych. Zapisz je jako otwarte albo dodaj ADR po uzgodnieniu.
+7. Po implementacji uruchom testy wskazane w projekcie. Dopóki nie wybrano stosu, brak poleceń jest jawną luką, a nie zgodą na pominięcie weryfikacji.
+8. W bieżącym etapie twórz wyłącznie jeden układ mobilny. Nie projektuj osobnych układów tabletowych ani desktopowych.
+9. Nie implementuj zakresu odłożonego na później. Jeżeli jest potrzebny do zachowania przepływu, użyj jawnie opisanego ekranu lub danych zastępczych.
+
+Dokument bliżej zmienianego kodu może doprecyzować te reguły, ale nie powinien im przeczyć.

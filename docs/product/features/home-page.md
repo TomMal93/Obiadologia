@@ -1,178 +1,109 @@
-# Strona główna
+# Strona główna i Kategorie
 
 > Status: obowiązujący  
-> Właściciel: właściciel produktu  
-> Opisywany stan: docelowy dla MVP  
-> Ostatnia aktualizacja: 2026-07-15
+> Makiety: `home-hero.png`, `home-browse-mode.png`
 
 ## Cel
 
-Strona główna prowadzi użytkownika do przepisu trzema równorzędnymi drogami:
+Strona główna pomaga użytkownikowi rozpoznać swój aktualny stan i wybrać jedną z trzech dróg odkrywania dań.
 
-1. Mapa — użytkownik nie potrafi nazwać dania, ale zna oczekiwany charakter posiłku.
-2. Szukaj — użytkownik ma składnik, nazwę dania, smak, kategorię lub tag.
-3. Kategorie — użytkownik chce zawęzić propozycje przez porę dnia, tempo i okazję.
+Wspólne reguły wizualne opisuje [ui-system.md](../../design/ui-system.md).
 
-## Zatwierdzone materiały referencyjne
+## Struktura
 
-- [Hero](../../assets/ui/home-hero.png)
-- [Sekcja „Wybierz tryb”](../../assets/ui/home-browse-mode.png)
+Strona zawiera:
 
-Makiety określają wygląd i hierarchię treści. Nie określają dokładnych wymiarów, algorytmu dopasowania ani źródła danych.
+1. nagłówek z logo i menu,
+2. główny komunikat „Co dziś jemy?”,
+3. kartę wyboru jednej z trzech dróg,
+4. sekcję kategorii,
+5. listę propozycji wynikających z wyboru kategorii.
 
-## W zakresie
+## Trzy drogi
 
-- hero z trzema drogami do przepisu,
-- przejście do overlayu Mapy,
-- przejście do overlayu Wyszukiwarki,
-- przejście do sekcji „Wybierz tryb”,
-- wybór pory dnia, tempa i okazji,
-- lista dopasowanych propozycji,
-- przycisk „Pokaż więcej”.
+### Mapa
 
-## Poza zakresem
+Tekst:
 
-- szczegóły przepisu po kliknięciu karty,
-- logowanie i zapisywanie wyborów użytkownika,
-- zapisywanie filtrów w adresie URL,
-- algorytm dopasowania przepisów,
-- zachowanie i zawartość overlayów Mapy oraz Wyszukiwarki.
+- „Nie wiem, czego chcę”
+- „nastrój · tempo · inspiracja”
+- przycisk „Mapa”
 
-## Hero
+Kliknięcie otwiera discovery overlay w trybie mapy.
 
-Hero zawiera:
+### Wyszukiwarka
 
-- nazwę „Obiadologia”,
-- nagłówek „Co dziś jemy?”,
-- komunikat „Nie musisz wiedzieć, czego chcesz.”,
-- nagłówek „Wybierz najbliższą myśl”,
-- trzy ścieżki:
-  - „Nie wiem, czego chcę” → przycisk „Mapa”,
-  - „Wiem, czego szukam” → przycisk „Szukaj”,
-  - „Chcę przeglądać” → przycisk „Kategorie”.
+Tekst:
 
-Przycisk „Mapa” otwiera pełnoekranowy overlay z aktywną zakładką Mapy.
+- „Wiem, czego szukam”
+- „składnik · danie · smak”
+- przycisk „Szukaj”
 
-Przycisk „Szukaj” otwiera pełnoekranowy overlay z aktywną zakładką Wyszukiwarki.
+Kliknięcie otwiera discovery overlay w trybie wyszukiwarki.
 
-Przycisk „Kategorie” przewija stronę do sekcji „Wybierz tryb”. Po zakończeniu przewijania fokus przechodzi na nagłówek tej sekcji.
+### Kategorie
 
-Hero nie zawiera dolnej nawigacji mobilnej.
+Tekst:
 
-Kolory przycisków określają tryb:
+- „Chcę przeglądać”
+- „kategoria · okazja · sytuacja”
+- przycisk „Kategorie”
 
-- Mapa — niebieski,
-- Szukaj — koralowy,
-- Kategorie — zielony.
+Kliknięcie prowadzi do sekcji kategorii na stronie głównej.
 
-## Sekcja „Wybierz tryb”
+## Sekcja kategorii
 
-Sekcja zawiera nagłówek „Wybierz tryb” oraz tekst „Połącz 3 wybory: pora dnia, tempo i okazja.”
+Nagłówek:
 
-Użytkownik wybiera dokładnie jedną opcję w każdej grupie:
+- „Wybierz tryb”
+- „Połącz 3 wybory: pora dnia, tempo i okazja.”
 
-| Grupa | Opcje |
-| --- | --- |
-| Pora dnia | Śniadanie, Obiad, Kolacja |
-| Tempo | Na już, Na dziś, Na dwa dni |
-| Okazja | Dla dzieci, Dla gości, Na grilla |
+### Pora dnia
 
-### Stan początkowy
+- Śniadanie
+- Obiad
+- Kolacja
 
-Po wejściu na stronę żadna opcja nie jest zaznaczona.
+### Tempo
 
-Sekcja wyświetla komunikat:
+- Na już
+- Na dziś
+- Na dwa dni
 
-> Wybierz po jednej opcji z każdej grupy, a pokażemy propozycje.
+### Okazja
 
-Lista wyników i przycisk „Pokaż więcej” nie są widoczne.
+- Dla dzieci
+- Dla gości
+- Na grilla
 
-### Stan niepełnego wyboru
+## Reguły wyboru
 
-Po wybraniu jednej lub dwóch grup zaznaczone opcje pozostają widoczne.
+- Początkowo żadna opcja nie jest wybrana.
+- W każdej grupie można wybrać maksymalnie jedną opcję.
+- Wybranie innej opcji zastępuje poprzednią w tej samej grupie.
+- Ponowne użycie aktywnej opcji usuwa wybór.
+- Wyniki pojawiają się dopiero po wyborze jednej opcji z każdej grupy.
+- Zmiana dowolnego wyboru aktualizuje wyniki.
 
-Komunikat wskazuje, ile grup pozostało do wybrania. Lista wyników nadal nie jest widoczna.
+Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 
-### Stan gotowy
+## Wyniki
 
-Po wybraniu opcji we wszystkich trzech grupach:
+Po wykonaniu trzech wyborów strona pokazuje:
 
-- każda grupa ma dokładnie jedną aktywną opcję,
-- widoczne jest podsumowanie w formacie `Wybrano: {pora dnia} · {tempo} · {okazja}`,
-- pojawia się nagłówek „Propozycje dla Ciebie”,
-- pojawiają się trzy lub cztery dopasowane karty,
-- widoczny jest przycisk „Pokaż więcej”.
+- podsumowanie wybranych opcji,
+- od trzech do czterech początkowych propozycji,
+- przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
 
-Zmiana aktywnej opcji w dowolnej grupie odświeża podsumowanie i wyniki bez przeładowania strony oraz bez dodatkowego przycisku zatwierdzającego.
-
-### Ładowanie
-
-Jeżeli pobranie wyników jest asynchroniczne:
-
-- aktywne wybory i podsumowanie pozostają widoczne,
-- obszar wyników pokazuje stan ładowania,
-- użytkownik może zmienić wybór podczas ładowania,
-- wynik starszego żądania nie może nadpisać wyników nowszego wyboru.
-
-### Brak wyników
-
-Jeżeli pełny zestaw wyborów nie zwraca wyników:
-
-- wyświetlany jest komunikat o braku propozycji,
-- widoczna jest możliwość zmiany dowolnego wyboru,
-- nie jest widoczny przycisk „Pokaż więcej”.
-
-### Błąd
-
-Jeżeli nie można pobrać wyników:
-
-- wyświetlany jest zrozumiały komunikat błędu,
-- aktywne wybory pozostają zachowane,
-- użytkownik może ponowić pobranie wyników,
-- błąd nie usuwa możliwości zmiany wyborów.
-
-## Karty wyników
-
-Każda karta zawiera:
-
-- zdjęcie potrawy,
-- nazwę przepisu,
-- czas przygotowania,
-- od jednego do trzech tagów.
-
-Opis karty jest opcjonalny w tej sekcji. Szczegółową wspólną specyfikację kart określa dokumentacja danych lub komponentu, gdy powstanie.
-
-Karty pozostają wizualnie neutralne. Kolory grup są używane przede wszystkim dla aktywnych opcji, ikon i podsumowania.
-
-## „Pokaż więcej”
-
-Przycisk pobiera lub pokazuje kolejną porcję wyników dla aktualnych wyborów.
-
-Podczas ładowania przycisk komunikuje stan ładowania i nie może wysłać drugiego żądania.
-
-Jeżeli nie ma kolejnych wyników, przycisk znika, a interfejs informuje, że pokazano wszystkie dostępne propozycje.
-
-## Dostępność i responsywność
-
-- Opcje w każdej grupie tworzą jedną grupę wyboru i są obsługiwane z klawiatury.
-- Aktywna opcja ma widoczny focus i stan zaznaczenia dostępny dla technologii asystujących.
-- Zmiana kompletnego zestawu wyborów ogłasza podsumowanie oraz liczbę pokazanych propozycji.
-- Elementy interaktywne mają dostępne nazwy zgodne z widocznymi etykietami.
-- Gdy trzy opcje nie mieszczą się bez przepełnienia lub nieczytelnego łamania tekstu, układają się pionowo.
-- Gdy trzy ścieżki hero nie mieszczą się w jednym rzędzie, układają się pionowo.
-- Interfejs nie wymaga przewijania w poziomie.
-
-Dokładne breakpointy oraz standard dostępności zostaną określone w zasadach UI.
+Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md).
 
 ## Kryteria akceptacji
 
-| Kryterium | Sposób weryfikacji |
-| --- | --- |
-| Każda z trzech dróg z hero prowadzi do właściwego widoku | kontrola w przeglądarce |
-| Początkowo nie ma aktywnych filtrów ani wyników | test komponentu i kontrola w przeglądarce |
-| Można wybrać dokładnie jedną opcję w każdej grupie | test komponentu |
-| Wyniki pojawiają się po kompletnym wyborze | test komponentu i kontrola w przeglądarce |
-| Zmiana wyboru odświeża wyniki bez przeładowania strony | test komponentu |
-| Można obsłużyć wybór wyłącznie z klawiatury | kontrola ręczna |
-| Wąski widok nie ma poziomego przewijania | kontrola w przeglądarce |
-| Widok odpowiada zatwierdzonym makietom w zakresie hierarchii i kolorów | kontrola wizualna |
+- Wszystkie trzy drogi są widoczne jako równorzędne.
+- Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
+- Kategorie prowadzą do odpowiedniej sekcji.
+- Żadna kategoria nie jest zaznaczona domyślnie.
+- Niekompletny wybór nie generuje filtrowanych wyników.
+- Użytkownik może usunąć aktywny wybór.
+- Wyniki aktualizują się po zmianie kompletu wyborów.
+- Układ spełnia wymagania responsywności i dostępności.

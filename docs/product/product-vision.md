@@ -1,83 +1,73 @@
 # Wizja produktu Obiadologia
 
 > Status: obowiązujący  
-> Właściciel: właściciel produktu  
-> Opisywany stan: docelowy (to-be)  
-> Ostatnia aktualizacja: 2026-07-15
+> Opisywany stan: kierunek produktu
 
+## Cel dokumentu
 
-## Cel produktu
+Ten dokument opisuje, po co istnieje Obiadologia i jakie zasady powinny kierować rozwojem produktu.
 
-Obiadologia pomaga odpowiedzieć na codzienne pytanie:
+Zakres MVP opisuje [mvp-scope.md](./mvp-scope.md).
 
-**„Co dziś zjemy?”**
+## Problem
 
-Problemem użytkownika nie jest brak przepisów. Problemem jest konieczność wymyślenia dania, dopasowania go do czasu i sytuacji, uwzględnienia innych osób oraz przejrzenia zbyt wielu możliwości.
+Użytkownikom zazwyczaj nie brakuje przepisów. Problemem jest podjęcie decyzji: co zjeść w konkretnej sytuacji, przy dostępnym czasie, nastroju i okazji.
 
-Obiadologia ma skrócić drogę od niejasnej potrzeby do kilku możliwych do wykonania propozycji.
+Duże katalogi, rozbudowane filtry i konieczność precyzyjnego wyszukiwania zwiększają wysiłek decyzyjny.
 
 ## Obietnica
 
-**Mniej myślenia nad jedzeniem. Więcej odpowiedzi dopasowanych do dnia.**
+Obiadologia pomaga szybko dojść od pytania „co dziś jemy?” do kilku trafnych propozycji.
 
-Użytkownik nie musi znać nazwy dania ani wiedzieć, czego dokładnie szuka.
+> Nie musisz wiedzieć, czego chcesz. Obiadologia pomoże Ci to ustalić.
 
-## W zakresie
+## Trzy stany użytkownika
 
-Produkt:
+| Stan | Droga | Potrzeba |
+|---|---|---|
+| Nie wiem, czego chcę | Mapa | Inspiracja przez nastrój, tempo i charakter posiłku |
+| Wiem, czego szukam | Wyszukiwarka | Znalezienie dania, składnika, smaku lub tagu |
+| Chcę przeglądać | Kategorie | Wybór przez porę dnia, tempo i okazję |
 
-- pomaga zdecydować, co przygotować do jedzenia,
-- zaczyna od sytuacji użytkownika, a nie od struktury bazy przepisów,
-- uwzględnia czas, okazję, odbiorców, preferencje i dostępne składniki,
-- zawęża wybór do niewielkiej liczby pasujących propozycji,
-- pozwala użytkownikowi zrozumieć, dlaczego widzi dane wyniki.
-
-## Poza zakresem
-
-Obiadologia nie jest:
-
-- katalogiem nastawionym na prezentowanie tysięcy przepisów,
-- portalem kulinarnym opartym głównie na artykułach,
-- wyszukiwarką wymagającą precyzyjnego zapytania,
-- panelem z dziesiątkami filtrów,
-- narzędziem projektowanym wokół struktury danych zamiast potrzeb użytkownika.
-
-Ten dokument nie określa szczegółowego zachowania widoków, algorytmu dopasowania, modelu danych ani architektury aplikacji.
-
-## Trzy drogi do przepisu
-
-Obiadologia oferuje trzy równorzędne sposoby rozpoczęcia:
-
-1. **Mapa — „Nie wiem, czego chcę”**  
-   Użytkownik określa charakter posiłku bez podawania nazwy dania.
-
-2. **Szukaj — „Mam już jakiś trop”**  
-   Użytkownik podaje składnik, danie, smak, kategorię albo tag.
-
-3. **Przeglądanie — „Chcę zobaczyć możliwości”**  
-   Użytkownik wybiera kontekst, taki jak pora dnia, tempo lub okazja.
-
-Wszystkie trzy drogi prowadzą do tego samego rezultatu: kilku dopasowanych propozycji.
+Wszystkie trzy drogi są równorzędne i prowadzą do wspólnego modelu propozycji.
 
 ## Zasady produktu
 
-- Interfejs MUSI ograniczać liczbę decyzji wymaganych od użytkownika.
-- Funkcje MUSZĄ używać języka codziennych potrzeb, bez wymagania wiedzy kulinarnej.
-- Pierwszy zestaw wyników POWINIEN być krótki i dopasowany. Dokładną liczbę określa specyfikacja danej funkcji.
-- Użytkownik MUSI zachować kontrolę nad wyborem.
-- Produkt nie może oceniać szybkich, prostych ani mniej ambitnych wyborów.
-- Kolor służy rozpoznawaniu trybu i aktywnego wyboru, a nie dekorowaniu całego interfejsu.
-- Nowa funkcja nie powinna zwiększać liczby kroków bez wyraźnej korzyści dla użytkownika.
+- Zaczynamy od sytuacji użytkownika, nie od katalogu przepisów.
+- Ograniczamy liczbę decyzji potrzebnych do uzyskania wyniku.
+- Pokazujemy kilka trafnych propozycji zamiast dużej liczby wyników.
+- Nie wymagamy wiedzy kulinarnej ani precyzyjnego zapytania.
+- Używamy prostego, codziennego języka.
+- Dajemy użytkownikowi kontrolę nad wyborem i możliwość zmiany drogi.
+- Kolor wspiera rozpoznanie trybu, ale nie może być jedynym nośnikiem informacji.
+
+## Pożądany rezultat
+
+Użytkownik powinien w krótkim czasie:
+
+1. rozpoznać jedną z trzech dróg,
+2. podać minimalną ilość informacji,
+3. otrzymać kilka pasujących propozycji,
+4. wybrać danie bez przeglądania dużego katalogu.
+
+## Poza kierunkiem produktu
+
+Obiadologia nie powinna zmieniać się w:
+
+- ogólny portal kulinarny,
+- ogromną listę przepisów,
+- system wymagający wielu filtrów,
+- wyszukiwarkę wymagającą idealnego zapytania,
+- narzędzie oceniające wybory żywieniowe użytkownika.
 
 ## Filtr dla nowych funkcji
 
-Przed dodaniem funkcji odpowiedz:
+Przed dodaniem funkcji należy odpowiedzieć:
 
 1. Czy pomaga szybciej zdecydować, co zjeść?
-2. Czy odpowiada na realną, codzienną sytuację?
-3. Czy zmniejsza liczbę decyzji?
-4. Czy jest zrozumiała bez instrukcji?
-5. Czy działa, gdy użytkownik nie zna nazwy dania?
-6. Czy prowadzi do kilku trafnych propozycji?
+2. Czy zmniejsza, czy zwiększa liczbę decyzji?
+3. Czy działa w co najmniej jednej z trzech głównych dróg?
+4. Czy może zostać opisana prostym językiem?
+5. Czy nie powiela istniejącego sposobu odkrywania propozycji?
 
-Jeżeli większość odpowiedzi brzmi „nie”, funkcja nie powinna być częścią głównego doświadczenia Obiadologii.
+Jeżeli funkcja nie wspiera głównej decyzji użytkownika, nie należy do podstawowego produktu.

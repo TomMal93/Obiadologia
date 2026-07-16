@@ -1,39 +1,78 @@
 # Dokumentacja Obiadologii
 
-## Cel
+Ten katalog jest lekkim systemem routingu wiedzy dla ludzi i agentów. Dokumenty są rozdzielone według odpowiedzialności, aby agent czytał tylko kontekst potrzebny do zadania.
 
-Dokumentacja ma pozwalać agentom ustalić zakres zmiany, oczekiwane zachowanie, obowiązujące ograniczenia i sposób weryfikacji bez zgadywania.
-Agent czyta wyłącznie dokumenty związane z bieżącym zadaniem. Nie należy wczytywać całego katalogu `docs/` przed każdą zmianą.
+## Struktura
+
+```text
+obiadologia-docs/
+├── AGENTS.md
+└── docs/
+    ├── README.md
+    ├── product/
+    │   ├── product-vision.md
+    │   ├── mvp-scope.md
+    │   └── features/
+    │       ├── home-page.md
+    │       └── discovery-overlay.md
+    ├── design/
+    │   └── ui-system.md
+    ├── engineering/
+    │   ├── technical-decisions.md
+    │   ├── data-model.md
+    │   └── quality-requirements.md
+    └── assets/ui/
+        ├── home-hero.png
+        ├── home-browse-mode.png
+        ├── search-overlay.png
+        └── map-overlay.png
+```
+
+## Routing zadań
+
+| Zadanie | Przeczytaj |
+|---|---|
+| zrozumienie celu produktu | [product-vision.md](product/product-vision.md) |
+| ocena, czy funkcja należy do MVP | [mvp-scope.md](product/mvp-scope.md) |
+| hero lub wybory kategorii | [home-page.md](product/features/home-page.md) |
+| Wyszukiwarka, Mapa lub ich wspólny modal | [discovery-overlay.md](product/features/discovery-overlay.md) |
+| kolory, typografia, odstępy, komponenty | [ui-system.md](design/ui-system.md) |
+| pola przepisu i reguły dopasowania | [data-model.md](engineering/data-model.md) |
+| framework, API, hosting lub test runner | [technical-decisions.md](engineering/technical-decisions.md) |
+| dostępność, wydajność i Definition of Done | [quality-requirements.md](engineering/quality-requirements.md) |
 
 ## Źródła prawdy
 
-| Obszar | Źródło |
-| --- | --- |
-| Cel i zasady produktu | `docs/product/product-vision.md` |
-| Aktualny zakres | `docs/product/mvp-scope.md` |
-| Zachowanie funkcji | właściwy plik w `docs/product/features/` |
-| Wygląd i komponenty | dokumenty w `docs/design/` oraz zatwierdzone makiety |
-| Architektura i dane | kod oraz `docs/architecture/` |
-| Uruchamianie i weryfikacja | główny `AGENTS.md` |
+| Obszar | Źródło prawdy |
+|---|---|
+| cel i zasady produktu | `product-vision.md` |
+| granice pierwszej wersji | `mvp-scope.md` |
+| zachowanie funkcji | właściwy plik w `product/features/` |
+| wspólne reguły wizualne | `design/ui-system.md` |
+| dane i dopasowanie | `engineering/data-model.md` |
+| decyzje implementacyjne | `engineering/technical-decisions.md`, później ADR-y |
+| wymagania jakościowe | `engineering/quality-requirements.md` |
+| szczegóły faktycznie zaimplementowane | kod i testy, gdy powstaną |
 
-Kod i testy opisują stan istniejący. Specyfikacje funkcji mogą opisywać stan docelowy.
+## Najważniejsze kontrakty bieżącego etapu
 
-Makiety są źródłem wyglądu i intencji interfejsu. Nie należy wyprowadzać z nich nieopisanych kontraktów, algorytmów ani wartości technicznych.
+- „Wstecz” wraca do poprzedniego widoku, a przy otwartym overlayu najpierw go zamyka.
+- Kategorie i Wyszukiwarka odświeżają wyniki po każdej zmianie kryteriów.
+- Mapa odświeża wyniki podczas przeciągania punktu.
+- Cała karta przepisu prowadzi do trasy przepisu; do czasu powstania strony docelowej trasa pokazuje prosty ekran zastępczy.
+- Obowiązuje jeden układ mobilny od `320px` do `480px`. Na szerszym ekranie jest wyśrodkowany w kontenerze o maksymalnej szerokości `480px`, bez osobnego wariantu desktopowego.
 
-## Dokumenty
+Gdy dokumenty są sprzeczne, nie wybieraj wygodniejszej wersji. Zatrzymaj zmianę, wskaż konflikt i popraw właściwe źródło prawdy.
 
-Planowane obszary dokumentacji:
+## Słowa normatywne i statusy
 
-- `product/` — wizja, zakres i zachowanie funkcji,
-- `design/` — reguły wizualne, responsywność i dostępność,
-- `architecture/` — rzeczywista architektura, dane i API,
-- `quality/` — polecenia i scenariusze weryfikacyjne,
-- `standards/` — zasady utrzymywania dokumentacji.
+- **MUSI** — wymaganie obowiązkowe.
+- **POWINIEN** — mocna rekomendacja; odstępstwo wymaga uzasadnienia.
+- **MOŻE** — zachowanie opcjonalne.
+- `obowiązujący` — uzgodniona reguła produktu.
+- `roboczy` — materiał z otwartymi decyzjami.
+- `zastąpiony` lub `wycofany` — dokument historyczny, którego nie należy wdrażać.
 
-Nie należy tworzyć pustych dokumentów ani opisywać planowanej architektury jako istniejącej.
+## Utrzymanie
 
-## Praca ze sprzecznościami
-
-Jeżeli dokumenty, kod i polecenie zadania są sprzeczne, agent wskazuje konflikt i jego wpływ.
-
-Agent zatrzymuje zależną część pracy, jeśli konflikt dotyczy zachowania użytkownika, danych, API, bezpieczeństwa lub architektury. Nie zgaduje decyzji o dużym wpływie.
+Aktualizuj dokument tylko wtedy, gdy zmienia się jego odpowiedzialność: zachowanie, zakres, model, decyzja albo wymaganie jakościowe. Nie prowadź tu dziennika prac ani listy drobnych zmian. Kosztowne i trwałe decyzje techniczne po uzgodnieniu należy przenosić do osobnych ADR-ów.
