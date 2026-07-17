@@ -113,13 +113,16 @@
   align-content: center;
   gap: var(--space-4);
   padding: var(--space-8) var(--space-4);
-  border: 1px solid var(--color-border);
+  /* Nieaktywny przycisk nie ma widocznego obramowania — przezroczysta ramka
+     rezerwuje miejsce, aby wybór (obramowanie akcentu) nie przesuwał układu.
+     Widoczność na białym panelu zapewnia delikatne wypełnienie. */
+  border: 2px solid transparent;
   border-radius: var(--radius-field);
   color: var(--color-text);
   font-size: var(--font-size-14);
   line-height: 1.2;
   cursor: pointer;
-  background: var(--color-surface);
+  background: var(--color-bg);
 }
 
 .category-option:hover {
@@ -127,7 +130,7 @@
 }
 
 .category-option.is-selected {
-  border: 2px solid var(--group-accent);
+  border-color: var(--group-accent);
   color: var(--color-text);
   font-weight: 800;
   background: var(--group-soft);
