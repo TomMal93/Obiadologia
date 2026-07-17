@@ -93,7 +93,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 
 Katalog roboczy: katalog główny repozytorium. Projekt przypina Node.js w `.node-version`, a wersję pnpm w polu `packageManager` pliku `package.json`.
 
-```powershell
+```bash
 # instalacja zależności z istniejącego lockfile
 corepack pnpm install --frozen-lockfile
 
@@ -111,7 +111,7 @@ corepack pnpm build
 corepack pnpm verify
 ```
 
-`test` obejmuje Vitest oraz React Testing Library. `test:e2e` uruchamia Playwright w mobilnym Chromium i zawiera automatyczną kontrolę `axe-core`. Build MUSI generować statyczną stronę główną oraz dostępne trasy `/recipes/:slug`.
+`lint` uruchamia ESLint, `typecheck` — `astro check` (kontrola typów projektu Astro), a `verify` łączy powyższe bramki w jeden przebieg. `test` obejmuje Vitest oraz React Testing Library. `test:e2e` uruchamia Playwright w mobilnym Chromium i zawiera automatyczną kontrolę `axe-core`. Build MUSI generować statyczną stronę główną oraz dostępne trasy `/recipes/:slug`.
 
 ## Definition of Done
 

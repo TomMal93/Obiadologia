@@ -1,7 +1,8 @@
 # Wizja produktu Obiadologia
 
 > Status: obowiązujący  
-> Opisywany stan: kierunek produktu
+> Opisywany stan: kierunek produktu  
+> Aktualizacja: przy zmianie kierunku lub zasad produktu
 
 ## Cel dokumentu
 

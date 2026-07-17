@@ -13,6 +13,35 @@
 
 Nie wczytuj całego katalogu `docs/`, jeśli zadanie dotyczy jednego obszaru.
 
+## Mapa kodu
+
+Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zaczniesz kodować, sprawdź tutaj, gdzie mieszka dana odpowiedzialność i co już istnieje, zamiast przeszukiwać całe `src/`. Źródłem prawdy dla szczegółów faktycznie zaimplementowanych pozostają kod i testy.
+
+| Obszar | Ścieżka |
+|---|---|
+| model domenowy `Recipe`, walidacja i reguły Kategorii | `src/domain/recipe.ts` |
+| dane prototypowe zgodne z `Recipe` | `src/data/prototype-recipes.ts` |
+| wyspa interaktywna (wybór ścieżki, Kategorie, wyniki) | `src/components/DiscoveryExperience.tsx` |
+| strona główna i osadzenie wyspy | `src/pages/index.astro` |
+| zastępczy ekran przepisu `/recipes/:slug` | `src/pages/recipes/[slug].astro` |
+| wspólny layout, `<head>` i kontener mobilny | `src/layouts/BaseLayout.astro` |
+| tokeny i style globalne | `src/styles/global.css` |
+| testy jednostkowe i komponentów | `src/**/*.test.ts(x)` |
+| testy E2E i kontrola `axe-core` | `tests/e2e/` |
+
+## Stan implementacji
+
+| Obszar | Stan | Uwagi |
+|---|---|---|
+| Model `Recipe` i dane prototypowe | zaimplementowane | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki |
+| Strona główna (nagłówek, hero) | zaimplementowane | statyczne komponenty Astro poza wyspą React |
+| Kategorie | zaimplementowane | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
+| Wybór ścieżki (3 karty) | częściowo | działa przejście do Kategorii; karty Mapa i Szukaj są jawnymi placeholderami i nie otwierają overlaya |
+| Discovery overlay (Wyszukiwarka i Mapa) | niezaimplementowane | brak wyspy overlaya; brak kontraktu `RecipeSearch` i adaptera wyszukiwania |
+| Trasa przepisu `/recipes/:slug` | zaimplementowane jako ekran zastępczy | prerenderowana z możliwością powrotu |
+
+Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.
+
 ## Reguły pracy
 
 1. Każdy kontrakt ma jedno normatywne źródło zgodne z tabelą „Źródła prawdy” w `docs/README.md`: specyfikacja funkcji definiuje zachowanie, `data-model.md` dane i dopasowanie, `ui-system.md` wspólne reguły wizualne, `quality-requirements.md` wymagania przekrojowe, a rejestr decyzji i ADR-y decyzje techniczne oraz ich uzasadnienie.
