@@ -16,10 +16,34 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   </header>
 
   <main>
-    <section class="hero" aria-labelledby="main-heading">
-      <p class="prototype-badge">Lokalny prototyp</p>
-      <h1 id="main-heading">Co dziś <span>jemy?</span></h1>
-    </section>
+    <div class="intro-screen">
+      <section class="hero" aria-labelledby="main-heading">
+        <p class="prototype-badge">Lokalny prototyp</p>
+        <h1 id="main-heading">Co dziś <span>jemy?</span></h1>
+      </section>
+
+      <section class="path-panel" aria-labelledby="paths-heading">
+        <p class="eyebrow">Nie musisz wiedzieć, czego chcesz</p>
+        <h2 id="paths-heading">Wybierz najbliższą myśl</h2>
+        <div class="path-grid">
+          <article class="path-card path-card--map">
+            <p class="path-intent">Nie wiem, czego chcę</p>
+            <p>nastrój · tempo · inspiracja</p>
+            <span class="path-pending">Mapa — kolejny wycinek</span>
+          </article>
+          <article class="path-card path-card--search">
+            <p class="path-intent">Wiem, czego szukam</p>
+            <p>składnik · danie · smak</p>
+            <span class="path-pending">Szukaj — kolejny wycinek</span>
+          </article>
+          <article class="path-card path-card--categories">
+            <p class="path-intent">Chcę przeglądać</p>
+            <p>kategoria · okazja · sytuacja</p>
+            <a class="path-cta" href="#kategorie">Kategorie</a>
+          </article>
+        </div>
+      </section>
+    </div>
 
     <DiscoveryExperience recipes={prototypeRecipes} client:load />
   </main>
