@@ -38,15 +38,15 @@ const { recipe } = Astro.props;
 <style>
   .recipe-page {
     margin: 40px 16px;
-    padding: 32px 24px;
-    border-radius: 20px;
+    padding: var(--space-32) var(--space-24);
+    border-radius: var(--radius-card);
     background: var(--color-surface);
     box-shadow: var(--shadow-surface);
   }
 
   .recipe-page h1 {
-    margin: 12px 0;
-    font-size: 32px;
+    margin: var(--space-12) 0;
+    font-size: var(--font-size-32);
     line-height: 1.1;
   }
 
@@ -59,8 +59,8 @@ const { recipe } = Astro.props;
     display: inline-flex;
     min-height: 44px;
     align-items: center;
-    margin-top: 16px;
-    color: var(--color-coral);
+    margin-top: var(--space-16);
+    color: var(--color-cta);
     font-weight: 800;
   }
 </style>

@@ -8,7 +8,9 @@
 
 Ten dokument jest jednym źródłem prawdy dla reguł wizualnych wspólnych dla całej aplikacji. Specyfikacje funkcji opisują zachowanie ekranów i odwołują się tutaj zamiast powtarzać kolory, odstępy i stany komponentów.
 
-Wartości zostały odczytane z makiet rastrowych, dlatego są początkowymi tokenami implementacyjnymi. Po uzyskaniu projektu źródłowego należy je jednorazowo skalibrować, zachowując nazwy semantyczne.
+Wartości zostały odczytane z makiet rastrowych, dlatego pozostałe tokeny są początkowymi wartościami implementacyjnymi. Po uzyskaniu projektu źródłowego można je jednorazowo skalibrować, zachowując nazwy semantyczne.
+
+Wyjątkiem są **kolory przewodnie dróg** (Mapa, Szukaj, Kategorie) opisane niżej — to wartości **docelowe**, potwierdzone jako tożsamość trzech ścieżek odkrywania. Nie podlegają już kalibracji „na później”; ich zmiana jest decyzją projektową, nie technicznym przybliżeniem.
 
 ## W zakresie
 
@@ -29,22 +31,54 @@ Wartości zostały odczytane z makiet rastrowych, dlatego są początkowymi toke
 
 | Token | Wartość startowa | Zastosowanie |
 |---|---:|---|
-| `color-bg` | `#FDF8F2` | kremowe tło strony |
+| `color-bg` | `#FDF8F2` | kremowe tło strony (wewnątrz kontenera) |
+| `color-bg-shell` | `#F3EEE8` | tło poza kontenerem mobilnym (`html`/`body`) |
 | `color-surface` | `#FFFFFF` | karty i overlay |
 | `color-text` | `#1F1A17` | tekst główny |
 | `color-text-muted` | `#6E6863` | opisy i metadane |
 | `color-border` | `#E9DDD3` | neutralne obramowania |
-| `color-coral` | `#FF4F2E` | marka, Szukaj, główne CTA |
+| `color-coral` | `#FF4F2E` | odcień bazowy koralu (marka, CTA i Szukaj przez tokeny ról) |
 | `color-coral-soft` | `#FFF1EC` | delikatne tło stanu coral |
-| `color-blue` | `#1768D2` | Mapa |
+| `color-blue` | `#1768D2` | odcień bazowy niebieskiego (Mapa, pierścień fokusu) |
 | `color-blue-soft` | `#EAF3FF` | delikatne tło stanu mapy |
-| `color-green` | `#159447` | Kategorie |
+| `color-green` | `#159447` | odcień bazowy zieleni (Kategorie) |
 | `color-green-soft` | `#ECF8EF` | delikatne tło stanu zielonego |
-| `color-yellow` | `#F2AA00` | pora dnia |
-| `color-tempo` | `#4F9B60` | tempo |
-| `color-occasion` | `#FF6B4D` | okazja |
+| `color-heading-accent` | `#FF4F2E` | akcent nagłówków (h1, eyebrow) — osobny byt od CTA |
+| `color-cta` | `#FF4F2E` | kolor akcji CTA (np. linki-akcje) — osobny byt od nagłówków |
 
 Gradient marki: `linear-gradient(135deg, #FF3A24, #FF633F)`.
+
+Role tekstu marki są rozdzielone na osobne tokeny: `--color-heading-accent` (nagłówki — h1 i etykiety typu eyebrow) oraz `--color-cta` (akcje CTA). Mają dziś wspólny odcień bazowy (koral), ale są osobnymi bytami — zmiana koloru CTA nie zmienia koloru nagłówków ani odwrotnie. Kolor nagłówka, kolor CTA i kolor wyboru w Kategoriach są trzema niezależnymi rolami i MUSZĄ pozostać osobnymi tokenami.
+
+#### Kolory przewodnie dróg (docelowe)
+
+Trzy drogi odkrywania mają stały kolor tożsamości. Ten sam kolor identyfikuje daną drogę na Hero (drzewko i kafle wyboru), a dla Mapy i Szukaj — docelowo w trybie overlaya. Akcenty grup w sekcji Kategorii współdzielą te same kolory według parowania (zob. „Akcenty grup Kategorii” niżej). Są to wartości docelowe, nie przybliżenia do kalibracji.
+
+| Droga | Token bazowy | Wartość | `-strong` (tekst na jasnym tle) | `-soft` (tło stanu) |
+|---|---|---:|---:|---:|
+| Mapa | `--color-map` | `#1768D2` | `--color-map-strong` `#1768D2` | `--color-map-soft` `#EAF3FF` |
+| Szukaj | `--color-search` | `#FF4F2E` | `--color-search-strong` `#A82D18` | `--color-search-soft` `#FFF1EC` |
+| Kategorie | `--color-categories` | `#159447` | `--color-categories-strong` `#0B7133` | `--color-categories-soft` `#ECF8EF` |
+
+- Wariant bazowy to akcent (linie, ikony, obramowania, kropki drzewka).
+- Wariant `-strong` jest przeznaczony do tekstu i etykiet na jasnym tle i MUSI spełniać kontrast WCAG 2.2 AA. Dla Mapy kolor bazowy spełnia próg samodzielnie, więc `-strong` jest mu równy.
+- Wariant `-soft` to delikatne tło stanu aktywnego lub kafla.
+- Kolory przewodnie są aliasami odcieni bazowych (`--color-blue`/`--color-coral`/`--color-green`); te odcienie mogą nadal służyć innym rolom (np. koral marki, niebieski pierścienia fokusu). W kodzie tożsamość drogi zawsze używa tokenu przewodniego, nie odcienia bazowego.
+
+#### Akcenty grup Kategorii (docelowe)
+
+Kolory CTA (dróg) i kolory wyboru w Kategoriach to **ten sam zestaw trzech kolorów**. Każda grupa wyboru dziedziczy kolor sparowanej drogi:
+
+| Grupa | Sparowana droga | Token akcentu (+ `-soft`) | Kolor |
+|---|---|---|---:|
+| Pora dnia | Szukaj | `--color-search` | `#FF4F2E` |
+| Tempo | Kategorie | `--color-categories` | `#159447` |
+| Okazja | Mapa | `--color-map` | `#1768D2` |
+
+- Wybrana opcja niesie kolor sparowanej drogi na obramowaniu i delikatnym tle (`-soft`); tekst pozostaje ciemny (`--color-text`), aby zawsze spełniać kontrast WCAG 2.2 AA niezależnie od jasności akcentu.
+- Stan wybrania jest też sygnalizowany pogrubieniem, znacznikiem i `aria-pressed` — kolor nie jest jedynym nośnikiem znaczenia.
+- Nie ma osobnych tokenów kolorów grup; wybór używa tych samych tokenów co CTA dróg, więc paleta pozostaje trójbarwna i spójna.
+- Parowanie świadomie odchodzi od kolorów grup z makiety `home-browse-mode.png` (żółty/zielony/koral) na rzecz jednej palety trójbarwnej marki (koral/zielony/niebieski).
 
 Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć także minimum obramowanie, zmianę grubości tekstu, ikonę lub atrybut semantyczny.
 
@@ -55,11 +89,13 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 - Tekst podstawowy: `400–500`; etykiety aktywne i CTA: `600–700`.
 - Minimalny tekst interfejsu: `16px`; drobne metadane mogą mieć `14px`, jeśli zachowują kontrast.
 - Skala startowa: `14, 16, 20, 24, 32, 48, 64px`; wartości duże mają być płynne przez `clamp()`.
+- Rozmiary stałe używają tokenów `--font-size-14` / `--font-size-20` / `--font-size-24` / `--font-size-32`; rozmiary płynne (nagłówki, pigułka) pozostają w `clamp()`.
 
 ### Geometria
 
 - Siatka odstępów: `4, 8, 12, 16, 24, 32, 48, 64px`. Wartości wyrażają rytm i proporcje skalowane spójnie w zakresie mobilnym, a nie sztywne stałe niezależne od viewportu — zob. „Spójność i proporcje na telefonach”.
-- Promienie: `12px` dla tagów i pól, `20px` dla kart, `28px` dla dużych paneli.
+- Stałe odstępy na siatce używają tokenów `--space-4`…`--space-32`; płynny rytm sekcji niosą tokeny `--gutter` / `--stack-gap` / `--screen-pad-y`. Płynne `clamp()` dla lokalnego, precyzyjnego dostrajania (rozmiary ikon, wysokości kafli) pozostają wartościami literalnymi.
+- Promienie: token `--radius-field` (`12px`, tagi i pola), `--radius-card` (`20px`, karty), `--radius-panel` (`28px`, duże panele), `--radius-pill` (`999px`, pigułki i chipy).
 - Minimalny obszar kliknięcia: `44 × 44px`.
 - Cień powierzchni: miękki i jasny, np. `0 12px 32px rgb(89 55 29 / 8%)`.
 - Obramowania są subtelne; kolorowe obramowanie oznacza aktywną ścieżkę lub wybór.
