@@ -13,9 +13,9 @@ Kod jest **wiernie zgodny z warstwą zaimplementowaną i uczciwie opisuje dług*
 hero odpowiadają kontraktom i makiecie `home-hero.png`. Tabele „Stan implementacji” i „Mapa
 kodu” w `AGENTS.md` trafnie oddają, co istnieje.
 
-System kolorów został uporządkowany (niżej „Zrealizowane”). Do poprawy zostają: tokenizacja
-skal (promienie/odstępy/typografia), drobne rozjazdy wartości oraz — jako główny zakres MVP —
-discovery overlay.
+System kolorów oraz tokenizacja skal (promienie, odstępy, typografia, tło) zostały uporządkowane
+(niżej „Zrealizowane”). Do poprawy zostaje przede wszystkim **discovery overlay** (główny zakres
+MVP) oraz drobne doprecyzowania dokumentacji.
 
 ---
 
@@ -41,31 +41,24 @@ sparowanego. Kolory dróg na Hero pozostają bez zmian; grupa wyboru dziedziczy 
 
 Domyka to dawne punkty audytu o kolorystyce Kategorii i o zaszytych heksach.
 
+### Tokenizacja skal (promienie, odstępy, typografia) i tło
+
+Zamyka dawne punkty audytu A, B i C.
+
+- **Promienie:** `--radius-field/card/panel/pill` — wszystkie `border-radius` przełączone na
+  tokeny; naprawiono wartości poza skalą (karta `14→20`, znak marki `14→12`, notka dróg `16→12`).
+- **Tło poza kontenerem:** token `--color-bg-shell` (`#F3EEE8`) zamiast zaszytego heksa
+  w `:root` i `body`; dodany do tabeli kolorów `ui-system.md`.
+- **Odstępy i typografia:** tokeny `--space-4…32` oraz `--font-size-14/20/24/32`; stałe,
+  on-gridowe wartości (`gap`, `padding`, `margin`, `font-size`) przełączone na tokeny.
+- **Świadoma granica:** płynne `clamp()` (rytm sekcji, rozmiary ikon/kafli) oraz nieliczne
+  wartości poza siatką (np. `6/20/40px`, drobne rozmiary `11/12/15/18/26px`) pozostają
+  literalne — ich zmiana to decyzja projektowa, nie mechaniczna. Opisane w `ui-system.md`
+  „Geometria”/„Typografia”.
+
 ---
 
 ## Do poprawy — otwarte
-
-### A. Brak tokenów promieni, skali odstępów i typografii (naruszenie `code-conventions.md`)
-- **Kontrakt:** `code-conventions.md` › „Style i CSS”: „kolory, odstępy, promienie, cienie
-  i skala typografii **MUSZĄ** używać `var(--token)`; zaszyte wartości liczbowe i szesnastkowe
-  kolory są niedozwolone poza definicją tokenu”. `ui-system.md` podaje skale (promienie
-  12/20/28; odstępy 4…64; typografia 14…64).
-- **Kod:** w `:root` są stokenizowane kolory i tokeny płynne, ale promienie, skala odstępów
-  i skala typografii **nie mają tokenów** — komponenty niosą dziesiątki zaszytych wartości
-  (`gap: 8px`, `padding: 16px`, `font-size: 20/24/32px`, `border-radius: 12/20/28px` itd.).
-- **Poprawka:** dodać `--radius-*`, `--space-*`, `--font-size-*` w `:root` i przełączyć
-  komponenty na `var(--token)` jednym przejściem.
-
-### B. Tło poza paletą tokenów
-- **Kod:** `global.css` ustawia `background: #f3eee8` w `:root` **i** w `body` — inny kremowy
-  niż `--color-bg` (`#fdf8f2`) i spoza tabeli kolorów `ui-system.md`.
-- **Poprawka:** użyć istniejącego tokenu tła albo dodać token na tło poza kontenerem.
-
-### C. Promienie poza skalą `ui-system.md`
-- **Kontrakt:** skala promieni 12 (tagi/pola) / 20 (karty) / 28 (duże panele).
-- **Kod:** `.recipe-card` `border-radius: 14px` (powinno 20 — to karta), `.brand-mark` 14px,
-  `.path-note` 16px — wartości spoza skali.
-- **Poprawka:** dopasować do skali (karta → 20) lub świadomie rozszerzyć skalę w `ui-system.md`.
 
 ### D. Discovery overlay (Wyszukiwarka + Mapa) niezaimplementowany
 - **Stan:** kafle „Mapa” i „Szukaj” to jawne, nieinteraktywne placeholdery z etykietą
@@ -104,9 +97,9 @@ Domyka to dawne punkty audytu o kolorystyce Kategorii i o zaszytych heksach.
 | # | Obszar | Źródło prawdy | Priorytet | Stan / akcja |
 |---|---|---|---|---|
 | — | System kolorów (paleta dróg + wybór Kategorii + role tekstu) | `ui-system.md` | P1 | ✅ zrobione |
-| A | Brak tokenów promieni/odstępów/typografii | `code-conventions.md` | P1 | dodać tokeny, przełączyć na `var()` |
-| B | Tło `#f3eee8` spoza palety | `code-conventions.md`, `ui-system.md` | P1 | użyć/utworzyć token tła |
-| C | Promienie 14/16px poza skalą | `ui-system.md` | P1 | karta → 20; reszta do skali |
+| A | Tokeny promieni/odstępów/typografii | `code-conventions.md` | P1 | ✅ zrobione (klampy fluidowe świadomie literalne) |
+| B | Tło `#f3eee8` spoza palety | `code-conventions.md`, `ui-system.md` | P1 | ✅ zrobione: `--color-bg-shell` |
+| C | Promienie 14/16px poza skalą | `ui-system.md` | P1 | ✅ zrobione: 14→20/12, 16→12 |
 | D | Discovery overlay niezaimplementowany | `discovery-overlay.md`, `mvp-scope.md` | P2 | zaimplementować (główny zakres) |
 | E | Brak ikon Kategorii | makieta, `ui-system.md` | P2 | dodać ikony grup/opcji |
 | F | „Propozycje” vs „Propozycje dla Ciebie” | `discovery-overlay.md` | P3 | ujednolicić w specyfikacji |
@@ -115,8 +108,7 @@ Domyka to dawne punkty audytu o kolorystyce Kategorii i o zaszytych heksach.
 
 ## Rekomendowana kolejność
 
-1. **Tokenizacja skal** (A–C) — czysto konwencyjne i tanie; usuwa zaszyte wartości promieni,
-   odstępów i typografii oraz tło poza paletą.
+1. ~~Tokenizacja skal (A–C)~~ — ✅ zrobione.
 2. **Discovery overlay** (D, potem E) — właściwy zakres MVP: powłoka, przełącznik, granica
    `RecipeSearch`, tryby Szukaj i Mapa, testy komponentów i E2E historii.
 3. **Doprecyzowania dokumentacji** (F–G) — zamknąć rozjazdy litery specyfikacji.
