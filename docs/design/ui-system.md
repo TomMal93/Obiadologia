@@ -14,6 +14,7 @@ Wartości zostały odczytane z makiet rastrowych, dlatego są początkowymi toke
 
 - kolory, typografia, odstępy, promienie i cienie;
 - wspólne komponenty i stany interakcji bieżącego etapu;
+- zasada pełnoekranowych sekcji (jedna sekcja = jeden ekran);
 - reguły responsywności, dostępności i ruchu.
 
 ## Poza zakresem
@@ -57,7 +58,7 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 
 ### Geometria
 
-- Siatka odstępów: `4, 8, 12, 16, 24, 32, 48, 64px`.
+- Siatka odstępów: `4, 8, 12, 16, 24, 32, 48, 64px`. Wartości wyrażają rytm i proporcje skalowane spójnie w zakresie mobilnym, a nie sztywne stałe niezależne od viewportu — zob. „Spójność i proporcje na telefonach”.
 - Promienie: `12px` dla tagów i pól, `20px` dla kart, `28px` dla dużych paneli.
 - Minimalny obszar kliknięcia: `44 × 44px`.
 - Cień powierzchni: miękki i jasny, np. `0 12px 32px rgb(89 55 29 / 8%)`.
@@ -111,6 +112,17 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 | błąd | zrozumiały komunikat i akcja „Spróbuj ponownie” |
 | walidacja | komunikat przy właściwym polu lub grupie |
 
+## Sekcje pełnoekranowe
+
+Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi. Zasada „jedna sekcja = jeden ekran” jest podstawowym założeniem układu i ma pierwszeństwo przy projektowaniu zawartości każdej sekcji.
+
+- Każda główna sekcja MUSI wypełniać jeden ekran, tj. wysokość widocznego obszaru (`100dvh`) z uwzględnieniem bezpiecznych obszarów urządzenia i klawiatury ekranowej.
+- Sekcja przy bazowych ustawieniach nie może być wyższa niż ekran. Treść projektujemy tak, aby mieściła się w jednym ekranie; jeśli się nie mieści, ograniczamy lub upraszczamy treść, zamiast rozciągać sekcję albo wprowadzać przewijanie wewnątrz sekcji.
+- Przewijanie między sekcjami jest swobodne. Na tym etapie nie wprowadzamy wymuszonego zatrzaskiwania (`scroll-snap`); ewentualne dodanie snapu jest osobną decyzją produktową.
+- Reguła nie może łamać dostępności. Przy powiększeniu tekstu, bardzo niskim ekranie lub otwartej klawiaturze treść MUSI pozostać w pełni osiągalna (bez przycięcia), nawet jeśli wymaga to przewinięcia — zgodnie z wymaganiem reflow WCAG 2.2 AA.
+- Fokus i kolejność czytania MUSZĄ pozostać poprawne mimo pełnoekranowego układu; granica ekranu nie może ukrywać treści ani kontrolek przed czytnikiem i klawiaturą.
+- Podział strony głównej na sekcje definiuje [home-page.md](../product/features/home-page.md). Overlay jest z natury pełnoekranowy i spełnia tę regułę bez dodatkowych zabiegów.
+
 ## Responsywność
 
 - Projekt ma jeden układ mobilny działający od `320px` do `480px` szerokości.
@@ -119,6 +131,18 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 - Karty wyników na telefonie mogą ustawić zdjęcie nad treścią; metadane nie mogą wypadać poza kartę.
 - Overlay uwzględnia `100dvh`, bezpieczne obszary urządzenia i klawiaturę ekranową.
 - Nie tworzymy dolnej nawigacji mobilnej, jeśli nie wynika to z nowej decyzji produktowej.
+
+## Spójność i proporcje na telefonach
+
+W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokościach ekranu) sekcja zachowuje tę samą kompozycję. Widok na mniejszym telefonie jest proporcjonalnie przeskalowaną wersją widoku na większym, a nie osobnym układem.
+
+- Kolejność, hierarchia, wyrównanie i rytm odstępów między elementami sekcji MUSZĄ być takie same na wszystkich obsługiwanych telefonach. Dopuszczalne różnice między urządzeniami są proporcjonalne (skala), a nie strukturalne (zmiana układu, przestawianie ani ukrywanie elementów).
+- Odstępy między elementami oraz rozmiary elementów skalują się płynnie względem viewportu (szerokości i wysokości), tak aby sekcja wypełniała jeden ekran spójnie od najmniejszego do największego telefonu — bez dużych pustych obszarów i bez przepełnienia. Reguła pełnoekranowych sekcji ma tu pierwszeństwo.
+- Skalowanie proporcjonalne jest ograniczone progami dostępności: tekst interfejsu nie schodzi poniżej `16px`, obszar kliknięcia poniżej `44 × 44px`, a kontrast poniżej WCAG 2.2 AA. Gdy wartość proporcjonalna osiągnęłaby próg, zostaje przy progu.
+- Żaden element ani kontrolka nie może być ucięty na krawędzi sekcji lub ekranu; treść nie tworzy poziomego przewijania, elementy nie nachodzą na siebie ani nie „rozjeżdżają się” między rozmiarami telefonów.
+- Zdjęcia skalują się ze stałymi proporcjami (`object-fit: cover`), bez zniekształcenia i bez zmiany geometrii karty; brak zdjęcia zachowuje wymiary (zob. „Karta przepisu”).
+- Zmiana strukturalna układu jest ostatecznością dopuszczoną tylko wtedy, gdy proporcjonalne skalowanie nie usuwa przepełnienia. Jeśli jest konieczna, MUSI zachodzić spójnie w całym zakresie, a nie różnicować pojedynczych rozmiarów telefonów.
+- Siatka odstępów i skala typografii z sekcji „Geometria” i „Typografia” wyrażają proporcje (rytm i relacje), które to skalowanie utrzymuje spójnie w zakresie mobilnym, z zachowaniem powyższych progów dostępności.
 
 ## Ruch i dostępność
 
@@ -136,6 +160,9 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 | klawiatura | wszystkie akcje działają bez myszy, a fokus jest widoczny |
 | kontrast | tekst, kontrolki i fokus spełniają WCAG 2.2 AA |
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
+| sekcje pełnoekranowe | każda główna sekcja wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
+| spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
+| brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |
 | interakcje | wyniki reagują na każdą zmianę kryteriów, a karta otwiera trasę przepisu |
 
 System UI jest gotowy do implementacji, gdy tokeny są wdrożone centralnie, a komponenty nie zawierają lokalnych kopii wspólnych wartości bez uzasadnienia.

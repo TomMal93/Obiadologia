@@ -35,6 +35,10 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 - Jeden układ mobilny od szerokości `320px` do `480px`; brak poziomego przewijania treści.
 - Na ekranach szerszych niż `480px` aplikacja zachowuje układ mobilny w wyśrodkowanym kontenerze o maksymalnej szerokości `480px`.
 - Obowiązkowe szerokości kontroli: `320`, `375`, `390`, `430` i `480px`; dodatkowa kontrola na `768px` potwierdza wyśrodkowanie kontenera bez zmiany układu.
+- Do obowiązkowych szerokości dochodzi kontrola reprezentatywnej niskiej i wysokiej wysokości telefonu, aby potwierdzić, że pełnoekranowe sekcje wypełniają jeden ekran bez ucięć i pustych obszarów.
+- W całym zakresie mobilnym układ, kolejność i rytm odstępów sekcji pozostają spójne; różnice między telefonami są proporcjonalne, a nie strukturalne. Normatywną regułę definiuje [ui-system.md](../design/ui-system.md).
+- Żaden element nie jest ucięty ani nie przepełnia sekcji, treść nie tworzy poziomego przewijania, a elementy nie nachodzą na siebie ani się nie rozjeżdżają między rozmiarami telefonów.
+- Skalowanie proporcjonalne nie schodzi poniżej progów dostępności: tekst interfejsu `16px`, obszar akcji `44 × 44px` i kontrast WCAG 2.2 AA.
 - Wspieramy dwie najnowsze stabilne wersje Chrome, Edge, Firefox i Safari w momencie wydania.
 - Interfejs dotykowy ma obszary akcji minimum `44 × 44px`.
 - Overlay używa dynamicznej wysokości viewportu i pozostaje obsługiwalny po otwarciu klawiatury ekranowej.
@@ -87,7 +91,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 - Testy komponentów: wybory, aktualizacja wyników, karty, dialog i przełącznik trybu.
 - Testy E2E: trzy główne ścieżki od strony startowej do wyników, karta prowadząca do trasy przepisu oraz powrót do zawieszonej sesji discovery, zamykanie overlayu przez przycisk, `Escape` i „Wstecz” bez dodatkowego wpisu do cofnięcia, zresetowane ponowne otwarcie przez „Dalej” oraz powrót fokusu. Normatywne zachowanie historii opisuje [discovery-overlay.md](../product/features/discovery-overlay.md).
 - Automatyczna dostępność nie zastępuje ręcznej obsługi klawiaturą i czytnikiem ekranu.
-- Porównanie wizualne obejmuje obowiązkowe szerokości mobilne oraz widok wyśrodkowanego kontenera na `768px`, ale nie powinno blokować przez nieistotne różnice antyaliasingu.
+- Porównanie wizualne obejmuje obowiązkowe szerokości mobilne, reprezentatywną niską i wysoką wysokość telefonu oraz widok wyśrodkowanego kontenera na `768px`; potwierdza proporcjonalną spójność sekcji i brak ucięć, ale nie powinno blokować przez nieistotne różnice antyaliasingu.
 
 ## Polecenia weryfikacyjne
 
