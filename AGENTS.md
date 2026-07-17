@@ -10,6 +10,7 @@
 - model danych: `docs/engineering/data-model.md`
 - przyjęte i otwarte decyzje techniczne: `docs/engineering/technical-decisions.md`; zaakceptowane decyzje kosztowne do odwrócenia: `docs/engineering/adr/`
 - testy, dostępność i wydajność: `docs/engineering/quality-requirements.md`
+- konwencje kodu (miejsce styli, nazewnictwo, importy, hydratacja): `docs/engineering/code-conventions.md`
 
 Nie wczytuj całego katalogu `docs/`, jeśli zadanie dotyczy jednego obszaru.
 
