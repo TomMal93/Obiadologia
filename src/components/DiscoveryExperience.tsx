@@ -11,6 +11,8 @@ const categoryGroups = [
   {
     key: 'mealTime',
     label: 'Pora dnia',
+    // Kolor akcentu grupy (docelowy) — zob. docs/design/ui-system.md „Akcenty grup Kategorii”.
+    accent: 'daypart',
     options: [
       ['breakfast', 'Śniadanie'],
       ['lunch', 'Obiad'],
@@ -20,6 +22,7 @@ const categoryGroups = [
   {
     key: 'tempo',
     label: 'Tempo',
+    accent: 'tempo',
     options: [
       ['now', 'Na już'],
       ['today', 'Na dziś'],
@@ -29,6 +32,7 @@ const categoryGroups = [
   {
     key: 'occasion',
     label: 'Okazja',
+    accent: 'occasion',
     options: [
       ['kids', 'Dla dzieci'],
       ['guests', 'Dla gości'],
@@ -72,7 +76,7 @@ export function DiscoveryExperience({ recipes }: Props) {
 
         <div className="category-panel">
           {categoryGroups.map((group) => (
-            <fieldset key={group.key}>
+            <fieldset key={group.key} className={`category-group category-group--${group.accent}`}>
               <legend>{group.label}</legend>
               <div className="option-grid">
                 {group.options.map(([value, label]) => {

@@ -5,12 +5,15 @@
 > `home-hero.png` i `home-browse-mode.png`.
 > Charakter: audyt jednorazowy (nie jest dokumentem-źródłem prawdy ani dziennikiem prac).
 
-> **Aktualizacja (decyzja właściciela):** przyjęto **kolory przewodnie dróg** jako docelowe —
-> Mapa = niebieski, Szukaj = koral, Kategorie = zielony — z tokenami semantycznymi
-> `--color-map` / `--color-search` / `--color-categories` (+ `-strong`/`-soft`). Rozwiązuje to
-> punkty **#1** i **#3**: sekcja Kategorii pozostaje zielona (kolor drogi Kategorie), a tokeny
-> grup `--color-yellow/tempo/occasion` są zarezerwowane dla przyszłych akcentów/ikon grup.
-> Szczegóły w `docs/design/ui-system.md` › „Kolory przewodnie dróg”.
+> **Aktualizacja (decyzja właściciela):** przyjęto docelowo trzy niezależne warstwy koloru:
+> (a) **kolory przewodnie dróg** — Mapa = niebieski, Szukaj = koral, Kategorie = zielony
+> (`--color-map` / `--color-search` / `--color-categories` + `-strong`/`-soft`); (b) **akcenty
+> grup Kategorii** — pora dnia = żółty, tempo = zielony, okazja = koral
+> (`--color-daypart` / `--color-tempo` / `--color-occasion` + `-soft`), użyte w wyborze w drugiej
+> sekcji zgodnie z makietą; (c) **rozdzielone role tekstu** — `--color-heading-accent` (nagłówki)
+> osobno od `--color-cta` (akcje). Rozwiązuje to punkty **#1** i **#3**, a zaszyte heksy wróciły do
+> definicji tokenów. Szczegóły w `docs/design/ui-system.md` › „Kolory przewodnie dróg” i „Akcenty
+> grup Kategorii”.
 
 ## Ocena ogólna
 

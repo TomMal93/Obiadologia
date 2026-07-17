@@ -45,6 +45,24 @@
   font-weight: 800;
 }
 
+/* Każda grupa wyboru niesie własny kolor akcentu (docelowy): pora dnia, tempo,
+   okazja. Wybrana opcja używa go na obramowaniu i tle, a tekst pozostaje ciemny
+   (kontrast WCAG 2.2 AA). Zob. docs/design/ui-system.md „Akcenty grup Kategorii”. */
+.category-group--daypart {
+  --group-accent: var(--color-daypart);
+  --group-soft: var(--color-daypart-soft);
+}
+
+.category-group--tempo {
+  --group-accent: var(--color-tempo);
+  --group-soft: var(--color-tempo-soft);
+}
+
+.category-group--occasion {
+  --group-accent: var(--color-occasion);
+  --group-soft: var(--color-occasion-soft);
+}
+
 .option-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -71,14 +89,14 @@
 }
 
 .category-option:hover {
-  border-color: var(--color-categories);
+  border-color: var(--group-accent);
 }
 
 .category-option.is-selected {
-  border: 2px solid var(--color-categories);
-  color: var(--color-categories-strong);
+  border: 2px solid var(--group-accent);
+  color: var(--color-text);
   font-weight: 800;
-  background: var(--color-categories-soft);
+  background: var(--group-soft);
 }
 
 .selection-summary {

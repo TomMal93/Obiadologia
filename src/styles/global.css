@@ -11,9 +11,22 @@
   --color-blue-soft: #eaf3ff;
   --color-green: #159447;
   --color-green-soft: #ecf8ef;
-  --color-yellow: #f2aa00;
+  /* Akcenty grup Kategorii (docelowe) — każda grupa wyboru ma własny kolor:
+     pora dnia = żółty, tempo = zielony, okazja = koral. `-soft` to tło wybranej
+     opcji; tekst wybranej opcji pozostaje ciemny (kontrast WCAG 2.2 AA), a kolor
+     niesie obramowanie i tło. Zob. docs/design/ui-system.md „Akcenty grup Kategorii”. */
+  --color-daypart: #f2aa00;
+  --color-daypart-soft: #fdf1d8;
   --color-tempo: #4f9b60;
+  --color-tempo-soft: #e9f4ec;
   --color-occasion: #ff6b4d;
+  --color-occasion-soft: #ffe9e2;
+
+  /* Role tekstu marki jako osobne byty — akcent nagłówków (h1 i etykiety typu
+     eyebrow) jest oddzielony od koloru akcji CTA, aby zmiana jednej roli nie
+     pociągała drugiej. Obecnie mają wspólny odcień bazowy (koral). */
+  --color-heading-accent: var(--color-coral);
+  --color-cta: var(--color-coral);
 
   /* Kolory przewodnie trzech dróg odkrywania (docelowe) — każda ścieżka ma
      jeden kolor tożsamości: Mapa = niebieski, Szukaj = koral, Kategorie = zielony.
@@ -83,7 +96,7 @@ button {
 .prototype-badge,
 .eyebrow {
   margin: 0;
-  color: var(--color-coral);
+  color: var(--color-heading-accent);
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.05em;
