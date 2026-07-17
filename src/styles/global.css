@@ -14,6 +14,23 @@
   --color-yellow: #f2aa00;
   --color-tempo: #4f9b60;
   --color-occasion: #ff6b4d;
+
+  /* Kolory przewodnie trzech dróg odkrywania (docelowe) — każda ścieżka ma
+     jeden kolor tożsamości: Mapa = niebieski, Szukaj = koral, Kategorie = zielony.
+     Występują na Hero (drzewko i kafle dróg) oraz w miejscu docelowym danej drogi
+     (sekcja Kategorii, później overlay Szukaj/Mapy). Warianty: bazowy (akcent),
+     `-strong` (etykieta/tekst na jasnym tle, kontrast WCAG 2.2 AA), `-soft` (tło
+     stanu). Zob. docs/design/ui-system.md „Kolory przewodnie dróg”. */
+  --color-map: var(--color-blue);
+  --color-map-strong: var(--color-blue);
+  --color-map-soft: var(--color-blue-soft);
+  --color-search: var(--color-coral);
+  --color-search-strong: #a82d18;
+  --color-search-soft: var(--color-coral-soft);
+  --color-categories: var(--color-green);
+  --color-categories-strong: #0b7133;
+  --color-categories-soft: var(--color-green-soft);
+
   --brand-gradient: linear-gradient(135deg, #ff3a24, #ff633f);
   --shadow-surface: 0 12px 32px rgb(89 55 29 / 8%);
 

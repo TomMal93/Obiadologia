@@ -8,7 +8,9 @@
 
 Ten dokument jest jednym źródłem prawdy dla reguł wizualnych wspólnych dla całej aplikacji. Specyfikacje funkcji opisują zachowanie ekranów i odwołują się tutaj zamiast powtarzać kolory, odstępy i stany komponentów.
 
-Wartości zostały odczytane z makiet rastrowych, dlatego są początkowymi tokenami implementacyjnymi. Po uzyskaniu projektu źródłowego należy je jednorazowo skalibrować, zachowując nazwy semantyczne.
+Wartości zostały odczytane z makiet rastrowych, dlatego pozostałe tokeny są początkowymi wartościami implementacyjnymi. Po uzyskaniu projektu źródłowego można je jednorazowo skalibrować, zachowując nazwy semantyczne.
+
+Wyjątkiem są **kolory przewodnie dróg** (Mapa, Szukaj, Kategorie) opisane niżej — to wartości **docelowe**, potwierdzone jako tożsamość trzech ścieżek odkrywania. Nie podlegają już kalibracji „na później”; ich zmiana jest decyzją projektową, nie technicznym przybliżeniem.
 
 ## W zakresie
 
@@ -45,6 +47,23 @@ Wartości zostały odczytane z makiet rastrowych, dlatego są początkowymi toke
 | `color-occasion` | `#FF6B4D` | okazja |
 
 Gradient marki: `linear-gradient(135deg, #FF3A24, #FF633F)`.
+
+Tokeny `--color-yellow`, `--color-tempo` i `--color-occasion` są zarezerwowane dla akcentów grup Kategorii (odpowiednio pora dnia, tempo, okazja), np. ikon grup z makiety. Do czasu ich wprowadzenia sekcja Kategorii jako całość używa koloru przewodniego drogi Kategorie (zielony).
+
+#### Kolory przewodnie dróg (docelowe)
+
+Trzy drogi odkrywania mają stały kolor tożsamości. Ten sam kolor identyfikuje daną drogę na Hero (drzewko i kafle wyboru) oraz w jej miejscu docelowym (sekcja Kategorii, a docelowo tryb overlaya). Są to wartości docelowe, nie przybliżenia do kalibracji.
+
+| Droga | Token bazowy | Wartość | `-strong` (tekst na jasnym tle) | `-soft` (tło stanu) |
+|---|---|---:|---:|---:|
+| Mapa | `--color-map` | `#1768D2` | `--color-map-strong` `#1768D2` | `--color-map-soft` `#EAF3FF` |
+| Szukaj | `--color-search` | `#FF4F2E` | `--color-search-strong` `#A82D18` | `--color-search-soft` `#FFF1EC` |
+| Kategorie | `--color-categories` | `#159447` | `--color-categories-strong` `#0B7133` | `--color-categories-soft` `#ECF8EF` |
+
+- Wariant bazowy to akcent (linie, ikony, obramowania, kropki drzewka).
+- Wariant `-strong` jest przeznaczony do tekstu i etykiet na jasnym tle i MUSI spełniać kontrast WCAG 2.2 AA. Dla Mapy kolor bazowy spełnia próg samodzielnie, więc `-strong` jest mu równy.
+- Wariant `-soft` to delikatne tło stanu aktywnego lub kafla.
+- Kolory przewodnie są aliasami odcieni bazowych (`--color-blue`/`--color-coral`/`--color-green`); te odcienie mogą nadal służyć innym rolom (np. koral marki, niebieski pierścienia fokusu). W kodzie tożsamość drogi zawsze używa tokenu przewodniego, nie odcienia bazowego.
 
 Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć także minimum obramowanie, zmianę grubości tekstu, ikonę lub atrybut semantyczny.
 

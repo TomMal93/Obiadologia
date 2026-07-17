@@ -71,14 +71,14 @@
 }
 
 .category-option:hover {
-  border-color: var(--color-green);
+  border-color: var(--color-categories);
 }
 
 .category-option.is-selected {
-  border: 2px solid var(--color-green);
-  color: #0b7133;
+  border: 2px solid var(--color-categories);
+  color: var(--color-categories-strong);
   font-weight: 800;
-  background: var(--color-green-soft);
+  background: var(--color-categories-soft);
 }
 
 .selection-summary {

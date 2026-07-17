@@ -5,6 +5,13 @@
 > `home-hero.png` i `home-browse-mode.png`.
 > Charakter: audyt jednorazowy (nie jest dokumentem-źródłem prawdy ani dziennikiem prac).
 
+> **Aktualizacja (decyzja właściciela):** przyjęto **kolory przewodnie dróg** jako docelowe —
+> Mapa = niebieski, Szukaj = koral, Kategorie = zielony — z tokenami semantycznymi
+> `--color-map` / `--color-search` / `--color-categories` (+ `-strong`/`-soft`). Rozwiązuje to
+> punkty **#1** i **#3**: sekcja Kategorii pozostaje zielona (kolor drogi Kategorie), a tokeny
+> grup `--color-yellow/tempo/occasion` są zarezerwowane dla przyszłych akcentów/ikon grup.
+> Szczegóły w `docs/design/ui-system.md` › „Kolory przewodnie dróg”.
+
 ## Ocena ogólna
 
 Kod jest **wiernie zgodny z warstwą zaimplementowaną i uczciwie opisuje dług**. Model
@@ -128,9 +135,9 @@ choć udokumentowany, zakres discovery overlayu**. Poniżej priorytetowo.
 
 | # | Obszar | Źródło prawdy | Priorytet | Akcja |
 |---|---|---|---|---|
-| 1 | Kolory grup Kategorii (żółty/tempo/okazja) | `ui-system.md`, makieta | P1 | kolor stanu zależny od grupy; ożywić martwe tokeny |
+| 1 | Kolory dróg (przewodnie) — Mapa/Szukaj/Kategorie | `ui-system.md`, makieta | P1 | ✅ zrobione: tokeny `--color-map/search/categories` |
 | 2 | Brak tokenów promieni/odstępów/typografii | `code-conventions.md` | P1 | dodać tokeny, przełączyć komponenty na `var()` |
-| 3 | Zaszyte heksy `#0b7133`/`#a82d18` (duplikacja) | `code-conventions.md` | P1 | tokeny `--color-*-strong` |
+| 3 | Zaszyte heksy `#0b7133`/`#a82d18` (duplikacja) | `code-conventions.md` | P1 | ✅ zrobione: tokeny `--color-*-strong` |
 | 4 | Tło `#f3eee8` spoza palety | `code-conventions.md`, `ui-system.md` | P1 | użyć/utworzyć token tła |
 | 5 | Promienie 14/16px poza skalą | `ui-system.md` | P1 | karta → 20; reszta do skali |
 | 6 | Discovery overlay niezaimplementowany | `discovery-overlay.md`, `mvp-scope.md` | P2 | zaimplementować (główny zakres) |

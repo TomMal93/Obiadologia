@@ -276,27 +276,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   .tree-line--map {
-    stroke: var(--color-blue);
+    stroke: var(--color-map);
   }
 
   .tree-line--search {
-    stroke: var(--color-coral);
+    stroke: var(--color-search);
   }
 
   .tree-line--categories {
-    stroke: var(--color-green);
+    stroke: var(--color-categories);
   }
 
   .tree-dot--map {
-    fill: var(--color-blue);
+    fill: var(--color-map);
   }
 
   .tree-dot--search {
-    fill: var(--color-coral);
+    fill: var(--color-search);
   }
 
   .tree-dot--categories {
-    fill: var(--color-green);
+    fill: var(--color-categories);
   }
 
   .tree-node-glow {
@@ -334,23 +334,25 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     text-align: center;
   }
 
+  /* Każda kolumna dziedziczy kolor przewodni swojej drogi. `-strong` daje etykiecie
+     kontrast WCAG 2.2 AA na jasnym tle. Kolory są zdefiniowane centralnie w
+     global.css (zob. docs/design/ui-system.md „Kolory przewodnie dróg”). */
   .path-col--map {
-    --col-accent: var(--color-blue);
-    --col-soft: var(--color-blue-soft);
-    /* Ciemniejszy wariant marki dla etykiety na jasnym tle — kontrast WCAG AA. */
-    --col-strong: var(--color-blue);
+    --col-accent: var(--color-map);
+    --col-soft: var(--color-map-soft);
+    --col-strong: var(--color-map-strong);
   }
 
   .path-col--search {
-    --col-accent: var(--color-coral);
-    --col-soft: var(--color-coral-soft);
-    --col-strong: #a82d18;
+    --col-accent: var(--color-search);
+    --col-soft: var(--color-search-soft);
+    --col-strong: var(--color-search-strong);
   }
 
   .path-col--categories {
-    --col-accent: var(--color-green);
-    --col-soft: var(--color-green-soft);
-    --col-strong: #0b7133;
+    --col-accent: var(--color-categories);
+    --col-soft: var(--color-categories-soft);
+    --col-strong: var(--color-categories-strong);
   }
 
   /* Bright colors used at large-text size (≥ 18.66px, bold) — spełnia próg
