@@ -58,43 +58,19 @@ button {
   outline-offset: 3px;
 }
 
-.app-shell {
-  width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
-  margin-inline: auto;
-  overflow: clip;
-  background:
-    radial-gradient(circle at 90% 1%, rgb(242 170 0 / 18%), transparent 18rem),
-    var(--color-bg);
-}
+/* Współdzielone klasy używane w co najmniej dwóch miejscach — zob.
+   docs/engineering/code-conventions.md „Style i CSS”. Style należące do jednego
+   komponentu mieszkają przy nim (zakresowany <style> w .astro albo współlokowany
+   plik CSS wyspy React), a nie tutaj. */
 
-.site-header {
-  display: flex;
-  align-items: center;
-  height: var(--header-block);
-  padding: 0 var(--gutter);
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--color-text);
-  font-size: 20px;
+.prototype-badge,
+.eyebrow {
+  margin: 0;
+  color: var(--color-coral);
+  font-size: 14px;
   font-weight: 800;
-  text-decoration: none;
-}
-
-.brand-mark {
-  display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  border-radius: 14px;
-  color: white;
-  background: var(--brand-gradient);
-  box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* Sekcja pełnoekranowa: wypełnia jeden ekran (100dvh) i centruje treść w pionie.
@@ -111,256 +87,8 @@ button {
   padding: var(--screen-pad-y) var(--gutter);
 }
 
-/* Pierwszy ekran (makieta home-hero.png): nagłówek z logo, komunikat
-   „Co dziś jemy?" oraz karta wyboru trybu (Mapa / Szukaj / Kategorie) tworzą
-   razem jeden ekran. Nagłówek jest osobnym blokiem nad <main>, dlatego pierwszy
-   ekran wypełnia resztę wysokości po odjęciu wysokości nagłówka. */
-.intro-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(10px, 2.4vh, 28px);
-  min-height: calc(100vh - var(--header-block));
-  min-height: calc(100dvh - var(--header-block));
-  padding: var(--screen-pad-y) var(--gutter);
-}
-
-.hero {
-  text-align: center;
-}
-
-.hero h1 {
-  max-width: 8ch;
-  margin: clamp(4px, 1.4vh, 12px) auto 0;
-  /* Skaluje się z wysokością ekranu, aby pierwszy ekran (nagłówek + hero +
-     karta trybu) mieścił się w jednym ekranie także na niskich telefonach. */
-  font-size: clamp(38px, 7.6vh, 64px);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
-}
-
-.hero h1 span {
-  color: var(--color-coral);
-}
-
-.prototype-badge,
-.eyebrow {
-  margin: 0;
-  color: var(--color-coral);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.path-panel {
-  padding: clamp(14px, 3vh, 24px) 16px;
-  border: 1px solid var(--color-border);
-  border-radius: 28px;
-  background: rgb(255 255 255 / 84%);
-  box-shadow: var(--shadow-surface);
-}
-
-.path-panel > h2,
-.section-heading h2 {
-  margin: 8px 0 clamp(12px, 2.6vh, 24px);
-  font-size: clamp(24px, 5.2vh, 32px);
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-}
-
-.path-grid {
-  display: grid;
-  /* Ta sama kompozycja (trzy kafle w rzędzie) w całym zakresie mobilnym.
-     Różnice między telefonami są proporcjonalne (skala), nie strukturalne. */
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--stack-gap);
-}
-
-.path-card {
-  display: grid;
-  min-width: 0;
-  align-content: start;
-  gap: clamp(5px, 1.2vh, 8px);
-  padding: clamp(10px, 2vh, 16px) 10px;
-  border: 1px solid currentColor;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.path-card p {
-  margin: 0;
-}
-
-/* Opis ścieżki to drobna metadana (dozwolone 14px) — mniejsze zawijanie
-   pozwala karcie trybu zmieścić się na pierwszym ekranie niskich telefonów.
-   Nie dotyczy głównej etykiety `.path-intent`, która pozostaje ≥16px. */
-.path-card p:not(.path-intent) {
-  font-size: 14px;
-  line-height: 1.3;
-}
-
-.path-card--map {
-  color: var(--color-blue);
-  background: var(--color-blue-soft);
-}
-
-.path-card--search {
-  color: #a82d18;
-  background: var(--color-coral-soft);
-}
-
-.path-card--categories {
-  color: #0b7133;
-  background: var(--color-green-soft);
-}
-
-.path-intent {
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.path-pending {
-  color: var(--color-text-muted);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.path-card button,
-.path-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  margin-top: 4px;
-  border: 0;
-  border-radius: 12px;
-  color: white;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
-  background: #0b7133;
-}
-
-.section-heading {
-  margin-bottom: var(--stack-gap);
-  text-align: center;
-}
-
-.section-heading h2 {
-  margin-bottom: 8px;
-}
-
-.section-heading > p:last-child {
-  margin: 0;
-  color: var(--color-text-muted);
-  line-height: 1.5;
-}
-
-.category-panel,
-.results,
-.empty-state,
-.recipe-page {
-  border-radius: 20px;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-surface);
-}
-
-.category-panel {
-  padding: clamp(14px, 3vh, 20px) 16px;
-}
-
-fieldset {
-  min-width: 0;
-  margin: 0;
-  padding: 0 0 clamp(12px, 2.6vh, 24px);
-  border: 0;
-}
-
-fieldset + fieldset {
-  padding-top: clamp(12px, 2.6vh, 24px);
-  border-top: 1px solid var(--color-border);
-}
-
-legend {
-  margin-bottom: clamp(8px, 1.6vh, 12px);
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.option-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.category-option {
-  display: grid;
-  min-width: 0;
-  /* Skaluje się z wysokością ekranu, ale nie schodzi poniżej progu 44px
-     dla obszaru kliknięcia (WCAG 2.2 AA / System UI). */
-  min-height: clamp(44px, 8vh, 64px);
-  place-items: center;
-  align-content: center;
-  gap: 4px;
-  padding: 8px 4px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  color: var(--color-text);
-  font-size: 14px;
-  line-height: 1.2;
-  cursor: pointer;
-  background: var(--color-surface);
-}
-
-.category-option:hover {
-  border-color: var(--color-green);
-}
-
-.category-option.is-selected {
-  border: 2px solid var(--color-green);
-  color: #0b7133;
-  font-weight: 800;
-  background: var(--color-green-soft);
-}
-
-.selection-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  margin: 0;
-  padding: 16px;
-  border-radius: 12px;
-  color: var(--color-text);
-  background: var(--color-coral-soft);
-}
-
-.results {
-  margin-top: 20px;
-  padding: 20px 16px;
-}
-
-.results h3 {
-  margin: 0 0 4px;
-  font-size: 24px;
-}
-
-.prototype-note {
-  margin: 0 0 16px;
-  color: var(--color-text-muted);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.recipe-list {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
+/* Karta przepisu: wspólny wzorzec wyników dla wszystkich ścieżek
+   (Kategorie, Wyszukiwarka, Mapa) — zob. docs/design/ui-system.md „Karta przepisu”. */
 .recipe-card {
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
@@ -417,44 +145,6 @@ legend {
   color: var(--color-text-muted);
   font-size: 12px;
   background: var(--color-bg);
-}
-
-.empty-state {
-  margin-top: 20px;
-  padding: 24px;
-  line-height: 1.5;
-}
-
-.recipe-page {
-  margin: 40px 16px;
-  padding: 32px 24px;
-}
-
-.recipe-page h1 {
-  margin: 12px 0;
-  font-size: 32px;
-  line-height: 1.1;
-}
-
-.recipe-page p:not(.prototype-badge) {
-  color: var(--color-text-muted);
-  line-height: 1.6;
-}
-
-.back-link {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  margin-top: 16px;
-  color: var(--color-coral);
-  font-weight: 800;
-}
-
-footer {
-  padding: 24px 20px 40px;
-  color: var(--color-text-muted);
-  font-size: 14px;
-  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {

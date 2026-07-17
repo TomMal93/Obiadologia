@@ -1,0 +1,131 @@
+/* Style współlokowane z wyspą React DiscoveryExperience — zob.
+   docs/engineering/code-conventions.md „Style i CSS”. Zawiera wyłącznie style
+   tej wyspy; tokeny, `.screen` i wspólna `.recipe-card` żyją w global.css. */
+
+.section-heading {
+  margin-bottom: var(--stack-gap);
+  text-align: center;
+}
+
+.section-heading h2 {
+  margin: 8px 0;
+  font-size: clamp(24px, 5.2vh, 32px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.section-heading > p:last-child {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.category-panel {
+  padding: clamp(14px, 3vh, 20px) 16px;
+  border-radius: 20px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-surface);
+}
+
+.category-panel fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0 0 clamp(12px, 2.6vh, 24px);
+  border: 0;
+}
+
+.category-panel fieldset + fieldset {
+  padding-top: clamp(12px, 2.6vh, 24px);
+  border-top: 1px solid var(--color-border);
+}
+
+.category-panel legend {
+  margin-bottom: clamp(8px, 1.6vh, 12px);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.category-option {
+  display: grid;
+  min-width: 0;
+  /* Skaluje się z wysokością ekranu, ale nie schodzi poniżej progu 44px
+     dla obszaru kliknięcia (WCAG 2.2 AA / System UI). */
+  min-height: clamp(44px, 8vh, 64px);
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.2;
+  cursor: pointer;
+  background: var(--color-surface);
+}
+
+.category-option:hover {
+  border-color: var(--color-green);
+}
+
+.category-option.is-selected {
+  border: 2px solid var(--color-green);
+  color: #0b7133;
+  font-weight: 800;
+  background: var(--color-green-soft);
+}
+
+.selection-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  padding: 16px;
+  border-radius: 12px;
+  color: var(--color-text);
+  background: var(--color-coral-soft);
+}
+
+.results {
+  margin-top: 20px;
+  padding: 20px 16px;
+  border-radius: 20px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-surface);
+}
+
+.results h3 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+
+.prototype-note {
+  margin: 0 0 16px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.recipe-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empty-state {
+  margin-top: 20px;
+  padding: 24px;
+  border-radius: 20px;
+  line-height: 1.5;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-surface);
+}

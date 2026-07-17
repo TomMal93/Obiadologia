@@ -1,5 +1,6 @@
 ---
 import { DiscoveryExperience } from '@/components/DiscoveryExperience';
+import SiteHeader from '@/components/SiteHeader.astro';
 import { prototypeRecipes } from '@/data/prototype-recipes';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
@@ -8,12 +9,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   title="Obiadologia — Co dziś jemy?"
   description="Mobilny prototyp trzech sposobów odkrywania pomysłów na posiłek."
 >
-  <header class="site-header">
-    <a class="brand" href="/" aria-label="Obiadologia — strona główna">
-      <span class="brand-mark" aria-hidden="true">O</span>
-      <span>Obiadologia</span>
-    </a>
-  </header>
+  <SiteHeader />
 
   <main>
     <div class="intro-screen">
@@ -52,3 +48,131 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <p>Obiadologia — prototyp interakcji MVP.</p>
   </footer>
 </BaseLayout>
+
+<style>
+  /* Pierwszy ekran (makieta home-hero.png): nagłówek z logo, komunikat
+     „Co dziś jemy?" oraz karta wyboru trybu (Mapa / Szukaj / Kategorie) tworzą
+     razem jeden ekran. Nagłówek jest osobnym blokiem nad <main>, dlatego pierwszy
+     ekran wypełnia resztę wysokości po odjęciu wysokości nagłówka. */
+  .intro-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(10px, 2.4vh, 28px);
+    min-height: calc(100vh - var(--header-block));
+    min-height: calc(100dvh - var(--header-block));
+    padding: var(--screen-pad-y) var(--gutter);
+  }
+
+  .hero {
+    text-align: center;
+  }
+
+  .hero h1 {
+    max-width: 8ch;
+    margin: clamp(4px, 1.4vh, 12px) auto 0;
+    /* Skaluje się z wysokością ekranu, aby pierwszy ekran (nagłówek + hero +
+       karta trybu) mieścił się w jednym ekranie także na niskich telefonach. */
+    font-size: clamp(38px, 7.6vh, 64px);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+
+  .hero h1 span {
+    color: var(--color-coral);
+  }
+
+  .path-panel {
+    padding: clamp(14px, 3vh, 24px) 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 28px;
+    background: rgb(255 255 255 / 84%);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .path-panel > h2 {
+    margin: 8px 0 clamp(12px, 2.6vh, 24px);
+    font-size: clamp(24px, 5.2vh, 32px);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .path-grid {
+    display: grid;
+    /* Ta sama kompozycja (trzy kafle w rzędzie) w całym zakresie mobilnym.
+       Różnice między telefonami są proporcjonalne (skala), nie strukturalne. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--stack-gap);
+  }
+
+  .path-card {
+    display: grid;
+    min-width: 0;
+    align-content: start;
+    gap: clamp(5px, 1.2vh, 8px);
+    padding: clamp(10px, 2vh, 16px) 10px;
+    border: 1px solid currentColor;
+    border-radius: 20px;
+    text-align: center;
+  }
+
+  .path-card p {
+    margin: 0;
+  }
+
+  /* Opis ścieżki to drobna metadana (dozwolone 14px) — mniejsze zawijanie
+     pozwala karcie trybu zmieścić się na pierwszym ekranie niskich telefonów.
+     Nie dotyczy głównej etykiety `.path-intent`, która pozostaje ≥16px. */
+  .path-card p:not(.path-intent) {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .path-card--map {
+    color: var(--color-blue);
+    background: var(--color-blue-soft);
+  }
+
+  .path-card--search {
+    color: #a82d18;
+    background: var(--color-coral-soft);
+  }
+
+  .path-card--categories {
+    color: #0b7133;
+    background: var(--color-green-soft);
+  }
+
+  .path-intent {
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .path-pending {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .path-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: 4px;
+    border: 0;
+    border-radius: 12px;
+    color: white;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    background: #0b7133;
+  }
+
+  footer {
+    padding: 24px 20px 40px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    text-align: center;
+  }
+</style>

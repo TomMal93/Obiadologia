@@ -23,10 +23,12 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | model domenowy `Recipe`, walidacja i reguły Kategorii | `src/domain/recipe.ts` |
 | dane prototypowe zgodne z `Recipe` | `src/data/prototype-recipes.ts` |
 | wyspa interaktywna (wybór ścieżki, Kategorie, wyniki) | `src/components/DiscoveryExperience.tsx` |
+| style współlokowane wyspy interaktywnej | `src/components/DiscoveryExperience.css` |
+| wspólny nagłówek z logo/brandem | `src/components/SiteHeader.astro` |
 | strona główna i osadzenie wyspy | `src/pages/index.astro` |
 | zastępczy ekran przepisu `/recipes/:slug` | `src/pages/recipes/[slug].astro` |
 | wspólny layout, `<head>` i kontener mobilny | `src/layouts/BaseLayout.astro` |
-| tokeny i style globalne | `src/styles/global.css` |
+| tokeny, reset i klasy współdzielone | `src/styles/global.css` |
 | testy jednostkowe i komponentów | `src/**/*.test.ts(x)` |
 | testy E2E i kontrola `axe-core` | `tests/e2e/` |
 

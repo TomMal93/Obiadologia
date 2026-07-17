@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { CategorySelection, MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 import { filterRecipesByCategories, hasCategorySelection } from '@/domain/recipe';
+import './DiscoveryExperience.css';
 
 interface Props {
   recipes: Recipe[];
@@ -36,17 +37,11 @@ const categoryGroups = [
   },
 ] as const;
 
-const labels: Record<MealTime | Tempo | Occasion, string> = {
-  breakfast: 'Śniadanie',
-  lunch: 'Obiad',
-  dinner: 'Kolacja',
-  now: 'Na już',
-  today: 'Na dziś',
-  two_days: 'Na dwa dni',
-  kids: 'Dla dzieci',
-  guests: 'Dla gości',
-  grill: 'Na grilla',
-};
+// Etykiety pochodzą z tej samej definicji co przyciski wyboru — jedno źródło
+// prawdy dla par wartość→etykieta, bez osobnej, ręcznie utrzymywanej mapy.
+const optionLabels: Record<string, string> = Object.fromEntries(
+  categoryGroups.flatMap((group) => group.options.map(([value, label]) => [value, label])),
+);
 
 export function DiscoveryExperience({ recipes }: Props) {
   const [selection, setSelection] = useState<CategorySelection>({});
@@ -64,8 +59,8 @@ export function DiscoveryExperience({ recipes }: Props) {
   }
 
   const selectedLabels = Object.values(selection)
-    .filter((value): value is string => Boolean(value))
-    .map((value) => labels[value as MealTime | Tempo | Occasion]);
+    .filter((value): value is MealTime | Tempo | Occasion => Boolean(value))
+    .map((value) => optionLabels[value]);
 
   return (
     <section id="kategorie" className="screen category-section" aria-labelledby="categories-heading">
