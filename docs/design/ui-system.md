@@ -58,7 +58,7 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 
 ### Geometria
 
-- Siatka odstępów: `4, 8, 12, 16, 24, 32, 48, 64px`.
+- Siatka odstępów: `4, 8, 12, 16, 24, 32, 48, 64px`. Wartości wyrażają rytm i proporcje skalowane spójnie w zakresie mobilnym, a nie sztywne stałe niezależne od viewportu — zob. „Spójność i proporcje na telefonach”.
 - Promienie: `12px` dla tagów i pól, `20px` dla kart, `28px` dla dużych paneli.
 - Minimalny obszar kliknięcia: `44 × 44px`.
 - Cień powierzchni: miękki i jasny, np. `0 12px 32px rgb(89 55 29 / 8%)`.
@@ -132,6 +132,18 @@ Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi.
 - Overlay uwzględnia `100dvh`, bezpieczne obszary urządzenia i klawiaturę ekranową.
 - Nie tworzymy dolnej nawigacji mobilnej, jeśli nie wynika to z nowej decyzji produktowej.
 
+## Spójność i proporcje na telefonach
+
+W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokościach ekranu) sekcja zachowuje tę samą kompozycję. Widok na mniejszym telefonie jest proporcjonalnie przeskalowaną wersją widoku na większym, a nie osobnym układem.
+
+- Kolejność, hierarchia, wyrównanie i rytm odstępów między elementami sekcji MUSZĄ być takie same na wszystkich obsługiwanych telefonach. Dopuszczalne różnice między urządzeniami są proporcjonalne (skala), a nie strukturalne (zmiana układu, przestawianie ani ukrywanie elementów).
+- Odstępy między elementami oraz rozmiary elementów skalują się płynnie względem viewportu (szerokości i wysokości), tak aby sekcja wypełniała jeden ekran spójnie od najmniejszego do największego telefonu — bez dużych pustych obszarów i bez przepełnienia. Reguła pełnoekranowych sekcji ma tu pierwszeństwo.
+- Skalowanie proporcjonalne jest ograniczone progami dostępności: tekst interfejsu nie schodzi poniżej `16px`, obszar kliknięcia poniżej `44 × 44px`, a kontrast poniżej WCAG 2.2 AA. Gdy wartość proporcjonalna osiągnęłaby próg, zostaje przy progu.
+- Żaden element ani kontrolka nie może być ucięty na krawędzi sekcji lub ekranu; treść nie tworzy poziomego przewijania, elementy nie nachodzą na siebie ani nie „rozjeżdżają się” między rozmiarami telefonów.
+- Zdjęcia skalują się ze stałymi proporcjami (`object-fit: cover`), bez zniekształcenia i bez zmiany geometrii karty; brak zdjęcia zachowuje wymiary (zob. „Karta przepisu”).
+- Zmiana strukturalna układu jest ostatecznością dopuszczoną tylko wtedy, gdy proporcjonalne skalowanie nie usuwa przepełnienia. Jeśli jest konieczna, MUSI zachodzić spójnie w całym zakresie, a nie różnicować pojedynczych rozmiarów telefonów.
+- Siatka odstępów i skala typografii z sekcji „Geometria” i „Typografia” wyrażają proporcje (rytm i relacje), które to skalowanie utrzymuje spójnie w zakresie mobilnym, z zachowaniem powyższych progów dostępności.
+
 ## Ruch i dostępność
 
 - Animacje powinny trwać około `150–250ms` i wspierać orientację, nie dekorację.
@@ -149,6 +161,8 @@ Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi.
 | kontrast | tekst, kontrolki i fokus spełniają WCAG 2.2 AA |
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
 | sekcje pełnoekranowe | każda główna sekcja wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
+| spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
+| brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |
 | interakcje | wyniki reagują na każdą zmianę kryteriów, a karta otwiera trasę przepisu |
 
 System UI jest gotowy do implementacji, gdy tokeny są wdrożone centralnie, a komponenty nie zawierają lokalnych kopii wspólnych wartości bez uzasadnienia.
