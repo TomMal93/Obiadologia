@@ -40,9 +40,41 @@
 }
 
 .category-panel legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
   margin-bottom: clamp(8px, 1.6vh, 12px);
   font-size: var(--font-size-20);
   font-weight: 800;
+}
+
+/* Ikona nagłówka grupy bierze kolor akcentu grupy (--group-accent ustawiany
+   na .category-group--*). Ikona jest dekoracyjna — znaczenie niesie tekst. */
+.legend-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  color: var(--group-accent);
+}
+
+.legend-icon svg,
+.option-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ikona opcji: neutralna, a po wybraniu przyjmuje akcent grupy. Stan wyboru
+   niosą też obramowanie, pogrubienie i aria-pressed — nie sam kolor. */
+.option-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+}
+
+.category-option.is-selected .option-icon {
+  color: var(--group-accent);
 }
 
 /* Kolory wyboru w Kategoriach są tym samym zestawem co kolory CTA dróg — każda
