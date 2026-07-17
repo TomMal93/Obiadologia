@@ -31,11 +31,13 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 
 ## Stan implementacji
 
+Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kontrakt w minimalnym zakresie — istnieje i można na niej bazować, ale nie jest to jeszcze docelowy kształt.
+
 | Obszar | Stan | Uwagi |
 |---|---|---|
-| Model `Recipe` i dane prototypowe | zaimplementowane | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki |
-| Strona główna (nagłówek, hero) | zaimplementowane | statyczne komponenty Astro poza wyspą React |
-| Kategorie | zaimplementowane | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
+| Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki |
+| Strona główna (nagłówek, hero) | wersja wstępna | statyczne komponenty Astro poza wyspą React |
+| Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
 | Wybór ścieżki (3 karty) | częściowo | działa przejście do Kategorii; karty Mapa i Szukaj są jawnymi placeholderami i nie otwierają overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | niezaimplementowane | brak wyspy overlaya; brak kontraktu `RecipeSearch` i adaptera wyszukiwania |
 | Trasa przepisu `/recipes/:slug` | zaimplementowane jako ekran zastępczy | prerenderowana z możliwością powrotu |
