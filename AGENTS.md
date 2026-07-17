@@ -36,7 +36,8 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Obszar | Stan | Uwagi |
 |---|---|---|
 | Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki |
-| Strona główna (nagłówek, hero) | wersja wstępna | statyczne komponenty Astro poza wyspą React |
+| Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
+| Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro: badge „Lokalny prototyp” + `<h1>` „Co dziś jemy?” |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
 | Wybór ścieżki (3 karty) | częściowo | działa przejście do Kategorii; karty Mapa i Szukaj są jawnymi placeholderami i nie otwierają overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | niezaimplementowane | brak wyspy overlaya; brak kontraktu `RecipeSearch` i adaptera wyszukiwania |
