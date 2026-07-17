@@ -5,15 +5,14 @@
 > `home-hero.png` i `home-browse-mode.png`.
 > Charakter: audyt jednorazowy (nie jest dokumentem-źródłem prawdy ani dziennikiem prac).
 
-> **Aktualizacja (decyzja właściciela):** przyjęto docelowo trzy niezależne warstwy koloru:
-> (a) **kolory przewodnie dróg** — Mapa = niebieski, Szukaj = koral, Kategorie = zielony
-> (`--color-map` / `--color-search` / `--color-categories` + `-strong`/`-soft`); (b) **akcenty
-> grup Kategorii** — pora dnia = żółty, tempo = zielony, okazja = koral
-> (`--color-daypart` / `--color-tempo` / `--color-occasion` + `-soft`), użyte w wyborze w drugiej
-> sekcji zgodnie z makietą; (c) **rozdzielone role tekstu** — `--color-heading-accent` (nagłówki)
-> osobno od `--color-cta` (akcje). Rozwiązuje to punkty **#1** i **#3**, a zaszyte heksy wróciły do
-> definicji tokenów. Szczegóły w `docs/design/ui-system.md` › „Kolory przewodnie dróg” i „Akcenty
-> grup Kategorii”.
+> **Aktualizacja (decyzja właściciela):** przyjęto docelowo **jedną paletę trójbarwną** wspólną dla
+> CTA dróg i wyboru w Kategoriach, sparowaną: Mapa↔okazja = niebieski, Kategorie↔tempo = zielony,
+> Szukaj↔pora dnia = koral. Kolory dróg (`--color-map` / `--color-search` / `--color-categories`
+> + `-strong`/`-soft`) są jednocześnie akcentami sparowanych grup wyboru — nie ma osobnych tokenów
+> grup. Role tekstu są rozdzielone: `--color-heading-accent` (nagłówki) osobno od `--color-cta`.
+> Świadomie odchodzi to od kolorów grup z makiety (żółty/koral). Rozwiązuje punkty **#1** i **#3**;
+> zaszyte heksy wróciły do definicji tokenów. Szczegóły w `docs/design/ui-system.md` › „Kolory
+> przewodnie dróg” i „Akcenty grup Kategorii”.
 
 ## Ocena ogólna
 
