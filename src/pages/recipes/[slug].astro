@@ -1,4 +1,5 @@
 ---
+import SiteHeader from '@/components/SiteHeader.astro';
 import { prototypeRecipes } from '@/data/prototype-recipes';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import type { Recipe } from '@/domain/recipe';
@@ -23,12 +24,7 @@ const { recipe } = Astro.props;
   title={`${recipe.title} — Obiadologia`}
   description={`Zastępczy ekran przepisu: ${recipe.title}.`}
 >
-  <header class="site-header">
-    <a class="brand" href="/" aria-label="Obiadologia — strona główna">
-      <span class="brand-mark" aria-hidden="true">O</span>
-      <span>Obiadologia</span>
-    </a>
-  </header>
+  <SiteHeader />
 
   <main class="recipe-page">
     <p class="prototype-badge">Ekran zastępczy</p>
@@ -38,3 +34,33 @@ const { recipe } = Astro.props;
     <a class="back-link" href="/">← Wróć do strony głównej</a>
   </main>
 </BaseLayout>
+
+<style>
+  .recipe-page {
+    margin: 40px 16px;
+    padding: 32px 24px;
+    border-radius: 20px;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .recipe-page h1 {
+    margin: 12px 0;
+    font-size: 32px;
+    line-height: 1.1;
+  }
+
+  .recipe-page p:not(.prototype-badge) {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .back-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    margin-top: 16px;
+    color: var(--color-coral);
+    font-weight: 800;
+  }
+</style>
