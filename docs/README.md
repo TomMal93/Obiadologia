@@ -26,6 +26,7 @@ obiadologia/
     │   ├── technical-decisions.md
     │   ├── data-model.md
     │   ├── quality-requirements.md
+    │   ├── code-conventions.md
     │   └── adr/
     │       └── 0001-stos-aplikacji.md
     └── assets/ui/
@@ -48,6 +49,7 @@ obiadologia/
 | framework, API, hosting lub test runner | [technical-decisions.md](engineering/technical-decisions.md) |
 | uzasadnienie zaakceptowanej decyzji kosztownej do odwrócenia | właściwy dokument w [`engineering/adr/`](engineering/adr/) wskazany przez rejestr decyzji |
 | dostępność, wydajność i Definition of Done | [quality-requirements.md](engineering/quality-requirements.md) |
+| miejsce styli, nazewnictwo klas, importy i hydratacja | [code-conventions.md](engineering/code-conventions.md) |
 
 ## Źródła prawdy
 
@@ -61,6 +63,7 @@ obiadologia/
 | rejestr decyzji implementacyjnych i decyzje otwarte | `engineering/technical-decisions.md` |
 | pełna treść zaakceptowanej decyzji kosztownej do odwrócenia | właściwy ADR wskazany przez `engineering/technical-decisions.md`; w razie różnicy ADR ma pierwszeństwo przed skrótem w rejestrze |
 | wymagania jakościowe | `engineering/quality-requirements.md` |
+| konwencje kodu (miejsce styli, nazewnictwo, importy, hydratacja) | `engineering/code-conventions.md` |
 | szczegóły faktycznie zaimplementowane | kod i testy, gdy powstaną |
 
 Każdy kontrakt ma jedno normatywne źródło wskazane powyżej. Inne dokumenty mogą zawierać krótkie streszczenie albo kryterium weryfikacji, jeżeli odsyłają do tego źródła i nie dodają własnych szczegółów. Rejestr decyzji opisuje przyjęty kierunek techniczny i jego uzasadnienie, ale nie zastępuje specyfikacji zachowania.
