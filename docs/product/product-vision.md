@@ -41,6 +41,7 @@ Wszystkie trzy drogi są równorzędne i prowadzą do wspólnego modelu propozyc
 - Używamy prostego, codziennego języka.
 - Dajemy użytkownikowi kontrolę nad wyborem i możliwość zmiany drogi.
 - Kolor wspiera rozpoznanie trybu, ale nie może być jedynym nośnikiem informacji.
+- Prezentujemy treść w skupionych, pełnoekranowych sekcjach — jedna sekcja odpowiada jednemu ekranowi (reguła w [ui-system.md](../design/ui-system.md)).
 
 ## Pożądany rezultat
 

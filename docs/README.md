@@ -73,6 +73,7 @@ Poniższa lista jest wyłącznie skrótem nawigacyjnym; pełny kontrakt znajduje
 - Kategorie i Wyszukiwarka odświeżają wyniki po każdej zmianie kryteriów, a Mapa podczas przeciągania punktu — [home-page.md](product/features/home-page.md) i [discovery-overlay.md](product/features/discovery-overlay.md).
 - Cała karta przepisu prowadzi do trasy przepisu, której bieżący zakres opisuje [mvp-scope.md](product/mvp-scope.md).
 - Obowiązuje jeden wyśrodkowany układ mobilny — [ui-system.md](design/ui-system.md).
+- Każda główna sekcja wypełnia jeden ekran (jedna sekcja = jeden ekran) i nie jest wyższa niż ekran — [ui-system.md](design/ui-system.md).
 
 Gdy dokumenty są sprzeczne, nie wybieraj wygodniejszej wersji. Zatrzymaj zmianę, wskaż konflikt i popraw właściwe źródło prawdy.
 

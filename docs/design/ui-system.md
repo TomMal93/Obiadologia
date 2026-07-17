@@ -14,6 +14,7 @@ Wartości zostały odczytane z makiet rastrowych, dlatego są początkowymi toke
 
 - kolory, typografia, odstępy, promienie i cienie;
 - wspólne komponenty i stany interakcji bieżącego etapu;
+- zasada pełnoekranowych sekcji (jedna sekcja = jeden ekran);
 - reguły responsywności, dostępności i ruchu.
 
 ## Poza zakresem
@@ -111,6 +112,17 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 | błąd | zrozumiały komunikat i akcja „Spróbuj ponownie” |
 | walidacja | komunikat przy właściwym polu lub grupie |
 
+## Sekcje pełnoekranowe
+
+Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi. Zasada „jedna sekcja = jeden ekran” jest podstawowym założeniem układu i ma pierwszeństwo przy projektowaniu zawartości każdej sekcji.
+
+- Każda główna sekcja MUSI wypełniać jeden ekran, tj. wysokość widocznego obszaru (`100dvh`) z uwzględnieniem bezpiecznych obszarów urządzenia i klawiatury ekranowej.
+- Sekcja przy bazowych ustawieniach nie może być wyższa niż ekran. Treść projektujemy tak, aby mieściła się w jednym ekranie; jeśli się nie mieści, ograniczamy lub upraszczamy treść, zamiast rozciągać sekcję albo wprowadzać przewijanie wewnątrz sekcji.
+- Przewijanie między sekcjami jest swobodne. Na tym etapie nie wprowadzamy wymuszonego zatrzaskiwania (`scroll-snap`); ewentualne dodanie snapu jest osobną decyzją produktową.
+- Reguła nie może łamać dostępności. Przy powiększeniu tekstu, bardzo niskim ekranie lub otwartej klawiaturze treść MUSI pozostać w pełni osiągalna (bez przycięcia), nawet jeśli wymaga to przewinięcia — zgodnie z wymaganiem reflow WCAG 2.2 AA.
+- Fokus i kolejność czytania MUSZĄ pozostać poprawne mimo pełnoekranowego układu; granica ekranu nie może ukrywać treści ani kontrolek przed czytnikiem i klawiaturą.
+- Podział strony głównej na sekcje definiuje [home-page.md](../product/features/home-page.md). Overlay jest z natury pełnoekranowy i spełnia tę regułę bez dodatkowych zabiegów.
+
 ## Responsywność
 
 - Projekt ma jeden układ mobilny działający od `320px` do `480px` szerokości.
@@ -136,6 +148,7 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 | klawiatura | wszystkie akcje działają bez myszy, a fokus jest widoczny |
 | kontrast | tekst, kontrolki i fokus spełniają WCAG 2.2 AA |
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
+| sekcje pełnoekranowe | każda główna sekcja wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
 | interakcje | wyniki reagują na każdą zmianę kryteriów, a karta otwiera trasę przepisu |
 
 System UI jest gotowy do implementacji, gdy tokeny są wdrożone centralnie, a komponenty nie zawierają lokalnych kopii wspólnych wartości bez uzasadnienia.

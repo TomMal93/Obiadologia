@@ -19,6 +19,8 @@ Strona zawiera:
 4. sekcję kategorii,
 5. listę propozycji wynikających z wyboru kategorii.
 
+Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
+
 Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy do bieżącego przepływu MVP. Dopóki zakres oraz zawartość menu nie zostaną określone, implementacja nie renderuje jej jako pozornie działającego przycisku.
 
 ## Trzy drogi
@@ -111,4 +113,5 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.
 - Użytkownik może usunąć aktywny wybór.
 - Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
+- Każda główna sekcja wypełnia jeden ekran i nie jest wyższa niż ekran, zgodnie z regułą pełnoekranowych sekcji w [ui-system.md](../../design/ui-system.md).
 - Układ spełnia wymagania responsywności i dostępności.
