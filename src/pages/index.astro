@@ -59,7 +59,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             <span class="path-rule" aria-hidden="true"></span>
             <p class="path-meta">nastrój · tempo · inspiracja</p>
             <span class="path-arrow" aria-hidden="true">↓</span>
-            <div class="path-tile is-pending">
+            <button class="path-tile" type="button" data-discovery-mode="map">
               <span class="path-icon" aria-hidden="true">
                 <svg viewBox="0 0 48 48">
                   <circle class="icon-ring" cx="22" cy="24" r="13" />
@@ -74,8 +74,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
                 </svg>
               </span>
               <span class="path-tile-label">Mapa</span>
-              <span class="path-soon">Wkrótce</span>
-            </div>
+            </button>
           </article>
 
           <article class="path-col path-col--search">
@@ -83,7 +82,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             <span class="path-rule" aria-hidden="true"></span>
             <p class="path-meta">składnik · danie · smak</p>
             <span class="path-arrow" aria-hidden="true">↓</span>
-            <div class="path-tile is-pending">
+            <button class="path-tile" type="button" data-discovery-mode="search">
               <span class="path-icon" aria-hidden="true">
                 <svg viewBox="0 0 48 48">
                   <circle class="icon-lens" cx="21" cy="21" r="11" />
@@ -91,8 +90,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
                 </svg>
               </span>
               <span class="path-tile-label">Szukaj</span>
-              <span class="path-soon">Wkrótce</span>
-            </div>
+            </button>
           </article>
 
           <article class="path-col path-col--categories">
@@ -405,15 +403,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
-  a.path-tile:hover {
+  .path-tile:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-surface);
   }
 
-  /* Mapa i Szukaj są jawnymi placeholderami: nieinteraktywne kafle bez trasy,
-     dopóki nie powstanie discovery overlay (AGENTS.md, reguła 9). */
-  .path-tile.is-pending {
-    cursor: default;
+  button.path-tile {
+    border: 0;
+    cursor: pointer;
   }
 
   .path-icon {
@@ -433,17 +430,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     font-size: clamp(16px, 4.4vw, 20px);
     font-weight: 800;
     letter-spacing: -0.02em;
-  }
-
-  .path-soon {
-    padding: 2px 8px;
-    border-radius: var(--radius-pill);
-    color: var(--color-text-muted);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    background: rgb(255 255 255 / 70%);
   }
 
   /* Ikony ścieżek dziedziczą kolor akcentu przez currentColor. */

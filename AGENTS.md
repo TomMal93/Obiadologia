@@ -21,6 +21,7 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | Obszar | Ścieżka |
 |---|---|
 | model domenowy `Recipe`, walidacja i reguły Kategorii | `src/domain/recipe.ts` |
+| kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
 | dane prototypowe zgodne z `Recipe` | `src/data/prototype-recipes.ts` |
 | wyspa interaktywna (wybór ścieżki, Kategorie, wyniki) | `src/components/DiscoveryExperience.tsx` |
 | style współlokowane wyspy interaktywnej | `src/components/DiscoveryExperience.css` |
@@ -42,8 +43,8 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
-| Wybór ścieżki (3 karty) | częściowo | pełna kompozycja z makiety (pigułka, węzeł „O”, trzy kolumny z ikonami); Kategorie prowadzą do sekcji, a Mapa i Szukaj są jawnymi, nieinteraktywnymi placeholderami z etykietą „Wkrótce” i nie otwierają overlaya |
-| Discovery overlay (Wyszukiwarka i Mapa) | niezaimplementowane | brak wyspy overlaya; brak kontraktu `RecipeSearch` i adaptera wyszukiwania |
+| Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
+| Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
 | Trasa przepisu `/recipes/:slug` | zaimplementowane jako ekran zastępczy | prerenderowana z możliwością powrotu |
 
 Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.

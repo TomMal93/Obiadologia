@@ -16,9 +16,4 @@ export default defineConfig({
       use: { ...devices['Pixel 5'] },
     },
   ],
-  webServer: {
-    command: 'node ./node_modules/astro/bin/astro.mjs dev --host 127.0.0.1',
-    url: 'http://127.0.0.1:4321',
-    reuseExistingServer: !process.env.CI,
-  },
 });

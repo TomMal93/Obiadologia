@@ -16,12 +16,13 @@
     "typecheck": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test",
+    "test:e2e": "node ./scripts/run-e2e.mjs",
     "verify": "corepack pnpm lint && corepack pnpm typecheck && corepack pnpm test && corepack pnpm test:e2e && corepack pnpm build"
   },
   "dependencies": {
     "@astrojs/react": "6.0.1",
     "astro": "7.1.0",
+    "fuse.js": "7.1.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "zod": "4.4.3"
