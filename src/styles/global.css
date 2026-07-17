@@ -16,6 +16,14 @@
   --color-occasion: #ff6b4d;
   --brand-gradient: linear-gradient(135deg, #ff3a24, #ff633f);
   --shadow-surface: 0 12px 32px rgb(89 55 29 / 8%);
+
+  /* Płynne tokeny skalujące sekcje w zakresie mobilnym (320–480px szer. i różne
+     wysokości). Skalują się względem viewportu, ale nie schodzą poniżej progów
+     dostępności — zob. docs/design/ui-system.md „Spójność i proporcje na telefonach”. */
+  --gutter: clamp(16px, 4.2vw, 24px);
+  --screen-pad-y: clamp(16px, 4vh, 44px);
+  --stack-gap: clamp(12px, 2.6vh, 24px);
+  --header-block: clamp(64px, 11vh, 88px);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--color-text);
   background: #f3eee8;
@@ -62,7 +70,10 @@ button {
 }
 
 .site-header {
-  padding: 24px 20px 8px;
+  display: flex;
+  align-items: center;
+  height: var(--header-block);
+  padding: 0 var(--gutter);
 }
 
 .brand {
@@ -86,8 +97,29 @@ button {
   box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
 }
 
+/* Sekcja pełnoekranowa: wypełnia jeden ekran (100dvh) i centruje treść w pionie.
+   Treść jest projektowana tak, aby mieściła się w jednym ekranie; przy bazowych
+   ustawieniach sekcja nie przekracza wysokości ekranu. Gdy treść (np. wyniki lub
+   powiększony tekst) przekroczy ekran, `min-height` pozwala sekcji urosnąć bez
+   przycięcia — zgodnie z regułą reflow WCAG 2.2 AA. */
+.screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--screen-pad-y) var(--gutter);
+}
+
 .hero {
-  padding: 32px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Nagłówek z logo należy do pierwszego ekranu, dlatego hero wypełnia
+     resztę pierwszego ekranu po odjęciu wysokości nagłówka. */
+  min-height: calc(100vh - var(--header-block));
+  min-height: calc(100dvh - var(--header-block));
+  padding: var(--screen-pad-y) var(--gutter);
   text-align: center;
 }
 
@@ -113,13 +145,8 @@ button {
   text-transform: uppercase;
 }
 
-.path-panel,
-.category-section {
-  margin: 0 16px 48px;
-}
-
 .path-panel {
-  padding: 28px 16px;
+  padding: clamp(20px, 4vh, 28px) 16px;
   border: 1px solid var(--color-border);
   border-radius: 28px;
   background: rgb(255 255 255 / 84%);
@@ -136,16 +163,21 @@ button {
 
 .path-grid {
   display: grid;
-  gap: 12px;
+  /* Ta sama kompozycja (trzy kafle w rzędzie) w całym zakresie mobilnym.
+     Różnice między telefonami są proporcjonalne (skala), nie strukturalne. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--stack-gap);
 }
 
 .path-card {
   display: grid;
   min-width: 0;
+  align-content: start;
   gap: 8px;
-  padding: 20px;
+  padding: clamp(12px, 2.4vh, 16px) 10px;
   border: 1px solid currentColor;
   border-radius: 20px;
+  text-align: center;
 }
 
 .path-card p {
@@ -168,7 +200,7 @@ button {
 }
 
 .path-intent {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -190,7 +222,7 @@ button {
 }
 
 .section-heading {
-  margin-bottom: 24px;
+  margin-bottom: var(--stack-gap);
   text-align: center;
 }
 
@@ -214,23 +246,23 @@ button {
 }
 
 .category-panel {
-  padding: 20px 16px;
+  padding: clamp(14px, 3vh, 20px) 16px;
 }
 
 fieldset {
   min-width: 0;
   margin: 0;
-  padding: 0 0 24px;
+  padding: 0 0 clamp(12px, 2.6vh, 24px);
   border: 0;
 }
 
 fieldset + fieldset {
-  padding-top: 24px;
+  padding-top: clamp(12px, 2.6vh, 24px);
   border-top: 1px solid var(--color-border);
 }
 
 legend {
-  margin-bottom: 12px;
+  margin-bottom: clamp(8px, 1.6vh, 12px);
   font-size: 20px;
   font-weight: 800;
 }
@@ -244,7 +276,9 @@ legend {
 .category-option {
   display: grid;
   min-width: 0;
-  min-height: 64px;
+  /* Skaluje się z wysokością ekranu, ale nie schodzi poniżej progu 44px
+     dla obszaru kliknięcia (WCAG 2.2 AA / System UI). */
+  min-height: clamp(44px, 8vh, 64px);
   place-items: center;
   align-content: center;
   gap: 4px;
@@ -400,22 +434,6 @@ footer {
   color: var(--color-text-muted);
   font-size: 14px;
   text-align: center;
-}
-
-@media (min-width: 390px) {
-  .path-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .path-card {
-    align-content: start;
-    padding: 16px 10px;
-    text-align: center;
-  }
-
-  .path-intent {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
