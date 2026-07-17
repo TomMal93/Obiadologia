@@ -40,9 +40,9 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 |---|---|---|
 | Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki |
 | Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
-| Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro: badge „Lokalny prototyp” + `<h1>` „Co dziś jemy?” |
+| Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
-| Wybór ścieżki (3 karty) | częściowo | działa przejście do Kategorii; karty Mapa i Szukaj są jawnymi placeholderami i nie otwierają overlaya |
+| Wybór ścieżki (3 karty) | częściowo | pełna kompozycja z makiety (pigułka, węzeł „O”, trzy kolumny z ikonami); Kategorie prowadzą do sekcji, a Mapa i Szukaj są jawnymi, nieinteraktywnymi placeholderami z etykietą „Wkrótce” i nie otwierają overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | niezaimplementowane | brak wyspy overlaya; brak kontraktu `RecipeSearch` i adaptera wyszukiwania |
 | Trasa przepisu `/recipes/:slug` | zaimplementowane jako ekran zastępczy | prerenderowana z możliwością powrotu |
 

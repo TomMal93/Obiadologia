@@ -13,31 +13,110 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   <main>
     <div class="intro-screen">
+      <div class="hero-bg" aria-hidden="true">
+        <span>na obiad?</span>
+        <span>co zjemy?</span>
+        <span>coś szybkiego</span>
+        <span>na przy garach</span>
+        <span>coś słodkiego</span>
+        <span>szybko i zdrowo</span>
+      </div>
+
       <section class="hero" aria-labelledby="main-heading">
-        <p class="prototype-badge">Lokalny prototyp</p>
         <h1 id="main-heading">Co dziś <span>jemy?</span></h1>
       </section>
 
       <section class="path-panel" aria-labelledby="paths-heading">
-        <p class="eyebrow">Nie musisz wiedzieć, czego chcesz</p>
+        <p class="path-pill">Nie musisz wiedzieć, czego chcesz</p>
         <h2 id="paths-heading">Wybierz najbliższą myśl</h2>
+
+        <svg
+          class="path-tree"
+          viewBox="0 0 300 124"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
+          <path class="tree-line tree-line--map" d="M150 52 C150 90 50 74 50 108" />
+          <path class="tree-line tree-line--search" d="M150 52 L150 108" />
+          <path class="tree-line tree-line--categories" d="M150 52 C150 90 250 74 250 108" />
+          <circle class="tree-dot tree-dot--map" cx="50" cy="112" r="5" />
+          <circle class="tree-dot tree-dot--search" cx="150" cy="112" r="5" />
+          <circle class="tree-dot tree-dot--categories" cx="250" cy="112" r="5" />
+          <circle class="tree-node-glow" cx="150" cy="30" r="30" />
+          <circle class="tree-node" cx="150" cy="30" r="22" />
+          <text
+            class="tree-node-letter"
+            x="150"
+            y="30"
+            text-anchor="middle"
+            dominant-baseline="central"
+          >O</text>
+        </svg>
+
         <div class="path-grid">
-          <article class="path-card path-card--map">
-            <p class="path-intent">Nie wiem, czego chcę</p>
-            <p>nastrój · tempo · inspiracja</p>
-            <span class="path-pending">Mapa — kolejny wycinek</span>
+          <article class="path-col path-col--map">
+            <p class="path-title">Nie wiem, czego chcę</p>
+            <span class="path-rule" aria-hidden="true"></span>
+            <p class="path-meta">nastrój · tempo · inspiracja</p>
+            <span class="path-arrow" aria-hidden="true">↓</span>
+            <div class="path-tile is-pending">
+              <span class="path-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48">
+                  <circle class="icon-ring" cx="22" cy="24" r="13" />
+                  <circle
+                    class="icon-arc"
+                    cx="22"
+                    cy="24"
+                    r="13"
+                    pathLength="100"
+                  />
+                  <circle class="icon-knob" cx="35" cy="24" r="4.5" />
+                </svg>
+              </span>
+              <span class="path-tile-label">Mapa</span>
+              <span class="path-soon">Wkrótce</span>
+            </div>
           </article>
-          <article class="path-card path-card--search">
-            <p class="path-intent">Wiem, czego szukam</p>
-            <p>składnik · danie · smak</p>
-            <span class="path-pending">Szukaj — kolejny wycinek</span>
+
+          <article class="path-col path-col--search">
+            <p class="path-title">Wiem, czego szukam</p>
+            <span class="path-rule" aria-hidden="true"></span>
+            <p class="path-meta">składnik · danie · smak</p>
+            <span class="path-arrow" aria-hidden="true">↓</span>
+            <div class="path-tile is-pending">
+              <span class="path-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48">
+                  <circle class="icon-lens" cx="21" cy="21" r="11" />
+                  <line class="icon-handle" x1="29" y1="29" x2="38" y2="38" />
+                </svg>
+              </span>
+              <span class="path-tile-label">Szukaj</span>
+              <span class="path-soon">Wkrótce</span>
+            </div>
           </article>
-          <article class="path-card path-card--categories">
-            <p class="path-intent">Chcę przeglądać</p>
-            <p>kategoria · okazja · sytuacja</p>
-            <a class="path-cta" href="#kategorie">Kategorie</a>
+
+          <article class="path-col path-col--categories">
+            <p class="path-title">Chcę przeglądać</p>
+            <span class="path-rule" aria-hidden="true"></span>
+            <p class="path-meta">kategoria · okazja · sytuacja</p>
+            <span class="path-arrow" aria-hidden="true">↓</span>
+            <a class="path-tile" href="#kategorie">
+              <span class="path-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48">
+                  <rect class="icon-cell icon-cell--strong" x="9" y="9" width="13" height="13" rx="3.5" />
+                  <rect class="icon-cell icon-cell--soft" x="26" y="9" width="13" height="13" rx="3.5" />
+                  <rect class="icon-cell icon-cell--soft" x="9" y="26" width="13" height="13" rx="3.5" />
+                  <rect class="icon-cell icon-cell--strong" x="26" y="26" width="13" height="13" rx="3.5" />
+                </svg>
+              </span>
+              <span class="path-tile-label">Kategorie</span>
+            </a>
           </article>
         </div>
+
+        <p class="path-note">
+          <strong>Wybierz jedną z dróg,</strong> a pomożemy Ci znaleźć idealny obiad.
+        </p>
       </section>
     </div>
 
@@ -55,26 +134,84 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
      razem jeden ekran. Nagłówek jest osobnym blokiem nad <main>, dlatego pierwszy
      ekran wypełnia resztę wysokości po odjęciu wysokości nagłówka. */
   .intro-screen {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: clamp(10px, 2.4vh, 28px);
+    gap: clamp(16px, 3.2vh, 30px);
     min-height: calc(100vh - var(--header-block));
     min-height: calc(100dvh - var(--header-block));
     padding: var(--screen-pad-y) var(--gutter);
   }
 
+  /* Delikatne, powtarzalne hasła w tle — czysto dekoracyjne (aria-hidden),
+     nie niosą znaczenia i nie przechwytują kliknięć. */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    color: var(--color-text);
+    font-weight: 800;
+    pointer-events: none;
+  }
+
+  .hero-bg span {
+    position: absolute;
+    font-size: clamp(15px, 4.6vw, 22px);
+    white-space: nowrap;
+    opacity: 0.05;
+  }
+
+  .hero-bg span:nth-of-type(1) {
+    top: 6%;
+    left: -2%;
+    transform: rotate(-9deg);
+  }
+
+  .hero-bg span:nth-of-type(2) {
+    top: 3%;
+    right: 6%;
+    transform: rotate(6deg);
+  }
+
+  .hero-bg span:nth-of-type(3) {
+    top: 12%;
+    right: -4%;
+    transform: rotate(-7deg);
+  }
+
+  .hero-bg span:nth-of-type(4) {
+    top: 22%;
+    right: 2%;
+    transform: rotate(8deg);
+  }
+
+  .hero-bg span:nth-of-type(5) {
+    top: 46%;
+    left: -3%;
+    transform: rotate(-8deg);
+  }
+
+  .hero-bg span:nth-of-type(6) {
+    top: 34%;
+    left: 4%;
+    transform: rotate(7deg);
+  }
+
   .hero {
+    position: relative;
+    z-index: 1;
     text-align: center;
   }
 
   .hero h1 {
-    max-width: 8ch;
-    margin: clamp(4px, 1.4vh, 12px) auto 0;
-    /* Skaluje się z wysokością ekranu, aby pierwszy ekran (nagłówek + hero +
-       karta trybu) mieścił się w jednym ekranie także na niskich telefonach. */
-    font-size: clamp(38px, 7.6vh, 64px);
-    line-height: 0.98;
+    max-width: 12ch;
+    margin: 0 auto;
+    /* Skaluje się z szerokością ekranu, aby dominować pierwszemu ekranowi jak
+       na makiecie, wciąż mieszcząc się w kontenerze mobilnym. */
+    font-size: clamp(40px, 12vw, 66px);
+    line-height: 0.95;
     letter-spacing: -0.06em;
   }
 
@@ -83,90 +220,287 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   }
 
   .path-panel {
-    padding: clamp(14px, 3vh, 24px) 16px;
+    position: relative;
+    z-index: 1;
+    padding: clamp(30px, 5vh, 40px) clamp(12px, 3vw, 18px) clamp(14px, 3vh, 22px);
     border: 1px solid var(--color-border);
     border-radius: 28px;
     background: rgb(255 255 255 / 84%);
     box-shadow: var(--shadow-surface);
   }
 
+  /* Pigułka marki nachodzi na górną krawędź panelu, jak na makiecie. Tło używa
+     gradientu marki zdefiniowanego w ui-system.md. */
+  .path-pill {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    /* `max-content` pozwala pigułce zająć szerokość jednego wiersza (a nie tylko
+       przestrzeni na prawo od punktu 50%), z limitem szerokości panelu. */
+    width: max-content;
+    max-width: calc(100% - 24px);
+    margin: 0;
+    padding: 8px 16px;
+    border-radius: 999px;
+    color: white;
+    font-size: clamp(13px, 3.3vw, 15px);
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: center;
+    background: var(--brand-gradient);
+    box-shadow: var(--shadow-surface);
+    transform: translate(-50%, -50%);
+  }
+
   .path-panel > h2 {
-    margin: 8px 0 clamp(12px, 2.6vh, 24px);
-    font-size: clamp(24px, 5.2vh, 32px);
+    margin: 0 0 clamp(4px, 1vh, 10px);
+    font-size: clamp(22px, 5.2vh, 30px);
     line-height: 1.05;
     letter-spacing: -0.035em;
+    text-align: center;
+  }
+
+  /* Rozgałęzienie od węzła „O" do trzech ścieżek. Węzeł i kropki są w jednym
+     SVG, dlatego kropki trafiają dokładnie nad środki trzech kolumn. */
+  .path-tree {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .tree-line {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  .tree-line--map {
+    stroke: var(--color-blue);
+  }
+
+  .tree-line--search {
+    stroke: var(--color-coral);
+  }
+
+  .tree-line--categories {
+    stroke: var(--color-green);
+  }
+
+  .tree-dot--map {
+    fill: var(--color-blue);
+  }
+
+  .tree-dot--search {
+    fill: var(--color-coral);
+  }
+
+  .tree-dot--categories {
+    fill: var(--color-green);
+  }
+
+  .tree-node-glow {
+    fill: var(--color-coral);
+    opacity: 0.12;
+  }
+
+  .tree-node {
+    fill: var(--color-surface);
+    stroke: var(--color-border);
+    stroke-width: 1.5;
+  }
+
+  .tree-node-letter {
+    fill: var(--color-coral);
+    font-size: 26px;
+    font-weight: 800;
   }
 
   .path-grid {
     display: grid;
-    /* Ta sama kompozycja (trzy kafle w rzędzie) w całym zakresie mobilnym.
+    /* Ta sama kompozycja (trzy kolumny w rzędzie) w całym zakresie mobilnym.
        Różnice między telefonami są proporcjonalne (skala), nie strukturalne. */
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--stack-gap);
+    gap: clamp(6px, 1.8vw, 14px);
+    margin-top: clamp(4px, 1vh, 10px);
   }
 
-  .path-card {
-    display: grid;
+  .path-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-width: 0;
-    align-content: start;
-    gap: clamp(5px, 1.2vh, 8px);
-    padding: clamp(10px, 2vh, 16px) 10px;
-    border: 1px solid currentColor;
-    border-radius: 20px;
+    gap: clamp(4px, 1vh, 7px);
     text-align: center;
   }
 
-  .path-card p {
-    margin: 0;
+  .path-col--map {
+    --col-accent: var(--color-blue);
+    --col-soft: var(--color-blue-soft);
+    /* Ciemniejszy wariant marki dla etykiety na jasnym tle — kontrast WCAG AA. */
+    --col-strong: var(--color-blue);
   }
 
-  /* Opis ścieżki to drobna metadana (dozwolone 14px) — mniejsze zawijanie
-     pozwala karcie trybu zmieścić się na pierwszym ekranie niskich telefonów.
-     Nie dotyczy głównej etykiety `.path-intent`, która pozostaje ≥16px. */
-  .path-card p:not(.path-intent) {
+  .path-col--search {
+    --col-accent: var(--color-coral);
+    --col-soft: var(--color-coral-soft);
+    --col-strong: #a82d18;
+  }
+
+  .path-col--categories {
+    --col-accent: var(--color-green);
+    --col-soft: var(--color-green-soft);
+    --col-strong: #0b7133;
+  }
+
+  /* Bright colors used at large-text size (≥ 18.66px, bold) — spełnia próg
+     kontrastu 3:1 dla dużego tekstu. */
+  .path-title {
+    margin: 0;
+    color: var(--col-accent);
+    font-size: clamp(19px, 5vw, 22px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .path-rule {
+    display: block;
+    width: 26px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--col-accent);
+  }
+
+  .path-meta {
+    margin: 0;
+    color: var(--color-text-muted);
     font-size: 14px;
     line-height: 1.3;
   }
 
-  .path-card--map {
-    color: var(--color-blue);
-    background: var(--color-blue-soft);
+  .path-arrow {
+    color: var(--col-accent);
+    font-size: 18px;
+    line-height: 1;
   }
 
-  .path-card--search {
-    color: #a82d18;
-    background: var(--color-coral-soft);
+  .path-tile {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: clamp(4px, 1vh, 8px);
+    width: 100%;
+    /* `margin-top: auto` dosuwa kafle do dołu kolumny, a wspólna min. wysokość
+       wyrównuje je w jeden rząd mimo różnej długości opisów nad nimi. */
+    margin-top: auto;
+    min-height: clamp(104px, 27vw, 136px);
+    padding: clamp(8px, 2vh, 14px) clamp(4px, 1.5vw, 10px);
+    border-radius: 20px;
+    color: inherit;
+    text-decoration: none;
+    background: var(--col-soft);
+    transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
-  .path-card--categories {
-    color: #0b7133;
-    background: var(--color-green-soft);
+  a.path-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-surface);
   }
 
-  .path-intent {
-    font-size: 16px;
+  /* Mapa i Szukaj są jawnymi placeholderami: nieinteraktywne kafle bez trasy,
+     dopóki nie powstanie discovery overlay (AGENTS.md, reguła 9). */
+  .path-tile.is-pending {
+    cursor: default;
+  }
+
+  .path-icon {
+    display: block;
+    width: clamp(34px, 9.5vw, 46px);
+    color: var(--col-accent);
+  }
+
+  .path-icon svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .path-tile-label {
+    color: var(--col-strong);
+    font-size: clamp(16px, 4.4vw, 20px);
     font-weight: 800;
+    letter-spacing: -0.02em;
   }
 
-  .path-pending {
+  .path-soon {
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: rgb(255 255 255 / 70%);
+  }
+
+  /* Ikony ścieżek dziedziczą kolor akcentu przez currentColor. */
+  .icon-ring {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 7;
+    opacity: 0.28;
+  }
+
+  .icon-arc {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-dasharray: 38 100;
+    transform: rotate(-90deg);
+    transform-origin: 22px 24px;
+  }
+
+  .icon-knob {
+    fill: currentColor;
+  }
+
+  .icon-lens {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 5;
+  }
+
+  .icon-handle {
+    stroke: currentColor;
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+
+  .icon-cell {
+    fill: currentColor;
+  }
+
+  .icon-cell--soft {
+    opacity: 0.5;
+  }
+
+  .path-note {
+    margin: clamp(10px, 2.4vh, 18px) 0 0;
+    padding: clamp(10px, 2vh, 14px) 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
     color: var(--color-text-muted);
     font-size: 14px;
-    font-weight: 700;
+    line-height: 1.4;
+    background: rgb(255 255 255 / 60%);
   }
 
-  .path-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    margin-top: 4px;
-    border: 0;
-    border-radius: 12px;
-    color: white;
-    font-weight: 800;
-    text-decoration: none;
-    cursor: pointer;
-    background: #0b7133;
+  .path-note strong {
+    display: block;
+    color: var(--color-text);
+    font-size: 15px;
   }
 
   footer {
@@ -174,5 +508,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     color: var(--color-text-muted);
     font-size: 14px;
     text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .path-tile {
+      transition: none;
+    }
   }
 </style>
