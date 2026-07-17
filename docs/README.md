@@ -4,9 +4,14 @@ Ten katalog jest lekkim systemem routingu wiedzy dla ludzi i agentów. Dokumenty
 
 ## Struktura
 
+Dokumentacja żyje w katalogu `docs/` tego samego repozytorium co aplikacja; nie jest osobnym projektem. Poniżej pokazano jej miejsce w drzewie (katalogi kodu zwinięto).
+
 ```text
-obiadologia-docs/
-├── AGENTS.md
+obiadologia/
+├── AGENTS.md               # instrukcja dla agentów
+├── README.md               # skrót projektu i wskazanie tej dokumentacji
+├── src/                    # kod aplikacji (mapa kodu w AGENTS.md)
+├── tests/                  # testy E2E (Playwright)
 └── docs/
     ├── README.md
     ├── product/
