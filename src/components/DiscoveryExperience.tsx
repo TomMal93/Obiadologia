@@ -63,41 +63,12 @@ export function DiscoveryExperience({ recipes }: Props) {
     }));
   }
 
-  function scrollToCategories() {
-    document.querySelector('#kategorie')?.scrollIntoView({ behavior: 'smooth' });
-  }
-
   const selectedLabels = Object.values(selection)
     .filter((value): value is string => Boolean(value))
     .map((value) => labels[value as MealTime | Tempo | Occasion]);
 
   return (
-    <>
-      <section className="screen" aria-labelledby="paths-heading">
-        <div className="path-panel">
-          <p className="eyebrow">Nie musisz wiedzieć, czego chcesz</p>
-          <h2 id="paths-heading">Wybierz najbliższą myśl</h2>
-          <div className="path-grid">
-            <article className="path-card path-card--map">
-              <p className="path-intent">Nie wiem, czego chcę</p>
-              <p>nastrój · tempo · inspiracja</p>
-              <span className="path-pending">Mapa — kolejny wycinek</span>
-            </article>
-            <article className="path-card path-card--search">
-              <p className="path-intent">Wiem, czego szukam</p>
-              <p>składnik · danie · smak</p>
-              <span className="path-pending">Szukaj — kolejny wycinek</span>
-            </article>
-            <article className="path-card path-card--categories">
-              <p className="path-intent">Chcę przeglądać</p>
-              <p>kategoria · okazja · sytuacja</p>
-              <button type="button" onClick={scrollToCategories}>Kategorie</button>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="kategorie" className="screen category-section" aria-labelledby="categories-heading">
+    <section id="kategorie" className="screen category-section" aria-labelledby="categories-heading">
         <div className="section-heading">
           <p className="eyebrow">Kategorie</p>
           <h2 id="categories-heading">Wybierz tryb</h2>
@@ -164,6 +135,5 @@ export function DiscoveryExperience({ recipes }: Props) {
           )}
         </div>
       </section>
-    </>
   );
 }

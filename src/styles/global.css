@@ -21,7 +21,7 @@
      wysokości). Skalują się względem viewportu, ale nie schodzą poniżej progów
      dostępności — zob. docs/design/ui-system.md „Spójność i proporcje na telefonach”. */
   --gutter: clamp(16px, 4.2vw, 24px);
-  --screen-pad-y: clamp(16px, 4vh, 44px);
+  --screen-pad-y: clamp(12px, 2.8vh, 44px);
   --stack-gap: clamp(12px, 2.6vh, 24px);
   --header-block: clamp(64px, 11vh, 88px);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -111,22 +111,30 @@ button {
   padding: var(--screen-pad-y) var(--gutter);
 }
 
-.hero {
+/* Pierwszy ekran (makieta home-hero.png): nagłówek z logo, komunikat
+   „Co dziś jemy?" oraz karta wyboru trybu (Mapa / Szukaj / Kategorie) tworzą
+   razem jeden ekran. Nagłówek jest osobnym blokiem nad <main>, dlatego pierwszy
+   ekran wypełnia resztę wysokości po odjęciu wysokości nagłówka. */
+.intro-screen {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Nagłówek z logo należy do pierwszego ekranu, dlatego hero wypełnia
-     resztę pierwszego ekranu po odjęciu wysokości nagłówka. */
+  gap: clamp(10px, 2.4vh, 28px);
   min-height: calc(100vh - var(--header-block));
   min-height: calc(100dvh - var(--header-block));
   padding: var(--screen-pad-y) var(--gutter);
+}
+
+.hero {
   text-align: center;
 }
 
 .hero h1 {
   max-width: 8ch;
-  margin: 12px auto 0;
-  font-size: clamp(48px, 15vw, 64px);
+  margin: clamp(4px, 1.4vh, 12px) auto 0;
+  /* Skaluje się z wysokością ekranu, aby pierwszy ekran (nagłówek + hero +
+     karta trybu) mieścił się w jednym ekranie także na niskich telefonach. */
+  font-size: clamp(38px, 7.6vh, 64px);
   line-height: 0.98;
   letter-spacing: -0.06em;
 }
@@ -146,7 +154,7 @@ button {
 }
 
 .path-panel {
-  padding: clamp(20px, 4vh, 28px) 16px;
+  padding: clamp(14px, 3vh, 24px) 16px;
   border: 1px solid var(--color-border);
   border-radius: 28px;
   background: rgb(255 255 255 / 84%);
@@ -155,8 +163,8 @@ button {
 
 .path-panel > h2,
 .section-heading h2 {
-  margin: 8px 0 24px;
-  font-size: 32px;
+  margin: 8px 0 clamp(12px, 2.6vh, 24px);
+  font-size: clamp(24px, 5.2vh, 32px);
   line-height: 1.05;
   letter-spacing: -0.035em;
 }
@@ -173,8 +181,8 @@ button {
   display: grid;
   min-width: 0;
   align-content: start;
-  gap: 8px;
-  padding: clamp(12px, 2.4vh, 16px) 10px;
+  gap: clamp(5px, 1.2vh, 8px);
+  padding: clamp(10px, 2vh, 16px) 10px;
   border: 1px solid currentColor;
   border-radius: 20px;
   text-align: center;
@@ -182,6 +190,14 @@ button {
 
 .path-card p {
   margin: 0;
+}
+
+/* Opis ścieżki to drobna metadana (dozwolone 14px) — mniejsze zawijanie
+   pozwala karcie trybu zmieścić się na pierwszym ekranie niskich telefonów.
+   Nie dotyczy głównej etykiety `.path-intent`, która pozostaje ≥16px. */
+.path-card p:not(.path-intent) {
+  font-size: 14px;
+  line-height: 1.3;
 }
 
 .path-card--map {
@@ -210,13 +226,18 @@ button {
   font-weight: 700;
 }
 
-.path-card button {
+.path-card button,
+.path-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
   margin-top: 4px;
   border: 0;
   border-radius: 12px;
   color: white;
   font-weight: 800;
+  text-decoration: none;
   cursor: pointer;
   background: #0b7133;
 }
