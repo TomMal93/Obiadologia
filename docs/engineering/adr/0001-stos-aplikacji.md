@@ -41,7 +41,7 @@ Aplikacja korzysta z:
 
 Publiczne strony, layout i treść statyczna powstają jako komponenty Astro. React obsługuje wyłącznie obszary wymagające współdzielonego stanu, zdarzeń lub API przeglądarki; w MVP jest to jedna wyspa `DiscoveryExperience`. Wyspa obejmuje wybór ścieżki, Kategorie i discovery overlay, aby nie wprowadzać komunikacji pomiędzy wieloma niezależnymi wyspami dla jednego przepływu.
 
-Model domenowy, dane `Recipe`, reguły dopasowania i kontrakt `RecipeSearch` nie zależą od Astro ani Reacta. Fuse.js pozostaje adapterem `RecipeSearch` zgodnie z `TD-013` i `TD-014`, a nie zależnością komponentów.
+Model domenowy, dane `Recipe`, reguły dopasowania i kontrakt `RecipeSearch` nie zależą od Astro ani Reacta. Granicę `RecipeSearch` ustala `TD-013`; konkretna implementacja pozostaje regułą tymczasową w `OPEN-007`, domyślnie lokalny Fuse.js po stronie adaptera, a nie zależnością komponentów.
 
 Konkretne stabilne wersje Node.js, pnpm, Astro, Reacta i zależności zostaną przypięte podczas tworzenia projektu.
 
