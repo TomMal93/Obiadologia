@@ -57,5 +57,6 @@ Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo z
 7. Po implementacji uruchom testy wskazane w projekcie. Dopóki nie powstanie kod aplikacji i rzeczywiste skrypty projektu, brak poleceń jest jawnym stanem etapu, a nie zgodą na pominięcie weryfikacji po ich dodaniu.
 8. W bieżącym etapie twórz wyłącznie jeden układ mobilny. Nie projektuj osobnych układów tabletowych ani desktopowych.
 9. Nie implementuj zakresu odłożonego na później. Jeżeli jest potrzebny do zachowania przepływu, użyj jawnie opisanego ekranu lub danych zastępczych.
+10. Przed napisaniem lub zmianą kodu zastosuj konwencje z `docs/engineering/code-conventions.md`: miejsce styli (tokeny i klasy współdzielone w `global.css`, style lokalne przy komponencie), nazewnictwo klas, importy przez alias `@/` oraz dyscyplinę hydratacji Astro/React. Reguła obowiązuje przekrojowo przy każdej zmianie kodu, niezależnie od obszaru zadania.
 
 Dokument bliżej zmienianego kodu może opisywać lokalny szczegół implementacji, ale nie może redefiniować kontraktu należącego do innego źródła prawdy.
