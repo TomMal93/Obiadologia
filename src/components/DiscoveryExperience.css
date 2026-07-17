@@ -122,8 +122,12 @@
   background: var(--color-surface);
 }
 
-.category-option:hover {
-  border-color: var(--group-accent);
+/* Hover sygnalizujemy tłem, nie obramowaniem — dzięki temu nieaktywny button
+   nigdy nie pokazuje ramki (także gdy kursor zostaje na nim po odznaczeniu). */
+@media (hover: hover) {
+  .category-option:not(.is-selected):hover {
+    background: var(--group-soft);
+  }
 }
 
 .category-option.is-selected {
