@@ -235,7 +235,9 @@
   grid-template-columns: 48px 1fr 48px;
   gap: var(--space-12);
   align-items: center;
-  margin-bottom: var(--space-24);
+  /* Ten sam odstęp nad ramką wyboru trybu (mode-switch) co pod nią do treści —
+     ramka wyboru ma równy odstęp od nagłówka i od menu poniżej. */
+  margin-bottom: var(--space-32);
 }
 
 .overlay-header > strong {
