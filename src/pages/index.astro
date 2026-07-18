@@ -135,11 +135,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: clamp(16px, 3.2vh, 30px);
+    /* Sekcja Hero (h1) rośnie i centruje nagłówek w przestrzeni między menu
+       a ramką wyboru, dzięki czemu h1 ma taki sam odstęp od menu co od panelu
+       na każdym rozmiarze ekranu. Dolny oddech panelu przywraca jego margines. */
+    justify-content: flex-start;
     min-height: calc(100vh - var(--header-block));
     min-height: calc(100dvh - var(--header-block));
-    padding: var(--screen-pad-y) var(--gutter);
+    padding: 0 var(--gutter);
   }
 
   /* Delikatne, powtarzalne hasła w tle — czysto dekoracyjne (aria-hidden),
@@ -200,6 +202,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .hero {
     position: relative;
     z-index: 1;
+    /* Wypełnia przestrzeń między menu a panelem i centruje h1 w pionie —
+       daje równy odstęp nad i pod nagłówkiem. */
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
 
@@ -220,6 +228,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .path-panel {
     position: relative;
     z-index: 1;
+    /* Oddech pod panelem (wcześniej zapewniało go pionowe wypełnienie
+       `.intro-screen`, teraz przeniesione tutaj, by nie powiększać odstępu
+       nad h1). */
+    margin-bottom: var(--screen-pad-y);
     padding: clamp(30px, 5vh, 40px) clamp(12px, 3vw, 18px) clamp(14px, 3vh, 22px);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-panel);
