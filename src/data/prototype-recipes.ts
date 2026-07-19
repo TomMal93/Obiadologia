@@ -15,8 +15,17 @@ export const prototypeRecipes = parseRecipes([
       { name: 'oliwa', amount: 30, unit: 'ml' },
       { name: 'sól', amount: 1, unit: 'ml' },
     ],
+    advance: [
+      {
+        text: 'Kurczaka natrzyj oliwą, solą i ulubionymi przyprawami, odstaw do zamarynowania.',
+        leadTimeMinutes: 120,
+      },
+    ],
+    preparation: [
+      'Sałatę i pomidory umyj oraz osusz.',
+      'Przygotuj deskę, ostry nóż i szczypce do grilla.',
+    ],
     steps: [
-      'Kurczaka natrzyj oliwą i solą, odstaw na 10 minut.',
       'Rozgrzej grill i piecz kurczaka po 6–7 minut z każdej strony.',
       'Sałatę porwij, pomidory pokrój, skrop oliwą i dopraw.',
       'Kurczaka pokrój w plastry i ułóż na sałatce.',
@@ -125,9 +134,19 @@ export const prototypeRecipes = parseRecipes([
       { name: 'bulion', amount: 500, unit: 'ml' },
       { name: 'papryka wędzona', amount: 5, unit: 'ml' },
     ],
+    advance: [
+      {
+        text: 'Fasolę zalej zimną wodą i odstaw do namoczenia na noc, potem odcedź.',
+        leadTimeMinutes: 720,
+      },
+    ],
+    preparation: [
+      'Paprykę umyj i pokrój w kostkę.',
+      'Odmierz bulion i przygotuj duży garnek z grubym dnem.',
+    ],
     steps: [
-      'Paprykę pokrój w kostkę i podsmaż na dnie garnka.',
-      'Dodaj pomidory, fasolę i bulion, dopraw wędzoną papryką.',
+      'Paprykę podsmaż na dnie garnka.',
+      'Dodaj pomidory, namoczoną fasolę i bulion, dopraw wędzoną papryką.',
       'Duś pod przykryciem około 40 minut, mieszając od czasu do czasu.',
       'Odstaw — najlepiej smakuje odgrzany następnego dnia.',
     ],

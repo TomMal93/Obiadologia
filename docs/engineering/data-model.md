@@ -32,6 +32,8 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `image` | ImageReference \| null | zdjęcie i tekst alternatywny; `null` oznacza użycie wspólnego placeholdera |
 | `preparationMinutes` | integer | dodatnia liczba minut |
 | `ingredients` | Ingredient[] | składniki z grammaturą; `name` zasila wyszukiwanie |
+| `advance` | AdvanceStep[] \| — | opcjonalne czynności z wyprzedzeniem czasowym (namoczenie, marynowanie); jeśli pole istnieje, ma co najmniej jeden krok |
+| `preparation` | string[] \| — | opcjonalne przygotowanie wstępne (mise en place, sprzęt); jeśli pole istnieje, ma co najmniej jeden krok |
 | `steps` | string[] | co najmniej jeden krok przygotowania; kolejność określa numerację na stronie przepisu |
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
@@ -51,7 +53,11 @@ MapPosition = { pace: 0..1, lightness: 0..1 }
 ImageReference = { src: string, alt: string }
 IngredientUnit = g | ml | szt
 Ingredient = { name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0 }
+AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 ```
+
+- `advance` i `preparation` są opcjonalne i niezależne. Ich brak oznacza przepis bez etapów wspierających — strona przepisu pokazuje wtedy same kroki (zob. [recipe-page.md](../product/features/recipe-page.md)). Pole obecne MUSI mieć co najmniej jeden element.
+- `AdvanceStep.leadTimeMinutes` to liczba minut przed podaniem, o którą trzeba zacząć dany krok. Wartość jest strukturalna (a nie „noc” czy „2h”), aby strona mogła z niej policzyć godzinę startu przy zadanej porze serwowania. Wartość „na noc” zapisujemy jako pełne minuty (np. `720`).
 
 - `pace: 0` oznacza „szybko”, a `pace: 1` — „bez pośpiechu”.
 - `lightness: 0` oznacza „konkretnie”, a `lightness: 1` — „lekko”.
@@ -77,8 +83,14 @@ Ingredient = { name: string, amount: number > 0, unit: IngredientUnit, gramsPerC
     { "name": "sałata", "amount": 1, "unit": "szt" },
     { "name": "oliwa", "amount": 30, "unit": "ml" }
   ],
+  "advance": [
+    { "text": "Kurczaka natrzyj oliwą, solą i przyprawami, odstaw do zamarynowania.", "leadTimeMinutes": 120 }
+  ],
+  "preparation": [
+    "Sałatę i pomidory umyj oraz osusz.",
+    "Przygotuj deskę, nóż i szczypce do grilla."
+  ],
   "steps": [
-    "Kurczaka natrzyj oliwą i solą, odstaw na 10 minut.",
     "Grilluj kurczaka po 6–7 minut z każdej strony.",
     "Podawaj na świeżej sałatce."
   ],
@@ -128,6 +140,7 @@ Ingredient = { name: string, amount: number > 0, unit: IngredientUnit, gramsPerC
 - Każdy przepis MUSI mieć komplet danych potrzebny co najmniej jednej ścieżce oraz kartę możliwą do wyrenderowania bez dodatkowych wyjątków.
 - Nieznana wartość słownika jest błędem danych, a nie nową kategorią tworzoną automatycznie.
 - `image` może mieć wartość `null`; brak obrazu nie może blokować wyniku, a UI używa wtedy wspólnego placeholdera.
+- `advance` i `preparation` są opcjonalne; gdy występują, każdy element jest niepusty, a `leadTimeMinutes` to dodatnia liczba całkowita. Pusta tablica jest błędem danych — brak etapu wyrażamy pominięciem pola, nie pustą listą.
 - Jeżeli `image` istnieje, `src` i opisujący danie `alt` MUSZĄ być niepustymi wartościami. Placeholder dla `image: null` jest dekoracyjny i nie powiela dostępnej nazwy przepisu.
 
 ## Weryfikacja i ukończenie

@@ -51,6 +51,36 @@ test('recipe page presents model data with ingredients and a way back', async ({
   await expect(page).toHaveURL('/');
 });
 
+test('recipe page guides prep with advance, preparation and a start-time helper', async ({
+  page,
+}) => {
+  await page.goto('/recipes/kurczak-z-grilla-z-salatka');
+
+  const advance = page.getByRole('region', { name: 'Wcześniej' });
+  const preparation = page.getByRole('region', { name: 'Przygotowanie' });
+  await expect(advance.getByRole('heading', { level: 2, name: 'Wcześniej' })).toBeVisible();
+  await expect(preparation.getByRole('heading', { level: 2, name: 'Przygotowanie' })).toBeVisible();
+
+  const marinade = advance.getByRole('listitem').filter({ hasText: 'zamarynowania' });
+  await expect(marinade.getByText('na 2 godz przed podaniem')).toBeVisible();
+
+  // Kalkulator startu liczy godzinę rozpoczęcia z pory podania (18:00 − 2 godz).
+  await page.locator('#serve-time').fill('18:00');
+  await expect(marinade.getByText('zacznij o 16:00')).toBeVisible();
+
+  // Tryb „Tylko kroki” zwija etapy wspierające, zostawiając samą listę kroków.
+  await page.getByRole('button', { name: 'Tylko kroki' }).click();
+  await expect(advance).toBeHidden();
+  await expect(preparation).toBeHidden();
+  await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Tryb asystenta' }).click();
+  await expect(advance).toBeVisible();
+
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
+});
+
 test('recipe page has no automatically detectable accessibility violations', async ({ page }) => {
   await page.goto('/recipes/makaron-z-cukinia-i-feta');
   const results = await new AxeBuilder({ page }).analyze();

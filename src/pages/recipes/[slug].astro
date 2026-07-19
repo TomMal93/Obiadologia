@@ -4,6 +4,7 @@ import { prototypeRecipes } from '@/data/prototype-recipes';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import type { Recipe } from '@/domain/recipe';
 import { formatHouseholdMeasure, formatMetricMeasure } from '@/domain/ingredient';
+import { formatLeadTime } from '@/domain/recipe-schedule';
 
 export function getStaticPaths() {
   return prototypeRecipes
@@ -19,13 +20,18 @@ interface Props {
 }
 
 const { recipe } = Astro.props;
+
+// Sekcje wspierające gotowanie („Wcześniej” i „Przygotowanie”) są opcjonalne.
+// Tryb asystenta ma sens tylko, gdy jest co pokazać poza samymi krokami —
+// prostota przepisu wynika więc z pustych pól, bez osobnego przełącznika treści.
+const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
 ---
 
 <BaseLayout title={`${recipe.title} — Obiadologia`} description={recipe.description}>
   <SiteHeader />
 
   <main class="recipe-page">
-    <article class="recipe-article">
+    <article class="recipe-article" data-view="assistant">
       <div class="recipe-hero">
         {
           recipe.image ? (
@@ -103,6 +109,94 @@ const { recipe } = Astro.props;
           }
         </ul>
       </section>
+
+      {
+        hasAssistantContent && (
+          <div
+            class="assistant-toggle"
+            role="group"
+            aria-label="Sposób prowadzenia przez przepis"
+            hidden
+          >
+            <button
+              type="button"
+              class="assistant-toggle__option is-active"
+              data-view-target="assistant"
+              aria-pressed="true"
+            >
+              Tryb asystenta
+            </button>
+            <button
+              type="button"
+              class="assistant-toggle__option"
+              data-view-target="steps"
+              aria-pressed="false"
+            >
+              Tylko kroki
+            </button>
+          </div>
+        )
+      }
+
+      {
+        recipe.advance && (
+          <section
+            class="recipe-advance assistant-section"
+            aria-labelledby="advance-heading"
+          >
+            <div class="assistant-section__head">
+              <h2 id="advance-heading">Wcześniej</h2>
+              <p class="assistant-section__hint">
+                Czynności, które trzeba zacząć z wyprzedzeniem.
+              </p>
+            </div>
+            <div class="advance-calc" hidden>
+              <label class="advance-calc__label" for="serve-time">
+                O której chcesz jeść?
+              </label>
+              <input class="advance-calc__input" id="serve-time" type="time" />
+              <p class="advance-calc__hint">
+                Policzymy, o której zacząć każdy etap.
+              </p>
+            </div>
+            <ol class="advance-list">
+              {recipe.advance.map((step) => (
+                <li class="advance-step">
+                  <p class="advance-step__text">{step.text}</p>
+                  <p class="advance-step__timing">
+                    <span class="advance-step__lead">
+                      na {formatLeadTime(step.leadTimeMinutes)} przed podaniem
+                    </span>
+                    <span
+                      class="advance-step__start"
+                      data-lead-minutes={step.leadTimeMinutes}
+                      hidden
+                    />
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
+
+      {
+        recipe.preparation && (
+          <section class="recipe-prep assistant-section" aria-labelledby="prep-heading">
+            <div class="assistant-section__head">
+              <h2 id="prep-heading">Przygotowanie</h2>
+              <p class="assistant-section__hint">
+                Zbierz i przygotuj wszystko, zanim ruszysz z gotowaniem.
+              </p>
+            </div>
+            <ul class="prep-list">
+              {recipe.preparation.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       <section class="recipe-steps" aria-labelledby="steps-heading">
         <h2 id="steps-heading">Kroki</h2>
@@ -339,6 +433,185 @@ const { recipe } = Astro.props;
     display: none;
   }
 
+  /* Przełącznik trybu prowadzenia przez przepis: „Tryb asystenta” pokazuje
+     etapy Wcześniej/Przygotowanie, „Tylko kroki” zwija je do samej listy kroków.
+     Jak przełącznik jednostek — ukryty do czasu włączenia przez skrypt, aby bez
+     JS użytkownik widział pełną, sprawną treść. */
+  .assistant-toggle {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+  }
+
+  .assistant-toggle[hidden] {
+    display: none;
+  }
+
+  .assistant-toggle__option {
+    display: inline-flex;
+    min-height: 44px;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8) var(--space-12);
+    border: 0;
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-14);
+    font-weight: 700;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .assistant-toggle__option.is-active {
+    color: var(--color-search-strong);
+    font-weight: 800;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-surface);
+  }
+
+  /* Etapy wspierające gotowanie zwijają się w trybie „Tylko kroki”. */
+  .recipe-article[data-view='steps'] .assistant-section {
+    display: none;
+  }
+
+  .assistant-section__head {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+  }
+
+  .assistant-section__head h2 {
+    margin: 0;
+    font-size: var(--font-size-24);
+    line-height: 1.2;
+  }
+
+  .assistant-section__hint {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-14);
+    line-height: 1.5;
+  }
+
+  /* Kalkulator startu: ukryty bez JS (sam nic nie policzy), po włączeniu pozwala
+     podać porę podania i wylicza godzinę rozpoczęcia każdego etapu. */
+  .advance-calc {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+    padding: var(--space-12);
+    border-radius: var(--radius-card);
+    background: var(--color-bg);
+  }
+
+  .advance-calc[hidden] {
+    display: none;
+  }
+
+  .advance-calc__label {
+    font-size: var(--font-size-14);
+    font-weight: 700;
+  }
+
+  .advance-calc__input {
+    min-height: 44px;
+    padding: var(--space-8) var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    font: inherit;
+  }
+
+  .advance-calc__hint {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-14);
+    line-height: 1.5;
+  }
+
+  .advance-list,
+  .prep-list {
+    display: grid;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .advance-list {
+    counter-reset: advance;
+  }
+
+  .advance-step {
+    display: grid;
+    gap: var(--space-4);
+    padding-bottom: var(--space-12);
+    border-bottom: 1px solid var(--color-border);
+    line-height: 1.5;
+    counter-increment: advance;
+  }
+
+  .advance-step:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .advance-step__text {
+    margin: 0;
+  }
+
+  .advance-step__timing {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-12);
+    margin: 0;
+    font-size: var(--font-size-14);
+  }
+
+  .advance-step__lead {
+    color: var(--color-text-muted);
+  }
+
+  /* Wyliczona godzina startu — wyróżniona kolorem marki, ale znaczenie niesie
+     też tekst („zacznij o …”), więc kolor nie jest jedynym nośnikiem. */
+  .advance-step__start {
+    color: var(--color-coral-strong);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .advance-step__start[hidden] {
+    display: none;
+  }
+
+  .prep-list > li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+    line-height: 1.5;
+  }
+
+  .prep-list > li:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  /* Znacznik odhaczenia mise en place — dekoracyjny; realną listę niesie treść. */
+  .prep-list > li::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    margin-top: 0.15em;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
   .recipe-steps h2 {
     margin: 0 0 var(--space-12);
     font-size: var(--font-size-24);
@@ -398,6 +671,8 @@ const { recipe } = Astro.props;
 </style>
 
 <script>
+  import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
+
   // Progresywne wzbogacenie: bez JS strona pokazuje sprawną listę w jednostkach
   // metrycznych, a przełącznik pozostaje ukryty. Skrypt go odsłania i przełącza
   // formę miary, przełączając wyłącznie klasę na liście (obie formy są w HTML).
@@ -420,5 +695,64 @@ const { recipe } = Astro.props;
         }
       });
     }
+  }
+
+  // Tryb prowadzenia przez przepis: przełącznik zwija etapy Wcześniej/Przygotowanie
+  // do samej listy kroków. Bez JS pozostaje ukryty, a strona pokazuje pełną treść.
+  const article = document.querySelector<HTMLElement>('.recipe-article');
+  const assistantToggle = document.querySelector<HTMLElement>('.assistant-toggle');
+
+  if (article && assistantToggle) {
+    assistantToggle.hidden = false;
+    const viewOptions = Array.from(
+      assistantToggle.querySelectorAll<HTMLButtonElement>('.assistant-toggle__option'),
+    );
+
+    for (const option of viewOptions) {
+      option.addEventListener('click', () => {
+        const target = option.dataset.viewTarget;
+        if (!target) return;
+        article.dataset.view = target;
+        for (const other of viewOptions) {
+          const active = other === option;
+          other.classList.toggle('is-active', active);
+          other.setAttribute('aria-pressed', String(active));
+        }
+      });
+    }
+  }
+
+  // Kalkulator startu: po podaniu pory podania liczy godzinę rozpoczęcia każdego
+  // etapu z wyprzedzeniem. Bez JS pole i wyliczenia pozostają ukryte, a lista
+  // etapów sama w sobie pokazuje potrzebne wyprzedzenie („na 2 godz przed…”).
+  const calc = document.querySelector<HTMLElement>('.advance-calc');
+  const serveInput = document.querySelector<HTMLInputElement>('#serve-time');
+  const startSlots = Array.from(document.querySelectorAll<HTMLElement>('.advance-step__start'));
+
+  if (calc && serveInput && startSlots.length > 0) {
+    calc.hidden = false;
+
+    const render = () => {
+      const serveMinutes = parseClock(serveInput.value);
+
+      for (const slot of startSlots) {
+        const leadMinutes = Number(slot.dataset.leadMinutes);
+
+        if (serveMinutes === null || !Number.isFinite(leadMinutes)) {
+          slot.hidden = true;
+          slot.textContent = '';
+          continue;
+        }
+
+        const [scheduled] = scheduleAdvanceSteps([{ text: '', leadTimeMinutes: leadMinutes }], serveMinutes);
+        const clock = formatClock(scheduled.startMinutes);
+        slot.textContent =
+          scheduled.dayOffset < 0 ? `zacznij dzień wcześniej o ${clock}` : `zacznij o ${clock}`;
+        slot.hidden = false;
+      }
+    };
+
+    serveInput.addEventListener('input', render);
+    render();
   }
 </script>
