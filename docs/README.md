@@ -19,7 +19,8 @@ obiadologia/
     │   ├── mvp-scope.md
     │   └── features/
     │       ├── home-page.md
-    │       └── discovery-overlay.md
+    │       ├── discovery-overlay.md
+    │       └── recipe-page.md
     ├── design/
     │   └── ui-system.md
     ├── engineering/
@@ -44,6 +45,7 @@ obiadologia/
 | ocena, czy funkcja należy do MVP | [mvp-scope.md](product/mvp-scope.md) |
 | hero lub wybory kategorii | [home-page.md](product/features/home-page.md) |
 | Wyszukiwarka, Mapa lub ich wspólny modal | [discovery-overlay.md](product/features/discovery-overlay.md) |
+| strona przepisu `/recipes/:slug` | [recipe-page.md](product/features/recipe-page.md) |
 | kolory, typografia, odstępy, komponenty | [ui-system.md](design/ui-system.md) |
 | pola przepisu i reguły dopasowania | [data-model.md](engineering/data-model.md) |
 | framework, API, hosting lub test runner | [technical-decisions.md](engineering/technical-decisions.md) |
@@ -74,7 +76,7 @@ Poniższa lista jest wyłącznie skrótem nawigacyjnym; pełny kontrakt znajduje
 
 - „Wstecz” przy otwartym overlayu najpierw go zamyka — [discovery-overlay.md](product/features/discovery-overlay.md).
 - Kategorie i Wyszukiwarka odświeżają wyniki po każdej zmianie kryteriów, a Mapa podczas przeciągania punktu — [home-page.md](product/features/home-page.md) i [discovery-overlay.md](product/features/discovery-overlay.md).
-- Cała karta przepisu prowadzi do trasy przepisu, której bieżący zakres opisuje [mvp-scope.md](product/mvp-scope.md).
+- Cała karta przepisu prowadzi do trasy przepisu, której zachowanie opisuje [recipe-page.md](product/features/recipe-page.md).
 - Obowiązuje jeden wyśrodkowany układ mobilny — [ui-system.md](design/ui-system.md).
 - Każda główna sekcja wypełnia jeden ekran (jedna sekcja = jeden ekran) i nie jest wyższa niż ekran — [ui-system.md](design/ui-system.md).
 - Na telefonach układ i odstępy sekcji są spójne i proporcjonalne między urządzeniami, bez ucięć i rozjeżdżania się — [ui-system.md](design/ui-system.md).

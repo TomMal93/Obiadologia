@@ -17,7 +17,7 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 
 - wybór narzędzi i dostawcy hostingu;
 - szczegółowa konfiguracja CI;
-- wymagania dla funkcji odłożonych na kolejne etapy: docelowe dane, strona przepisu, produkcyjne obrazy, analityka i pełne opracowanie wizualne stanów danych;
+- wymagania dla funkcji odłożonych na kolejne etapy: docelowe dane, pełna treść redakcyjna przepisów, produkcyjne obrazy, analityka i pełne opracowanie wizualne stanów danych;
 - osobne układy tabletowe i desktopowe.
 
 ## Dostępność
@@ -81,7 +81,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 ## SEO i lokalizacja
 
 - Język dokumentu i aplikacji: `pl-PL`; tekst nie może być zaszyty w sposób blokujący późniejszą lokalizację.
-- Docelowe publiczne strony MUSZĄ mieć unikalny tytuł, opis, canonical i poprawne metadane udostępniania. Strona przepisu nie należy do bieżącego etapu.
+- Docelowe publiczne strony MUSZĄ mieć unikalny tytuł, opis, canonical i poprawne metadane udostępniania. Do czasu decyzji o docelowej domenie (TD-016, OPEN-006) publiczne strony spełniają to wymaganie w zakresie unikalnego tytułu i opisu; canonical oraz metadane udostępniania zostaną dodane przed wdrożeniem produkcyjnym.
 - Treść podstawowa powinna być dostępna w HTML bez polegania wyłącznie na skrypcie klienta, jeśli wybrana architektura to umożliwia bez nieproporcjonalnego kosztu.
 - Nazwy dań i opisy muszą być czytelne, naturalne i zgodne z tonem opisanym w wizji produktu.
 

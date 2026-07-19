@@ -7,6 +7,7 @@
   --color-text-muted: #6e6863;
   --color-border: #e9ddd3;
   --color-coral: #ff4f2e;
+  --color-coral-strong: #a82d18;
   --color-coral-soft: #fff1ec;
   --color-blue: #1768d2;
   --color-blue-soft: #eaf3ff;
@@ -18,6 +19,12 @@
   --color-heading-accent: var(--color-coral);
   --color-cta: var(--color-coral);
 
+  /* Warianty `-strong` ról tekstu marki dla drobnego tekstu i etykiet na jasnym
+     tle — muszą spełniać kontrast WCAG 2.2 AA; duże nagłówki mogą pozostać przy
+     odcieniu bazowym. Zob. docs/design/ui-system.md „Kolory”. */
+  --color-heading-accent-strong: var(--color-coral-strong);
+  --color-cta-strong: var(--color-coral-strong);
+
   /* Kolory przewodnie trzech dróg odkrywania (docelowe) — każda ścieżka ma
      jeden kolor tożsamości: Mapa = niebieski, Szukaj = koral, Kategorie = zielony.
      Występują na Hero (drzewko i kafle dróg) oraz w miejscu docelowym danej drogi
@@ -28,7 +35,7 @@
   --color-map-strong: var(--color-blue);
   --color-map-soft: var(--color-blue-soft);
   --color-search: var(--color-coral);
-  --color-search-strong: #a82d18;
+  --color-search-strong: var(--color-coral-strong);
   --color-search-soft: var(--color-coral-soft);
   --color-categories: var(--color-green);
   --color-categories-strong: #0b7133;
@@ -108,10 +115,9 @@ button {
    komponentu mieszkają przy nim (zakresowany <style> w .astro albo współlokowany
    plik CSS wyspy React), a nie tutaj. */
 
-.prototype-badge,
 .eyebrow {
   margin: 0;
-  color: var(--color-heading-accent);
+  color: var(--color-heading-accent-strong);
   font-size: var(--font-size-14);
   font-weight: 800;
   letter-spacing: 0.05em;
