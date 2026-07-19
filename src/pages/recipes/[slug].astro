@@ -44,8 +44,23 @@ const { recipe } = Astro.props;
 
       <div class="recipe-facts">
         <p class="prep-time">
-          <span aria-hidden="true">◷</span>
-          Czas przygotowania: <strong>{recipe.preparationMinutes} min</strong>
+          <svg
+            class="prep-time__icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3.5 2" />
+          </svg>
+          <span class="visually-hidden">Czas przygotowania:</span>
+          <span class="prep-time__value">{recipe.preparationMinutes} min</span>
         </p>
         <ul class="recipe-tags" aria-label="Tagi">
           {recipe.tags.map((tag) => <li>{tag}</li>)}
@@ -166,13 +181,44 @@ const { recipe } = Astro.props;
     gap: var(--space-8);
   }
 
+  /* Czas przygotowania jako pigułka marki — nadaje metadanej własną, czytelną
+     formę spójną z pigułkami tagów. Statyczny tekst, więc nie dotyczy go próg
+     44 × 44px obszaru akcji. */
   .prep-time {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    justify-self: start;
     margin: 0;
-    color: var(--color-text);
+    padding: var(--space-8) var(--space-12);
+    border-radius: var(--radius-pill);
+    color: var(--color-coral-strong);
+    font-weight: 700;
+    background: var(--color-coral-soft);
   }
 
-  .prep-time > span {
-    margin-right: var(--space-4);
+  .prep-time__icon {
+    flex: none;
+  }
+
+  .prep-time__value {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Etykieta tylko dla czytnika ekranu — wizualnie niesie ją forma pigułki,
+     ale znaczenie „czas przygotowania” pozostaje dostępne bez polegania na
+     kolorze czy ikonie. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 
   .recipe-tags {
