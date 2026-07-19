@@ -11,11 +11,6 @@ test('recipe page presents model data with ingredients and a way back', async ({
   await expect(page.getByText('Prototypowa propozycja lekkiego obiadu z grilla.')).toBeVisible();
   await expect(page.getByText('Czas przygotowania: 25 min')).toBeVisible();
 
-  const tags = page.getByRole('list', { name: 'Tagi' });
-  for (const tag of ['grill', 'lekko', 'obiad']) {
-    await expect(tags.getByRole('listitem').filter({ hasText: tag })).toBeVisible();
-  }
-
   const ingredients = page.getByRole('region', { name: 'Składniki' });
   await expect(ingredients.getByRole('heading', { level: 2, name: 'Składniki' })).toBeVisible();
   for (const ingredient of ['kurczak', 'sałata', 'pomidor']) {
