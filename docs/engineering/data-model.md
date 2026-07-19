@@ -31,7 +31,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `description` | string | krótki opis dania |
 | `image` | ImageReference \| null | zdjęcie i tekst alternatywny; `null` oznacza użycie wspólnego placeholdera |
 | `preparationMinutes` | integer | dodatnia liczba minut |
-| `ingredients` | string[] | nazwy składników do wyszukiwania |
+| `ingredients` | Ingredient[] | składniki z grammaturą; `name` zasila wyszukiwanie |
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
 | `tempos` | Tempo[] | co najmniej jedno tempo |
@@ -48,11 +48,15 @@ Tempo = now | today | two_days
 Occasion = kids | guests | grill
 MapPosition = { pace: 0..1, lightness: 0..1 }
 ImageReference = { src: string, alt: string }
+IngredientUnit = g | ml | szt
+Ingredient = { name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0 }
 ```
 
 - `pace: 0` oznacza „szybko”, a `pace: 1` — „bez pośpiechu”.
 - `lightness: 0` oznacza „konkretnie”, a `lightness: 1` — „lekko”.
 - Punkt `(0.5, 0.5)` jest neutralnym środkiem mapy.
+- Miarą bazową składnika jest zawsze wartość metryczna (`g`, `ml` albo `szt`). Formę domową (szklanki/łyżki/łyżeczki/szczypta) wyliczamy z miary metrycznej — nie jest osobno przechowywana, aby obie prezentacje nie mogły się rozjechać.
+- `gramsPerCup` (gramy na szklankę 250 ml) jest opcjonalną gęstością składnika sypkiego; pozwala przeliczyć masę na miarę domową. Bez niej masa (`g`) pozostaje w gramach, bo dla wielu produktów miara domowa nie ma sensu.
 
 ## Przykład
 
@@ -67,7 +71,11 @@ ImageReference = { src: string, alt: string }
     "alt": "Grillowany kurczak podany na zielonej sałatce"
   },
   "preparationMinutes": 25,
-  "ingredients": ["kurczak", "sałata", "pomidor"],
+  "ingredients": [
+    { "name": "kurczak", "amount": 400, "unit": "g" },
+    { "name": "sałata", "amount": 1, "unit": "szt" },
+    { "name": "oliwa", "amount": 30, "unit": "ml" }
+  ],
   "tags": ["grill", "lekko"],
   "mealTimes": ["lunch"],
   "tempos": ["now", "today"],

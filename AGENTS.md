@@ -22,6 +22,7 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | Obszar | Ścieżka |
 |---|---|
 | model domenowy `Recipe`, walidacja i reguły Kategorii | `src/domain/recipe.ts` |
+| model `Ingredient`, grammatura i przeliczanie miar (metryczne ↔ domowe) | `src/domain/ingredient.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
 | dane prototypowe zgodne z `Recipe` | `src/data/prototype-recipes.ts` |
 | wyspa interaktywna (wybór ścieżki, Kategorie, wyniki) | `src/components/DiscoveryExperience.tsx` |
@@ -40,13 +41,13 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 
 | Obszar | Stan | Uwagi |
 |---|---|---|
-| Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki |
+| Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`) |
 | Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
 | Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
-| Strona przepisu `/recipes/:slug` | wersja wstępna | prerenderowana prezentacja pól modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki) z powrotem; treść redakcyjna spoza modelu (kroki) pozostaje odłożona |
+| Strona przepisu `/recipes/:slug` | wersja wstępna | prerenderowana prezentacja pól modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki z grammaturą i przełącznikiem miar metryczne/domowe) z powrotem; treść redakcyjna spoza modelu (kroki) pozostaje odłożona |
 
 Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.
 
