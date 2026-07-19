@@ -25,6 +25,7 @@ export const recipeSchema = z
     image: imageReferenceSchema.nullable(),
     preparationMinutes: z.number().int().positive(),
     ingredients: z.array(ingredientSchema).min(1),
+    steps: z.array(z.string().trim().min(1)).min(1),
     tags: z.array(z.string().trim().min(1)).min(1),
     mealTimes: z.array(z.enum(mealTimes)).min(1),
     tempos: z.array(z.enum(tempos)).min(1),
