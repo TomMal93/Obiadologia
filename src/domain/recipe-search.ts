@@ -37,7 +37,7 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
   const records = published.map((recipe) => ({
     recipe,
     title: normalizeSearchText(recipe.title),
-    ingredients: recipe.ingredients.map(normalizeSearchText),
+    ingredients: recipe.ingredients.map((ingredient) => normalizeSearchText(ingredient.name)),
     tags: recipe.tags.map(normalizeSearchText),
     description: normalizeSearchText(recipe.description),
     categories: [...recipe.mealTimes, ...recipe.tempos, ...recipe.occasions]
@@ -60,7 +60,7 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
     new Set(
       published.flatMap((recipe) => [
         recipe.title,
-        ...recipe.ingredients,
+        ...recipe.ingredients.map((ingredient) => ingredient.name),
         ...recipe.tags,
         ...[...recipe.mealTimes, ...recipe.tempos, ...recipe.occasions].map(
           (value) => categoryTerms[value].split(' ')[0],
