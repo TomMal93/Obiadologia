@@ -26,10 +26,10 @@ Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [dat
 
 - Trasa `/recipes/:slug` jest prerenderowana dla każdego przepisu o statusie `published`; slug spoza katalogu nie generuje strony.
 - Strona używa wspólnego nagłówka z brandem prowadzącym do strony głównej.
-- Strona prezentuje w kolejności: zdjęcie albo placeholder, tytuł (`h1`), opis oraz listę składników z nagłówkiem „Składniki”; czas przygotowania stoi po prawej stronie w wierszu nagłówka „Składniki”.
+- Strona prezentuje w kolejności: zdjęcie albo placeholder, pasek metadanych nad tytułem (tagi, a pod nimi czas przygotowania — wyrównane do prawej), tytuł (`h1`), opis oraz listę składników z nagłówkiem „Składniki”.
 - Każdy składnik pokazuje nazwę i grammaturę z pola `ingredients` ([data-model.md](../../engineering/data-model.md)). Przełącznik nad listą zmienia formę miary między metryczną (`gramy / ml`) a domową (`szklanki / szczypty`); domowa forma wynika z przeliczenia miary metrycznej i pozostaje w jednostce naturalnej tam, gdzie miara domowa nie ma sensu (liczba sztuk, masa bez znanej gęstości).
 - Przełącznik jest wzbogaceniem progresywnym: bez skryptu strona pokazuje sprawną listę w formie metrycznej, a sam przełącznik pozostaje ukryty.
-- Strona przepisu nie pokazuje tagów; pole `tags` służy karcie wyniku ([data-model.md](../../engineering/data-model.md)).
+- Strona pokazuje wszystkie tagi w kolejności zapisanej w `tags`, nad tytułem, jako drobne etykiety pisane wielkimi literami (bez punktorów i bez tła pigułki); reguła „od jednego do trzech tagów” dotyczy karty wyniku, nie strony przepisu ([data-model.md](../../engineering/data-model.md)).
 - Brak zdjęcia (`image: null`) pokazuje wspólny, dekoracyjny placeholder bez zmiany układu strony; placeholder nie powiela dostępnej nazwy przepisu ([data-model.md](../../engineering/data-model.md)).
 - Link „Wróć do strony głównej” prowadzi do `/`. Przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md).
 - Do czasu rozstrzygnięcia źródła danych (`OPEN-003`) strona jawnie oznacza dane jako prototypowe i wskazuje, że pełna treść redakcyjna powstanie później.
@@ -51,7 +51,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | # | Kryterium |
 |---|---|
 | 1 | Kliknięcie karty wyniku na dowolnej drodze otwiera `/recipes/:slug` z tytułem przepisu w `h1`. |
-| 2 | Strona pokazuje opis, czas przygotowania i pełną listę składników przepisu z grammaturą. |
+| 2 | Strona pokazuje opis, czas przygotowania, wszystkie tagi i pełną listę składników przepisu z grammaturą. |
 | 8 | Przełącznik jednostek zmienia formę miary składników między metryczną a domową i z powrotem; bez skryptu widoczna jest lista w formie metrycznej. |
 | 3 | Przy `image: null` widoczny jest dekoracyjny placeholder, a układ strony nie zmienia wymiarów. |
 | 4 | Link „Wróć do strony głównej” prowadzi do `/`; „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję. |

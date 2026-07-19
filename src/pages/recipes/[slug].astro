@@ -37,15 +37,12 @@ const { recipe } = Astro.props;
       </div>
 
       <header class="recipe-intro">
-        <p class="eyebrow">Przepis</p>
-        <h1>{recipe.title}</h1>
-        <p class="recipe-lead">{recipe.description}</p>
-      </header>
-
-      <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
-        <div class="recipe-ingredients__head">
-          <div class="recipe-ingredients__title-row">
-            <h2 id="ingredients-heading">Składniki</h2>
+        <div class="recipe-intro__top">
+          <p class="eyebrow">Przepis</p>
+          <div class="recipe-meta">
+            <ul class="recipe-tags" aria-label="Tagi">
+              {recipe.tags.map((tag) => <li>{tag}</li>)}
+            </ul>
             <p class="prep-time">
               <svg
                 class="prep-time__icon"
@@ -66,6 +63,14 @@ const { recipe } = Astro.props;
               <span class="prep-time__value">{recipe.preparationMinutes} min</span>
             </p>
           </div>
+        </div>
+        <h1>{recipe.title}</h1>
+        <p class="recipe-lead">{recipe.description}</p>
+      </header>
+
+      <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
+        <div class="recipe-ingredients__head">
+          <h2 id="ingredients-heading">Składniki</h2>
           <div class="unit-toggle" role="group" aria-label="Jednostki miary składników" hidden>
             <button
               type="button"
@@ -172,9 +177,48 @@ const { recipe } = Astro.props;
     line-height: 1.6;
   }
 
+  /* Pasek metadanych nad tytułem: etykieta „Przepis” po lewej, a po prawej
+     kolumna z tagami (u góry) i czasem przygotowania (pod nimi). Przy wąskim
+     ekranie kolumna zawija się pod etykietę, pozostając wyrównana do prawej. */
+  .recipe-intro__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-8) var(--space-12);
+  }
+
+  .recipe-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-8);
+    margin-left: auto;
+    text-align: right;
+  }
+
+  /* Tagi jako drobne, drukowane etykiety (wielkie litery) — bez punktorów
+     i bez tła pigułki. */
+  .recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-4) var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .recipe-tags > li {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-14);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
   /* Czas przygotowania jako pigułka marki — nadaje metadanej własną, czytelną
-     formę i stoi po prawej w wierszu nagłówka „Składniki”. Statyczny tekst, więc
-     nie dotyczy go próg 44 × 44px obszaru akcji. */
+     formę i stoi po prawej, nad tytułem. Statyczny tekst, więc nie dotyczy go
+     próg 44 × 44px obszaru akcji. */
   .prep-time {
     display: inline-flex;
     align-items: center;
@@ -216,16 +260,6 @@ const { recipe } = Astro.props;
     display: grid;
     gap: var(--space-8);
     margin-bottom: var(--space-12);
-  }
-
-  /* Nagłówek sekcji i pigułka czasu w jednym wierszu: tytuł po lewej, czas po
-     prawej. Przy wąskim ekranie pigułka zawija się pod tytuł bez ucięcia. */
-  .recipe-ingredients__title-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-8) var(--space-12);
   }
 
   .recipe-ingredients__head h2 {
