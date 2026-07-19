@@ -38,31 +38,28 @@ const { recipe } = Astro.props;
 
       <header class="recipe-intro">
         <div class="recipe-intro__top">
-          <p class="eyebrow">Przepis</p>
-          <div class="recipe-meta">
-            <ul class="recipe-tags" aria-label="Tagi">
-              {recipe.tags.map((tag) => <li>{tag}</li>)}
-            </ul>
-            <p class="prep-time">
-              <svg
-                class="prep-time__icon"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <circle cx="12" cy="12" r="9" />
-                <path d="M12 7v5l3.5 2" />
-              </svg>
-              <span class="visually-hidden">Czas przygotowania:</span>{' '}
-              <span class="prep-time__value">{recipe.preparationMinutes} min</span>
-            </p>
-          </div>
+          <ul class="recipe-tags" aria-label="Tagi">
+            {recipe.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <p class="prep-time">
+            <svg
+              class="prep-time__icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3.5 2" />
+            </svg>
+            <span class="visually-hidden">Czas przygotowania:</span>{' '}
+            <span class="prep-time__value">{recipe.preparationMinutes} min</span>
+          </p>
         </div>
         <h1>{recipe.title}</h1>
         <p class="recipe-lead">{recipe.description}</p>
@@ -177,23 +174,14 @@ const { recipe } = Astro.props;
     line-height: 1.6;
   }
 
-  /* Pasek metadanych nad tytułem: etykieta „Przepis” po lewej, a po prawej
-     kolumna z tagami (u góry) i czasem przygotowania (pod nimi). Przy wąskim
-     ekranie kolumna zawija się pod etykietę, pozostając wyrównana do prawej. */
+  /* Pasek metadanych nad tytułem: tagi po lewej, czas przygotowania po prawej,
+     w jednej linii. Przy wąskim ekranie czas zawija się pod tagi, pozostając
+     wyrównany do prawej. */
   .recipe-intro__top {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-8) var(--space-12);
-  }
-
-  .recipe-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--space-8);
-    margin-left: auto;
-    text-align: right;
   }
 
   /* Tagi jako drobne, drukowane etykiety (wielkie litery) — bez punktorów
@@ -201,7 +189,6 @@ const { recipe } = Astro.props;
   .recipe-tags {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
     gap: var(--space-4) var(--space-12);
     margin: 0;
     padding: 0;
@@ -217,14 +204,14 @@ const { recipe } = Astro.props;
   }
 
   /* Czas przygotowania jako pigułka marki — nadaje metadanej własną, czytelną
-     formę i stoi po prawej, nad tytułem. Statyczny tekst, więc nie dotyczy go
-     próg 44 × 44px obszaru akcji. */
+     formę i stoi po prawej, w jednej linii z tagami. Statyczny tekst, więc nie
+     dotyczy go próg 44 × 44px obszaru akcji. */
   .prep-time {
     display: inline-flex;
     align-items: center;
     gap: var(--space-8);
     flex: none;
-    margin: 0;
+    margin: 0 0 0 auto;
     padding: var(--space-8) var(--space-12);
     border-radius: var(--radius-pill);
     color: var(--color-coral-strong);
