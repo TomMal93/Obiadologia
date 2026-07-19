@@ -104,9 +104,16 @@ const { recipe } = Astro.props;
         </ul>
       </section>
 
+      <section class="recipe-steps" aria-labelledby="steps-heading">
+        <h2 id="steps-heading">Kroki</h2>
+        <ol class="step-list">
+          {recipe.steps.map((step) => <li>{step}</li>)}
+        </ol>
+      </section>
+
       <p class="prototype-note">
-        Dane przepisu pochodzą z prototypowego katalogu. Pełna treść redakcyjna (kroki
-        przygotowania i zdjęcia) powstanie po wyborze źródła danych.
+        Dane przepisu pochodzą z prototypowego katalogu. Docelowe zdjęcia i ostateczna
+        treść redakcyjna powstaną po wyborze źródła danych.
       </p>
 
       <a class="back-link" href="/">← Wróć do strony głównej</a>
@@ -162,10 +169,14 @@ const { recipe } = Astro.props;
     gap: var(--space-8);
   }
 
+  /* Tytuł celuje w jedną linię (nie jest to twarde wymaganie): nieco mniejszy
+     płynny rozmiar niż wcześniej, a `text-wrap: balance` ładnie równoważy wiersze,
+     gdy dłuższy tytuł jednak się zawinie. */
   .recipe-intro h1 {
     margin: 0;
-    font-size: clamp(28px, 7.5vw, 36px);
-    line-height: 1.1;
+    font-size: clamp(21px, 5.8vw, 32px);
+    line-height: 1.15;
+    text-wrap: balance;
   }
 
   .recipe-lead {
@@ -326,6 +337,46 @@ const { recipe } = Astro.props;
   .ingredient-list[data-units='metric'] .ingredient__measure-household,
   .ingredient-list[data-units='household'] .ingredient__measure-metric {
     display: none;
+  }
+
+  .recipe-steps h2 {
+    margin: 0 0 var(--space-12);
+    font-size: var(--font-size-24);
+    line-height: 1.2;
+  }
+
+  /* Numerowane kroki: własny licznik i koralowy znacznik z numerem, aby
+     kolejność była czytelna niezależnie od domyślnych markerów listy. */
+  .step-list {
+    display: grid;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .step-list > li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-12);
+    line-height: 1.5;
+    counter-increment: step;
+  }
+
+  .step-list > li::before {
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-pill);
+    color: var(--color-coral-strong);
+    font-size: var(--font-size-14);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    background: var(--color-coral-soft);
   }
 
   .prototype-note {

@@ -32,6 +32,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `image` | ImageReference \| null | zdjęcie i tekst alternatywny; `null` oznacza użycie wspólnego placeholdera |
 | `preparationMinutes` | integer | dodatnia liczba minut |
 | `ingredients` | Ingredient[] | składniki z grammaturą; `name` zasila wyszukiwanie |
+| `steps` | string[] | co najmniej jeden krok przygotowania; kolejność określa numerację na stronie przepisu |
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
 | `tempos` | Tempo[] | co najmniej jedno tempo |
@@ -75,6 +76,11 @@ Ingredient = { name: string, amount: number > 0, unit: IngredientUnit, gramsPerC
     { "name": "kurczak", "amount": 400, "unit": "g" },
     { "name": "sałata", "amount": 1, "unit": "szt" },
     { "name": "oliwa", "amount": 30, "unit": "ml" }
+  ],
+  "steps": [
+    "Kurczaka natrzyj oliwą i solą, odstaw na 10 minut.",
+    "Grilluj kurczaka po 6–7 minut z każdej strony.",
+    "Podawaj na świeżej sałatce."
   ],
   "tags": ["grill", "lekko"],
   "mealTimes": ["lunch"],

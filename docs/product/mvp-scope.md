@@ -79,7 +79,7 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - portal z artykułami,
 - podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
-- docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (kroki przygotowania, porcje, zdjęcia),
+- docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (porcje, zdjęcia; prototypowe kroki są już w modelu),
 - wiele wersji językowych.
 
 W drugiej fazie „Pokaż więcej” prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane razem z tą podstroną.

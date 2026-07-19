@@ -39,6 +39,12 @@ test('recipe page presents model data with ingredients and a way back', async ({
   await page.getByRole('button', { name: 'gramy / ml' }).click();
   await expect(oliwaMetric).toBeVisible();
 
+  const steps = page.getByRole('region', { name: 'Kroki' });
+  await expect(steps.getByRole('heading', { level: 2, name: 'Kroki' })).toBeVisible();
+  await expect(
+    steps.getByRole('listitem').filter({ hasText: 'Rozgrzej grill i piecz kurczaka' }),
+  ).toBeVisible();
+
   await expect(page.getByText('Dane przepisu pochodzą z prototypowego katalogu.')).toBeVisible();
 
   await page.getByRole('link', { name: /Wróć do strony głównej/ }).click();
