@@ -52,7 +52,7 @@ Karta wyniku zawiera co najmniej:
 
 Opis modelu danych: [data-model.md](../engineering/data-model.md).
 
-Cała karta prowadzi do `/recipes/:slug`. Do czasu powstania właściwej strony przepisu trasa pokazuje prosty ekran zastępczy z możliwością powrotu.
+Cała karta prowadzi do `/recipes/:slug` — prerenderowanej strony przepisu prezentującej pola modelu `Recipe`. Zachowanie strony opisuje [recipe-page.md](./features/recipe-page.md).
 
 ### Jakość podstawowa
 
@@ -79,12 +79,12 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - portal z artykułami,
 - podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
-- docelowy zestaw przykładowych przepisów i właściwa treść stron przepisów,
+- docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (kroki przygotowania, porcje, zdjęcia),
 - wiele wersji językowych.
 
 W drugiej fazie „Pokaż więcej” prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane razem z tą podstroną.
 
-Dobór reprezentatywnego zestawu przepisów zostaje odłożony do etapu tworzenia właściwej strony przepisu. Do tego czasu lokalny prototyp może korzystać wyłącznie z jawnie zastępczych danych potrzebnych do sprawdzenia bieżących przepływów.
+Dobór reprezentatywnego zestawu przepisów pozostaje odłożony do rozstrzygnięcia źródła danych o daniach. Do tego czasu strona przepisu i pozostałe ścieżki korzystają wyłącznie z jawnie zastępczych danych prototypowych potrzebnych do sprawdzenia bieżących przepływów.
 
 ## Nierozstrzygnięte
 

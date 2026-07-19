@@ -84,7 +84,7 @@ Sekcja wyników używa nagłówka „Propozycje”. Każda karta zawiera:
 - czas przygotowania;
 - od jednego do trzech tagów.
 
-Cała karta jest linkiem do `/recipes/:slug`. Do czasu implementacji strony przepisu trasa pokazuje prosty ekran zastępczy z możliwością powrotu.
+Cała karta jest linkiem do `/recipes/:slug` — strony przepisu opisanej w [recipe-page.md](./recipe-page.md).
 
 Kolejność wyników odpowiada aktualnym kryteriom aktywnego trybu. Starsza odpowiedź asynchroniczna nie może nadpisać wyników dla nowszego zapytania albo położenia Mapy.
 

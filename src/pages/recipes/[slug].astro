@@ -20,47 +20,180 @@ interface Props {
 const { recipe } = Astro.props;
 ---
 
-<BaseLayout
-  title={`${recipe.title} — Obiadologia`}
-  description={`Zastępczy ekran przepisu: ${recipe.title}.`}
->
+<BaseLayout title={`${recipe.title} — Obiadologia`} description={recipe.description}>
   <SiteHeader />
 
   <main class="recipe-page">
-    <p class="prototype-badge">Ekran zastępczy</p>
-    <h1>{recipe.title}</h1>
-    <p>{recipe.description}</p>
-    <p><strong>Czas przygotowania:</strong> {recipe.preparationMinutes} min</p>
-    <a class="back-link" href="/">← Wróć do strony głównej</a>
+    <article class="recipe-article">
+      <div class="recipe-hero">
+        {
+          recipe.image ? (
+            <img src={recipe.image.src} alt={recipe.image.alt} loading="eager" />
+          ) : (
+            <span class="recipe-placeholder" aria-hidden="true">O</span>
+          )
+        }
+      </div>
+
+      <header class="recipe-intro">
+        <p class="eyebrow">Przepis</p>
+        <h1>{recipe.title}</h1>
+        <p class="recipe-lead">{recipe.description}</p>
+      </header>
+
+      <div class="recipe-facts">
+        <p class="prep-time">
+          <span aria-hidden="true">◷</span>
+          Czas przygotowania: <strong>{recipe.preparationMinutes} min</strong>
+        </p>
+        <ul class="recipe-tags" aria-label="Tagi">
+          {recipe.tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      </div>
+
+      <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
+        <h2 id="ingredients-heading">Składniki</h2>
+        <ul>
+          {recipe.ingredients.map((ingredient) => <li>{ingredient}</li>)}
+        </ul>
+      </section>
+
+      <p class="prototype-note">
+        Dane przepisu pochodzą z prototypowego katalogu. Pełna treść redakcyjna (kroki
+        przygotowania i zdjęcia) powstanie po wyborze źródła danych.
+      </p>
+
+      <a class="back-link" href="/">← Wróć do strony głównej</a>
+    </article>
   </main>
 </BaseLayout>
 
 <style>
+  /* Strona wypełnia ekran poniżej nagłówka; przy dłuższej treści (powiększenie
+     tekstu, niski ekran) rośnie i przewija się zgodnie z regułą reflow. */
   .recipe-page {
-    margin: 40px 16px;
-    padding: var(--space-32) var(--space-24);
-    border-radius: var(--radius-card);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - var(--header-block));
+    min-height: calc(100dvh - var(--header-block));
+    padding: 0 var(--gutter) var(--screen-pad-y);
+  }
+
+  .recipe-article {
+    display: grid;
+    gap: var(--stack-gap);
+    padding: var(--space-16) var(--space-16) var(--space-24);
+    border-radius: var(--radius-panel);
     background: var(--color-surface);
     box-shadow: var(--shadow-surface);
   }
 
-  .recipe-page h1 {
-    margin: var(--space-12) 0;
-    font-size: var(--font-size-32);
+  .recipe-hero {
+    display: grid;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .recipe-hero > img,
+  .recipe-hero > span {
+    width: 100%;
+    height: 100%;
+  }
+
+  .recipe-hero > img {
+    display: block;
+    object-fit: cover;
+  }
+
+  .recipe-hero > span {
+    font-size: clamp(48px, 14vw, 64px);
+  }
+
+  .recipe-intro {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .recipe-intro h1 {
+    margin: 0;
+    font-size: clamp(28px, 7.5vw, 36px);
     line-height: 1.1;
   }
 
-  .recipe-page p:not(.prototype-badge) {
+  .recipe-lead {
+    margin: 0;
     color: var(--color-text-muted);
     line-height: 1.6;
+  }
+
+  .recipe-facts {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .prep-time {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .prep-time > span {
+    margin-right: var(--space-4);
+  }
+
+  .recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .recipe-tags > li {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-14);
+    background: var(--color-bg);
+  }
+
+  .recipe-ingredients h2 {
+    margin: 0 0 var(--space-8);
+    font-size: var(--font-size-24);
+    line-height: 1.2;
+  }
+
+  .recipe-ingredients ul {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding-inline-start: var(--space-24);
+  }
+
+  .recipe-ingredients li {
+    line-height: 1.5;
+  }
+
+  .recipe-ingredients li::marker {
+    color: var(--color-heading-accent);
+  }
+
+  .prototype-note {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-14);
+    line-height: 1.5;
   }
 
   .back-link {
     display: inline-flex;
     min-height: 44px;
     align-items: center;
-    margin-top: var(--space-16);
-    color: var(--color-cta);
+    gap: var(--space-4);
+    justify-self: start;
+    color: var(--color-cta-strong);
     font-weight: 800;
   }
 </style>

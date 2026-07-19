@@ -6,6 +6,7 @@
 - cel produktu i zakres MVP: `docs/product/`
 - strona główna: `docs/product/features/home-page.md`
 - wspólny overlay Mapa/Wyszukiwarka: `docs/product/features/discovery-overlay.md`
+- strona przepisu: `docs/product/features/recipe-page.md`
 - wygląd i komponenty: `docs/design/ui-system.md`
 - model danych: `docs/engineering/data-model.md`
 - przyjęte i otwarte decyzje techniczne: `docs/engineering/technical-decisions.md`; zaakceptowane decyzje kosztowne do odwrócenia: `docs/engineering/adr/`
@@ -27,7 +28,7 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | style współlokowane wyspy interaktywnej | `src/components/DiscoveryExperience.css` |
 | wspólny nagłówek z logo/brandem | `src/components/SiteHeader.astro` |
 | strona główna i osadzenie wyspy | `src/pages/index.astro` |
-| zastępczy ekran przepisu `/recipes/:slug` | `src/pages/recipes/[slug].astro` |
+| strona przepisu `/recipes/:slug` | `src/pages/recipes/[slug].astro` |
 | wspólny layout, `<head>` i kontener mobilny | `src/layouts/BaseLayout.astro` |
 | tokeny, reset i klasy współdzielone | `src/styles/global.css` |
 | testy jednostkowe i komponentów | `src/**/*.test.ts(x)` |
@@ -45,7 +46,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
 | Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
-| Trasa przepisu `/recipes/:slug` | zaimplementowane jako ekran zastępczy | prerenderowana z możliwością powrotu |
+| Strona przepisu `/recipes/:slug` | wersja wstępna | prerenderowana prezentacja pól modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki) z powrotem; treść redakcyjna spoza modelu (kroki) pozostaje odłożona |
 
 Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.
 
