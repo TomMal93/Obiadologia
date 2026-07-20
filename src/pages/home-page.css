@@ -15,10 +15,9 @@
   position: relative;
   display: grid;
   grid-template-rows: 98px auto;
-  align-content: start;
   min-height: calc(100vh - var(--header-block));
   min-height: calc(100dvh - var(--header-block));
-  padding: 44px var(--gutter) var(--screen-pad-y);
+  padding: 44px var(--gutter) 46px;
 }
 
 /* Delikatne, powtarzalne hasła w tle — czysto dekoracyjne (aria-hidden),
@@ -99,7 +98,9 @@
 .path-panel {
   position: relative;
   z-index: 1;
-  padding: clamp(30px, 5vh, 40px) clamp(12px, 3vw, 18px) clamp(14px, 3vh, 22px);
+  display: grid;
+  grid-template-rows: auto auto minmax(min-content, 1fr) calc(3.06% + 2px) auto;
+  padding: clamp(30px, 5vh, 40px) clamp(12px, 3vw, 18px) 22px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
   background: rgb(255 255 255 / 84%);
@@ -199,6 +200,7 @@
      Różnice między telefonami są proporcjonalne (skala), nie strukturalne. */
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(6px, 1.8vw, 14px);
+  min-height: min-content;
   margin-top: clamp(4px, 1vh, 10px);
 }
 
@@ -264,15 +266,22 @@
   line-height: 1;
 }
 
+.path-action {
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  gap: clamp(4px, 1vh, 7px);
+  margin-top: auto;
+}
+
 .path-tile {
   display: grid;
   justify-items: center;
   align-content: center;
   gap: clamp(4px, 1vh, 8px);
   width: 100%;
-  /* `margin-top: auto` dosuwa kafle do dołu kolumny, a wspólna min. wysokość
-     wyrównuje je w jeden rząd mimo różnej długości opisów nad nimi. */
-  margin-top: auto;
+  /* Wspólna min. wysokość wyrównuje kafle w jeden rząd mimo różnej
+     długości opisów nad nimi. */
   min-height: clamp(104px, 27vw, 136px);
   padding: clamp(8px, 2vh, 14px) clamp(4px, 1.5vw, 10px);
   border-radius: var(--radius-card);
@@ -354,7 +363,9 @@ button.path-tile {
 }
 
 .path-note {
-  margin: clamp(10px, 2.4vh, 18px) 0 0;
+  grid-row: 5;
+  align-self: end;
+  margin: 0;
   padding: clamp(10px, 2vh, 14px) 14px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-field);

@@ -59,57 +59,63 @@ import './home-page.css';
             <p class="path-title">Nie wiem, czego chcę</p>
             <span class="path-rule" aria-hidden="true"></span>
             <p class="path-meta">nastrój · tempo · inspiracja</p>
-            <span class="path-arrow" aria-hidden="true">↓</span>
-            <button class="path-tile" type="button" data-discovery-mode="map">
-              <span class="path-icon" aria-hidden="true">
-                <svg viewBox="0 0 48 48">
-                  <circle class="path-icon-ring" cx="22" cy="24" r="13" />
-                  <circle
-                    class="path-icon-arc"
-                    cx="22"
-                    cy="24"
-                    r="13"
-                    pathLength="100"
-                  />
-                  <circle class="path-icon-knob" cx="35" cy="24" r="4.5" />
-                </svg>
-              </span>
-              <span class="path-tile-label">Mapa</span>
-            </button>
+            <div class="path-action">
+              <span class="path-arrow" aria-hidden="true">↓</span>
+              <button class="path-tile" type="button" data-discovery-mode="map">
+                <span class="path-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48">
+                    <circle class="path-icon-ring" cx="22" cy="24" r="13" />
+                    <circle
+                      class="path-icon-arc"
+                      cx="22"
+                      cy="24"
+                      r="13"
+                      pathLength="100"
+                    />
+                    <circle class="path-icon-knob" cx="35" cy="24" r="4.5" />
+                  </svg>
+                </span>
+                <span class="path-tile-label">Mapa</span>
+              </button>
+            </div>
           </article>
 
           <article class="path-col path-col--search">
             <p class="path-title">Wiem, czego szukam</p>
             <span class="path-rule" aria-hidden="true"></span>
             <p class="path-meta">składnik · danie · smak</p>
-            <span class="path-arrow" aria-hidden="true">↓</span>
-            <button class="path-tile" type="button" data-discovery-mode="search">
-              <span class="path-icon" aria-hidden="true">
-                <svg viewBox="0 0 48 48">
-                  <circle class="path-icon-lens" cx="21" cy="21" r="11" />
-                  <line class="path-icon-handle" x1="29" y1="29" x2="38" y2="38" />
-                </svg>
-              </span>
-              <span class="path-tile-label">Szukaj</span>
-            </button>
+            <div class="path-action">
+              <span class="path-arrow" aria-hidden="true">↓</span>
+              <button class="path-tile" type="button" data-discovery-mode="search">
+                <span class="path-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48">
+                    <circle class="path-icon-lens" cx="21" cy="21" r="11" />
+                    <line class="path-icon-handle" x1="29" y1="29" x2="38" y2="38" />
+                  </svg>
+                </span>
+                <span class="path-tile-label">Szukaj</span>
+              </button>
+            </div>
           </article>
 
           <article class="path-col path-col--categories">
             <p class="path-title">Chcę przeglądać</p>
             <span class="path-rule" aria-hidden="true"></span>
             <p class="path-meta">kategoria · okazja · sytuacja</p>
-            <span class="path-arrow" aria-hidden="true">↓</span>
-            <a class="path-tile" href="#kategorie">
-              <span class="path-icon" aria-hidden="true">
-                <svg viewBox="0 0 48 48">
-                  <rect class="path-icon-cell" x="9" y="9" width="13" height="13" rx="3.5" />
-                  <rect class="path-icon-cell path-icon-cell--soft" x="26" y="9" width="13" height="13" rx="3.5" />
-                  <rect class="path-icon-cell path-icon-cell--soft" x="9" y="26" width="13" height="13" rx="3.5" />
-                  <rect class="path-icon-cell" x="26" y="26" width="13" height="13" rx="3.5" />
-                </svg>
-              </span>
-              <span class="path-tile-label">Kategorie</span>
-            </a>
+            <div class="path-action">
+              <span class="path-arrow" aria-hidden="true">↓</span>
+              <a class="path-tile" href="#kategorie">
+                <span class="path-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48">
+                    <rect class="path-icon-cell" x="9" y="9" width="13" height="13" rx="3.5" />
+                    <rect class="path-icon-cell path-icon-cell--soft" x="26" y="9" width="13" height="13" rx="3.5" />
+                    <rect class="path-icon-cell path-icon-cell--soft" x="9" y="26" width="13" height="13" rx="3.5" />
+                    <rect class="path-icon-cell" x="26" y="26" width="13" height="13" rx="3.5" />
+                  </svg>
+                </span>
+                <span class="path-tile-label">Kategorie</span>
+              </a>
+            </div>
           </article>
         </div>
 

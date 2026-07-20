@@ -21,7 +21,7 @@ Strona zawiera:
 
 Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
 
-W układzie mobilnym pozycje nagłówka głównego i górnej krawędzi panelu wyboru dróg są stałymi kotwicami pionowymi, skalibrowanymi dla viewportu iPhone 12 Pro (`390 × 844px`). Zmiana wysokości telefonu nie przesuwa tych elementów; na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
+W układzie mobilnym pozycje nagłówka głównego i górnej krawędzi panelu wyboru dróg są stałymi kotwicami pionowymi, skalibrowanymi dla viewportu iPhone 12 Pro (`390 × 844px`). Stałe są również odstępy między dolną krawędzią notatki a ramką panelu oraz między ramką panelu a końcem pierwszej sekcji. Grupa strzałki i kafla zachowuje względem notatki odstęp proporcjonalny do wysokości panelu, zgodny z referencją iPhone 12 Pro. Zmiana wysokości telefonu nie przesuwa stałych kotwic; na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
 Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy do bieżącego przepływu MVP. Dopóki zakres oraz zawartość menu nie zostaną określone, implementacja nie renderuje jej jako pozornie działającego przycisku.
 
@@ -117,4 +117,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
 - Każda główna sekcja wypełnia jeden ekran i nie jest wyższa niż ekran, zgodnie z regułą pełnoekranowych sekcji w [ui-system.md](../../design/ui-system.md).
 - Nagłówek główny i panel wyboru dróg zachowują te same kotwice pionowe w mobilnych viewportach; punktem odniesienia jest iPhone 12 Pro (`390 × 844px`).
+- Strzałka i kafel każdej drogi przemieszczają się jako jedna grupa, zachowując względem notatki odstęp proporcjonalny do wysokości panelu i zgodny z referencją iPhone 12 Pro.
+- Odległość dolnej krawędzi notatki od ramki panelu jest stała w mobilnych viewportach i zgodna z referencją iPhone 12 Pro.
+- Odległość dolnej ramki panelu wyboru dróg od końca pierwszej sekcji jest stała w mobilnych viewportach i zgodna z referencją iPhone 12 Pro.
 - Układ spełnia wymagania responsywności i dostępności.

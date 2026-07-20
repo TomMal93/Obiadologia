@@ -167,7 +167,7 @@ Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi.
 - Projekt ma jeden układ mobilny działający od `320px` do `480px` szerokości.
 - Na ekranie szerszym niż `480px` cały widok jest wyśrodkowany w kontenerze `max-width: 480px`; nie powstaje osobny układ tabletowy ani desktopowy.
 - Trzy ścieżki strony głównej zachowują kolejność i hierarchię z makiety. Przy mniejszych szerokościach mogą zwężać kafle lub przechodzić w układ pionowy tylko wtedy, gdy jest to konieczne do uniknięcia przepełnienia.
-- Na pierwszym ekranie strony głównej nagłówek i panel wyboru dróg mają stałe kotwice pionowe skalibrowane dla iPhone 12 Pro (`390 × 844px`). Szerokość i zawartość nadal skalują się w zakresie mobilnym, ale zmiana wysokości viewportu nie przesuwa górnych krawędzi tych dwóch elementów.
+- Na pierwszym ekranie strony głównej nagłówek i panel wyboru dróg mają stałe kotwice pionowe. Dolna krawędź notatki zachowuje stały odstęp od ramki panelu, a ramka panelu od końca sekcji. Strzałka i kafel tworzą grupę akcji, której odstęp od notatki skaluje się proporcjonalnie do wysokości panelu; wartości są skalibrowane dla iPhone 12 Pro (`390 × 844px`). Szerokość i zawartość nadal skalują się w zakresie mobilnym, ale zmiana wysokości viewportu nie przesuwa górnych krawędzi tych dwóch elementów.
 - Karty wyników na telefonie mogą ustawić zdjęcie nad treścią; metadane nie mogą wypadać poza kartę.
 - Overlay uwzględnia `100dvh`, bezpieczne obszary urządzenia i klawiaturę ekranową.
 - Nie tworzymy dolnej nawigacji mobilnej, jeśli nie wynika to z nowej decyzji produktowej.
@@ -202,7 +202,7 @@ W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokośc
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
 | sekcje pełnoekranowe | każda główna sekcja wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
 | spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
-| kotwice pierwszego ekranu | nagłówek główny i górna krawędź panelu dróg nie zmieniają położenia pionowego między mobilnymi wysokościami; referencja: iPhone 12 Pro (`390 × 844px`) |
+| geometria pierwszego ekranu | nagłówek główny i górna krawędź panelu dróg nie zmieniają położenia pionowego; odstępy notatki od ramki panelu i ramki od końca sekcji pozostają stałe, a odstęp grup akcji od notatki zachowuje tę samą proporcję wysokości panelu między mobilnymi viewportami; referencja: iPhone 12 Pro (`390 × 844px`) |
 | brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |
 | interakcje | wyniki reagują na każdą zmianę kryteriów, a karta otwiera trasę przepisu |
 

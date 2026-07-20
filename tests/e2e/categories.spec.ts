@@ -24,7 +24,7 @@ test('initial homepage has no automatically detectable accessibility violations'
   expect(results.violations).toEqual([]);
 });
 
-test('homepage heading and path panel keep stable mobile vertical anchors', async ({ page }) => {
+test('homepage heading and path panel keep stable mobile geometry', async ({ page }) => {
   const viewports = [
     { width: 320, height: 568 },
     { width: 375, height: 667 },
@@ -40,11 +40,32 @@ test('homepage heading and path panel keep stable mobile vertical anchors', asyn
     const headingTop = await page.getByRole('heading', { name: 'Co dziś jemy?' }).evaluate(
       (element) => element.getBoundingClientRect().top,
     );
-    const panelTop = await page.locator('.path-panel').evaluate(
-      (element) => element.getBoundingClientRect().top,
+    const panelBounds = await page.locator('.path-panel').evaluate(
+      (element) => {
+        const bounds = element.getBoundingClientRect();
+        return { top: bounds.top, bottom: bounds.bottom };
+      },
+    );
+    const sectionBottom = await page.locator('.intro-screen').evaluate(
+      (element) => element.getBoundingClientRect().bottom,
+    );
+    const noteBounds = await page.locator('.path-note').evaluate(
+      (element) => {
+        const bounds = element.getBoundingClientRect();
+        return { top: bounds.top, bottom: bounds.bottom };
+      },
+    );
+    const actionsBottom = await page.locator('.path-action').first().evaluate(
+      (element) => element.getBoundingClientRect().bottom,
     );
 
     expect(headingTop).toBeCloseTo(112, 0);
-    expect(panelTop).toBeCloseTo(210, 0);
+    expect(panelBounds.top).toBeCloseTo(210, 0);
+    expect((noteBounds.top - actionsBottom) / (panelBounds.bottom - panelBounds.top)).toBeCloseTo(
+      0.0306,
+      2,
+    );
+    expect(panelBounds.bottom - noteBounds.bottom).toBeCloseTo(23, 0);
+    expect(sectionBottom - panelBounds.bottom).toBeCloseTo(46, 0);
   }
 });
