@@ -23,3 +23,28 @@ test('initial homepage has no automatically detectable accessibility violations'
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
+
+test('homepage heading and path panel keep stable mobile vertical anchors', async ({ page }) => {
+  const viewports = [
+    { width: 320, height: 568 },
+    { width: 375, height: 667 },
+    { width: 390, height: 844 },
+    { width: 430, height: 932 },
+    { width: 480, height: 900 },
+  ];
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+
+    const headingTop = await page.getByRole('heading', { name: 'Co dziś jemy?' }).evaluate(
+      (element) => element.getBoundingClientRect().top,
+    );
+    const panelTop = await page.locator('.path-panel').evaluate(
+      (element) => element.getBoundingClientRect().top,
+    );
+
+    expect(headingTop).toBeCloseTo(112, 0);
+    expect(panelTop).toBeCloseTo(210, 0);
+  }
+});

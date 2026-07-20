@@ -50,7 +50,9 @@
   --gutter: clamp(16px, 4.2vw, 24px);
   --screen-pad-y: clamp(12px, 2.8vh, 44px);
   --stack-gap: clamp(12px, 2.6vh, 24px);
-  --header-block: clamp(52px, 8vh, 68px);
+  /* Stała wysokość utrzymuje nagłówek i kotwice pierwszego ekranu w tym
+     samym miejscu niezależnie od wysokości mobilnego viewportu. */
+  --header-block: 68px;
 
   /* Skala promieni (docs/design/ui-system.md „Geometria”): pola/tagi, karty,
      duże panele, pigułki. */
