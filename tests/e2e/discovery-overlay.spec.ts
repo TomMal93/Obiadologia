@@ -18,7 +18,9 @@ test('search session switches modes and explicit close resets on browser Forward
   await expect(dialog.getByRole('link', { name: /Kurczak z grilla z sałatką/ })).toBeVisible();
 
   await dialog.getByRole('button', { name: /Mapa/ }).click();
-  await expect(dialog.getByText(/tempo neutralne · charakter neutralny/)).toBeVisible();
+  const mapSummary = dialog.locator('.map-summary');
+  await expect(mapSummary).toContainText(/tempo neutralne · charakter neutralny/);
+  await expect(mapSummary).toHaveCSS('white-space', 'nowrap');
   await dialog.getByRole('button', { name: /Talerz na mapie/ }).press('ArrowLeft');
   await expect(dialog.getByText(/szybko 55% · charakter neutralny/)).toBeVisible();
 

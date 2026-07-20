@@ -489,16 +489,13 @@
 }
 
 .map-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  align-items: center;
-  margin: 0;
-  padding: var(--space-16);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-field);
-  line-height: 1.4;
-  background: var(--color-bg);
+  background: var(--color-map-soft);
+}
+
+.map-summary > span {
+  width: max-content;
+  min-width: 100%;
+  text-align: center;
 }
 
 .map-summary strong { color: var(--color-map-strong); }

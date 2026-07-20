@@ -532,7 +532,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                 </button>
               </div>
               <p className="drag-instruction"><span aria-hidden="true">☝</span> Przeciągnij talerz</p>
-              <p className="map-summary"><span aria-hidden="true">✓</span> Wybrano: <strong>{mapSummary(snapshot.map)}</strong></p>
+              <p className="selection-summary map-summary"><span>Wybrano: <strong>{mapSummary(snapshot.map)}</strong></span></p>
               {mapResults.length > 0 && <RecipeList recipes={mapResults} headingId="map-results-heading" />}
               {mapResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy propozycji dla tego miejsca.</p>}
             </div>

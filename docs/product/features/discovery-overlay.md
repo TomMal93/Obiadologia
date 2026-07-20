@@ -212,6 +212,8 @@ Po przesunięciu podsumowanie pokazuje dominujący kierunek każdej osi i procen
 
 > Wybrano: szybko 72% · lekko 64%
 
+Pasek podsumowania pozostaje w jednym wierszu i używa tej samej geometrii oraz typografii co pasek „Wybrano” w Kategoriach, z niebieskim tłem właściwym dla Mapy. Jeżeli tekst nie mieści się w szerokości overlayu, przewija się poziomo zamiast zmieniać wysokość paska.
+
 Dla osi poziomej:
 
 - `x < 50`: „szybko”, procent `100 - x`;
@@ -271,6 +273,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 - Mapa rozpoczyna w neutralnym środku i pokazuje od trzech do czterech propozycji spełniających regułę różnorodności z `data-model.md`.
 - Punkt można przesuwać myszą, dotykiem i klawiaturą, bez wyjścia poza granice.
 - Podsumowanie odpowiada współrzędnym i jest aktualizowane podczas ruchu.
+- Podsumowanie jest jednoliniowe i nie zmienia wysokości podczas aktualizacji współrzędnych.
 - Wyniki są aktualizowane podczas przeciągania, bez zatwierdzania.
 - Mapowanie współrzędnych UI na `pace` i `lightness` jest zgodne z opisanym wzorem.
 - Przełączenie trybu zachowuje położenie, a zamknięcie resetuje je do środka.
