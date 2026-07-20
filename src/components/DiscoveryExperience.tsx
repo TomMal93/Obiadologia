@@ -193,17 +193,39 @@ export function DiscoveryExperience({ recipes }: Props) {
     [recipes, selection],
   );
   const snapshot = session?.snapshot;
+  const currentQuery = snapshot?.query ?? '';
+  const currentMap = snapshot?.map;
+
+  // Pole tekstowe i punkt mapy reagują natychmiast, ale kosztowne obliczenia
+  // pracują na wartościach opóźnionych: zapytanie po pauzie w pisaniu, ranking
+  // mapy co najwyżej raz na klatkę animacji — bez opóźniania ruchu punktu.
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [rankedMap, setRankedMap] = useState<MapCoordinates>({ x: 50, y: 50 });
+
+  useEffect(() => {
+    // Wyczyszczenie pola nie czeka na pauzę w pisaniu — tylko niepuste zapytanie
+    // ma sens debounce'owania.
+    const timer = window.setTimeout(() => setDebouncedQuery(currentQuery), currentQuery ? 200 : 0);
+    return () => window.clearTimeout(timer);
+  }, [currentQuery]);
+
+  useEffect(() => {
+    if (!currentMap) return;
+    const frame = window.requestAnimationFrame(() => setRankedMap(currentMap));
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentMap]);
+
   const searchResults = useMemo(
-    () => recipeSearch.search(snapshot?.query ?? '').slice(0, 4),
-    [recipeSearch, snapshot?.query],
+    () => recipeSearch.search(debouncedQuery).slice(0, 4),
+    [recipeSearch, debouncedQuery],
   );
   const suggestions = useMemo(
-    () => recipeSearch.suggest(snapshot?.query ?? ''),
-    [recipeSearch, snapshot?.query],
+    () => recipeSearch.suggest(debouncedQuery),
+    [recipeSearch, debouncedQuery],
   );
   const mapResults = useMemo(
-    () => rankRecipesForMap(recipes, snapshot?.map ?? { x: 50, y: 50 }),
-    [recipes, snapshot?.map],
+    () => rankRecipesForMap(recipes, rankedMap),
+    [recipes, rankedMap],
   );
 
   const restoreFromHistory = useCallback((state: DiscoveryHistoryState | null) => {
@@ -295,9 +317,6 @@ export function DiscoveryExperience({ recipes }: Props) {
       document.body.style.overflow = previousOverflow;
     };
   }, [activeMode, isOpen]);
-
-  const currentQuery = session?.snapshot.query;
-  const currentMap = session?.snapshot.map;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -437,7 +456,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                   onChange={(event) => updateSnapshot({ query: event.target.value })}
                 />
               </label>
-              {suggestions.length > 0 && (
+              {snapshot.query && suggestions.length > 0 && (
                 <div className="suggestion-list" aria-label="Sugestie wyszukiwania">
                   {suggestions.map((suggestion) => (
                     <button key={suggestion} type="button" onClick={() => updateSnapshot({ query: suggestion })}>{suggestion}</button>
@@ -445,7 +464,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                 </div>
               )}
               {snapshot.query && searchResults.length > 0 && <RecipeList recipes={searchResults} headingId="search-results-heading" />}
-              {snapshot.query && searchResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>}
+              {snapshot.query && debouncedQuery === snapshot.query && searchResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>}
             </div>
           ) : (
             <div className="overlay-mode">

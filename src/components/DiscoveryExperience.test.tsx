@@ -48,7 +48,7 @@ describe('DiscoveryExperience overlay', () => {
     return opener;
   }
 
-  it('opens search with an empty focused field and updates suggestions and results', async () => {
+  it('opens search with an empty focused field and updates suggestions and results after a typing pause', async () => {
     render(<DiscoveryExperience recipes={prototypeRecipes} />);
     const opener = addOpener('search');
     fireEvent.click(opener);
@@ -59,7 +59,8 @@ describe('DiscoveryExperience overlay', () => {
     expect(within(dialog).queryByRole('heading', { name: 'Propozycje' })).not.toBeInTheDocument();
 
     fireEvent.change(input, { target: { value: 'kurczak' } });
-    expect(within(dialog).getByRole('button', { name: 'kurczak' })).toBeInTheDocument();
+    expect(within(dialog).queryByRole('button', { name: 'kurczak' })).not.toBeInTheDocument();
+    expect(await within(dialog).findByRole('button', { name: 'kurczak' })).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: /Kurczak z grilla z sałatką/ })).toBeInTheDocument();
   });
 

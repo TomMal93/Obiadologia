@@ -1,4 +1,4 @@
-import { parseRecipes } from '@/domain/recipe';
+import { parseRecipes } from '@/domain/recipe-schema';
 
 export const prototypeRecipes = parseRecipes([
   {
