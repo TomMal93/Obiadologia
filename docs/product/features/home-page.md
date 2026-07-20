@@ -21,7 +21,7 @@ Strona zawiera:
 
 Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
 
-W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Stałe są odstępy między dolną krawędzią notatki a ramką panelu oraz między dolną ramką panelu a końcem sekcji. Kafel każdej drogi znajduje się bezpośrednio pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `2px`; osobne strzałki nie są renderowane. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
+W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Stałe są odstępy między dolną krawędzią notatki a ramką panelu oraz między dolną ramką panelu a końcem sekcji. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
 Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy do bieżącego przepływu MVP. Dopóki zakres oraz zawartość menu nie zostaną określone, implementacja nie renderuje jej jako pozornie działającego przycisku.
 
@@ -53,6 +53,11 @@ Tekst:
 - przycisk „Kategorie”
 
 Kliknięcie prowadzi do sekcji kategorii na stronie głównej.
+
+Notatka pod trzema drogami:
+
+- „Zaufaj pierwszej myśli.”
+- „Nie ma złej drogi do dobrego obiadu.”
 
 ## Sekcja kategorii
 
@@ -117,7 +122,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
   krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg.
 - Panel jest dosuwany do dolnej kotwicy pierwszej sekcji.
 - Kafel każdej drogi znajduje się bezpośrednio pod tytułem i kolorową kreską,
-  ma górny margines `2px`, a osobna strzałka nie jest renderowana.
+  ma górny margines `6px`, a osobna strzałka nie jest renderowana.
 - Wysokość panelu dopasowuje się do responsywnej zawartości, a pionowy odstęp
   między każdą grupą akcji a notatką wynosi `22px`.
 - Odstęp między drzewem a siatką dróg jest stały w mobilnych viewportach i zgodny z referencją Pixel 7 (`412 × 839px`).

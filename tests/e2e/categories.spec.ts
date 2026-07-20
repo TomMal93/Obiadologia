@@ -83,7 +83,7 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
 
     expect(headingCenter).toBeCloseTo(availableSpaceCenter, 0);
     expect(gridTop - treeBottom).toBeCloseTo(7, 0);
-    expect(actionMarginTop).toBe(2);
+    expect(actionMarginTop).toBe(6);
     for (const gap of actionNoteGaps) {
       expect(gap).toBeCloseTo(22, 0);
     }
@@ -92,12 +92,18 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
   }
 });
 
-test('path tree lines and dots share an emphasized soft color', async ({ page }) => {
+test('path tree lines progress from a soft color to the full path accent', async ({ page }) => {
   await page.goto('/');
 
   for (const path of ['map', 'search', 'categories']) {
-    const lineColor = await page.locator(`.tree-line--${path}`).evaluate(
-      (element) => getComputedStyle(element).stroke,
+    const startColor = await page.locator(`.tree-gradient-start--${path}`).evaluate(
+      (element) => getComputedStyle(element).stopColor,
+    );
+    const startOpacity = await page.locator(`.tree-gradient-start--${path}`).evaluate(
+      (element) => getComputedStyle(element).stopOpacity,
+    );
+    const endColor = await page.locator(`.tree-gradient-end--${path}`).evaluate(
+      (element) => getComputedStyle(element).stopColor,
     );
     const dotColor = await page.locator(`.tree-dot--${path}`).evaluate(
       (element) => getComputedStyle(element).fill,
@@ -105,8 +111,14 @@ test('path tree lines and dots share an emphasized soft color', async ({ page })
     const tileColor = await page.locator(`.path-col--${path} .path-tile`).evaluate(
       (element) => getComputedStyle(element).backgroundColor,
     );
+    const accentColor = await page.locator(`.path-col--${path} .path-rule`).evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    );
 
-    expect(lineColor).toBe(dotColor);
-    expect(lineColor).not.toBe(tileColor);
+    expect(endColor).toBe(accentColor);
+    expect(dotColor).toBe(accentColor);
+    expect(startOpacity).toBe('0.4');
+    expect(startColor).not.toBe(tileColor);
+    expect(startColor).not.toBe(endColor);
   }
 });

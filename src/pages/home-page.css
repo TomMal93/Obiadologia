@@ -156,38 +156,66 @@
 
 .tree-line {
   fill: none;
-  stroke: currentColor;
   stroke-width: 2.5;
   stroke-linecap: round;
 }
 
 .tree-line--map {
-  color: var(--tree-map);
+  stroke: url('#tree-gradient-map');
 }
 
 .tree-line--search {
-  color: var(--tree-search);
+  stroke: url('#tree-gradient-search');
 }
 
 .tree-line--categories {
-  color: var(--tree-categories);
+  stroke: url('#tree-gradient-categories');
+}
+
+.tree-gradient-start {
+  stop-opacity: 0.4;
+}
+
+.tree-gradient-start--map {
+  stop-color: var(--tree-map);
+}
+
+.tree-gradient-end--map {
+  stop-color: var(--color-map);
+}
+
+.tree-gradient-start--search {
+  stop-color: var(--tree-search);
+}
+
+.tree-gradient-end--search {
+  stop-color: var(--color-search);
+}
+
+.tree-gradient-start--categories {
+  stop-color: var(--tree-categories);
+}
+
+.tree-gradient-end--categories {
+  stop-color: var(--color-categories);
 }
 
 .tree-dot--map {
-  fill: var(--tree-map);
+  fill: var(--color-map);
 }
 
 .tree-dot--search {
-  fill: var(--tree-search);
+  fill: var(--color-search);
 }
 
 .tree-dot--categories {
-  fill: var(--tree-categories);
+  fill: var(--color-categories);
 }
 
 .tree-node-glow {
-  fill: var(--color-coral);
-  opacity: 0.12;
+  /* Nieprzezroczysta mieszanka zachowuje efekt poświaty, ale maskuje linie
+     namalowane wcześniej w SVG, więc węzeł pozostaje wyraźnie nad nimi. */
+  fill: color-mix(in srgb, var(--color-coral) 12%, var(--color-surface));
 }
 
 .tree-node {
@@ -196,10 +224,12 @@
   stroke-width: 1.5;
 }
 
-.tree-node-letter {
-  fill: var(--color-coral);
-  font-size: 26px;
-  font-weight: 800;
+.tree-node-icon {
+  fill: none;
+  stroke: var(--color-coral);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .path-grid {
@@ -266,7 +296,7 @@
   display: grid;
   width: 100%;
   justify-items: center;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 .path-tile {
@@ -373,6 +403,7 @@ button.path-tile {
 
 .path-note strong {
   display: block;
+  margin-bottom: var(--space-4);
   color: var(--color-text);
   font-size: 15px;
 }
