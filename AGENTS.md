@@ -21,7 +21,8 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 
 | Obszar | Ścieżka |
 |---|---|
-| model domenowy `Recipe`, walidacja i reguły Kategorii | `src/domain/recipe.ts` |
+| typy modelu `Recipe` i reguły Kategorii (bez zod, bezpieczne dla paczki klienckiej) | `src/domain/recipe.ts` |
+| schematy `zod` i walidacja `parseRecipes` (wyłącznie etap builda) | `src/domain/recipe-schema.ts` |
 | model `Ingredient`, grammatura i przeliczanie miar (metryczne ↔ domowe) | `src/domain/ingredient.ts` |
 | logika czasu etapów „Wcześniej” (formatowanie wyprzedzenia, godziny startu) | `src/domain/recipe-schedule.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
@@ -46,7 +47,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 
 | Obszar | Stan | Uwagi |
 |---|---|---|
-| Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod`) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`) |
+| Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod` w `src/domain/recipe-schema.ts`, uruchamianą na etapie builda) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`) |
 | Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
