@@ -112,8 +112,8 @@ button {
 
 /* Współdzielone klasy używane w co najmniej dwóch miejscach — zob.
    docs/engineering/code-conventions.md „Style i CSS”. Style należące do jednego
-   komponentu mieszkają przy nim (zakresowany <style> w .astro albo współlokowany
-   plik CSS wyspy React), a nie tutaj. */
+   komponentu mieszkają przy nim we współlokowanym pliku .css importowanym
+   przez ten komponent, a nie tutaj. */
 
 .eyebrow {
   margin: 0;

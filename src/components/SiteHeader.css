@@ -1,0 +1,34 @@
+/*
+  Style wspólnego nagłówka — współlokowane z komponentem
+  src/components/SiteHeader.astro i importowane przez niego. Zasięg jest
+  globalny (bez auto-zakresowania Astro), więc klasy pozostają prefiksowane
+  (site-*) zgodnie z konwencją nazw.
+*/
+
+.site-header {
+  display: flex;
+  align-items: center;
+  height: var(--header-block);
+  padding: 0 var(--gutter);
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-12);
+  color: var(--color-text);
+  font-size: var(--font-size-20);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.site-brand-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: var(--radius-field);
+  color: white;
+  background: var(--brand-gradient);
+  box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
+}
