@@ -63,7 +63,7 @@ Trzy drogi odkrywania mają stały kolor tożsamości. Ten sam kolor identyfikuj
 | Szukaj | `--color-search` | `#FF4F2E` | `--color-search-strong` `#A82D18` | `--color-search-soft` `#FFF1EC` |
 | Kategorie | `--color-categories` | `#159447` | `--color-categories-strong` `#0B7133` | `--color-categories-soft` `#ECF8EF` |
 
-- Wariant bazowy to akcent (linie, ikony, obramowania, kropki drzewka).
+- Wariant bazowy to akcent (ikony i obramowania). Linie łączące oraz kropki drzewka na Hero używają mieszanki `70%` wariantu `-soft` i `30%` wariantu bazowego odpowiedniej drogi, dzięki czemu pozostają powiązane z tłem kafla, ale są wyraźniejsze na powierzchni panelu.
 - Wariant `-strong` jest przeznaczony do tekstu i etykiet na jasnym tle i MUSI spełniać kontrast WCAG 2.2 AA. Dla Mapy kolor bazowy spełnia próg samodzielnie, więc `-strong` jest mu równy.
 - Wariant `-soft` to delikatne tło stanu aktywnego lub kafla.
 - Kolory przewodnie są aliasami odcieni bazowych (`--color-blue`/`--color-coral`/`--color-green`); te odcienie mogą nadal służyć innym rolom (np. koral marki i pierścienia fokusu). W kodzie tożsamość drogi zawsze używa tokenu przewodniego, nie odcienia bazowego.
@@ -167,7 +167,7 @@ Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi.
 - Projekt ma jeden układ mobilny działający od `320px` do `480px` szerokości.
 - Na ekranie szerszym niż `480px` cały widok jest wyśrodkowany w kontenerze `max-width: 480px`; nie powstaje osobny układ tabletowy ani desktopowy.
 - Trzy ścieżki strony głównej zachowują kolejność i hierarchię z makiety. Przy mniejszych szerokościach mogą zwężać kafle lub przechodzić w układ pionowy tylko wtedy, gdy jest to konieczne do uniknięcia przepełnienia.
-- Na pierwszym ekranie strony głównej nagłówek i panel wyboru dróg mają stałe kotwice pionowe. Dolna krawędź notatki zachowuje stały odstęp od ramki panelu, a ramka panelu od końca sekcji. Strzałka i kafel tworzą grupę akcji, której odstęp od notatki skaluje się proporcjonalnie do wysokości panelu; wartości są skalibrowane dla iPhone 12 Pro (`390 × 844px`). Szerokość i zawartość nadal skalują się w zakresie mobilnym, ale zmiana wysokości viewportu nie przesuwa górnych krawędzi tych dwóch elementów.
+- Na pierwszym ekranie strony głównej nagłówek i panel wyboru dróg mają stałe kotwice pionowe. Dolna krawędź notatki zachowuje stały odstęp od ramki panelu, a ramka panelu od końca sekcji. Strzałka i kafel tworzą grupę akcji, której odstęp od notatki skaluje się proporcjonalnie do wysokości panelu; te wartości są skalibrowane dla iPhone 12 Pro (`390 × 844px`). Odstęp drzewa od siatki dróg jest stały i skalibrowany dla Pixel 7 (`412 × 839px`). Szerokość i zawartość nadal skalują się w zakresie mobilnym, ale zmiana wysokości viewportu nie przesuwa górnych krawędzi tych dwóch elementów.
 - Karty wyników na telefonie mogą ustawić zdjęcie nad treścią; metadane nie mogą wypadać poza kartę.
 - Overlay uwzględnia `100dvh`, bezpieczne obszary urządzenia i klawiaturę ekranową.
 - Nie tworzymy dolnej nawigacji mobilnej, jeśli nie wynika to z nowej decyzji produktowej.
@@ -202,7 +202,7 @@ W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokośc
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
 | sekcje pełnoekranowe | każda główna sekcja wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
 | spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
-| geometria pierwszego ekranu | nagłówek główny i górna krawędź panelu dróg nie zmieniają położenia pionowego; odstępy notatki od ramki panelu i ramki od końca sekcji pozostają stałe, a odstęp grup akcji od notatki zachowuje tę samą proporcję wysokości panelu między mobilnymi viewportami; referencja: iPhone 12 Pro (`390 × 844px`) |
+| geometria pierwszego ekranu | nagłówek główny i górna krawędź panelu dróg nie zmieniają położenia pionowego; odstępy notatki od ramki panelu i ramki od końca sekcji pozostają stałe, odstęp grup akcji od notatki zachowuje tę samą proporcję wysokości panelu, a odstęp drzewa od siatki dróg pozostaje stały między mobilnymi viewportami; referencje: iPhone 12 Pro (`390 × 844px`) i Pixel 7 (`412 × 839px`) |
 | brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |
 | interakcje | wyniki reagują na każdą zmianę kryteriów, a karta otwiera trasę przepisu |
 

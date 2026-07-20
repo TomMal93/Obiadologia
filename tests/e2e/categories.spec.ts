@@ -29,6 +29,7 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     { width: 320, height: 568 },
     { width: 375, height: 667 },
     { width: 390, height: 844 },
+    { width: 412, height: 839 },
     { width: 430, height: 932 },
     { width: 480, height: 900 },
   ];
@@ -58,14 +59,40 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     const actionsBottom = await page.locator('.path-action').first().evaluate(
       (element) => element.getBoundingClientRect().bottom,
     );
+    const treeBottom = await page.locator('.path-tree').evaluate(
+      (element) => element.getBoundingClientRect().bottom,
+    );
+    const gridTop = await page.locator('.path-grid').evaluate(
+      (element) => element.getBoundingClientRect().top,
+    );
 
     expect(headingTop).toBeCloseTo(112, 0);
     expect(panelBounds.top).toBeCloseTo(210, 0);
+    expect(gridTop - treeBottom).toBeCloseTo(7, 0);
     expect((noteBounds.top - actionsBottom) / (panelBounds.bottom - panelBounds.top)).toBeCloseTo(
       0.0306,
       2,
     );
     expect(panelBounds.bottom - noteBounds.bottom).toBeCloseTo(23, 0);
     expect(sectionBottom - panelBounds.bottom).toBeCloseTo(46, 0);
+  }
+});
+
+test('path tree lines and dots share an emphasized soft color', async ({ page }) => {
+  await page.goto('/');
+
+  for (const path of ['map', 'search', 'categories']) {
+    const lineColor = await page.locator(`.tree-line--${path}`).evaluate(
+      (element) => getComputedStyle(element).stroke,
+    );
+    const dotColor = await page.locator(`.tree-dot--${path}`).evaluate(
+      (element) => getComputedStyle(element).fill,
+    );
+    const tileColor = await page.locator(`.path-col--${path} .path-tile`).evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    );
+
+    expect(lineColor).toBe(dotColor);
+    expect(lineColor).not.toBe(tileColor);
   }
 });
