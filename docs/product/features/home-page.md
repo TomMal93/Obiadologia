@@ -31,7 +31,7 @@ Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy
 
 Tekst:
 
-- „Szukaj Inspiracji”
+- „Obierz kierunek”
 - przycisk „Mapa”
 
 Kliknięcie otwiera discovery overlay w trybie mapy.
@@ -49,7 +49,7 @@ Kliknięcie otwiera discovery overlay w trybie wyszukiwarki.
 
 Tekst:
 
-- „Wybierz Kategorie”
+- „Ustal kryteria”
 - przycisk „Kategorie”
 
 Kliknięcie prowadzi do sekcji kategorii na stronie głównej.
