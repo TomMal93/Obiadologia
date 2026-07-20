@@ -85,8 +85,7 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     expect(gridTop - treeBottom).toBeCloseTo(7, 0);
     expect(actionMarginTop).toBe(2);
     for (const gap of actionNoteGaps) {
-      expect(gap).toBeGreaterThanOrEqual(0);
-      expect(gap).toBeLessThanOrEqual(10.5);
+      expect(gap).toBeCloseTo(22, 0);
     }
     expect(panelBounds.bottom - noteBounds.bottom).toBeCloseTo(23, 0);
     expect(sectionBottom - panelBounds.bottom).toBeCloseTo(46, 0);
