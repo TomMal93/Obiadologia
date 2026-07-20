@@ -1,0 +1,17 @@
+/*
+  Style powłoki aplikacji — współlokowane z layoutem
+  src/layouts/BaseLayout.astro i importowane przez niego. Zasięg jest globalny
+  (bez auto-zakresowania Astro), więc klasa pozostaje prefiksowana (app-*)
+  zgodnie z konwencją nazw.
+*/
+
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  margin-inline: auto;
+  overflow: clip;
+  background:
+    radial-gradient(circle at 90% 1%, rgb(242 170 0 / 18%), transparent 18rem),
+    var(--color-bg);
+}

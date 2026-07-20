@@ -1,40 +1,11 @@
 ---
 // Wspólny nagłówek z logo/brandem, osadzany na stronach Astro poza wyspą React.
+import './SiteHeader.css';
 ---
 
 <header class="site-header">
-  <a class="brand" href="/" aria-label="Obiadologia — strona główna">
-    <span class="brand-mark" aria-hidden="true">O</span>
+  <a class="site-brand" href="/" aria-label="Obiadologia — strona główna">
+    <span class="site-brand-mark" aria-hidden="true">O</span>
     <span>Obiadologia</span>
   </a>
 </header>
-
-<style>
-  .site-header {
-    display: flex;
-    align-items: center;
-    height: var(--header-block);
-    padding: 0 var(--gutter);
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-12);
-    color: var(--color-text);
-    font-size: var(--font-size-20);
-    font-weight: 800;
-    text-decoration: none;
-  }
-
-  .brand-mark {
-    display: grid;
-    width: 48px;
-    height: 48px;
-    place-items: center;
-    border-radius: var(--radius-field);
-    color: white;
-    background: var(--brand-gradient);
-    box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
-  }
-</style>

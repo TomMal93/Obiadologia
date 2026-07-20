@@ -29,9 +29,13 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | wyspa interaktywna (wybór ścieżki, Kategorie, wyniki) | `src/components/DiscoveryExperience.tsx` |
 | style współlokowane wyspy interaktywnej | `src/components/DiscoveryExperience.css` |
 | wspólny nagłówek z logo/brandem | `src/components/SiteHeader.astro` |
+| style współlokowane nagłówka | `src/components/SiteHeader.css` |
 | strona główna i osadzenie wyspy | `src/pages/index.astro` |
+| style współlokowane strony głównej | `src/pages/home-page.css` |
 | strona przepisu `/recipes/:slug` | `src/pages/recipes/[slug].astro` |
+| style współlokowane strony przepisu | `src/pages/recipes/recipe-page.css` |
 | wspólny layout, `<head>` i kontener mobilny | `src/layouts/BaseLayout.astro` |
+| style współlokowane powłoki layoutu | `src/layouts/BaseLayout.css` |
 | tokeny, reset i klasy współdzielone | `src/styles/global.css` |
 | testy jednostkowe i komponentów | `src/**/*.test.ts(x)` |
 | testy E2E i kontrola `axe-core` | `tests/e2e/` |
