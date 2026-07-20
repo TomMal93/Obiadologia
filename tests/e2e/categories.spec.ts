@@ -38,8 +38,14 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     await page.setViewportSize(viewport);
     await page.goto('/');
 
-    const headingTop = await page.getByRole('heading', { name: 'Co dziś jemy?' }).evaluate(
-      (element) => element.getBoundingClientRect().top,
+    const headingBounds = await page.getByRole('heading', { name: 'Co dziś jemy?' }).evaluate(
+      (element) => {
+        const bounds = element.getBoundingClientRect();
+        return { top: bounds.top, bottom: bounds.bottom };
+      },
+    );
+    const headerBottom = await page.locator('.site-header').evaluate(
+      (element) => element.getBoundingClientRect().bottom,
     );
     const panelBounds = await page.locator('.path-panel').evaluate(
       (element) => {
@@ -72,8 +78,10 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
       (element) => element.getBoundingClientRect().top,
     );
 
-    expect(headingTop).toBeCloseTo(112, 0);
-    expect(panelBounds.top).toBeGreaterThanOrEqual(210);
+    const headingCenter = (headingBounds.top + headingBounds.bottom) / 2;
+    const availableSpaceCenter = (headerBottom + panelBounds.top) / 2;
+
+    expect(headingCenter).toBeCloseTo(availableSpaceCenter, 0);
     expect(gridTop - treeBottom).toBeCloseTo(7, 0);
     expect(actionMarginTop).toBe(2);
     for (const gap of actionNoteGaps) {

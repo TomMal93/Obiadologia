@@ -7,17 +7,15 @@
 
 /* Pierwszy ekran (makieta home-hero.png): nagłówek z logo, komunikat
    „Co dziś jemy?" oraz karta wyboru trybu (Mapa / Szukaj / Kategorie) tworzą
-   razem jeden ekran. Dwie stałe kotwice pionowe są skalibrowane dla iPhone'a
-   12 Pro (390 x 844): h1 zaczyna się na 112px, a panel na 210px. Dzięki temu
-   zmiana wysokości telefonu nie przesuwa najważniejszych elementów; na niskich
-   ekranach dokument rośnie i pozostaje naturalnie przewijalny. */
+   razem jeden ekran. Elastyczny obszar hero centruje komunikat między dolną
+   krawędzią nagłówka strony a responsywnym panelem zakotwiczonym u dołu. */
 .intro-screen {
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - var(--header-block));
   min-height: calc(100dvh - var(--header-block));
-  padding: 44px var(--gutter) 46px;
+  padding: 0 var(--gutter) 46px;
 }
 
 /* Delikatne, powtarzalne hasła w tle — czysto dekoracyjne (aria-hidden),
@@ -78,7 +76,9 @@
 .home-hero {
   position: relative;
   z-index: 1;
-  flex: 0 0 98px;
+  display: grid;
+  flex: 1 0 98px;
+  place-items: center;
   text-align: center;
 }
 
@@ -107,7 +107,6 @@
   flex: 0 0 auto;
   grid-template-rows: auto max-content 7px max-content 10px auto;
   min-height: min-content;
-  margin-top: auto;
   padding: clamp(30px, 5vh, 40px) clamp(12px, 3vw, 18px) 22px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
