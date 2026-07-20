@@ -388,12 +388,12 @@ export function DiscoveryExperience({ recipes }: Props) {
         <div className="section-heading">
           <p className="eyebrow">Kategorie</p>
           <h2 id="categories-heading">Wybierz tryb</h2>
-          <p>Wybierz co najmniej jedną opcję: porę dnia, tempo lub okazję.</p>
+          <p>Wybierz co najmniej jedną opcję:<br />porę dnia, tempo lub okazję.</p>
         </div>
         <div className="category-panel">
           {categoryGroups.map((group) => (
             <fieldset key={group.key} className={`category-group category-group--${group.accent}`}>
-              <legend><span className="legend-icon">{groupIcons[group.key]}</span>{group.label}</legend>
+              <legend><span>{group.label}</span><span className="legend-icon">{groupIcons[group.key]}</span></legend>
               <div className="option-grid">
                 {group.options.map(([value, label]) => {
                   const selected = selection[group.key] === value;

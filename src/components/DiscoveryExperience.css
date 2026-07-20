@@ -30,20 +30,21 @@
 .category-panel fieldset {
   min-width: 0;
   margin: 0;
-  padding: 0 0 clamp(12px, 2.6vh, 24px);
+  padding: clamp(8px, 1.5vh, 12px) 0;
   border: 0;
 }
 
 .category-panel fieldset + fieldset {
-  padding-top: clamp(12px, 2.6vh, 24px);
   border-top: 1px solid var(--color-border);
 }
 
 .category-panel legend {
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: var(--space-8);
-  margin-bottom: clamp(8px, 1.6vh, 12px);
+  width: 100%;
+  margin-bottom: 0;
   font-size: var(--font-size-20);
   font-weight: 800;
 }
@@ -51,6 +52,8 @@
 /* Ikona nagłówka grupy bierze kolor akcentu grupy (--group-accent ustawiany
    na .category-group--*). Ikona jest dekoracyjna — znaczenie niesie tekst. */
 .legend-icon {
+  position: absolute;
+  right: 0;
   display: block;
   width: 22px;
   height: 22px;
@@ -101,6 +104,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-8);
+  margin-top: 0;
 }
 
 .category-option {
@@ -113,7 +117,7 @@
   align-content: center;
   gap: var(--space-4);
   padding: var(--space-8) var(--space-4);
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--group-accent) 28%, transparent);
   border-radius: var(--radius-field);
   color: var(--color-text);
   font-size: var(--font-size-14);
@@ -122,8 +126,8 @@
   background: var(--color-surface);
 }
 
-/* Hover sygnalizujemy tłem, nie obramowaniem — dzięki temu nieaktywny button
-   nigdy nie pokazuje ramki (także gdy kursor zostaje na nim po odznaczeniu). */
+/* Hover sygnalizujemy tłem, dzięki czemu subtelna ramka pozostaje stabilna
+   także wtedy, gdy kursor zostaje na przycisku po jego odznaczeniu. */
 @media (hover: hover) {
   .category-option:not(.is-selected):hover {
     background: var(--group-soft);
