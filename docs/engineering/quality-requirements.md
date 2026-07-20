@@ -115,7 +115,7 @@ corepack pnpm build
 corepack pnpm verify
 ```
 
-`lint` uruchamia ESLint, `typecheck` — `astro check` (kontrola typów projektu Astro), a `verify` łączy powyższe bramki w jeden przebieg. `test` obejmuje Vitest oraz React Testing Library. `test:e2e` uruchamia Playwright w mobilnym Chromium i zawiera automatyczną kontrolę `axe-core`. Build MUSI generować statyczną stronę główną oraz dostępne trasy `/recipes/:slug`.
+`lint` uruchamia ESLint, `typecheck` — `astro check` (kontrola typów projektu Astro), a `verify` łączy powyższe bramki w jeden przebieg. `test` obejmuje Vitest oraz React Testing Library. `test:e2e` uruchamia Playwright w mobilnym Chromium i zawiera automatyczną kontrolę `axe-core`; przed testami `webServer` Playwrighta sam buduje stronę i serwuje ją przez `astro preview`, więc `verify` nie powtarza osobnego kroku `build`. Build MUSI generować statyczną stronę główną oraz dostępne trasy `/recipes/:slug`.
 
 ## Definition of Done
 
