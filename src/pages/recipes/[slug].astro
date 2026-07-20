@@ -4,6 +4,8 @@ import { prototypeRecipes } from '@/data/prototype-recipes';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import type { Recipe } from '@/domain/recipe';
 import { formatHouseholdMeasure, formatMetricMeasure } from '@/domain/ingredient';
+import { formatLeadTime } from '@/domain/recipe-schedule';
+import './recipe-page.css';
 
 export function getStaticPaths() {
   return prototypeRecipes
@@ -19,13 +21,18 @@ interface Props {
 }
 
 const { recipe } = Astro.props;
+
+// Sekcje wspierające gotowanie („Wcześniej” i „Przygotowanie”) są opcjonalne.
+// Tryb asystenta ma sens tylko, gdy jest co pokazać poza samymi krokami —
+// prostota przepisu wynika więc z pustych pól, bez osobnego przełącznika treści.
+const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
 ---
 
 <BaseLayout title={`${recipe.title} — Obiadologia`} description={recipe.description}>
   <SiteHeader />
 
   <main class="recipe-page">
-    <article class="recipe-article">
+    <article class="recipe-article" data-view="assistant">
       <div class="recipe-hero">
         {
           recipe.image ? (
@@ -104,6 +111,94 @@ const { recipe } = Astro.props;
         </ul>
       </section>
 
+      {
+        hasAssistantContent && (
+          <div
+            class="assistant-toggle"
+            role="group"
+            aria-label="Sposób prowadzenia przez przepis"
+            hidden
+          >
+            <button
+              type="button"
+              class="assistant-toggle__option is-active"
+              data-view-target="assistant"
+              aria-pressed="true"
+            >
+              Tryb asystenta
+            </button>
+            <button
+              type="button"
+              class="assistant-toggle__option"
+              data-view-target="steps"
+              aria-pressed="false"
+            >
+              Tylko kroki
+            </button>
+          </div>
+        )
+      }
+
+      {
+        recipe.advance && (
+          <section
+            class="recipe-advance assistant-section"
+            aria-labelledby="advance-heading"
+          >
+            <div class="assistant-section__head">
+              <h2 id="advance-heading">Wcześniej</h2>
+              <p class="assistant-section__hint">
+                Czynności, które trzeba zacząć z wyprzedzeniem.
+              </p>
+            </div>
+            <div class="advance-calc" hidden>
+              <label class="advance-calc__label" for="serve-time">
+                O której chcesz jeść?
+              </label>
+              <input class="advance-calc__input" id="serve-time" type="time" />
+              <p class="advance-calc__hint">
+                Policzymy, o której zacząć każdy etap.
+              </p>
+            </div>
+            <ol class="advance-list">
+              {recipe.advance.map((step) => (
+                <li class="advance-step">
+                  <p class="advance-step__text">{step.text}</p>
+                  <p class="advance-step__timing">
+                    <span class="advance-step__lead">
+                      na {formatLeadTime(step.leadTimeMinutes)} przed podaniem
+                    </span>
+                    <span
+                      class="advance-step__start"
+                      data-lead-minutes={step.leadTimeMinutes}
+                      hidden
+                    />
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
+
+      {
+        recipe.preparation && (
+          <section class="recipe-prep assistant-section" aria-labelledby="prep-heading">
+            <div class="assistant-section__head">
+              <h2 id="prep-heading">Przygotowanie</h2>
+              <p class="assistant-section__hint">
+                Zbierz i przygotuj wszystko, zanim ruszysz z gotowaniem.
+              </p>
+            </div>
+            <ul class="prep-list">
+              {recipe.preparation.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
       <section class="recipe-steps" aria-labelledby="steps-heading">
         <h2 id="steps-heading">Kroki</h2>
         <ol class="step-list">
@@ -121,283 +216,9 @@ const { recipe } = Astro.props;
   </main>
 </BaseLayout>
 
-<style>
-  /* Strona wypełnia ekran poniżej nagłówka; przy dłuższej treści (powiększenie
-     tekstu, niski ekran) rośnie i przewija się zgodnie z regułą reflow. */
-  .recipe-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: calc(100vh - var(--header-block));
-    min-height: calc(100dvh - var(--header-block));
-    padding: 0 var(--gutter) var(--screen-pad-y);
-  }
-
-  .recipe-article {
-    display: grid;
-    gap: var(--stack-gap);
-    padding: var(--space-16) var(--space-16) var(--space-24);
-    border-radius: var(--radius-panel);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-surface);
-  }
-
-  .recipe-hero {
-    display: grid;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    border-radius: var(--radius-card);
-  }
-
-  .recipe-hero > img,
-  .recipe-hero > span {
-    width: 100%;
-    height: 100%;
-  }
-
-  .recipe-hero > img {
-    display: block;
-    object-fit: cover;
-  }
-
-  .recipe-hero > span {
-    font-size: clamp(48px, 14vw, 64px);
-  }
-
-  .recipe-intro {
-    display: grid;
-    gap: var(--space-8);
-  }
-
-  /* Tytuł celuje w jedną linię (nie jest to twarde wymaganie): nieco mniejszy
-     płynny rozmiar niż wcześniej, a `text-wrap: balance` ładnie równoważy wiersze,
-     gdy dłuższy tytuł jednak się zawinie. */
-  .recipe-intro h1 {
-    margin: 0;
-    font-size: clamp(21px, 5.8vw, 32px);
-    line-height: 1.15;
-    text-wrap: balance;
-  }
-
-  .recipe-lead {
-    margin: 0;
-    color: var(--color-text-muted);
-    line-height: 1.6;
-  }
-
-  /* Pasek metadanych nad tytułem: tagi po lewej, czas przygotowania po prawej,
-     w jednej linii. Przy wąskim ekranie czas zawija się pod tagi, pozostając
-     wyrównany do prawej. */
-  .recipe-intro__top {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-8) var(--space-12);
-  }
-
-  /* Tagi jako drobne, drukowane etykiety (wielkie litery) — bez punktorów
-     i bez tła pigułki. */
-  .recipe-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4) var(--space-12);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .recipe-tags > li {
-    color: var(--color-text-muted);
-    font-size: var(--font-size-14);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  /* Czas przygotowania jako pigułka marki — nadaje metadanej własną, czytelną
-     formę i stoi po prawej, w jednej linii z tagami. Statyczny tekst, więc nie
-     dotyczy go próg 44 × 44px obszaru akcji. */
-  .prep-time {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-8);
-    flex: none;
-    margin: 0 0 0 auto;
-    padding: var(--space-8) var(--space-12);
-    border-radius: var(--radius-pill);
-    color: var(--color-coral-strong);
-    font-weight: 700;
-    background: var(--color-coral-soft);
-  }
-
-  .prep-time__icon {
-    flex: none;
-  }
-
-  .prep-time__value {
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Etykieta tylko dla czytnika ekranu — wizualnie niesie ją forma pigułki,
-     ale znaczenie „czas przygotowania” pozostaje dostępne bez polegania na
-     kolorze czy ikonie. */
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .recipe-ingredients__head {
-    display: grid;
-    gap: var(--space-8);
-    margin-bottom: var(--space-12);
-  }
-
-  .recipe-ingredients__head h2 {
-    margin: 0;
-    font-size: var(--font-size-24);
-    line-height: 1.2;
-  }
-
-  /* Przełącznik formy miary; ukryty do czasu włączenia przez skrypt, aby bez
-     JS użytkownik widział sprawną listę w jednostkach metrycznych. */
-  .unit-toggle {
-    display: inline-flex;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    border-radius: var(--radius-pill);
-    background: var(--color-bg);
-  }
-
-  .unit-toggle[hidden] {
-    display: none;
-  }
-
-  .unit-toggle__option {
-    display: inline-flex;
-    min-height: 44px;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-8) var(--space-12);
-    border: 0;
-    border-radius: var(--radius-pill);
-    color: var(--color-text-muted);
-    font-size: var(--font-size-14);
-    font-weight: 700;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .unit-toggle__option.is-active {
-    color: var(--color-search-strong);
-    font-weight: 800;
-    background: var(--color-surface);
-    box-shadow: var(--shadow-surface);
-  }
-
-  .ingredient-list {
-    display: grid;
-    gap: var(--space-8);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .ingredient {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-8);
-    padding-bottom: var(--space-8);
-    border-bottom: 1px solid var(--color-border);
-    line-height: 1.5;
-  }
-
-  .ingredient:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-
-  .ingredient__measure {
-    color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  /* Widoczna jest tylko forma pasująca do aktualnego stanu przełącznika. */
-  .ingredient-list[data-units='metric'] .ingredient__measure-household,
-  .ingredient-list[data-units='household'] .ingredient__measure-metric {
-    display: none;
-  }
-
-  .recipe-steps h2 {
-    margin: 0 0 var(--space-12);
-    font-size: var(--font-size-24);
-    line-height: 1.2;
-  }
-
-  /* Numerowane kroki: własny licznik i koralowy znacznik z numerem, aby
-     kolejność była czytelna niezależnie od domyślnych markerów listy. */
-  .step-list {
-    display: grid;
-    gap: var(--space-12);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    counter-reset: step;
-  }
-
-  .step-list > li {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-    gap: var(--space-12);
-    line-height: 1.5;
-    counter-increment: step;
-  }
-
-  .step-list > li::before {
-    content: counter(step);
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: var(--radius-pill);
-    color: var(--color-coral-strong);
-    font-size: var(--font-size-14);
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-    background: var(--color-coral-soft);
-  }
-
-  .prototype-note {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--font-size-14);
-    line-height: 1.5;
-  }
-
-  .back-link {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    gap: var(--space-4);
-    justify-self: start;
-    color: var(--color-cta-strong);
-    font-weight: 800;
-  }
-</style>
-
 <script>
+  import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
+
   // Progresywne wzbogacenie: bez JS strona pokazuje sprawną listę w jednostkach
   // metrycznych, a przełącznik pozostaje ukryty. Skrypt go odsłania i przełącza
   // formę miary, przełączając wyłącznie klasę na liście (obie formy są w HTML).
@@ -420,5 +241,64 @@ const { recipe } = Astro.props;
         }
       });
     }
+  }
+
+  // Tryb prowadzenia przez przepis: przełącznik zwija etapy Wcześniej/Przygotowanie
+  // do samej listy kroków. Bez JS pozostaje ukryty, a strona pokazuje pełną treść.
+  const article = document.querySelector<HTMLElement>('.recipe-article');
+  const assistantToggle = document.querySelector<HTMLElement>('.assistant-toggle');
+
+  if (article && assistantToggle) {
+    assistantToggle.hidden = false;
+    const viewOptions = Array.from(
+      assistantToggle.querySelectorAll<HTMLButtonElement>('.assistant-toggle__option'),
+    );
+
+    for (const option of viewOptions) {
+      option.addEventListener('click', () => {
+        const target = option.dataset.viewTarget;
+        if (!target) return;
+        article.dataset.view = target;
+        for (const other of viewOptions) {
+          const active = other === option;
+          other.classList.toggle('is-active', active);
+          other.setAttribute('aria-pressed', String(active));
+        }
+      });
+    }
+  }
+
+  // Kalkulator startu: po podaniu pory podania liczy godzinę rozpoczęcia każdego
+  // etapu z wyprzedzeniem. Bez JS pole i wyliczenia pozostają ukryte, a lista
+  // etapów sama w sobie pokazuje potrzebne wyprzedzenie („na 2 godz przed…”).
+  const calc = document.querySelector<HTMLElement>('.advance-calc');
+  const serveInput = document.querySelector<HTMLInputElement>('#serve-time');
+  const startSlots = Array.from(document.querySelectorAll<HTMLElement>('.advance-step__start'));
+
+  if (calc && serveInput && startSlots.length > 0) {
+    calc.hidden = false;
+
+    const render = () => {
+      const serveMinutes = parseClock(serveInput.value);
+
+      for (const slot of startSlots) {
+        const leadMinutes = Number(slot.dataset.leadMinutes);
+
+        if (serveMinutes === null || !Number.isFinite(leadMinutes)) {
+          slot.hidden = true;
+          slot.textContent = '';
+          continue;
+        }
+
+        const [scheduled] = scheduleAdvanceSteps([{ text: '', leadTimeMinutes: leadMinutes }], serveMinutes);
+        const clock = formatClock(scheduled.startMinutes);
+        slot.textContent =
+          scheduled.dayOffset < 0 ? `zacznij dzień wcześniej o ${clock}` : `zacznij o ${clock}`;
+        slot.hidden = false;
+      }
+    };
+
+    serveInput.addEventListener('input', render);
+    render();
   }
 </script>

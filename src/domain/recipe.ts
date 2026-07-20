@@ -16,6 +16,22 @@ const imageReferenceSchema = z
   })
   .strict();
 
+/**
+ * Krok wykonywany z wyprzedzeniem czasowym („zrób wcześniej”): namoczenie,
+ * marynowanie, schłodzenie ciasta. `leadTimeMinutes` to liczba minut przed
+ * podaniem, o którą trzeba go zacząć. Wartość jest strukturalna (a nie „noc”
+ * czy „2h”), aby na stronie dało się z niej policzyć godzinę startu przy
+ * zadanej porze serwowania.
+ */
+export const advanceStepSchema = z
+  .object({
+    text: z.string().trim().min(1),
+    leadTimeMinutes: z.number().int().positive(),
+  })
+  .strict();
+
+export type AdvanceStep = z.infer<typeof advanceStepSchema>;
+
 export const recipeSchema = z
   .object({
     id: z.string().trim().min(1),
@@ -25,6 +41,12 @@ export const recipeSchema = z
     image: imageReferenceSchema.nullable(),
     preparationMinutes: z.number().int().positive(),
     ingredients: z.array(ingredientSchema).min(1),
+    // Czynności z wyprzedzeniem czasowym; opcjonalne — brak pola oznacza przepis
+    // bez etapu „zrób wcześniej”. Jeśli pole istnieje, MUSI mieć co najmniej jeden krok.
+    advance: z.array(advanceStepSchema).min(1).optional(),
+    // Przygotowanie wstępne (mise en place, skompletowanie sprzętu); opcjonalne,
+    // zwykły tekst — struktura czasu nie jest tu potrzebna.
+    preparation: z.array(z.string().trim().min(1)).min(1).optional(),
     steps: z.array(z.string().trim().min(1)).min(1),
     tags: z.array(z.string().trim().min(1)).min(1),
     mealTimes: z.array(z.enum(mealTimes)).min(1),
