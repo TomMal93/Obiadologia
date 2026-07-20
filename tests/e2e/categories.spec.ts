@@ -59,6 +59,12 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     const actionMarginTop = await page.locator('.path-action').first().evaluate(
       (element) => Number.parseFloat(getComputedStyle(element).marginTop),
     );
+    const actionNoteGaps = await page.locator('.path-action').evaluateAll(
+      (actions, noteTop) => actions.map(
+        (action) => Number(noteTop) - action.getBoundingClientRect().bottom,
+      ),
+      noteBounds.top,
+    );
     const treeBottom = await page.locator('.path-tree').evaluate(
       (element) => element.getBoundingClientRect().bottom,
     );
@@ -67,9 +73,13 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     );
 
     expect(headingTop).toBeCloseTo(112, 0);
-    expect(panelBounds.top).toBeCloseTo(210, 0);
+    expect(panelBounds.top).toBeGreaterThanOrEqual(210);
     expect(gridTop - treeBottom).toBeCloseTo(7, 0);
     expect(actionMarginTop).toBe(2);
+    for (const gap of actionNoteGaps) {
+      expect(gap).toBeGreaterThanOrEqual(0);
+      expect(gap).toBeLessThanOrEqual(10.5);
+    }
     expect(panelBounds.bottom - noteBounds.bottom).toBeCloseTo(23, 0);
     expect(sectionBottom - panelBounds.bottom).toBeCloseTo(46, 0);
   }

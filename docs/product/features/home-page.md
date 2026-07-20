@@ -21,7 +21,7 @@ Strona zawiera:
 
 Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
 
-W układzie mobilnym pozycje nagłówka głównego i górnej krawędzi panelu wyboru dróg są stałymi kotwicami pionowymi, skalibrowanymi dla viewportu iPhone 12 Pro (`390 × 844px`). Stałe są również odstępy między dolną krawędzią notatki a ramką panelu oraz między ramką panelu a końcem pierwszej sekcji. Grupa strzałki i kafla ma lokalny górny margines `2px`. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Zmiana wysokości telefonu nie przesuwa stałych kotwic; na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
+W układzie mobilnym pozycja nagłówka głównego jest stałą kotwicą pionową, skalibrowaną dla viewportu iPhone 12 Pro (`390 × 844px`). Wysokość panelu wynika z responsywnie skalowanej zawartości, tak aby odstęp między grupami akcji a notatką nie przekraczał `10px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji, więc jej górna krawędź obniża się wraz z dostępnym miejscem. Stałe są odstępy między dolną krawędzią notatki a ramką panelu oraz między dolną ramką panelu a końcem sekcji. Grupa strzałki i kafla ma lokalny górny margines `2px`. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
 Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy do bieżącego przepływu MVP. Dopóki zakres oraz zawartość menu nie zostaną określone, implementacja nie renderuje jej jako pozornie działającego przycisku.
 
@@ -113,8 +113,11 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Użytkownik może usunąć aktywny wybór.
 - Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
 - Każda główna sekcja wypełnia jeden ekran i nie jest wyższa niż ekran, zgodnie z regułą pełnoekranowych sekcji w [ui-system.md](../../design/ui-system.md).
-- Nagłówek główny i panel wyboru dróg zachowują te same kotwice pionowe w mobilnych viewportach; punktem odniesienia jest iPhone 12 Pro (`390 × 844px`).
+- Nagłówek główny zachowuje stałą kotwicę pionową; panel jest dosuwany do
+  dolnej kotwicy pierwszej sekcji, a jego górna krawędź może się obniżać.
 - Strzałka i kafel każdej drogi tworzą jedną grupę z górnym marginesem `2px`.
+- Wysokość panelu dopasowuje się do responsywnej zawartości, a pionowy odstęp
+  między każdą grupą akcji a notatką nie przekracza `10px`.
 - Odstęp między drzewem a siatką dróg jest stały w mobilnych viewportach i zgodny z referencją Pixel 7 (`412 × 839px`).
 - Odległość dolnej krawędzi notatki od ramki panelu jest stała w mobilnych viewportach i zgodna z referencją iPhone 12 Pro.
 - Odległość dolnej ramki panelu wyboru dróg od końca pierwszej sekcji jest stała w mobilnych viewportach i zgodna z referencją iPhone 12 Pro.
