@@ -9,13 +9,17 @@ beforeEach(() => {
 });
 
 describe('DiscoveryExperience categories', () => {
-  it('starts without selected options and without recipe results', () => {
+  it('starts with a stable empty results frame and without recipe cards', () => {
     render(<DiscoveryExperience recipes={prototypeRecipes} />);
 
     for (const button of screen.getAllByRole('button', { pressed: false })) {
       expect(button).toHaveAttribute('aria-pressed', 'false');
     }
-    expect(screen.queryByRole('heading', { name: 'Propozycje dla Ciebie' })).not.toBeInTheDocument();
+    expect(screen.getByText('Wybierz co najmniej jedną opcję.')).toBeInTheDocument();
+    const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
+    expect(screen.getByRole('heading', { name: 'Propozycje dla Ciebie' })).toBeInTheDocument();
+    expect(within(results).getByText('Tutaj pojawią się dopasowane przepisy.')).toBeInTheDocument();
+    expect(within(results).queryByRole('link')).not.toBeInTheDocument();
   });
 
   it('filters after every change and hides results after removing the last selection', () => {
@@ -24,18 +28,30 @@ describe('DiscoveryExperience categories', () => {
     const lunch = screen.getByRole('button', { name: /Obiad/ });
     fireEvent.click(lunch);
 
-    const results = screen.getByRole('heading', { name: 'Propozycje dla Ciebie' }).parentElement;
-    expect(results).not.toBeNull();
-    expect(within(results!).getAllByRole('link')).toHaveLength(4);
+    const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
+    expect(within(results).getAllByRole('link')).toHaveLength(4);
     expect(lunch).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText(/Wybrano:/)).toBeInTheDocument();
 
     const grill = screen.getByRole('button', { name: /Na grilla/ });
     fireEvent.click(grill);
-    expect(within(results!).getAllByRole('link')).toHaveLength(2);
+    expect(within(results).getAllByRole('link')).toHaveLength(2);
 
     fireEvent.click(grill);
     fireEvent.click(lunch);
-    expect(screen.queryByRole('heading', { name: 'Propozycje dla Ciebie' })).not.toBeInTheDocument();
+    expect(screen.getByText('Wybierz co najmniej jedną opcję.')).toBeInTheDocument();
+    expect(within(results).getByText('Tutaj pojawią się dopasowane przepisy.')).toBeInTheDocument();
+    expect(within(results).queryByRole('link')).not.toBeInTheDocument();
+  });
+
+  it('keeps the same results frame when a selection has no matches', () => {
+    render(<DiscoveryExperience recipes={[]} />);
+
+    const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
+    fireEvent.click(screen.getByRole('button', { name: /Obiad/ }));
+
+    expect(screen.getByRole('region', { name: 'Wyniki kategorii' })).toBe(results);
+    expect(within(results).getByText('Brak dopasowań. Zmień lub usuń wybrane kryterium.')).toBeInTheDocument();
   });
 });
 

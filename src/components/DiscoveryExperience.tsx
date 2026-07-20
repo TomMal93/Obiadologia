@@ -131,6 +131,32 @@ function markSessionEnded(id: string) {
   window.sessionStorage.setItem(endedSessionsKey, JSON.stringify([...ended].slice(-20)));
 }
 
+function RecipeItems({ recipes }: { recipes: Recipe[] }) {
+  return (
+    <ul className="recipe-list">
+      {recipes.map((recipe) => (
+        <li key={recipe.id}>
+          <a className="recipe-card" href={`/recipes/${recipe.slug}`}>
+            {recipe.image ? (
+              <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
+            ) : (
+              <span className="recipe-placeholder" aria-hidden="true">O</span>
+            )}
+            <span className="recipe-content">
+              <strong>{recipe.title}</strong>
+              <span className="recipe-description">{recipe.description}</span>
+              <span className="recipe-meta">◷ {recipe.preparationMinutes} min</span>
+              <span className="tag-list" aria-label="Tagi">
+                {recipe.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
+              </span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function RecipeList({
   recipes,
   headingId,
@@ -144,27 +170,7 @@ function RecipeList({
     <section className="results discovery-results" aria-labelledby={headingId}>
       <h3 id={headingId}>{title}</h3>
       <p className="prototype-note">Prototypowe propozycje z lokalnego katalogu.</p>
-      <ul className="recipe-list">
-        {recipes.map((recipe) => (
-          <li key={recipe.id}>
-            <a className="recipe-card" href={`/recipes/${recipe.slug}`}>
-              {recipe.image ? (
-                <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
-              ) : (
-                <span className="recipe-placeholder" aria-hidden="true">O</span>
-              )}
-              <span className="recipe-content">
-                <strong>{recipe.title}</strong>
-                <span className="recipe-description">{recipe.description}</span>
-                <span className="recipe-meta">◷ {recipe.preparationMinutes} min</span>
-                <span className="tag-list" aria-label="Tagi">
-                  {recipe.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
-                </span>
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <RecipeItems recipes={recipes} />
     </section>
   );
 }
@@ -406,12 +412,34 @@ export function DiscoveryExperience({ recipes }: Props) {
               </div>
             </fieldset>
           ))}
-          {hasSelection && <p className="selection-summary"><span aria-hidden="true">✓</span> Wybrano: <strong>{selectedLabels.join(' · ')}</strong></p>}
+          <p className="selection-summary" aria-live="polite">
+            {hasSelection ? (
+              <><span aria-hidden="true">✓</span><span>Wybrano: <strong>{selectedLabels.join(' · ')}</strong></span></>
+            ) : (
+              <span>Wybierz co najmniej jedną opcję.</span>
+            )}
+          </p>
         </div>
-        <div aria-live="polite" aria-atomic="true">
-          {hasSelection && categoryResults.length > 0 && <RecipeList recipes={categoryResults} headingId="category-results-heading" title="Propozycje dla Ciebie" />}
-          {hasSelection && categoryResults.length === 0 && <p className="empty-state">Brak dopasowań. Zmień lub usuń wybrane kryterium.</p>}
-        </div>
+        <section className="results category-results-frame" aria-labelledby="category-results-heading">
+          <h3 id="category-results-heading">Propozycje dla Ciebie</h3>
+          <div
+            className={`category-results-body${hasSelection && categoryResults.length > 0 ? '' : ' is-message'}`}
+            role="region"
+            aria-label="Wyniki kategorii"
+            aria-live="polite"
+            aria-atomic="true"
+            tabIndex={hasSelection && categoryResults.length > 0 ? 0 : undefined}
+          >
+            {!hasSelection && <p className="category-results-message">Tutaj pojawią się dopasowane przepisy.</p>}
+            {hasSelection && categoryResults.length === 0 && <p className="category-results-message">Brak dopasowań. Zmień lub usuń wybrane kryterium.</p>}
+            {hasSelection && categoryResults.length > 0 && (
+              <>
+                <p className="prototype-note">Prototypowe propozycje z lokalnego katalogu.</p>
+                <RecipeItems recipes={categoryResults} />
+              </>
+            )}
+          </div>
+        </section>
       </section>
 
       {session && snapshot && (

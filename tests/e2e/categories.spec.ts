@@ -5,11 +5,21 @@ test('category selection opens a prerendered recipe page', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Co dziś jemy?' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Propozycje dla Ciebie' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Propozycje dla Ciebie' })).toBeVisible();
+  const resultsFrame = page.locator('.category-results-frame');
+  const readFrameGeometry = () => resultsFrame.evaluate((element) => {
+    const bounds = element.getBoundingClientRect();
+    return { documentTop: bounds.top + window.scrollY, height: bounds.height };
+  });
+  const initialFrameGeometry = await readFrameGeometry();
+  await expect(page.getByText('Tutaj pojawią się dopasowane przepisy.')).toBeVisible();
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
 
   await page.getByRole('button', { name: /Obiad/ }).click();
-  await expect(page.getByRole('heading', { name: 'Propozycje dla Ciebie' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Wyniki kategorii' }).getByRole('link')).toHaveCount(4);
+  const selectedFrameGeometry = await readFrameGeometry();
+  expect(selectedFrameGeometry.documentTop).toBeCloseTo(initialFrameGeometry.documentTop, 0);
+  expect(selectedFrameGeometry.height).toBeCloseTo(initialFrameGeometry.height, 0);
 
   await page.getByRole('link', { name: /Kurczak z grilla z sałatką/ }).click();
   await expect(page).toHaveURL(/\/recipes\/kurczak-z-grilla-z-salatka$/);

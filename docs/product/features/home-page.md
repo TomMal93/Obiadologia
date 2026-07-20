@@ -90,6 +90,7 @@ Nagłówek:
 - W każdej grupie można wybrać maksymalnie jedną opcję.
 - Wybranie innej opcji zastępuje poprzednią w tej samej grupie.
 - Ponowne użycie aktywnej opcji usuwa wybór.
+- Pasek pod grupami jest zawsze widoczny: przed wyborem przypomina „Wybierz co najmniej jedną opcję.”, a po wyborze pokazuje podsumowanie „Wybrano: …” w jednym wierszu.
 - Wyniki pojawiają się po wyborze co najmniej jednej opcji w dowolnej grupie.
 - Od pierwszego wyboru zmiana dowolnej opcji aktualizuje wyniki.
 - Usunięcie ostatniego wyboru ukrywa wyniki i przywraca stan początkowy.
@@ -98,10 +99,12 @@ Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 
 ## Wyniki
 
-Po wykonaniu co najmniej jednego wyboru strona pokazuje:
+Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie” o stałej wysokości w danym viewporcie. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki; zmienia się wyłącznie jej wnętrze:
 
-- podsumowanie wybranych opcji,
-- od trzech do czterech początkowych propozycji,
+- bez wyboru ramka pokazuje instrukcję „Tutaj pojawią się dopasowane przepisy.”,
+- po dopasowaniu pokazuje od trzech do czterech początkowych propozycji,
+- bez dopasowania pokazuje komunikat „Brak dopasowań. Zmień lub usuń wybrane kryterium.”,
+- lista dłuższa niż dostępne wnętrze ramki przewija się pionowo, bez zmiany wysokości ramki,
 - w drugiej fazie: przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
 
 „Pokaż więcej” nie należy do bieżącego MVP. W drugiej fazie prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane w specyfikacji tej podstrony. Do tego czasu prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
@@ -114,6 +117,8 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
 - Kategorie prowadzą do odpowiedniej sekcji.
 - Żadna kategoria nie jest zaznaczona domyślnie.
+- Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.
+- Ramka wyników jest widoczna w każdym stanie i nie zmienia wysokości po wyborze, odznaczeniu ani braku dopasowań.
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.
 - Użytkownik może usunąć aktywny wybór.
 - Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
