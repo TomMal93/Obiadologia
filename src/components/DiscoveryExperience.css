@@ -609,6 +609,19 @@
 
 .map-point:active { cursor: grabbing; }
 
+.map-mood {
+  margin-top: var(--space-12);
+  font-size: var(--font-size-20);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  transition: color 140ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-mood { transition: none; }
+}
+
 .overlay-empty {
   margin-top: var(--space-24);
   border: 1px solid var(--color-border);
