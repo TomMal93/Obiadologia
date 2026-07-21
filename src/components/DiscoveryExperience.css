@@ -454,6 +454,7 @@
 
 .overlay-intro {
   margin-bottom: var(--space-24);
+  text-align: center;
 }
 
 /* Nagłówek trybu mieści się w jednej linii w całym zakresie mobilnym
@@ -479,10 +480,16 @@
   align-items: center;
   min-height: 64px;
   padding: 0 var(--space-16);
-  border: 2px solid var(--color-search);
   border-radius: var(--radius-field);
   color: var(--color-search-strong);
   background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-search) 40%, var(--color-border));
+}
+
+/* Spoczynek jest delikatny; wyraźny koralowy pierścień pojawia się dopiero,
+   gdy pole ma fokus (nośnik stanu inny niż sam kolor). */
+.search-field:focus-within {
+  box-shadow: inset 0 0 0 2px var(--color-search);
 }
 
 .search-field > span:not(.visually-hidden) {
