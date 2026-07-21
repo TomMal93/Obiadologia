@@ -102,4 +102,24 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.click(within(dialog).getByRole('button', { name: /Wyszukiwarka/ }));
     expect(within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('feta');
   });
+
+  it('shows a live mood name under the map that stays neutral near the centre and changes past the band edge', async () => {
+    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    fireEvent.click(addOpener('map'));
+    const dialog = await screen.findByRole('dialog');
+
+    expect(within(dialog).getByText('Codzienny środek')).toBeInTheDocument();
+
+    const point = within(dialog).getByRole('button', { name: /Talerz na mapie/ });
+
+    // Pojedynczy krok (x = 45) nie wychodzi z pasma neutralnego.
+    fireEvent.keyDown(point, { key: 'ArrowLeft' });
+    expect(within(dialog).getByText('Codzienny środek')).toBeInTheDocument();
+
+    // Przekroczenie granicy pasma (x = 35) przełącza na strefę „szybko”.
+    fireEvent.keyDown(point, { key: 'ArrowLeft' });
+    fireEvent.keyDown(point, { key: 'ArrowLeft' });
+    expect(within(dialog).getByText('Szybki strzał')).toBeInTheDocument();
+    expect(within(dialog).queryByText('Codzienny środek')).not.toBeInTheDocument();
+  });
 });

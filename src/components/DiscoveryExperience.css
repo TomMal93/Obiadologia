@@ -591,23 +591,57 @@
 .map-label--left { top: 50%; left: var(--space-8); transform: translateY(-50%); }
 
 .map-point {
+  --map-point-mood: var(--color-map);
+  --map-point-tint: color-mix(in srgb, var(--map-point-mood) 45%, var(--color-map));
+
   position: absolute;
   z-index: 2;
   display: grid;
   width: 56px;
   height: 56px;
   place-items: center;
-  border: 2px solid var(--color-map);
+  border: 2px solid var(--map-point-tint);
   border-radius: 50%;
-  color: var(--color-map);
+  color: var(--map-point-tint);
   font-size: var(--font-size-24);
   cursor: grab;
   background: var(--color-surface);
-  box-shadow: 0 4px 16px rgb(23 104 210 / 30%);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--map-point-tint) 55%, transparent);
+  transition: color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
   transform: translate(-50%, -50%);
 }
 
 .map-point:active { cursor: grabbing; }
+
+@media (prefers-reduced-motion: reduce) {
+  .map-point { transition: none; }
+}
+
+.map-mood {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.map-mood__label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+}
+
+.map-mood__value {
+  font-size: var(--font-size-20);
+  font-weight: 700;
+  transition: color 140ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-mood__value { transition: none; }
+}
 
 .overlay-empty {
   margin-top: var(--space-24);

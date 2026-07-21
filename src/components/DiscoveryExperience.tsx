@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { KeyboardEvent, PointerEvent, ReactNode } from 'react';
+import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from 'react';
 import type { CategorySelection, MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 import { filterRecipesByCategories, hasCategorySelection } from '@/domain/recipe';
 import {
@@ -182,6 +182,40 @@ function mapSummary({ x, y }: MapCoordinates): string {
   const pace = x < 50 ? `szybko ${100 - x}%` : x > 50 ? `bez pośpiechu ${x}%` : 'tempo neutralne';
   const character = y < 50 ? `lekko ${100 - y}%` : y > 50 ? `konkretnie ${y}%` : 'charakter neutralny';
   return `${pace} · ${character}`;
+}
+
+type MoodBand = 'low' | 'mid' | 'high';
+
+// Pasmo neutralne 38–62 daje spokojny środek i zapobiega przeskokom nazwy przy
+// drobnych ruchach (jeden krok klawiatury o 5 nie zmienia strefy).
+function moodBand(value: number): MoodBand {
+  if (value < 38) return 'low';
+  if (value > 62) return 'high';
+  return 'mid';
+}
+
+// Wiersze: tempo (low = szybko, high = bez pośpiechu).
+// Kolumny: charakter (low = lekko, high = konkretnie).
+const moodNames: Record<MoodBand, Record<MoodBand, string>> = {
+  low: { low: 'Ekspres na lekko', mid: 'Szybki strzał', high: 'Ekspresowy konkret' },
+  mid: { low: 'Lekki luz', mid: 'Codzienny środek', high: 'Solidny standard' },
+  high: { low: 'Powolna lekkość', mid: 'Spokojny rytm', high: 'Wolny rytuał' },
+};
+
+function moodName({ x, y }: MapCoordinates): string {
+  return moodNames[moodBand(x)][moodBand(y)];
+}
+
+// Barwa płynie wraz z osiami: odcień ciepły (koralowy) przy „szybko” i chłodny
+// (niebieski) przy „bez pośpiechu”, jasność maleje ku „konkretnie”, a nasycenie
+// rośnie z odległością od neutralnego środka. Kolor jest dekoracją — znaczenie
+// niesie nazwa oraz dostępna etykieta punktu.
+function moodColor({ x, y }: MapCoordinates): string {
+  const hue = Math.round(12 + (x / 100) * 200);
+  const intensity = Math.max(Math.abs(x - 50), Math.abs(y - 50)) / 50;
+  const saturation = Math.round(22 + intensity * 58);
+  const lightness = Math.round(52 - (y / 100) * 20);
+  return `hsl(${hue} ${saturation}% ${lightness}%)`;
 }
 
 export function DiscoveryExperience({ recipes }: Props) {
@@ -528,13 +562,23 @@ export function DiscoveryExperience({ recipes }: Props) {
                   ref={mapPointRef}
                   type="button"
                   className="map-point"
-                  style={{ left: `${snapshot.map.x}%`, top: `${snapshot.map.y}%` }}
+                  style={{
+                    left: `${snapshot.map.x}%`,
+                    top: `${snapshot.map.y}%`,
+                    '--map-point-mood': moodColor(snapshot.map),
+                  } as CSSProperties}
                   aria-label={`Talerz na mapie: ${mapSummary(snapshot.map)}`}
                   onKeyDown={handleMapKeyDown}
                 >
                   <span aria-hidden="true">♨</span>
                 </button>
               </div>
+              <p className="map-mood" aria-hidden="true">
+                <span className="map-mood__label">Nastrój na dziś:</span>
+                <span className="map-mood__value" style={{ color: moodColor(snapshot.map) }}>
+                  {moodName(snapshot.map)}
+                </span>
+              </p>
               {mapResults.length > 0 && <RecipeList recipes={mapResults} headingId="map-results-heading" />}
               {mapResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy propozycji dla tego miejsca.</p>}
             </div>
