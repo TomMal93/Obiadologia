@@ -459,10 +459,10 @@ export function DiscoveryExperience({ recipes }: Props) {
 
           <div className="mode-switch" role="group" aria-label="Tryb odkrywania">
             <button type="button" className={snapshot.activeMode === 'search' ? 'is-active' : ''} aria-pressed={snapshot.activeMode === 'search'} onClick={() => updateSnapshot({ activeMode: 'search' })}>
-              <span aria-hidden="true">⌕</span> Wyszukiwarka
+              Wyszukiwarka
             </button>
             <button type="button" className={snapshot.activeMode === 'map' ? 'is-active' : ''} aria-pressed={snapshot.activeMode === 'map'} onClick={() => updateSnapshot({ activeMode: 'map' })}>
-              <span aria-hidden="true">⌖</span> Mapa
+              Mapa
             </button>
           </div>
 
