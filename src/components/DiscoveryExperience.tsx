@@ -609,6 +609,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                     labelId="search-empty-tropes-heading"
                     tropes={tropes}
                     onPick={(trope) => updateSnapshot({ query: trope })}
+                    variant="bento"
                   />
                 </>
               )}

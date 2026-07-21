@@ -535,10 +535,10 @@
   background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
 }
 
-/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników. Ma dwa
-   warianty spięte wspólną, wyciszoną etykietą: `bento` na dużą przestrzeń stanu
-   pustego oraz `pills` (koralowe pigułki `.suggestion-list`) jako kompaktowa
-   furtka pod komunikatem braku wyników. */
+/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników — w obu
+   przypadkach wariantem `bento` (mozaika kafli). Wariant `pills` (koralowe
+   pigułki `.suggestion-list`) pozostaje w zapasie jako kompaktowa alternatywa,
+   oba spięte wspólną, wyciszoną etykietą. */
 .trope-block {
   margin-top: var(--space-24);
 }

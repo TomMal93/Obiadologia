@@ -145,7 +145,7 @@ Usunięcie całej treści przywraca ten stan.
 
 Kolor koralowy identyfikuje aktywną Wyszukiwarkę, fokus pola i aktywną sugestię, ale nie jest jedynym nośnikiem ich stanu.
 
-Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.” Pod komunikatem powtarza się blok „Popularne tropy” (etykieta „Spróbuj popularnych tropów:”), aby brak trafień nie był ślepym zaułkiem — wybranie tropu od razu ustawia nowe zapytanie z wynikami.
+Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.” Pod komunikatem powtarza się blok „Popularne tropy” (etykieta „Spróbuj popularnych tropów:”) w tej samej mozaice bento co w stanie pustym, aby brak trafień nie był ślepym zaułkiem — wybranie tropu od razu ustawia nowe zapytanie z wynikami.
 
 ## Tryb Mapy
 
