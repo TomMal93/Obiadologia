@@ -23,13 +23,23 @@
   letter-spacing: -0.035em;
 }
 
+/* „Kategorie” jako pełnoprawny tytuł sekcji (mixed-case, kolor tekstu), a nie
+   drobny eyebrow — nadaje sekcji rangę równą pozostałym ekranom. */
 .section-heading h2.category-heading {
-  font-size: var(--font-size-22);
+  color: var(--color-text);
+  font-size: clamp(24px, 4.6vh, 28px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: none;
 }
 
-.section-heading > p:last-child {
-  margin: 0;
+/* Podtytuł jako spokojna linia wprowadzająca pod tytułem. */
+.section-heading > p.category-subtitle {
+  max-width: 30ch;
+  margin: var(--space-4) auto 0;
   color: var(--color-text-muted);
+  font-size: var(--font-size-14);
   line-height: 1.5;
 }
 
@@ -80,16 +90,12 @@
   height: 100%;
 }
 
-/* Ikona opcji: neutralna, a po wybraniu przyjmuje akcent grupy. Stan wyboru
-   niosą też obramowanie, pogrubienie i aria-pressed — nie sam kolor. */
+/* Ikona opcji nosi kolor tożsamości grupy. Stan wyboru niosą obramowanie,
+   pogrubienie i aria-pressed — nie sam kolor ikony. */
 .option-icon {
   display: block;
   width: 20px;
   height: 20px;
-  color: var(--color-text-muted);
-}
-
-.category-option.is-selected .option-icon {
   color: var(--group-accent);
 }
 
@@ -100,16 +106,19 @@
    Zob. docs/design/ui-system.md „Akcenty grup Kategorii”. */
 .category-group--daypart {
   --group-accent: var(--color-search);
+  --group-strong: var(--color-search-strong);
   --group-soft: var(--color-search-soft);
 }
 
 .category-group--tempo {
   --group-accent: var(--color-categories);
+  --group-strong: var(--color-categories-strong);
   --group-soft: var(--color-categories-soft);
 }
 
 .category-group--occasion {
   --group-accent: var(--color-map);
+  --group-strong: var(--color-map-strong);
   --group-soft: var(--color-map-soft);
 }
 
@@ -133,7 +142,8 @@
   padding: var(--space-4);
   border: 2px solid transparent;
   border-radius: var(--radius-field);
-  color: var(--color-text);
+  /* Etykieta w kolorze tożsamości grupy (wariant `-strong` dla kontrastu AA). */
+  color: var(--group-strong);
   font-size: var(--font-size-14);
   line-height: 1.2;
   cursor: pointer;
@@ -151,31 +161,41 @@
 
 .category-option.is-selected {
   border: 2px solid var(--group-accent);
-  color: var(--color-text);
+  color: var(--group-strong);
   font-weight: 800;
   background: var(--group-soft);
   box-shadow: none;
 }
 
+/* Drugorzędny odnośnik pod grupami wyboru — celowo subtelny, ale mówiący tym
+   samym językiem co kafle opcji (ten sam obrys `inset` i promień pola), aby
+   czytelnie sugerować klikalność bez strzałki. Zielony tekst akcentu i stan
+   hover niosą afordancję; brak wypełnienia trzyma go z tyłu wizualnie. */
 .category-details-link {
   display: flex;
+  width: fit-content;
   min-height: 44px;
   justify-content: center;
-  gap: var(--space-8);
   align-items: center;
-  margin: var(--space-4) 0;
-  padding: var(--space-8) var(--space-12);
-  border: 1px solid color-mix(in srgb, var(--color-categories) 32%, var(--color-border));
+  margin: var(--space-8) auto 0;
+  padding: var(--space-8) var(--space-16);
+  border: 2px solid transparent;
   border-radius: var(--radius-field);
   color: var(--color-categories-strong);
-  font-weight: 800;
+  font-size: var(--font-size-14);
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
-  background: var(--color-categories-soft);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-categories) 22%, var(--color-border));
+  transition: background-color 140ms ease, box-shadow 140ms ease;
 }
 
-.category-details-link:hover {
-  border-color: var(--color-categories);
+@media (hover: hover) {
+  .category-details-link:hover {
+    background: var(--color-categories-soft);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-categories) 40%, var(--color-border));
+  }
 }
 
 .category-details-link:focus-visible {

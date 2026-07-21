@@ -395,8 +395,8 @@ export function DiscoveryExperience({ recipes }: Props) {
     <>
       <section id="kategorie" className="screen category-section" aria-labelledby="categories-heading">
         <div className="section-heading">
-          <h2 id="categories-heading" className="eyebrow category-heading">Kategorie</h2>
-          <p>Wybierz co najmniej jedną opcję:<br />porę dnia, tempo lub okazję.</p>
+          <h2 id="categories-heading" className="category-heading">Kategorie</h2>
+          <p className="category-subtitle">Wybierz co najmniej jedną opcję:<br />porę dnia, tempo lub okazję.</p>
         </div>
         <div className="category-panel">
           {categoryGroups.map((group) => (
@@ -415,8 +415,7 @@ export function DiscoveryExperience({ recipes }: Props) {
             </fieldset>
           ))}
           <a className="category-details-link" href="/categories">
-            <span>Szczegółowe wyszukiwanie</span>
-            <span aria-hidden="true">→</span>
+            Szczegółowe wyszukiwanie
           </a>
         </div>
         <section className="results category-results-frame" aria-labelledby="category-results-heading">
