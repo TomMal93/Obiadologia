@@ -20,15 +20,18 @@ describe('recipe search', () => {
     expect(search.search('')).toEqual([]);
   });
 
-  it('offers popular tropes drawn from the most common tags, each a real query', () => {
+  it('offers typed tropes from categories and ingredients, each a real query', () => {
     const search = createRecipeSearch(prototypeRecipes);
     const tropes = search.tropes();
 
     expect(tropes.length).toBeGreaterThan(0);
-    expect(tropes.length).toBeLessThanOrEqual(6);
-    expect(new Set(tropes).size).toBe(tropes.length);
+    expect(tropes.length).toBeLessThanOrEqual(16);
+    // Różne rodzaje niosą różne kolory — oczekujemy więcej niż jednego.
+    expect(new Set(tropes.map((trope) => trope.kind)).size).toBeGreaterThan(1);
+    // Zapytania są unikalne i każde prowadzi do trafień.
+    expect(new Set(tropes.map((trope) => trope.query)).size).toBe(tropes.length);
     for (const trope of tropes) {
-      expect(search.search(trope).length).toBeGreaterThan(0);
+      expect(search.search(trope.query).length).toBeGreaterThan(0);
     }
   });
 });

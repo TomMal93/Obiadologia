@@ -90,12 +90,15 @@ describe('DiscoveryExperience overlay', () => {
 
     const dialog = await screen.findByRole('dialog');
     const tropes = within(dialog).getByRole('group', { name: 'Popularne tropy' });
-    const firstTrope = within(tropes).getAllByRole('button')[0] as HTMLButtonElement;
+    const tiles = within(tropes).getAllByRole('button');
+    expect(tiles.length).toBeGreaterThan(8);
 
-    fireEvent.click(firstTrope);
+    fireEvent.click(tiles[0] as HTMLButtonElement);
 
+    // Kliknięcie ustawia zapytanie tropu (etykieta bywa inna niż zapytanie) i
+    // ukrywa siatkę, a wyniki pojawiają się po debounce.
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
-    expect(input).toHaveValue(firstTrope.textContent);
+    expect(input).not.toHaveValue('');
     expect(within(dialog).queryByRole('group', { name: 'Popularne tropy' })).not.toBeInTheDocument();
     await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
   });

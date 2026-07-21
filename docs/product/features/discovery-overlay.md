@@ -129,7 +129,7 @@ Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 - sugestie powiązane z zapytaniem nie są widoczne;
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań;
-- pod polem widoczny jest blok „Popularne tropy” — klikalne podpowiedzi wywiedzione z najczęstszych tagów katalogu, które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę mozaiki bento o zróżnicowanych kaflach (dominujący „hero” 2×2, wysoka kolumna 1×3, średnia kolumna 1×2 i trzy kwadraty 1×1); nie są to wyniki użytkownika ani zestaw filtrów. Wybranie tropu ustawia go jako jedno aktywne zapytanie.
+- pod polem widoczny jest blok „Popularne tropy” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj tropu, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie tropu ustawia je jako jedno aktywne zapytanie.
 
 Usunięcie całej treści przywraca ten stan.
 

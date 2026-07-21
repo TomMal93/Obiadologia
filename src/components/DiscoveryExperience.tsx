@@ -12,7 +12,7 @@ import {
   createRecipeSearch,
   rankRecipesForMap,
 } from '@/domain/recipe-search';
-import type { MapCoordinates } from '@/domain/recipe-search';
+import type { MapCoordinates, Trope, TropeKind } from '@/domain/recipe-search';
 import './DiscoveryExperience.css';
 
 interface Props {
@@ -161,6 +161,15 @@ function RecipeItems({ recipes }: { recipes: Recipe[] }) {
   );
 }
 
+// Rodzaj tropu → grupa akcentu (koloru). Pora dnia i składnik dzielą koral, tak
+// jak w wyborze Kategorii: pora dnia↔Szukaj, tempo↔Kategorie, okazja↔Mapa.
+const tropeAccent: Record<TropeKind, 'daypart' | 'tempo' | 'occasion'> = {
+  daypart: 'daypart',
+  ingredient: 'daypart',
+  tempo: 'tempo',
+  occasion: 'occasion',
+};
+
 function TropeList({
   label,
   labelId,
@@ -170,8 +179,8 @@ function TropeList({
 }: {
   label: string;
   labelId: string;
-  tropes: string[];
-  onPick: (trope: string) => void;
+  tropes: Trope[];
+  onPick: (query: string) => void;
   variant?: 'pills' | 'bento';
 }) {
   if (tropes.length === 0) return null;
@@ -185,20 +194,27 @@ function TropeList({
         <div className="trope-bento">
           {tropes.map((trope, index) => (
             <button
-              key={trope}
+              key={`${trope.kind}:${trope.query}`}
               type="button"
-              className="trope-tile"
-              aria-label={index === 0 ? trope : undefined}
-              onClick={() => onPick(trope)}
+              className={`trope-tile trope-tile--${tropeAccent[trope.kind]}`}
+              aria-label={index === 0 ? trope.label : undefined}
+              onClick={() => onPick(trope.query)}
             >
-              {trope}
+              {trope.label}
             </button>
           ))}
         </div>
       ) : (
         <div className="suggestion-list trope-list">
           {tropes.map((trope) => (
-            <button key={trope} type="button" onClick={() => onPick(trope)}>{trope}</button>
+            <button
+              key={`${trope.kind}:${trope.query}`}
+              type="button"
+              className={`trope-chip--${tropeAccent[trope.kind]}`}
+              onClick={() => onPick(trope.query)}
+            >
+              {trope.label}
+            </button>
           ))}
         </div>
       )}
