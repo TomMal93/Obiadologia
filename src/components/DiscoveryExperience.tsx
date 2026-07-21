@@ -12,7 +12,7 @@ import {
   createRecipeSearch,
   rankRecipesForMap,
 } from '@/domain/recipe-search';
-import type { MapCoordinates } from '@/domain/recipe-search';
+import type { MapCoordinates, Trope, TropeKind } from '@/domain/recipe-search';
 import './DiscoveryExperience.css';
 
 interface Props {
@@ -161,6 +161,67 @@ function RecipeItems({ recipes }: { recipes: Recipe[] }) {
   );
 }
 
+// Rodzaj tropu → grupa akcentu (koloru). Pora dnia i składnik dzielą koral, tak
+// jak w wyborze Kategorii: pora dnia↔Szukaj, tempo↔Kategorie, okazja↔Mapa.
+const tropeAccent: Record<TropeKind, 'daypart' | 'tempo' | 'occasion'> = {
+  daypart: 'daypart',
+  ingredient: 'daypart',
+  tempo: 'tempo',
+  occasion: 'occasion',
+};
+
+function TropeList({
+  label,
+  labelId,
+  tropes,
+  onPick,
+  variant = 'pills',
+}: {
+  label: string;
+  labelId: string;
+  tropes: Trope[];
+  onPick: (query: string) => void;
+  variant?: 'pills' | 'bento';
+}) {
+  if (tropes.length === 0) return null;
+  return (
+    <div className={`trope-block trope-block--${variant}`} role="group" aria-labelledby={labelId}>
+      <p className="trope-label" id={labelId}>{label}</p>
+      {variant === 'bento' ? (
+        // Bento: pierwszy kafel jest „hero" 2×2 (patrz CSS nth-child(1)) i niesie
+        // ikonę ⌕ przez pseudoelement; aria-label trzyma go poza nazwą dostępną,
+        // więc czytnik ogłasza sam trop, a nie znak dekoracyjny.
+        <div className="trope-bento">
+          {tropes.map((trope, index) => (
+            <button
+              key={`${trope.kind}:${trope.query}`}
+              type="button"
+              className={`trope-tile trope-tile--${tropeAccent[trope.kind]}`}
+              aria-label={index === 0 ? trope.label : undefined}
+              onClick={() => onPick(trope.query)}
+            >
+              {trope.label}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="suggestion-list trope-list">
+          {tropes.map((trope) => (
+            <button
+              key={`${trope.kind}:${trope.query}`}
+              type="button"
+              className={`trope-chip--${tropeAccent[trope.kind]}`}
+              onClick={() => onPick(trope.query)}
+            >
+              {trope.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function RecipeList({
   recipes,
   headingId,
@@ -266,6 +327,7 @@ export function DiscoveryExperience({ recipes }: Props) {
     () => recipeSearch.suggest(debouncedQuery),
     [recipeSearch, debouncedQuery],
   );
+  const tropes = useMemo(() => recipeSearch.tropes(), [recipeSearch]);
   const mapResults = useMemo(
     () => rankRecipesForMap(recipes, rankedMap),
     [recipes, rankedMap],
@@ -529,8 +591,27 @@ export function DiscoveryExperience({ recipes }: Props) {
                   ))}
                 </div>
               )}
+              {!snapshot.query && (
+                <TropeList
+                  label="Popularne tropy"
+                  labelId="search-tropes-heading"
+                  tropes={tropes}
+                  onPick={(trope) => updateSnapshot({ query: trope })}
+                  variant="bento"
+                />
+              )}
               {snapshot.query && searchResults.length > 0 && <RecipeList recipes={searchResults} headingId="search-results-heading" />}
-              {snapshot.query && debouncedQuery === snapshot.query && searchResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>}
+              {snapshot.query && debouncedQuery === snapshot.query && searchResults.length === 0 && (
+                <>
+                  <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>
+                  <TropeList
+                    label="Spróbuj popularnych tropów:"
+                    labelId="search-empty-tropes-heading"
+                    tropes={tropes}
+                    onPick={(trope) => updateSnapshot({ query: trope })}
+                  />
+                </>
+              )}
             </div>
           ) : (
             <div className="overlay-mode">

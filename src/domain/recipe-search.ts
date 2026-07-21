@@ -4,11 +4,72 @@ import type { MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 export interface RecipeSearch {
   search(query: string): Recipe[];
   suggest(query: string, limit?: number): string[];
+  tropes(limit?: number): Trope[];
 }
 
 export interface MapCoordinates {
   x: number;
   y: number;
+}
+
+// Rodzaj tropu decyduje o jego kolorze w UI — spójnie z akcentami wyboru
+// Kategorii: pora dnia i składnik = koral (Wyszukiwarka), tempo = zielony
+// (Kategorie), okazja = niebieski (Mapa).
+export type TropeKind = 'daypart' | 'ingredient' | 'tempo' | 'occasion';
+
+export interface Trope {
+  label: string;
+  query: string;
+  kind: TropeKind;
+}
+
+interface CategoryTrope<Value extends string> {
+  value: Value;
+  label: string;
+  query: string;
+}
+
+const daypartTropes: CategoryTrope<MealTime>[] = [
+  { value: 'breakfast', label: 'Śniadanie', query: 'śniadanie' },
+  { value: 'lunch', label: 'Obiad', query: 'obiad' },
+  { value: 'dinner', label: 'Kolacja', query: 'kolacja' },
+];
+
+const tempoTropes: CategoryTrope<Tempo>[] = [
+  { value: 'now', label: 'Szybko', query: 'szybko' },
+  { value: 'today', label: 'Na dziś', query: 'na dziś' },
+  { value: 'two_days', label: 'Dwa dni', query: 'dwa dni' },
+];
+
+const occasionTropes: CategoryTrope<Occasion>[] = [
+  { value: 'kids', label: 'Dla dzieci', query: 'dzieci' },
+  { value: 'guests', label: 'Dla gości', query: 'gości' },
+  { value: 'grill', label: 'Na grilla', query: 'grill' },
+];
+
+// Składniki podstawowe (spiżarniane) nie są dobrymi tropami — pomijamy je, aby
+// kafle niosły wyraziste, „prowadzące" hasła.
+const genericIngredients = new Set([
+  'oliwa', 'sól', 'czosnek', 'bulion', 'miód', 'cynamon', 'papryka wędzona',
+  'sos jogurtowy', 'bułka', 'sałata', 'pomidor', 'pomidory', 'płatki owsiane',
+]);
+
+function capitalize(value: string): string {
+  return value.charAt(0).toLocaleUpperCase('pl-PL') + value.slice(1);
+}
+
+// Rozkłada tropy z kilku koszyków naprzemiennie (round-robin), aby kolory
+// rodzajów rozłożyły się po siatce, zamiast zbijać w jednolite bloki.
+function interleave(buckets: Trope[][]): Trope[] {
+  const out: Trope[] = [];
+  const longest = Math.max(0, ...buckets.map((bucket) => bucket.length));
+  for (let index = 0; index < longest; index += 1) {
+    for (const bucket of buckets) {
+      const trope = bucket[index];
+      if (trope) out.push(trope);
+    }
+  }
+  return out;
 }
 
 const categoryTerms: Record<MealTime | Tempo | Occasion, string> = {
@@ -82,6 +143,38 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
         .filter((suggestion) => normalizeSearchText(suggestion).includes(normalized))
         .sort((left, right) => left.length - right.length)
         .slice(0, limit);
+    },
+    // Typowane „tropy" na start i przy braku wyników: pory dnia, tempa i okazje
+    // obecne w katalogu plus wyraziste składniki. Każdy niesie rodzaj (kolor) i
+    // jest realnym zapytaniem, więc kliknięcie zawsze prowadzi do trafień.
+    // Koszyki są przeplatane, żeby kolory rozłożyły się po siatce.
+    tropes(limit = 16) {
+      const presentMealTimes = new Set(published.flatMap((recipe) => recipe.mealTimes));
+      const presentTempos = new Set(published.flatMap((recipe) => recipe.tempos));
+      const presentOccasions = new Set(published.flatMap((recipe) => recipe.occasions));
+
+      const daypart: Trope[] = daypartTropes
+        .filter((trope) => presentMealTimes.has(trope.value))
+        .map(({ label, query }) => ({ label, query, kind: 'daypart' }));
+      const tempo: Trope[] = tempoTropes
+        .filter((trope) => presentTempos.has(trope.value))
+        .map(({ label, query }) => ({ label, query, kind: 'tempo' }));
+      const occasion: Trope[] = occasionTropes
+        .filter((trope) => presentOccasions.has(trope.value))
+        .map(({ label, query }) => ({ label, query, kind: 'occasion' }));
+
+      const ingredient: Trope[] = [];
+      const seenIngredient = new Set<string>();
+      for (const recipe of published) {
+        for (const { name } of recipe.ingredients) {
+          const normalized = normalizeSearchText(name);
+          if (genericIngredients.has(name) || seenIngredient.has(normalized)) continue;
+          seenIngredient.add(normalized);
+          ingredient.push({ label: capitalize(name), query: name, kind: 'ingredient' });
+        }
+      }
+
+      return interleave([ingredient, tempo, occasion, daypart]).slice(0, limit);
     },
   };
 }

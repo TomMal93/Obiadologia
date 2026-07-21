@@ -19,6 +19,21 @@ describe('recipe search', () => {
     expect(search.suggest('kur')).toContain('kurczak');
     expect(search.search('')).toEqual([]);
   });
+
+  it('offers typed tropes from categories and ingredients, each a real query', () => {
+    const search = createRecipeSearch(prototypeRecipes);
+    const tropes = search.tropes();
+
+    expect(tropes.length).toBeGreaterThan(0);
+    expect(tropes.length).toBeLessThanOrEqual(16);
+    // Różne rodzaje niosą różne kolory — oczekujemy więcej niż jednego.
+    expect(new Set(tropes.map((trope) => trope.kind)).size).toBeGreaterThan(1);
+    // Zapytania są unikalne i każde prowadzi do trafień.
+    expect(new Set(tropes.map((trope) => trope.query)).size).toBe(tropes.length);
+    for (const trope of tropes) {
+      expect(search.search(trope.query).length).toBeGreaterThan(0);
+    }
+  });
 });
 
 describe('map ranking', () => {

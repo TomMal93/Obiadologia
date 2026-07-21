@@ -535,6 +535,158 @@
   background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
 }
 
+/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników. Ma dwa
+   warianty spięte wspólną, wyciszoną etykietą: `bento` na dużą przestrzeń stanu
+   pustego oraz `pills` (koralowe pigułki `.suggestion-list`) jako kompaktowa
+   furtka pod komunikatem braku wyników. */
+.trope-block {
+  margin-top: var(--space-24);
+}
+
+.trope-label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+}
+
+.trope-block .trope-list {
+  margin: var(--space-8) 0 0;
+}
+
+/* Pigułki ratunkowe dziedziczą koral z `.suggestion-list`; tropy tempa i okazji
+   przejmują kolor swojej drogi (zielony / niebieski), tak jak kafle bento. */
+.trope-list .trope-chip--tempo {
+  color: var(--color-categories-strong);
+  background: var(--color-categories-soft);
+}
+
+.trope-list .trope-chip--occasion {
+  color: var(--color-map-strong);
+  background: var(--color-map-soft);
+}
+
+@media (hover: hover) {
+  .trope-list .trope-chip--tempo:hover {
+    background: color-mix(in srgb, var(--color-categories) 16%, var(--color-surface));
+  }
+  .trope-list .trope-chip--occasion:hover {
+    background: color-mix(in srgb, var(--color-map) 16%, var(--color-surface));
+  }
+}
+
+/* Bento: mobilnie-najpierw równa siatka 2 kolumn (bezpieczna dla dłuższych
+   polskich słów), a od 361px gęsta mozaika 4-kolumnowa łączona w obu osiach.
+   Kolor kafla niesie rodzaj tropu (--trope-*), spójnie z akcentami wyboru
+   Kategorii: pora dnia i składnik = koral, tempo = zielony, okazja = niebieski. */
+.trope-bento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(46px, auto);
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.trope-tile {
+  --trope-accent: var(--color-search);
+  --trope-strong: var(--color-search-strong);
+  --trope-soft: var(--color-search-soft);
+
+  display: flex;
+  min-width: 0;
+  align-items: end;
+  padding: var(--space-8);
+  border: 0;
+  border-radius: var(--radius-field);
+  color: var(--trope-strong);
+  font-size: var(--font-size-14);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  cursor: pointer;
+  background: var(--trope-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--trope-accent) 22%, transparent);
+  transition: background-color 140ms ease;
+}
+
+.trope-tile--tempo {
+  --trope-accent: var(--color-categories);
+  --trope-strong: var(--color-categories-strong);
+  --trope-soft: var(--color-categories-soft);
+}
+
+.trope-tile--occasion {
+  --trope-accent: var(--color-map);
+  --trope-strong: var(--color-map-strong);
+  --trope-soft: var(--color-map-soft);
+}
+
+@media (min-width: 361px) {
+  /* Mozaika 16 kafli w 4 kolumnach / 6 rzędach, łączonych w pionie i poziomie:
+     „hero” 2×2, kolumny 1×2 (t1–t3), paski 2×1 (w1, w2) i dziesięć kwadratów 1×1
+     (b1–b10). Nazwane obszary gwarantują prostokąty i brak luk. */
+  .trope-bento {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(6, minmax(42px, auto));
+    grid-template-areas:
+      "hero hero b1  t1"
+      "hero hero b2  t1"
+      "w1   w1   b3  b4"
+      "t2   b5   b6  t3"
+      "t2   b7   b8  t3"
+      "b9   b10  w2  w2";
+  }
+
+  .trope-tile:nth-child(1)  { grid-area: hero; } /* 2×2 */
+  .trope-tile:nth-child(2)  { grid-area: b1; }
+  .trope-tile:nth-child(3)  { grid-area: t1; }   /* 1×2 */
+  .trope-tile:nth-child(4)  { grid-area: b2; }
+  .trope-tile:nth-child(5)  { grid-area: w1; }   /* 2×1 */
+  .trope-tile:nth-child(6)  { grid-area: b3; }
+  .trope-tile:nth-child(7)  { grid-area: b4; }
+  .trope-tile:nth-child(8)  { grid-area: t2; }   /* 1×2 */
+  .trope-tile:nth-child(9)  { grid-area: b5; }
+  .trope-tile:nth-child(10) { grid-area: b6; }
+  .trope-tile:nth-child(11) { grid-area: t3; }   /* 1×2 */
+  .trope-tile:nth-child(12) { grid-area: b7; }
+  .trope-tile:nth-child(13) { grid-area: b8; }
+  .trope-tile:nth-child(14) { grid-area: b9; }
+  .trope-tile:nth-child(15) { grid-area: b10; }
+  .trope-tile:nth-child(16) { grid-area: w2; }   /* 2×1 */
+
+  /* Hero: ikona ⌕ u góry, słowo u dołu; największa typografia siatki. Ikona jest
+     pseudoelementem — nie trafia do textContent ani (dzięki aria-label) do nazwy
+     dostępnej. */
+  .trope-tile:nth-child(1) {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    font-size: var(--font-size-20);
+  }
+
+  .trope-tile:nth-child(1)::before {
+    content: "⌕";
+    color: var(--trope-accent);
+    font-size: var(--font-size-24);
+    font-weight: 400;
+    line-height: 1;
+  }
+}
+
+@media (hover: hover) {
+  .trope-tile:hover {
+    background: color-mix(in srgb, var(--trope-accent) 16%, var(--color-surface));
+  }
+}
+
+.trope-tile:focus-visible {
+  outline: 3px solid var(--trope-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trope-tile { transition: none; }
+}
+
 /* Wyniki overlaya używają tej samej oprawy co ramka „Propozycje dla Ciebie”
    w Kategoriach: biała karta z cieniem (z `.results`), wyśrodkowany nagłówek 20px
    i lista oddzielona od nagłówka górną linią. */
