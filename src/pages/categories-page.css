@@ -1,0 +1,49 @@
+/* Statyczny ekran zastępczy przyszłego szczegółowego filtrowania Kategorii. */
+.categories-placeholder {
+  display: grid;
+  min-height: calc(100vh - var(--header-block));
+  min-height: calc(100dvh - var(--header-block));
+  padding: var(--screen-pad-y) var(--gutter);
+  place-items: center;
+}
+
+.categories-placeholder-card {
+  width: 100%;
+  padding: var(--space-32) var(--space-24);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  text-align: center;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-surface);
+}
+
+.categories-placeholder-card h1 {
+  margin: var(--space-8) 0 var(--space-16);
+  font-size: clamp(32px, 10vw, 48px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.categories-placeholder-card > p:last-of-type {
+  max-width: 32ch;
+  margin: 0 auto var(--space-24);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.categories-placeholder-back {
+  display: inline-grid;
+  min-height: 48px;
+  place-items: center;
+  padding: var(--space-12) var(--space-24);
+  border-radius: var(--radius-field);
+  color: var(--color-surface);
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--color-categories);
+}
+
+.categories-placeholder-back:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 3px;
+}

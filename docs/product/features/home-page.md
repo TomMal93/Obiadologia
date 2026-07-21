@@ -87,6 +87,14 @@ Nagłówek:
 - Dla gości
 - Na grilla
 
+### Szczegółowe wyszukiwanie
+
+Pod grupami wyboru znajduje się przycisk „Szczegółowe wyszukiwanie”. Prowadzi
+do statycznego ekranu zastępczego `/categories`, który jasno informuje, że
+zaawansowane filtrowanie jest w przygotowaniu, oraz pozwala wrócić bezpośrednio
+do sekcji Kategorii. Ekran zastępczy nie implementuje filtrów i nie przenosi
+aktualnych wyborów.
+
 ## Reguły wyboru
 
 - Początkowo żadna opcja nie jest wybrana.
@@ -124,6 +132,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
 - Kategorie prowadzą do odpowiedniej sekcji.
 - Żadna kategoria nie jest zaznaczona domyślnie.
+- „Szczegółowe wyszukiwanie” prowadzi do jawnego ekranu zastępczego, z którego można wrócić do sekcji Kategorii.
 - Nagłówek sekcji Kategorii wraz z opisem rozpoczyna się `20px` od jej górnej krawędzi.
 - Ramka „Propozycje dla Ciebie” sięga dolnej krawędzi obszaru treści sekcji.
 - Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.

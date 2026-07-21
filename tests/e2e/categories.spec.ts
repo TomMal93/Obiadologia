@@ -38,6 +38,18 @@ test('initial homepage has no automatically detectable accessibility violations'
   expect(results.violations).toEqual([]);
 });
 
+test('detailed category search opens an explicit placeholder and returns to categories', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('link', { name: 'Szczegółowe wyszukiwanie' }).click();
+  await expect(page).toHaveURL(/\/categories$/);
+  await expect(page.getByRole('heading', { name: 'Szczegółowe wyszukiwanie' })).toBeVisible();
+  await expect(page.getByText('Ta funkcja jest w przygotowaniu.')).toBeVisible();
+
+  await page.getByRole('link', { name: 'Wróć do kategorii' }).click();
+  await expect(page).toHaveURL(/\/#kategorie$/);
+});
+
 test('category content fills the section from its 20px top inset', async ({ page }) => {
   await page.setViewportSize({ width: 430, height: 932 });
   await page.goto('/');

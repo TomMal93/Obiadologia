@@ -1,0 +1,24 @@
+---
+import SiteHeader from '@/components/SiteHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import './categories-page.css';
+---
+
+<BaseLayout
+  title="Szczegółowe wyszukiwanie — Obiadologia"
+  description="Ekran zapowiadający szczegółowe filtrowanie przepisów w Obiadologii."
+>
+  <SiteHeader />
+
+  <main class="categories-placeholder">
+    <section class="categories-placeholder-card" aria-labelledby="categories-placeholder-heading">
+      <p class="eyebrow">Kategorie</p>
+      <h1 id="categories-placeholder-heading">Szczegółowe wyszukiwanie</h1>
+      <p>
+        Ta funkcja jest w przygotowaniu. Wróć do prostego wyboru kategorii,
+        aby znaleźć propozycje na dziś.
+      </p>
+      <a class="categories-placeholder-back" href="/#kategorie">Wróć do kategorii</a>
+    </section>
+  </main>
+</BaseLayout>

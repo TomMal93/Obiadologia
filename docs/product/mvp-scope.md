@@ -84,6 +84,10 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 
 W drugiej fazie „Pokaż więcej” prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane razem z tą podstroną.
 
+Bieżący prototyp może prowadzić z przycisku „Szczegółowe wyszukiwanie” do
+jawnego, statycznego ekranu zastępczego. Nie oznacza to włączenia zaawansowanego
+filtrowania do MVP ani ustalenia jego docelowego kontraktu.
+
 Dobór reprezentatywnego zestawu przepisów pozostaje odłożony do rozstrzygnięcia źródła danych o daniach. Do tego czasu strona przepisu i pozostałe ścieżki korzystają wyłącznie z jawnie zastępczych danych prototypowych potrzebnych do sprawdzenia bieżących przepływów.
 
 ## Nierozstrzygnięte

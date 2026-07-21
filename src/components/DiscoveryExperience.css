@@ -157,6 +157,32 @@
   box-shadow: none;
 }
 
+.category-details-link {
+  display: flex;
+  min-height: 44px;
+  justify-content: center;
+  gap: var(--space-8);
+  align-items: center;
+  margin: var(--space-4) 0;
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid color-mix(in srgb, var(--color-categories) 32%, var(--color-border));
+  border-radius: var(--radius-field);
+  color: var(--color-categories-strong);
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  background: var(--color-categories-soft);
+}
+
+.category-details-link:hover {
+  border-color: var(--color-categories);
+}
+
+.category-details-link:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 2px;
+}
+
 .selection-summary {
   display: flex;
   flex-wrap: nowrap;

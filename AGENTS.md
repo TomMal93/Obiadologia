@@ -33,6 +33,8 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | style współlokowane nagłówka | `src/components/SiteHeader.css` |
 | strona główna i osadzenie wyspy | `src/pages/index.astro` |
 | style współlokowane strony głównej | `src/pages/home-page.css` |
+| ekran zastępczy szczegółowego wyszukiwania Kategorii `/categories` | `src/pages/categories.astro` |
+| style współlokowane ekranu zastępczego Kategorii | `src/pages/categories-page.css` |
 | strona przepisu `/recipes/:slug` | `src/pages/recipes/[slug].astro` |
 | style współlokowane strony przepisu | `src/pages/recipes/recipe-page.css` |
 | wspólny layout, `<head>` i kontener mobilny | `src/layouts/BaseLayout.astro` |
@@ -51,6 +53,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
+| Szczegółowe wyszukiwanie Kategorii | ekran zastępczy | przycisk w panelu prowadzi do statycznej informacji o funkcji w przygotowaniu; filtry pozostają poza MVP |
 | Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
 | Strona przepisu `/recipes/:slug` | wersja wstępna | prerenderowana prezentacja pól modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki z grammaturą i przełącznikiem miar metryczne/domowe); opcjonalne etapy „Wcześniej” (z pomocnikiem startu) i „Przygotowanie” z przełącznikiem „Tryb asystenta / Tylko kroki”, oba jako wzbogacenie progresywne |
