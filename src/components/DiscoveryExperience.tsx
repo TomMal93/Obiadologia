@@ -279,6 +279,19 @@ function moodColor({ x, y }: MapCoordinates): string {
   return `hsl(${hue} ${saturation}% ${lightness}%)`;
 }
 
+// Wariant dla tekstu nazwy nastroju: ten sam odcień i nasycenie co punkt, ale
+// jasność przypięta do najciemniejszego końca palety (32%). Pełna barwa punktu
+// bywa zbyt jasna — najjaśniejsze odcienie (żółć/zieleń przy „lekko”) na białym
+// tle nie osiągają kontrastu WCAG 3:1 dla dużego, pogrubionego tekstu. 32% daje
+// ≥3,3:1 w całym zakresie odcieni; dekoracyjny punkt mapy zostaje przy pełnej
+// palecie.
+function moodTextColor({ x, y }: MapCoordinates): string {
+  const hue = Math.round(12 + (x / 100) * 200);
+  const intensity = Math.max(Math.abs(x - 50), Math.abs(y - 50)) / 50;
+  const saturation = Math.round(22 + intensity * 58);
+  return `hsl(${hue} ${saturation}% 32%)`;
+}
+
 export function DiscoveryExperience({ recipes }: Props) {
   const [selection, setSelection] = useState<CategorySelection>({});
   const [session, setSession] = useState<DiscoverySession | null>(null);
@@ -666,7 +679,7 @@ export function DiscoveryExperience({ recipes }: Props) {
               </div>
               <p className="map-mood" aria-hidden="true">
                 <span className="map-mood__label">Nastrój na dziś:</span>
-                <span className="map-mood__value" style={{ color: moodColor(snapshot.map) }}>
+                <span className="map-mood__value" style={{ color: moodTextColor(snapshot.map) }}>
                   {moodName(snapshot.map)}
                 </span>
               </p>
