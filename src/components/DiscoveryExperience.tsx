@@ -137,17 +137,21 @@ function RecipeItems({ recipes }: { recipes: Recipe[] }) {
       {recipes.map((recipe) => (
         <li key={recipe.id}>
           <a className="recipe-card" href={`/recipes/${recipe.slug}`}>
-            {recipe.image ? (
-              <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
-            ) : (
-              <span className="recipe-placeholder" aria-hidden="true">O</span>
-            )}
+            <span className="recipe-media">
+              {recipe.image ? (
+                <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
+              ) : (
+                <span className="recipe-placeholder" aria-hidden="true">O</span>
+              )}
+            </span>
             <span className="recipe-content">
               <strong>{recipe.title}</strong>
-              <span className="recipe-description">{recipe.description}</span>
-              <span className="recipe-meta">◷ {recipe.preparationMinutes} min</span>
-              <span className="tag-list" aria-label="Tagi">
-                {recipe.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
+              <span className="recipe-description visually-hidden">{recipe.description}</span>
+              <span className="recipe-facts">
+                <span className="recipe-meta">◷ {recipe.preparationMinutes} min</span>
+                <span className="tag-list" aria-label="Tagi">
+                  {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
+                </span>
               </span>
             </span>
           </a>
@@ -169,7 +173,6 @@ function RecipeList({
   return (
     <section className="results discovery-results" aria-labelledby={headingId}>
       <h3 id={headingId}>{title}</h3>
-      <p className="prototype-note">Prototypowe propozycje z lokalnego katalogu.</p>
       <RecipeItems recipes={recipes} />
     </section>
   );
@@ -431,12 +434,7 @@ export function DiscoveryExperience({ recipes }: Props) {
           >
             {!hasSelection && <p className="category-results-message">Tutaj pojawią się dopasowane przepisy.</p>}
             {hasSelection && categoryResults.length === 0 && <p className="category-results-message">Brak dopasowań. Zmień lub usuń wybrane kryterium.</p>}
-            {hasSelection && categoryResults.length > 0 && (
-              <>
-                <p className="prototype-note">Prototypowe propozycje z lokalnego katalogu.</p>
-                <RecipeItems recipes={categoryResults} />
-              </>
-            )}
+            {hasSelection && categoryResults.length > 0 && <RecipeItems recipes={categoryResults} />}
           </div>
         </section>
       </section>

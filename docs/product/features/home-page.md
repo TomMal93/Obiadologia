@@ -102,7 +102,11 @@ Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 
 ## Wyniki
 
-Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie” o stałej wysokości w danym viewporcie. Bezpośrednio pod jej nagłówkiem znajduje się pasek podsumowania wyboru. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki; zmienia się wyłącznie jej wnętrze:
+Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie”, która
+rozciąga się do dolnej krawędzi obszaru treści sekcji i zachowuje stałą wysokość
+w danym viewporcie. Bezpośrednio pod jej nagłówkiem znajduje się pasek
+podsumowania wyboru. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki;
+zmienia się wyłącznie jej wnętrze:
 
 - bez wyboru ramka pokazuje instrukcję „Tutaj pojawią się dopasowane przepisy.”,
 - po dopasowaniu pokazuje od trzech do czterech początkowych propozycji,
@@ -121,6 +125,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Kategorie prowadzą do odpowiedniej sekcji.
 - Żadna kategoria nie jest zaznaczona domyślnie.
 - Nagłówek sekcji Kategorii wraz z opisem rozpoczyna się `20px` od jej górnej krawędzi.
+- Ramka „Propozycje dla Ciebie” sięga dolnej krawędzi obszaru treści sekcji.
 - Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.
 - Ramka wyników jest widoczna w każdym stanie i nie zmienia wysokości po wyborze, odznaczeniu ani braku dopasowań.
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.

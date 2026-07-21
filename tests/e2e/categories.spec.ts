@@ -17,6 +17,10 @@ test('category selection opens a prerendered recipe page', async ({ page }) => {
 
   await page.getByRole('button', { name: /Obiad/ }).click();
   await expect(page.getByRole('region', { name: 'Wyniki kategorii' }).getByRole('link')).toHaveCount(4);
+  const cardHeights = await page.locator('.category-results-body .recipe-card').evaluateAll(
+    (cards) => cards.map((card) => card.getBoundingClientRect().height),
+  );
+  expect(Math.max(...cardHeights)).toBeLessThanOrEqual(92);
   const selectedFrameGeometry = await readFrameGeometry();
   expect(selectedFrameGeometry.documentTop).toBeCloseTo(initialFrameGeometry.documentTop, 0);
   expect(selectedFrameGeometry.height).toBeCloseTo(initialFrameGeometry.height, 0);
@@ -34,21 +38,31 @@ test('initial homepage has no automatically detectable accessibility violations'
   expect(results.violations).toEqual([]);
 });
 
-test('category heading starts 20px below the top of its section', async ({ page }) => {
+test('category content fills the section from its 20px top inset', async ({ page }) => {
   await page.setViewportSize({ width: 430, height: 932 });
   await page.goto('/');
 
-  const headingOffset = await page.locator('.category-section').evaluate((section) => {
+  const geometry = await page.locator('.category-section').evaluate((section) => {
     const heading = section.querySelector(':scope > .section-heading');
+    const results = section.querySelector(':scope > .category-results-frame');
 
-    if (!(heading instanceof HTMLElement)) {
-      throw new Error('Category section heading was not found');
+    if (!(heading instanceof HTMLElement) || !(results instanceof HTMLElement)) {
+      throw new Error('Category section content was not found');
     }
 
-    return heading.getBoundingClientRect().top - section.getBoundingClientRect().top;
+    const sectionBounds = section.getBoundingClientRect();
+    const sectionStyles = getComputedStyle(section);
+
+    return {
+      headingOffset: heading.getBoundingClientRect().top - sectionBounds.top,
+      resultsBottomGap: sectionBounds.bottom
+        - Number.parseFloat(sectionStyles.paddingBottom)
+        - results.getBoundingClientRect().bottom,
+    };
   });
 
-  expect(headingOffset).toBeCloseTo(20, 0);
+  expect(geometry.headingOffset).toBeCloseTo(20, 0);
+  expect(geometry.resultsBottomGap).toBeCloseTo(0, 0);
 });
 
 test('homepage heading and path panel keep stable mobile geometry', async ({ page }) => {
