@@ -10,7 +10,8 @@ test('search session switches modes and explicit close resets on browser Forward
   const dialog = page.getByRole('dialog');
   const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
   await expect(dialog).toBeVisible();
-  await expect(search).toBeFocused();
+  await expect(dialog).toBeFocused();
+  await expect(search).not.toBeFocused();
   await expect(dialog.getByRole('heading', { name: 'Propozycje' })).toHaveCount(0);
 
   await search.fill('kurczak');
@@ -18,11 +19,13 @@ test('search session switches modes and explicit close resets on browser Forward
   await expect(dialog.getByRole('link', { name: /Kurczak z grilla z sałatką/ })).toBeVisible();
 
   await dialog.getByRole('button', { name: /Mapa/ }).click();
-  const mapSummary = dialog.locator('.map-summary');
-  await expect(mapSummary).toContainText(/tempo neutralne · charakter neutralny/);
-  await expect(mapSummary).toHaveCSS('white-space', 'nowrap');
+  await expect(
+    dialog.getByRole('button', { name: /Talerz na mapie: tempo neutralne · charakter neutralny/ }),
+  ).toBeVisible();
   await dialog.getByRole('button', { name: /Talerz na mapie/ }).press('ArrowLeft');
-  await expect(dialog.getByText(/szybko 55% · charakter neutralny/)).toBeVisible();
+  await expect(
+    dialog.getByRole('button', { name: /Talerz na mapie: szybko 55% · charakter neutralny/ }),
+  ).toBeVisible();
 
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
   await expect(search).toHaveValue('kurczak');
@@ -45,7 +48,7 @@ test('map supports pointer input and returning from a recipe restores the suspen
   const bounds = await map.boundingBox();
   expect(bounds).not.toBeNull();
   await page.mouse.click(bounds!.x + bounds!.width * 0.2, bounds!.y + bounds!.height * 0.2);
-  await expect(dialog.getByText(/szybko 80% · lekko 80%/)).toBeVisible();
+  await expect(dialog.getByRole('button', { name: /Talerz na mapie: szybko 80% · lekko 80%/ })).toBeVisible();
 
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
   const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
@@ -57,7 +60,7 @@ test('map supports pointer input and returning from a recipe restores the suspen
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('feta');
   await page.getByRole('dialog').getByRole('button', { name: /Mapa/ }).click();
-  await expect(page.getByText(/szybko 80% · lekko 80%/)).toBeVisible();
+  await expect(page.getByRole('button', { name: /Talerz na mapie: szybko 80% · lekko 80%/ })).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page }).include('.discovery-overlay').analyze();
   expect(accessibility.violations).toEqual([]);

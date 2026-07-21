@@ -414,7 +414,10 @@
 }
 
 .mode-switch button:first-child {
-  --switch-strong: var(--color-search-strong);
+  /* Zmiękczony koral aktywnej Wyszukiwarki: jaśniejszy niż `-strong`, wciąż
+     wyprowadzony z tokenów drogi i spełniający kontrast AA (~4,9:1) na tle
+     `-soft`. */
+  --switch-strong: color-mix(in srgb, var(--color-search) 30%, var(--color-search-strong));
   --switch-soft: var(--color-search-soft);
 }
 
@@ -605,19 +608,6 @@
 }
 
 .map-point:active { cursor: grabbing; }
-
-.map-summary {
-  margin-top: var(--space-16);
-  background: var(--color-map-soft);
-}
-
-.map-summary > span {
-  width: max-content;
-  min-width: 100%;
-  text-align: center;
-}
-
-.map-summary strong { color: var(--color-map-strong); }
 
 .overlay-empty {
   margin-top: var(--space-24);

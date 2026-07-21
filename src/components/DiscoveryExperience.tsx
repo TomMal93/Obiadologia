@@ -318,8 +318,11 @@ export function DiscoveryExperience({ recipes }: Props) {
     if (!isOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    // W trybie Wyszukiwarki fokus trafia na dialog, a nie na pole — dzięki temu
+    // klawiatura ekranowa nie otwiera się na starcie, a fokus i tak pozostaje
+    // w overlayu (pole nadal opisane etykietą i osiągalne Tabem/dotknięciem).
     const focusTarget = activeMode === 'search'
-      ? searchInputRef.current
+      ? dialogRef.current
       : mapPointRef.current;
     window.requestAnimationFrame(() => focusTarget?.focus());
     return () => {
@@ -446,6 +449,7 @@ export function DiscoveryExperience({ recipes }: Props) {
         <dialog
           open
           ref={dialogRef}
+          tabIndex={-1}
           className={`discovery-overlay discovery-overlay--${snapshot.activeMode}`}
           aria-modal="true"
           aria-labelledby="discovery-title"
@@ -531,7 +535,6 @@ export function DiscoveryExperience({ recipes }: Props) {
                   <span aria-hidden="true">♨</span>
                 </button>
               </div>
-              <p className="selection-summary map-summary"><span>Wybrano: <strong>{mapSummary(snapshot.map)}</strong></span></p>
               {mapResults.length > 0 && <RecipeList recipes={mapResults} headingId="map-results-heading" />}
               {mapResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy propozycji dla tego miejsca.</p>}
             </div>
