@@ -203,21 +203,6 @@
   outline-offset: 2px;
 }
 
-.selection-summary {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: var(--space-4);
-  align-items: center;
-  margin: 0;
-  padding: var(--space-16);
-  overflow-x: auto;
-  border-radius: var(--radius-field);
-  color: var(--color-text);
-  font-size: var(--font-size-14);
-  white-space: nowrap;
-  background: var(--color-coral-soft);
-}
-
 .results {
   margin-top: 20px;
   padding: 20px 16px;
@@ -246,49 +231,73 @@
   text-align: center;
 }
 
+/* Podsumowanie wyborów to zestaw „chipów” — po jednym na wybrane kryterium —
+   z których każdy niesie kolor tożsamości swojej grupy (pora dnia ↔ koralowy,
+   tempo ↔ zielony, okazja ↔ niebieski), tak jak zaznaczone kafle opcji powyżej.
+   Dzięki temu podsumowanie mówi tym samym językiem co siatka wyboru zamiast
+   spłaszczać wszystko do jednego zielonego paska. */
 .category-selection-summary {
-  margin: var(--space-12) var(--space-4) var(--space-8);
-  padding: var(--space-8) var(--space-12);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  background: var(--color-bg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  align-items: center;
+  justify-content: center;
+  min-height: var(--space-24);
+  margin: var(--space-8) 0 var(--space-12);
+  padding: 0 var(--space-4);
 }
 
-.category-selection-summary.has-selection {
-  border-color: color-mix(in srgb, var(--color-categories) 35%, transparent);
-  background: var(--color-categories-soft);
-}
-
-.selection-summary-icon {
-  display: grid;
-  flex: 0 0 var(--space-24);
-  width: var(--space-24);
-  height: var(--space-24);
-  place-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
+.selection-summary-hint {
+  margin: 0;
   color: var(--color-text-muted);
-  line-height: 1;
-  background: var(--color-surface);
+  font-size: var(--font-size-14);
 }
 
-.category-selection-summary.has-selection .selection-summary-icon {
-  border-color: var(--color-categories);
-  color: var(--color-surface);
-  font-weight: 800;
-  background: var(--color-categories);
+.selection-summary-label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+  font-weight: 600;
 }
 
-.selection-summary-copy {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.selection-summary-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: center;
 }
 
-.selection-summary-label,
-.category-selection-summary strong {
-  color: var(--color-categories-strong);
-  font-weight: 800;
+.selection-chip {
+  --chip-accent: var(--color-categories);
+  --chip-strong: var(--color-categories-strong);
+  --chip-soft: var(--color-categories-soft);
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-12);
+  border: 1px solid color-mix(in srgb, var(--chip-accent) 40%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--chip-strong);
+  font-size: var(--font-size-14);
+  font-weight: 700;
+  line-height: 1.2;
+  background: var(--chip-soft);
+}
+
+.selection-chip--daypart {
+  --chip-accent: var(--color-search);
+  --chip-strong: var(--color-search-strong);
+  --chip-soft: var(--color-search-soft);
+}
+
+.selection-chip--tempo {
+  --chip-accent: var(--color-categories);
+  --chip-strong: var(--color-categories-strong);
+  --chip-soft: var(--color-categories-soft);
+}
+
+.selection-chip--occasion {
+  --chip-accent: var(--color-map);
+  --chip-strong: var(--color-map-strong);
+  --chip-soft: var(--color-map-soft);
 }
 
 .category-results-body {

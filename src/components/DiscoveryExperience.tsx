@@ -82,6 +82,12 @@ const optionLabels: Record<string, string> = Object.fromEntries(
   categoryGroups.flatMap((group) => group.options.map(([value, label]) => [value, label])),
 );
 
+type SelectionChip = {
+  key: (typeof categoryGroups)[number]['key'];
+  accent: (typeof categoryGroups)[number]['accent'];
+  label: string;
+};
+
 function Icon({ children }: { children: ReactNode }) {
   return (
     <svg
@@ -508,9 +514,12 @@ export function DiscoveryExperience({ recipes }: Props) {
     setSelection((current) => ({ ...current, [key]: current[key] === value ? undefined : value }));
   }
 
-  const selectedLabels = Object.values(selection)
-    .filter((value): value is MealTime | Tempo | Occasion => Boolean(value))
-    .map((value) => optionLabels[value]);
+  const selectedChips = categoryGroups
+    .map((group): SelectionChip | null => {
+      const value = selection[group.key];
+      return value ? { key: group.key, accent: group.accent, label: optionLabels[value] } : null;
+    })
+    .filter((chip): chip is SelectionChip => chip !== null);
 
   return (
     <>
@@ -541,13 +550,20 @@ export function DiscoveryExperience({ recipes }: Props) {
         </div>
         <section className="results category-results-frame" aria-labelledby="category-results-heading">
           <h3 id="category-results-heading">Propozycje dla Ciebie</h3>
-          <p className={`selection-summary category-selection-summary${hasSelection ? ' has-selection' : ''}`} aria-live="polite">
+          <div className="category-selection-summary" aria-live="polite">
             {hasSelection ? (
-              <><span className="selection-summary-icon" aria-hidden="true">✓</span><span className="selection-summary-copy"><span className="selection-summary-label">Wybrano:</span> <strong>{selectedLabels.join(' · ')}</strong></span></>
+              <>
+                <span className="selection-summary-label">Wybrano:</span>
+                <span className="selection-summary-chips">
+                  {selectedChips.map((chip) => (
+                    <span key={chip.key} className={`selection-chip selection-chip--${chip.accent}`}>{chip.label}</span>
+                  ))}
+                </span>
+              </>
             ) : (
-              <><span className="selection-summary-icon" aria-hidden="true">○</span><span className="selection-summary-copy">Wybierz co najmniej jedną opcję.</span></>
+              <span className="selection-summary-hint">Wybierz co najmniej jedną opcję.</span>
             )}
-          </p>
+          </div>
           <div
             className={`category-results-body${hasSelection && categoryResults.length > 0 ? '' : ' is-message'}`}
             role="region"
