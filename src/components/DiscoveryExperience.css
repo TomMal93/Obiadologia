@@ -157,46 +157,34 @@
   box-shadow: none;
 }
 
-/* Cichy odnośnik nawigacyjny pod grupami wyboru — celowo subtelny, aby nie
-   rywalizował wizualnie z opcjami Kategorii powyżej. Bez wypełnienia i ramki
-   w spoczynku; afordancję niesie podkreślenie etykiety i strzałka. */
+/* Drugorzędny odnośnik pod grupami wyboru — celowo subtelny, ale mówiący tym
+   samym językiem co kafle opcji (ten sam obrys `inset` i promień pola), aby
+   czytelnie sugerować klikalność bez strzałki. Zielony tekst akcentu i stan
+   hover niosą afordancję; brak wypełnienia trzyma go z tyłu wizualnie. */
 .category-details-link {
   display: flex;
   width: fit-content;
   min-height: 44px;
   justify-content: center;
-  gap: var(--space-4);
   align-items: center;
-  margin: var(--space-4) auto 0;
-  padding: var(--space-8) var(--space-12);
-  border-radius: var(--radius-pill);
-  color: var(--color-text-muted);
+  margin: var(--space-8) auto 0;
+  padding: var(--space-8) var(--space-16);
+  border: 2px solid transparent;
+  border-radius: var(--radius-field);
+  color: var(--color-categories-strong);
   font-size: var(--font-size-14);
   font-weight: 600;
   text-align: center;
   text-decoration: none;
   background: transparent;
-  transition: color 140ms ease, background-color 140ms ease;
-}
-
-.category-details-link-label {
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, currentcolor 40%, transparent);
-  text-underline-offset: 3px;
-}
-
-.category-details-link-arrow {
-  transition: transform 140ms ease;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-categories) 22%, var(--color-border));
+  transition: background-color 140ms ease, box-shadow 140ms ease;
 }
 
 @media (hover: hover) {
   .category-details-link:hover {
-    color: var(--color-categories-strong);
     background: var(--color-categories-soft);
-  }
-
-  .category-details-link:hover .category-details-link-arrow {
-    transform: translateX(3px);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-categories) 40%, var(--color-border));
   }
 }
 

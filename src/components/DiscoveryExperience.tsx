@@ -415,8 +415,7 @@ export function DiscoveryExperience({ recipes }: Props) {
             </fieldset>
           ))}
           <a className="category-details-link" href="/categories">
-            <span className="category-details-link-label">Szczegółowe wyszukiwanie</span>
-            <span className="category-details-link-arrow" aria-hidden="true">→</span>
+            Szczegółowe wyszukiwanie
           </a>
         </div>
         <section className="results category-results-frame" aria-labelledby="category-results-heading">
