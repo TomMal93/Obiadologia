@@ -38,6 +38,24 @@ test('search session switches modes and explicit close resets on browser Forward
   await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('');
 });
 
+test('the close (X) button closes the overlay and returns focus to the opener', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
+  const opener = page.getByRole('button', { name: 'Szukaj' });
+  await opener.click();
+
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: 'Zamknij discovery' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(opener).toBeFocused();
+
+  // Forward wciąż otwiera świeżą sesję — zamknięcie zdjęło wpis overlaya z historii.
+  await page.goForward();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('');
+});
+
 test('map supports pointer input and returning from a recipe restores the suspended session', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);

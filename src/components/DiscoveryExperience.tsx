@@ -368,6 +368,15 @@ export function DiscoveryExperience({ recipes }: Props) {
   function requestClose() {
     if (!session) return;
     markSessionEnded(session.id);
+    // Zamknięcie nie może zależeć wyłącznie od history.back(): w osadzonych
+    // przeglądarkach (webview in-app) albo gdy overlay jest pierwszym wpisem
+    // historii karty back() nie ma dokąd wrócić — popstate nie zdąży zamknąć
+    // dialogu i X „nie działa". Dlatego zamykamy stan wprost, a cofnięcie
+    // historii tylko zdejmuje wpis overlaya (zachowując „Forward → ponowne
+    // otwarcie"); gdy back() jest bezczynny, restoreFromHistory po prostu się
+    // nie odpali, a overlay i tak jest już zamknięty.
+    setSession(null);
+    openerRef.current?.focus();
     window.history.back();
   }
 
