@@ -23,13 +23,23 @@
   letter-spacing: -0.035em;
 }
 
+/* „Kategorie” jako pełnoprawny tytuł sekcji (mixed-case, kolor tekstu), a nie
+   drobny eyebrow — nadaje sekcji rangę równą pozostałym ekranom. */
 .section-heading h2.category-heading {
-  font-size: var(--font-size-22);
+  color: var(--color-text);
+  font-size: clamp(24px, 4.6vh, 28px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: none;
 }
 
-.section-heading > p:last-child {
-  margin: 0;
+/* Podtytuł jako spokojna linia wprowadzająca pod tytułem. */
+.section-heading > p.category-subtitle {
+  max-width: 30ch;
+  margin: var(--space-4) auto 0;
   color: var(--color-text-muted);
+  font-size: var(--font-size-14);
   line-height: 1.5;
 }
 
