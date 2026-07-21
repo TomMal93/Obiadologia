@@ -113,7 +113,10 @@ describe('DiscoveryExperience overlay', () => {
 
     expect(await within(dialog).findByText('Nie znaleźliśmy pasujących propozycji.')).toBeInTheDocument();
     const rescue = within(dialog).getByRole('group', { name: 'Spróbuj popularnych tropów:' });
-    fireEvent.click(within(rescue).getAllByRole('button')[0] as HTMLButtonElement);
+    // Brak wyników pokazuje tę samą siatkę bento co stan pusty (wiele kafli).
+    const rescueTiles = within(rescue).getAllByRole('button');
+    expect(rescueTiles.length).toBeGreaterThan(8);
+    fireEvent.click(rescueTiles[0] as HTMLButtonElement);
 
     await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
   });
