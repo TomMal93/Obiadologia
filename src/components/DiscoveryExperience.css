@@ -68,9 +68,6 @@
   align-items: center;
   width: 100%;
   margin-bottom: 0;
-  /* Nazwa grupy przyjmuje kolor tożsamości grupy (wariant `-strong` dla
-     kontrastu WCAG 2.2 AA na jasnym tle). */
-  color: var(--group-strong);
   font-size: var(--font-size-16);
   font-weight: 800;
 }
