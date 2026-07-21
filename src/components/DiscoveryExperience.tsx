@@ -605,6 +605,19 @@ export function DiscoveryExperience({ recipes }: Props) {
                   autoComplete="off"
                   onChange={(event) => updateSnapshot({ query: event.target.value })}
                 />
+                {snapshot.query && (
+                  <button
+                    type="button"
+                    className="search-clear"
+                    aria-label="Wyczyść wyszukiwanie"
+                    onClick={() => {
+                      updateSnapshot({ query: '' });
+                      searchInputRef.current?.focus();
+                    }}
+                  >
+                    ×
+                  </button>
+                )}
               </label>
               {snapshot.query && suggestions.length > 0 && (
                 <div className="suggestion-list" aria-label="Sugestie wyszukiwania">

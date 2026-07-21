@@ -478,7 +478,7 @@
 
 .search-field {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   gap: var(--space-12);
   align-items: center;
   min-height: 64px;
@@ -508,6 +508,46 @@
   font: inherit;
   font-size: 18px;
   background: transparent;
+}
+
+/* Natywny „X" (::-webkit-search-cancel-button) pojawia się tylko przy
+   fokusie — ukrywamy go i renderujemy własny przycisk, który jest widoczny
+   zawsze, gdy w polu coś jest. */
+.search-field input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Sam krzyżyk — bez tła i obramowania, w kolorze wyszukiwarki. */
+.search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-search-strong);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 120ms ease, transform 120ms ease;
+}
+
+.search-clear:hover {
+  color: var(--color-search);
+  transform: scale(1.1);
+}
+
+.search-clear:active {
+  transform: scale(0.94);
+}
+
+.search-clear:focus-visible {
+  outline: 2px solid var(--color-search);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
 }
 
 .suggestion-list {
