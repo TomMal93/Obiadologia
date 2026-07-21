@@ -52,7 +52,7 @@ Overlay:
 
 Przycisk zamknięcia, klawisz `Escape` i akcja „Wstecz” przy otwartym overlayu uruchamiają jeden wspólny kontrakt zamknięcia opisany poniżej. „Wstecz” najpierw zamyka overlay, zamiast opuszczać poprzedni widok strony.
 
-Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. Fokus pozostaje wewnątrz dialogu, a po zamknięciu wraca do elementu, który otworzył overlay.
+Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. W trybie Wyszukiwarki fokus trafia na sam dialog, a nie na pole tekstowe, aby klawiatura ekranowa nie otwierała się automatycznie na starcie. Fokus pozostaje wewnątrz dialogu, a po zamknięciu wraca do elementu, który otworzył overlay.
 
 ## Otwieranie i cykl życia stanu
 
@@ -125,7 +125,7 @@ Wyszukiwarka jest przeznaczona dla użytkownika, który ma już trop: składnik,
 
 Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 
-- pole jest puste i otrzymuje fokus;
+- pole jest puste; fokus trafia na dialog, więc klawiatura ekranowa nie otwiera się na starcie;
 - sugestie nie są widoczne;
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań.
@@ -153,8 +153,7 @@ Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.”
 Mapa pomaga użytkownikowi, który nie zna nazwy dania, ale potrafi określić oczekiwany charakter posiłku.
 
 - nagłówek: „Wskaż klimat na mapie”;
-- opis: „Przesuń talerz tam, gdzie dziś Ci pasuje.”;
-- instrukcja: „Przeciągnij talerz”.
+- opis: „Przesuń talerz tam, gdzie dziś Ci pasuje.”.
 
 ### Osie i reprezentacja danych
 
@@ -183,13 +182,13 @@ Dzięki temu górna część Mapy odpowiada większej wartości `lightness`, a d
 Po rozpoczęciu nowej sesji w trybie Mapy:
 
 - aktywny punkt znajduje się na środku: `x = 50`, `y = 50`;
-- podsumowanie opisuje oba wymiary jako neutralne;
+- dostępna nazwa punktu opisuje oba wymiary jako neutralne;
 - widoczne są od trzech do czterech ogólnych, zróżnicowanych propozycji zgodnie z regułą neutralnej Mapy z `data-model.md`;
 - stan nie sugeruje żadnej ze skrajnych preferencji.
 
-Podsumowanie środka brzmi:
+Dostępna nazwa punktu w środku brzmi:
 
-> Wybrano: tempo neutralne · charakter neutralny
+> Talerz na mapie: tempo neutralne · charakter neutralny
 
 ### Przesuwanie punktu
 
@@ -208,11 +207,9 @@ Zmiana rozmiaru viewportu nie zmienia logicznych współrzędnych punktu.
 
 ### Podsumowanie wyboru
 
-Po przesunięciu podsumowanie pokazuje dominujący kierunek każdej osi i procent jego nasilenia, na przykład:
+Aktualne położenie jest przekazywane przez dostępną nazwę punktu Mapy (`aria-label`); nie ma osobnego widocznego paska podsumowania. Nazwa pokazuje dominujący kierunek każdej osi i procent jego nasilenia, na przykład:
 
-> Wybrano: szybko 72% · lekko 64%
-
-Pasek podsumowania pozostaje w jednym wierszu i używa tej samej geometrii oraz typografii co pasek „Wybrano” w Kategoriach, z niebieskim tłem właściwym dla Mapy. Jeżeli tekst nie mieści się w szerokości overlayu, przewija się poziomo zamiast zmieniać wysokość paska.
+> Talerz na mapie: szybko 72% · lekko 64%
 
 Dla osi poziomej:
 
@@ -228,7 +225,7 @@ Dla osi pionowej:
 
 Makieta nie jest źródłem dokładnych współrzędnych przykładowego punktu.
 
-Kolor niebieski identyfikuje Mapę, aktywny punkt, aktywny tryb i wartości podsumowania, ale położenie i stan są także przekazane tekstem, geometrią oraz semantyką.
+Kolor niebieski identyfikuje Mapę, aktywny punkt i aktywny tryb, ale położenie i stan są także przekazane dostępną nazwą punktu, geometrią oraz semantyką.
 
 Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 
@@ -262,7 +259,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 
 ### Wyszukiwarka
 
-- Po otwarciu pole jest puste, otrzymuje fokus i nie pokazuje przypadkowych wyników.
+- Po otwarciu pole jest puste i nie pokazuje przypadkowych wyników; fokus trafia na dialog, więc klawiatura ekranowa nie otwiera się automatycznie.
 - Zmiana zapytania automatycznie aktualizuje sugestie i wyniki.
 - Wybranie sugestii ustawia jedno aktywne zapytanie.
 - Wyczyszczenie pola przywraca stan początkowy.
@@ -272,8 +269,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 
 - Mapa rozpoczyna w neutralnym środku i pokazuje od trzech do czterech propozycji spełniających regułę różnorodności z `data-model.md`.
 - Punkt można przesuwać myszą, dotykiem i klawiaturą, bez wyjścia poza granice.
-- Podsumowanie odpowiada współrzędnym i jest aktualizowane podczas ruchu.
-- Podsumowanie jest jednoliniowe i nie zmienia wysokości podczas aktualizacji współrzędnych.
+- Dostępna nazwa punktu odpowiada współrzędnym i jest aktualizowana podczas ruchu.
 - Wyniki są aktualizowane podczas przeciągania, bez zatwierdzania.
 - Mapowanie współrzędnych UI na `pace` i `lightness` jest zgodne z opisanym wzorem.
 - Przełączenie trybu zachowuje położenie, a zamknięcie resetuje je do środka.
