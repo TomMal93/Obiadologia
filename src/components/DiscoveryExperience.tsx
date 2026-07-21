@@ -166,21 +166,42 @@ function TropeList({
   labelId,
   tropes,
   onPick,
+  variant = 'pills',
 }: {
   label: string;
   labelId: string;
   tropes: string[];
   onPick: (trope: string) => void;
+  variant?: 'pills' | 'bento';
 }) {
   if (tropes.length === 0) return null;
   return (
-    <div className="trope-block" role="group" aria-labelledby={labelId}>
+    <div className={`trope-block trope-block--${variant}`} role="group" aria-labelledby={labelId}>
       <p className="trope-label" id={labelId}>{label}</p>
-      <div className="suggestion-list trope-list">
-        {tropes.map((trope) => (
-          <button key={trope} type="button" onClick={() => onPick(trope)}>{trope}</button>
-        ))}
-      </div>
+      {variant === 'bento' ? (
+        // Bento: pierwszy kafel jest „hero" 2×2 (patrz CSS nth-child(1)) i niesie
+        // ikonę ⌕ przez pseudoelement; aria-label trzyma go poza nazwą dostępną,
+        // więc czytnik ogłasza sam trop, a nie znak dekoracyjny.
+        <div className="trope-bento">
+          {tropes.map((trope, index) => (
+            <button
+              key={trope}
+              type="button"
+              className="trope-tile"
+              aria-label={index === 0 ? trope : undefined}
+              onClick={() => onPick(trope)}
+            >
+              {trope}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="suggestion-list trope-list">
+          {tropes.map((trope) => (
+            <button key={trope} type="button" onClick={() => onPick(trope)}>{trope}</button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -560,6 +581,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                   labelId="search-tropes-heading"
                   tropes={tropes}
                   onPick={(trope) => updateSnapshot({ query: trope })}
+                  variant="bento"
                 />
               )}
               {snapshot.query && searchResults.length > 0 && <RecipeList recipes={searchResults} headingId="search-results-heading" />}

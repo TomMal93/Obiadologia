@@ -129,7 +129,7 @@ Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 - sugestie powiązane z zapytaniem nie są widoczne;
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań;
-- pod polem widoczny jest blok „Popularne tropy” — kilka klikalnych podpowiedzi wywiedzionych z najczęstszych tagów katalogu, które zapełniają pusty stan i podpowiadają kierunek. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie tropu ustawia go jako jedno aktywne zapytanie.
+- pod polem widoczny jest blok „Popularne tropy” — klikalne podpowiedzi wywiedzione z najczęstszych tagów katalogu, które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę siatki bento (dominujący kafel „hero” 2×2 w rogu i mniejsze kafle wokół niego); nie są to wyniki użytkownika ani zestaw filtrów. Wybranie tropu ustawia go jako jedno aktywne zapytanie.
 
 Usunięcie całej treści przywraca ten stan.
 

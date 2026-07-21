@@ -535,10 +535,10 @@
   background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
 }
 
-/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników. Pigułki
-   dziedziczą wygląd `.suggestion-list` (koralowe, przewijane w poziomie), więc
-   nie wprowadzamy nowego języka wizualnego — dokładamy jedynie wyciszoną
-   etykietę nad nimi. */
+/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników. Ma dwa
+   warianty spięte wspólną, wyciszoną etykietą: `bento` na dużą przestrzeń stanu
+   pustego oraz `pills` (koralowe pigułki `.suggestion-list`) jako kompaktowa
+   furtka pod komunikatem braku wyników. */
 .trope-block {
   margin-top: var(--space-24);
 }
@@ -551,6 +551,85 @@
 
 .trope-block .trope-list {
   margin: var(--space-8) 0 0;
+}
+
+/* Bento: siatka 3-kolumnowa, w której pierwszy kafel („hero”) zajmuje pole 2×2
+   w lewym górnym rogu, dwa kolejne układają się w prawej kolumnie, a trzy ostatnie
+   wypełniają dolny rząd — klasyczny rytm bento z jednym punktem dominującym.
+   Kafle mówią językiem Wyszukiwarki (koral): wspólne tło, tekst `-strong`
+   i subtelny obrys. */
+.trope-bento {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: minmax(60px, auto);
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.trope-tile {
+  display: flex;
+  min-width: 0;
+  align-items: end;
+  padding: var(--space-12);
+  border: 0;
+  border-radius: var(--radius-field);
+  color: var(--color-search-strong);
+  font-size: var(--font-size-16);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  cursor: pointer;
+  background: var(--color-search-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-search) 20%, transparent);
+  transition: background-color 140ms ease;
+}
+
+.trope-tile:nth-child(1) {
+  grid-column: span 2;
+  grid-row: span 2;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  font-size: var(--font-size-24);
+}
+
+/* Ikona ⌕ tylko na kaflu „hero”, dołożona pseudoelementem — nie trafia do
+   textContent ani (dzięki aria-label na przycisku) do nazwy dostępnej. */
+.trope-tile:nth-child(1)::before {
+  content: "⌕";
+  color: var(--color-search);
+  font-size: var(--font-size-32);
+  font-weight: 400;
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .trope-tile:hover {
+    background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
+  }
+}
+
+.trope-tile:focus-visible {
+  outline: 3px solid var(--color-search);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trope-tile { transition: none; }
+}
+
+/* Na najwęższych ekranach 3 kolumny tekstu robią się ciasne — schodzimy do
+   równej siatki 2-kolumnowej i rezygnujemy z „hero”, aby uniknąć luk. */
+@media (max-width: 360px) {
+  .trope-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .trope-tile:nth-child(1) {
+    grid-column: auto;
+    grid-row: auto;
+    flex-direction: row;
+    align-items: end;
+    font-size: var(--font-size-16);
+  }
+  .trope-tile:nth-child(1)::before { display: none; }
 }
 
 /* Wyniki overlaya używają tej samej oprawy co ramka „Propozycje dla Ciebie”
