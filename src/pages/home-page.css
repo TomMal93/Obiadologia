@@ -395,6 +395,22 @@ button.path-tile {
   font-size: 15px;
 }
 
+/* Koralowy separator „zygzak" (VVVV) rozdzielający sekcje strony głównej:
+   ekran wyboru drogi od sekcji „Kategorie". Rysowany maską SVG (powtarzana
+   pozioma fala trójkątna), więc kolor pochodzi z tokenu marki (koral) i jest
+   theme-aware. Dekoracyjny — nie niesie treści (role="presentation"). */
+.home-section-divider {
+  --home-zigzag: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='28'%20height='18'%20viewBox='0%200%2028%2018'%20fill='none'%20stroke='%23000'%20stroke-width='2.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M0%2015%20L7%203%20L14%2015%20L21%203%20L28%2015'/%3E%3C/svg%3E");
+
+  height: 18px;
+  margin-inline: var(--gutter);
+  /* Subtelny odcień koralu — złagodzony bielą, więc separator zdobi, a nie
+     dominuje nad treścią sekcji. */
+  background-color: color-mix(in srgb, var(--color-coral) 45%, white);
+  -webkit-mask: var(--home-zigzag) repeat-x center / 28px 18px;
+  mask: var(--home-zigzag) repeat-x center / 28px 18px;
+}
+
 .home-footer {
   padding: 24px 20px 40px;
   color: var(--color-text-muted);
