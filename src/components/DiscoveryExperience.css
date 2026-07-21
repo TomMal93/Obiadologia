@@ -157,25 +157,47 @@
   box-shadow: none;
 }
 
+/* Cichy odnośnik nawigacyjny pod grupami wyboru — celowo subtelny, aby nie
+   rywalizował wizualnie z opcjami Kategorii powyżej. Bez wypełnienia i ramki
+   w spoczynku; afordancję niesie podkreślenie etykiety i strzałka. */
 .category-details-link {
   display: flex;
+  width: fit-content;
   min-height: 44px;
   justify-content: center;
-  gap: var(--space-8);
+  gap: var(--space-4);
   align-items: center;
-  margin: var(--space-4) 0;
+  margin: var(--space-4) auto 0;
   padding: var(--space-8) var(--space-12);
-  border: 1px solid color-mix(in srgb, var(--color-categories) 32%, var(--color-border));
-  border-radius: var(--radius-field);
-  color: var(--color-categories-strong);
-  font-weight: 800;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
-  background: var(--color-categories-soft);
+  background: transparent;
+  transition: color 140ms ease, background-color 140ms ease;
 }
 
-.category-details-link:hover {
-  border-color: var(--color-categories);
+.category-details-link-label {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentcolor 40%, transparent);
+  text-underline-offset: 3px;
+}
+
+.category-details-link-arrow {
+  transition: transform 140ms ease;
+}
+
+@media (hover: hover) {
+  .category-details-link:hover {
+    color: var(--color-categories-strong);
+    background: var(--color-categories-soft);
+  }
+
+  .category-details-link:hover .category-details-link-arrow {
+    transform: translateX(3px);
+  }
 }
 
 .category-details-link:focus-visible {
