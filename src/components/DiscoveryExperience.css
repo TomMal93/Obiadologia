@@ -510,6 +510,40 @@
   background: transparent;
 }
 
+/* Natywny „X" do czyszczenia inputa (type="search") jest domyślnie mały
+   i szary. Zastępujemy go większym, koralowym kółkiem z krzyżykiem, żeby
+   był łatwym celem dotykowym i spójny z resztą overlaya. */
+.search-field input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-left: var(--space-8);
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: var(--color-search-soft);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a82d18' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px 15px;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+
+.search-field input::-webkit-search-cancel-button:hover {
+  background-color: color-mix(in srgb, var(--color-search) 22%, var(--color-search-soft));
+  transform: scale(1.08);
+}
+
+.search-field input::-webkit-search-cancel-button:active {
+  transform: scale(0.96);
+}
+
+/* Widoczny fokus dla nawigacji klawiaturą. */
+.search-field input:focus-visible::-webkit-search-cancel-button {
+  outline: 2px solid var(--color-search);
+  outline-offset: 2px;
+}
+
 .suggestion-list {
   display: flex;
   gap: var(--space-8);
