@@ -68,6 +68,9 @@
   align-items: center;
   width: 100%;
   margin-bottom: 0;
+  /* Nazwa grupy przyjmuje kolor tożsamości grupy (wariant `-strong` dla
+     kontrastu WCAG 2.2 AA na jasnym tle). */
+  color: var(--group-strong);
   font-size: var(--font-size-16);
   font-weight: 800;
 }
@@ -90,16 +93,12 @@
   height: 100%;
 }
 
-/* Ikona opcji: neutralna, a po wybraniu przyjmuje akcent grupy. Stan wyboru
-   niosą też obramowanie, pogrubienie i aria-pressed — nie sam kolor. */
+/* Ikona opcji nosi kolor tożsamości grupy. Stan wyboru niosą obramowanie,
+   pogrubienie i aria-pressed — nie sam kolor ikony. */
 .option-icon {
   display: block;
   width: 20px;
   height: 20px;
-  color: var(--color-text-muted);
-}
-
-.category-option.is-selected .option-icon {
   color: var(--group-accent);
 }
 
@@ -110,16 +109,19 @@
    Zob. docs/design/ui-system.md „Akcenty grup Kategorii”. */
 .category-group--daypart {
   --group-accent: var(--color-search);
+  --group-strong: var(--color-search-strong);
   --group-soft: var(--color-search-soft);
 }
 
 .category-group--tempo {
   --group-accent: var(--color-categories);
+  --group-strong: var(--color-categories-strong);
   --group-soft: var(--color-categories-soft);
 }
 
 .category-group--occasion {
   --group-accent: var(--color-map);
+  --group-strong: var(--color-map-strong);
   --group-soft: var(--color-map-soft);
 }
 
@@ -143,7 +145,8 @@
   padding: var(--space-4);
   border: 2px solid transparent;
   border-radius: var(--radius-field);
-  color: var(--color-text);
+  /* Etykieta w kolorze tożsamości grupy (wariant `-strong` dla kontrastu AA). */
+  color: var(--group-strong);
   font-size: var(--font-size-14);
   line-height: 1.2;
   cursor: pointer;
@@ -161,7 +164,7 @@
 
 .category-option.is-selected {
   border: 2px solid var(--group-accent);
-  color: var(--color-text);
+  color: var(--group-strong);
   font-weight: 800;
   background: var(--group-soft);
   box-shadow: none;
