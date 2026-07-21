@@ -7,11 +7,20 @@
   text-align: center;
 }
 
-.section-heading h2 {
+.category-section > .section-heading {
+  margin-top: calc(0px - var(--space-16));
+  margin-bottom: var(--space-16);
+}
+
+.section-heading h2:not(.eyebrow) {
   margin: var(--space-8) 0;
   font-size: clamp(24px, 5.2vh, 32px);
   line-height: 1.05;
   letter-spacing: -0.035em;
+}
+
+.section-heading h2.category-heading {
+  font-size: var(--font-size-22);
 }
 
 .section-heading > p:last-child {
@@ -21,7 +30,7 @@
 }
 
 .category-panel {
-  padding: clamp(14px, 3vh, 20px) var(--space-16);
+  padding: clamp(var(--space-4), 1vh, var(--space-8)) var(--space-16);
   border-radius: var(--radius-card);
   background: var(--color-surface);
   box-shadow: var(--shadow-surface);
@@ -45,7 +54,7 @@
   align-items: center;
   width: 100%;
   margin-bottom: 0;
-  font-size: var(--font-size-20);
+  font-size: var(--font-size-16);
   font-weight: 800;
 }
 
@@ -112,10 +121,11 @@
   min-width: 0;
   /* Skaluje się z wysokością ekranu, ale nie schodzi poniżej progu 44px
      dla obszaru kliknięcia (WCAG 2.2 AA / System UI). */
-  min-height: clamp(44px, 8vh, 64px);
+  min-height: clamp(44px, 5vh, 48px);
   place-items: center;
   align-content: center;
-  gap: var(--space-4);
+  /* Celowy mikroodstęp poza siatką, aby ikona i etykieta tworzyły jedną grupę. */
+  gap: 2px;
   padding: var(--space-4);
   border: 1px solid color-mix(in srgb, var(--group-accent) 28%, transparent);
   border-radius: var(--radius-field);

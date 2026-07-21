@@ -392,8 +392,7 @@ export function DiscoveryExperience({ recipes }: Props) {
     <>
       <section id="kategorie" className="screen category-section" aria-labelledby="categories-heading">
         <div className="section-heading">
-          <p className="eyebrow">Kategorie</p>
-          <h2 id="categories-heading">Wybierz tryb</h2>
+          <h2 id="categories-heading" className="eyebrow category-heading">Kategorie</h2>
           <p>Wybierz co najmniej jedną opcję:<br />porę dnia, tempo lub okazję.</p>
         </div>
         <div className="category-panel">
@@ -412,6 +411,9 @@ export function DiscoveryExperience({ recipes }: Props) {
               </div>
             </fieldset>
           ))}
+        </div>
+        <section className="results category-results-frame" aria-labelledby="category-results-heading">
+          <h3 id="category-results-heading">Propozycje dla Ciebie</h3>
           <p className="selection-summary" aria-live="polite">
             {hasSelection ? (
               <><span aria-hidden="true">✓</span><span>Wybrano: <strong>{selectedLabels.join(' · ')}</strong></span></>
@@ -419,9 +421,6 @@ export function DiscoveryExperience({ recipes }: Props) {
               <span>Wybierz co najmniej jedną opcję.</span>
             )}
           </p>
-        </div>
-        <section className="results category-results-frame" aria-labelledby="category-results-heading">
-          <h3 id="category-results-heading">Propozycje dla Ciebie</h3>
           <div
             className={`category-results-body${hasSelection && categoryResults.length > 0 ? '' : ' is-message'}`}
             role="region"

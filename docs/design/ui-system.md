@@ -92,8 +92,8 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 - Nagłówki: zwarte, pogrubione `700–800`, z małą wysokością linii.
 - Tekst podstawowy: `400–500`; etykiety aktywne i CTA: `600–700`.
 - Minimalny tekst interfejsu: `16px`; drobne metadane mogą mieć `14px`, jeśli zachowują kontrast.
-- Skala startowa: `14, 16, 20, 24, 32, 48, 64px`; wartości duże mają być płynne przez `clamp()`.
-- Rozmiary stałe używają tokenów `--font-size-14` / `--font-size-20` / `--font-size-24` / `--font-size-32`; rozmiary płynne (nagłówki, pigułka) pozostają w `clamp()`.
+- Skala startowa: `14, 16, 20, 22, 24, 32, 48, 64px`; wartości duże mają być płynne przez `clamp()`.
+- Rozmiary stałe używają tokenów `--font-size-14` / `--font-size-16` / `--font-size-20` / `--font-size-22` / `--font-size-24` / `--font-size-32`; rozmiary płynne (nagłówki, pigułka) pozostają w `clamp()`.
 
 ### Geometria
 

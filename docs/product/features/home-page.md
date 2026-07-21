@@ -63,7 +63,7 @@ Notatka pod trzema drogami:
 
 Nagłówek:
 
-- „Wybierz tryb”
+- „Kategorie”
 - „Wybierz co najmniej jedną opcję: porę dnia, tempo lub okazję.”
 
 ### Pora dnia
@@ -90,7 +90,7 @@ Nagłówek:
 - W każdej grupie można wybrać maksymalnie jedną opcję.
 - Wybranie innej opcji zastępuje poprzednią w tej samej grupie.
 - Ponowne użycie aktywnej opcji usuwa wybór.
-- Pasek pod grupami jest zawsze widoczny: przed wyborem przypomina „Wybierz co najmniej jedną opcję.”, a po wyborze pokazuje podsumowanie „Wybrano: …” w jednym wierszu.
+- Pasek w ramce „Propozycje dla Ciebie”, bezpośrednio pod jej nagłówkiem, jest zawsze widoczny: przed wyborem przypomina „Wybierz co najmniej jedną opcję.”, a po wyborze pokazuje podsumowanie „Wybrano: …” w jednym wierszu.
 - Wyniki pojawiają się po wyborze co najmniej jednej opcji w dowolnej grupie.
 - Od pierwszego wyboru zmiana dowolnej opcji aktualizuje wyniki.
 - Usunięcie ostatniego wyboru ukrywa wyniki i przywraca stan początkowy.
@@ -99,7 +99,7 @@ Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 
 ## Wyniki
 
-Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie” o stałej wysokości w danym viewporcie. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki; zmienia się wyłącznie jej wnętrze:
+Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie” o stałej wysokości w danym viewporcie. Bezpośrednio pod jej nagłówkiem znajduje się pasek podsumowania wyboru. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki; zmienia się wyłącznie jej wnętrze:
 
 - bez wyboru ramka pokazuje instrukcję „Tutaj pojawią się dopasowane przepisy.”,
 - po dopasowaniu pokazuje od trzech do czterech początkowych propozycji,

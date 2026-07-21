@@ -74,7 +74,9 @@
   /* Skala typografii (docs/design/ui-system.md „Typografia”) dla rozmiarów
      stałych; rozmiary płynne (nagłówki) pozostają w `clamp()`. */
   --font-size-14: 14px;
+  --font-size-16: 16px;
   --font-size-20: 20px;
+  --font-size-22: 22px;
   --font-size-24: 24px;
   --font-size-32: 32px;
 

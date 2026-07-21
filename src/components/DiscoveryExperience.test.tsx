@@ -17,7 +17,8 @@ describe('DiscoveryExperience categories', () => {
     }
     expect(screen.getByText('Wybierz co najmniej jedną opcję.')).toBeInTheDocument();
     const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
-    expect(screen.getByRole('heading', { name: 'Propozycje dla Ciebie' })).toBeInTheDocument();
+    const resultsFrame = screen.getByRole('heading', { name: 'Propozycje dla Ciebie' }).parentElement as HTMLElement;
+    expect(within(resultsFrame).getByText('Wybierz co najmniej jedną opcję.')).toBeInTheDocument();
     expect(within(results).getByText('Tutaj pojawią się dopasowane przepisy.')).toBeInTheDocument();
     expect(within(results).queryByRole('link')).not.toBeInTheDocument();
   });
@@ -31,7 +32,8 @@ describe('DiscoveryExperience categories', () => {
     const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
     expect(within(results).getAllByRole('link')).toHaveLength(4);
     expect(lunch).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByText(/Wybrano:/)).toBeInTheDocument();
+    const resultsFrame = screen.getByRole('heading', { name: 'Propozycje dla Ciebie' }).parentElement as HTMLElement;
+    expect(within(resultsFrame).getByText(/Wybrano:/)).toBeInTheDocument();
 
     const grill = screen.getByRole('button', { name: /Na grilla/ });
     fireEvent.click(grill);
