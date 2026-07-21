@@ -398,52 +398,55 @@
   background: var(--color-bg);
 }
 
+/* Segmentowy przełącznik: jedna pigułka z dwoma segmentami. Aktywny segment
+   dostaje delikatne tło i tekst w kolorze sparowanej drogi (Wyszukiwarka↔koral,
+   Mapa↔niebieski); nieaktywny pozostaje wyciszony. Stan aktywny niosą tło,
+   pogrubienie i aria-pressed — nie sam kolor. */
 .mode-switch {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-8);
+  gap: var(--space-4);
   margin-bottom: var(--space-32);
+  padding: var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border);
 }
 
-/* Każdy przełącznik nosi kolor sparowanej drogi (Wyszukiwarka↔koral,
-   Mapa↔niebieski), tym samym językiem co kafle wyboru w Kategoriach: subtelny
-   obrys `inset` w stanie domyślnym, pełne obramowanie i tło `-soft` w aktywnym. */
 .mode-switch button:first-child {
-  --switch-accent: var(--color-search);
   --switch-strong: var(--color-search-strong);
   --switch-soft: var(--color-search-soft);
 }
 
 .mode-switch button:nth-child(2) {
-  --switch-accent: var(--color-map);
   --switch-strong: var(--color-map-strong);
   --switch-soft: var(--color-map-soft);
 }
 
 .mode-switch button {
-  min-height: 56px;
-  padding: var(--space-12) var(--space-8);
-  border: 2px solid transparent;
-  border-radius: var(--radius-field);
-  color: var(--color-text);
+  display: flex;
+  gap: var(--space-8);
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
   font-size: clamp(15px, 4.4vw, 20px);
   cursor: pointer;
-  background: var(--color-surface);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--switch-accent) 14%, var(--color-border));
+  background: transparent;
 }
 
 @media (hover: hover) {
   .mode-switch button:not(.is-active):hover {
-    background: var(--switch-soft);
+    color: var(--color-text);
   }
 }
 
 .mode-switch button.is-active {
-  border-color: var(--switch-accent);
   color: var(--switch-strong);
   font-weight: 800;
   background: var(--switch-soft);
-  box-shadow: none;
 }
 
 .overlay-mode {
@@ -507,20 +510,17 @@
   flex: 0 0 auto;
   min-height: 44px;
   padding: var(--space-8) var(--space-16);
-  border: 2px solid transparent;
+  border: 0;
   border-radius: var(--radius-pill);
-  color: var(--color-text);
+  color: var(--color-search-strong);
   cursor: pointer;
-  background: var(--color-surface);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-search) 14%, var(--color-border));
+  background: var(--color-search-soft);
 }
 
 .suggestion-list button:hover,
 .suggestion-list button:focus-visible {
-  border-color: var(--color-search);
   color: var(--color-search-strong);
-  background: var(--color-search-soft);
-  box-shadow: none;
+  background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
 }
 
 /* Wyniki overlaya używają tej samej oprawy co ramka „Propozycje dla Ciebie”
