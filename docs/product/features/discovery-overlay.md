@@ -126,9 +126,10 @@ Wyszukiwarka jest przeznaczona dla użytkownika, który ma już trop: składnik,
 Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 
 - pole jest puste; fokus trafia na dialog, więc klawiatura ekranowa nie otwiera się na starcie;
-- sugestie nie są widoczne;
+- sugestie powiązane z zapytaniem nie są widoczne;
 - lista wyników nie jest widoczna;
-- placeholder wyjaśnia obsługiwane rodzaje zapytań.
+- placeholder wyjaśnia obsługiwane rodzaje zapytań;
+- pod polem widoczny jest blok „Popularne tropy” — kilka klikalnych podpowiedzi wywiedzionych z najczęstszych tagów katalogu, które zapełniają pusty stan i podpowiadają kierunek. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie tropu ustawia go jako jedno aktywne zapytanie.
 
 Usunięcie całej treści przywraca ten stan.
 
@@ -144,7 +145,7 @@ Usunięcie całej treści przywraca ten stan.
 
 Kolor koralowy identyfikuje aktywną Wyszukiwarkę, fokus pola i aktywną sugestię, ale nie jest jedynym nośnikiem ich stanu.
 
-Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.”
+Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.” Pod komunikatem powtarza się blok „Popularne tropy” (etykieta „Spróbuj popularnych tropów:”), aby brak trafień nie był ślepym zaułkiem — wybranie tropu od razu ustawia nowe zapytanie z wynikami.
 
 ## Tryb Mapy
 

@@ -84,6 +84,37 @@ describe('DiscoveryExperience overlay', () => {
     expect(within(dialog).getByRole('link', { name: /Kurczak z grilla z sałatką/ })).toBeInTheDocument();
   });
 
+  it('fills the empty field with popular tropes and runs one when picked', async () => {
+    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    fireEvent.click(addOpener('search'));
+
+    const dialog = await screen.findByRole('dialog');
+    const tropes = within(dialog).getByRole('group', { name: 'Popularne tropy' });
+    const firstTrope = within(tropes).getAllByRole('button')[0] as HTMLButtonElement;
+
+    fireEvent.click(firstTrope);
+
+    const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
+    expect(input).toHaveValue(firstTrope.textContent);
+    expect(within(dialog).queryByRole('group', { name: 'Popularne tropy' })).not.toBeInTheDocument();
+    await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
+  });
+
+  it('offers rescue tropes when a query returns no results', async () => {
+    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    fireEvent.click(addOpener('search'));
+
+    const dialog = await screen.findByRole('dialog');
+    const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
+    fireEvent.change(input, { target: { value: 'xyzzy' } });
+
+    expect(await within(dialog).findByText('Nie znaleźliśmy pasujących propozycji.')).toBeInTheDocument();
+    const rescue = within(dialog).getByRole('group', { name: 'Spróbuj popularnych tropów:' });
+    fireEvent.click(within(rescue).getAllByRole('button')[0] as HTMLButtonElement);
+
+    await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
+  });
+
   it('preserves search state while the map reacts to keyboard input', async () => {
     render(<DiscoveryExperience recipes={prototypeRecipes} />);
     fireEvent.click(addOpener('search'));

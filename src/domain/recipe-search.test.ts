@@ -19,6 +19,18 @@ describe('recipe search', () => {
     expect(search.suggest('kur')).toContain('kurczak');
     expect(search.search('')).toEqual([]);
   });
+
+  it('offers popular tropes drawn from the most common tags, each a real query', () => {
+    const search = createRecipeSearch(prototypeRecipes);
+    const tropes = search.tropes();
+
+    expect(tropes.length).toBeGreaterThan(0);
+    expect(tropes.length).toBeLessThanOrEqual(6);
+    expect(new Set(tropes).size).toBe(tropes.length);
+    for (const trope of tropes) {
+      expect(search.search(trope).length).toBeGreaterThan(0);
+    }
+  });
 });
 
 describe('map ranking', () => {

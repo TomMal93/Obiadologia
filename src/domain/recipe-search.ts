@@ -4,6 +4,7 @@ import type { MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 export interface RecipeSearch {
   search(query: string): Recipe[];
   suggest(query: string, limit?: number): string[];
+  tropes(limit?: number): string[];
 }
 
 export interface MapCoordinates {
@@ -82,6 +83,25 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
         .filter((suggestion) => normalizeSearchText(suggestion).includes(normalized))
         .sort((left, right) => left.length - right.length)
         .slice(0, limit);
+    },
+    // Popularne „tropy" na start i przy braku wyników: najczęstsze tagi
+    // opublikowanych przepisów. Każdy jest realnym zapytaniem, więc kliknięcie
+    // zawsze prowadzi do trafień. Remisy rozstrzygamy alfabetycznie (pl-PL),
+    // aby kolejność była stabilna między renderami.
+    tropes(limit = 6) {
+      const counts = new Map<string, number>();
+      for (const recipe of published) {
+        for (const tag of recipe.tags) {
+          counts.set(tag, (counts.get(tag) ?? 0) + 1);
+        }
+      }
+      return [...counts.entries()]
+        .sort(
+          (left, right) =>
+            right[1] - left[1] || left[0].localeCompare(right[0], 'pl-PL'),
+        )
+        .slice(0, limit)
+        .map(([tag]) => tag);
     },
   };
 }

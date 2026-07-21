@@ -535,6 +535,24 @@
   background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
 }
 
+/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników. Pigułki
+   dziedziczą wygląd `.suggestion-list` (koralowe, przewijane w poziomie), więc
+   nie wprowadzamy nowego języka wizualnego — dokładamy jedynie wyciszoną
+   etykietę nad nimi. */
+.trope-block {
+  margin-top: var(--space-24);
+}
+
+.trope-label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+}
+
+.trope-block .trope-list {
+  margin: var(--space-8) 0 0;
+}
+
 /* Wyniki overlaya używają tej samej oprawy co ramka „Propozycje dla Ciebie”
    w Kategoriach: biała karta z cieniem (z `.results`), wyśrodkowany nagłówek 20px
    i lista oddzielona od nagłówka górną linią. */

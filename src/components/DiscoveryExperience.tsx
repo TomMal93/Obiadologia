@@ -161,6 +161,30 @@ function RecipeItems({ recipes }: { recipes: Recipe[] }) {
   );
 }
 
+function TropeList({
+  label,
+  labelId,
+  tropes,
+  onPick,
+}: {
+  label: string;
+  labelId: string;
+  tropes: string[];
+  onPick: (trope: string) => void;
+}) {
+  if (tropes.length === 0) return null;
+  return (
+    <div className="trope-block" role="group" aria-labelledby={labelId}>
+      <p className="trope-label" id={labelId}>{label}</p>
+      <div className="suggestion-list trope-list">
+        {tropes.map((trope) => (
+          <button key={trope} type="button" onClick={() => onPick(trope)}>{trope}</button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function RecipeList({
   recipes,
   headingId,
@@ -266,6 +290,7 @@ export function DiscoveryExperience({ recipes }: Props) {
     () => recipeSearch.suggest(debouncedQuery),
     [recipeSearch, debouncedQuery],
   );
+  const tropes = useMemo(() => recipeSearch.tropes(), [recipeSearch]);
   const mapResults = useMemo(
     () => rankRecipesForMap(recipes, rankedMap),
     [recipes, rankedMap],
@@ -529,8 +554,26 @@ export function DiscoveryExperience({ recipes }: Props) {
                   ))}
                 </div>
               )}
+              {!snapshot.query && (
+                <TropeList
+                  label="Popularne tropy"
+                  labelId="search-tropes-heading"
+                  tropes={tropes}
+                  onPick={(trope) => updateSnapshot({ query: trope })}
+                />
+              )}
               {snapshot.query && searchResults.length > 0 && <RecipeList recipes={searchResults} headingId="search-results-heading" />}
-              {snapshot.query && debouncedQuery === snapshot.query && searchResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>}
+              {snapshot.query && debouncedQuery === snapshot.query && searchResults.length === 0 && (
+                <>
+                  <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>
+                  <TropeList
+                    label="Spróbuj popularnych tropów:"
+                    labelId="search-empty-tropes-heading"
+                    tropes={tropes}
+                    onPick={(trope) => updateSnapshot({ query: trope })}
+                  />
+                </>
+              )}
             </div>
           ) : (
             <div className="overlay-mode">
