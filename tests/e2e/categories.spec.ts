@@ -34,6 +34,23 @@ test('initial homepage has no automatically detectable accessibility violations'
   expect(results.violations).toEqual([]);
 });
 
+test('category heading starts 20px below the top of its section', async ({ page }) => {
+  await page.setViewportSize({ width: 430, height: 932 });
+  await page.goto('/');
+
+  const headingOffset = await page.locator('.category-section').evaluate((section) => {
+    const heading = section.querySelector(':scope > .section-heading');
+
+    if (!(heading instanceof HTMLElement)) {
+      throw new Error('Category section heading was not found');
+    }
+
+    return heading.getBoundingClientRect().top - section.getBoundingClientRect().top;
+  });
+
+  expect(headingOffset).toBeCloseTo(20, 0);
+});
+
 test('homepage heading and path panel keep stable mobile geometry', async ({ page }) => {
   const viewports = [
     { width: 320, height: 568 },

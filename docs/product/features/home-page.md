@@ -61,6 +61,9 @@ Notatka pod trzema drogami:
 
 ## Sekcja kategorii
 
+Zawartość sekcji rozpoczyna się przy jej górnej krawędzi z odstępem `20px`;
+nagłówek i opis nie są centrowane pionowo razem z panelami znajdującymi się poniżej.
+
 Nagłówek:
 
 - „Kategorie”
@@ -117,6 +120,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
 - Kategorie prowadzą do odpowiedniej sekcji.
 - Żadna kategoria nie jest zaznaczona domyślnie.
+- Nagłówek sekcji Kategorii wraz z opisem rozpoczyna się `20px` od jej górnej krawędzi.
 - Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.
 - Ramka wyników jest widoczna w każdym stanie i nie zmienia wysokości po wyborze, odznaczeniu ani braku dopasowań.
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.

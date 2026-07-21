@@ -7,8 +7,12 @@
   text-align: center;
 }
 
+.screen.category-section {
+  justify-content: flex-start;
+  padding-block-start: 20px;
+}
+
 .category-section > .section-heading {
-  margin-top: calc(0px - var(--space-16));
   margin-bottom: var(--space-16);
 }
 
@@ -127,7 +131,7 @@
   /* Celowy mikroodstęp poza siatką, aby ikona i etykieta tworzyły jedną grupę. */
   gap: 2px;
   padding: var(--space-4);
-  border: 1px solid color-mix(in srgb, var(--group-accent) 28%, transparent);
+  border: 2px solid color-mix(in srgb, var(--group-accent) 28%, transparent);
   border-radius: var(--radius-field);
   color: var(--color-text);
   font-size: var(--font-size-14);
