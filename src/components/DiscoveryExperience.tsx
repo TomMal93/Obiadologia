@@ -570,7 +570,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                 </button>
               </div>
               <p className="map-mood" aria-hidden="true">
-                <span className="map-mood__label">Wybrany nastrój</span>
+                <span className="map-mood__label">Nastrój na dziś:</span>
                 <span className="map-mood__value" style={{ color: moodColor(snapshot.map) }}>
                   {moodName(snapshot.map)}
                 </span>
