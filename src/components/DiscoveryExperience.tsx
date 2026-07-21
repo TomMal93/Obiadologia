@@ -569,8 +569,11 @@ export function DiscoveryExperience({ recipes }: Props) {
                   <span aria-hidden="true">♨</span>
                 </button>
               </div>
-              <p className="map-mood" style={{ color: moodColor(snapshot.map) }} aria-hidden="true">
-                {moodName(snapshot.map)}
+              <p className="map-mood" aria-hidden="true">
+                <span className="map-mood__label">Wybrany nastrój</span>
+                <span className="map-mood__value" style={{ color: moodColor(snapshot.map) }}>
+                  {moodName(snapshot.map)}
+                </span>
               </p>
               {mapResults.length > 0 && <RecipeList recipes={mapResults} headingId="map-results-heading" />}
               {mapResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy propozycji dla tego miejsca.</p>}
