@@ -153,8 +153,7 @@ Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.”
 Mapa pomaga użytkownikowi, który nie zna nazwy dania, ale potrafi określić oczekiwany charakter posiłku.
 
 - nagłówek: „Wskaż klimat na mapie”;
-- opis: „Przesuń talerz tam, gdzie dziś Ci pasuje.”;
-- instrukcja: „Przeciągnij talerz”.
+- opis: „Przesuń talerz tam, gdzie dziś Ci pasuje.”.
 
 ### Osie i reprezentacja danych
 

@@ -597,13 +597,8 @@
 
 .map-point:active { cursor: grabbing; }
 
-.drag-instruction {
-  margin: var(--space-12) 0;
-  color: var(--color-text-muted);
-  text-align: center;
-}
-
 .map-summary {
+  margin-top: var(--space-16);
   background: var(--color-map-soft);
 }
 
