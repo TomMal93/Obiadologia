@@ -225,11 +225,8 @@
 }
 
 .tree-node-icon {
-  fill: none;
-  stroke: var(--color-coral);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  fill: var(--color-coral);
+  stroke: none;
 }
 
 .path-grid {
