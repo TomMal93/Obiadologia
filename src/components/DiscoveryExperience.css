@@ -478,7 +478,7 @@
 
 .search-field {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   gap: var(--space-12);
   align-items: center;
   min-height: 64px;
@@ -510,38 +510,44 @@
   background: transparent;
 }
 
-/* Natywny „X" do czyszczenia inputa (type="search") jest domyślnie mały
-   i szary. Zastępujemy go większym, koralowym kółkiem z krzyżykiem, żeby
-   był łatwym celem dotykowym i spójny z resztą overlaya. */
+/* Natywny „X" (::-webkit-search-cancel-button) pojawia się tylko przy
+   fokusie — ukrywamy go i renderujemy własny przycisk, który jest widoczny
+   zawsze, gdy w polu coś jest. */
 .search-field input::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
-  width: 28px;
-  height: 28px;
-  margin-left: var(--space-8);
-  border-radius: 50%;
+}
+
+/* Sam krzyżyk — bez tła i obramowania, w kolorze wyszukiwarki. */
+.search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-search-strong);
+  font-size: 28px;
+  line-height: 1;
   cursor: pointer;
-  background-color: var(--color-search-soft);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a82d18' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 15px 15px;
-  transition: background-color 120ms ease, transform 120ms ease;
+  transition: color 120ms ease, transform 120ms ease;
 }
 
-.search-field input::-webkit-search-cancel-button:hover {
-  background-color: color-mix(in srgb, var(--color-search) 22%, var(--color-search-soft));
-  transform: scale(1.08);
+.search-clear:hover {
+  color: var(--color-search);
+  transform: scale(1.1);
 }
 
-.search-field input::-webkit-search-cancel-button:active {
-  transform: scale(0.96);
+.search-clear:active {
+  transform: scale(0.94);
 }
 
-/* Widoczny fokus dla nawigacji klawiaturą. */
-.search-field input:focus-visible::-webkit-search-cancel-button {
+.search-clear:focus-visible {
   outline: 2px solid var(--color-search);
   outline-offset: 2px;
+  border-radius: var(--radius-field);
 }
 
 .suggestion-list {
