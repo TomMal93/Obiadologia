@@ -225,11 +225,8 @@
 }
 
 .tree-node-icon {
-  fill: none;
-  stroke: var(--color-coral);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  fill: var(--color-coral);
+  stroke: none;
 }
 
 .path-grid {
@@ -346,24 +343,14 @@ button.path-tile {
 }
 
 /* Ikony ścieżek dziedziczą kolor akcentu przez currentColor. */
-.path-icon-ring {
+.path-icon-pin {
   fill: none;
   stroke: currentColor;
-  stroke-width: 7;
-  opacity: 0.28;
+  stroke-width: 5;
+  stroke-linejoin: round;
 }
 
-.path-icon-arc {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-dasharray: 38 100;
-  transform: rotate(-90deg);
-  transform-origin: 22px 24px;
-}
-
-.path-icon-knob {
+.path-icon-pin-dot {
   fill: currentColor;
 }
 
