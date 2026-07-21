@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { KeyboardEvent, PointerEvent, ReactNode } from 'react';
+import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from 'react';
 import type { CategorySelection, MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 import { filterRecipesByCategories, hasCategorySelection } from '@/domain/recipe';
 import {
@@ -562,7 +562,11 @@ export function DiscoveryExperience({ recipes }: Props) {
                   ref={mapPointRef}
                   type="button"
                   className="map-point"
-                  style={{ left: `${snapshot.map.x}%`, top: `${snapshot.map.y}%` }}
+                  style={{
+                    left: `${snapshot.map.x}%`,
+                    top: `${snapshot.map.y}%`,
+                    '--map-point-mood': moodColor(snapshot.map),
+                  } as CSSProperties}
                   aria-label={`Talerz na mapie: ${mapSummary(snapshot.map)}`}
                   onKeyDown={handleMapKeyDown}
                 >
