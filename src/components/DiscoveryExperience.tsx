@@ -414,11 +414,11 @@ export function DiscoveryExperience({ recipes }: Props) {
         </div>
         <section className="results category-results-frame" aria-labelledby="category-results-heading">
           <h3 id="category-results-heading">Propozycje dla Ciebie</h3>
-          <p className="selection-summary" aria-live="polite">
+          <p className={`selection-summary category-selection-summary${hasSelection ? ' has-selection' : ''}`} aria-live="polite">
             {hasSelection ? (
-              <><span aria-hidden="true">✓</span><span>Wybrano: <strong>{selectedLabels.join(' · ')}</strong></span></>
+              <><span className="selection-summary-icon" aria-hidden="true">✓</span><span className="selection-summary-copy"><span className="selection-summary-label">Wybrano:</span> <strong>{selectedLabels.join(' · ')}</strong></span></>
             ) : (
-              <span>Wybierz co najmniej jedną opcję.</span>
+              <><span className="selection-summary-icon" aria-hidden="true">○</span><span className="selection-summary-copy">Wybierz co najmniej jedną opcję.</span></>
             )}
           </p>
           <div
