@@ -92,8 +92,53 @@
   letter-spacing: -0.06em;
 }
 
+/* Wspólna zmienna --brand-pulse przechodzi cyklicznie przez trzy kolory marki.
+   Rejestrujemy ją przez @property, aby przeglądarka mogła interpolować kolor
+   między klatkami (bez tego zmienne CSS nie animują się płynnie). Zmienna
+   płynie na `.intro-screen`, dzięki czemu i słowo emfazy w h1, i .path-pill
+   pulsują dokładnie w tym samym rytmie. */
+@property --brand-pulse {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #3877ff;
+}
+
+.intro-screen {
+  --brand-pulse: var(--color-map);
+
+  animation: brand-pulse 9s ease-in-out infinite;
+}
+
+@keyframes brand-pulse {
+  0%,
+  17% {
+    --brand-pulse: var(--color-map);
+  }
+
+  33%,
+  50% {
+    --brand-pulse: var(--color-coral);
+  }
+
+  67%,
+  83% {
+    --brand-pulse: var(--color-categories);
+  }
+
+  100% {
+    --brand-pulse: var(--color-map);
+  }
+}
+
 .home-hero h1 span {
-  color: var(--color-heading-accent);
+  color: var(--brand-pulse);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-screen {
+    animation: none;
+    --brand-pulse: var(--color-coral);
+  }
 }
 
 .path-panel {
@@ -132,7 +177,7 @@
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
-  background: var(--brand-gradient);
+  background: var(--brand-pulse);
   box-shadow: var(--shadow-surface);
   transform: translate(-50%, -50%);
 }
