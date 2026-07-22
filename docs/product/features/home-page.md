@@ -27,6 +27,11 @@ Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy
 
 ## Trzy drogi
 
+Wprowadzenie do panelu:
+
+- pigułka „Apetyt nie zawsze mówi pełnym zdaniem”,
+- nagłówek „Rzuć pierwszą myśl na stół”.
+
 ### Mapa
 
 Tekst:
@@ -56,8 +61,8 @@ Kliknięcie prowadzi do sekcji kategorii na stronie głównej.
 
 Notatka pod trzema drogami:
 
-- „Zaufaj pierwszej myśli.”
-- „Nie ma złej drogi do dobrego obiadu.”
+- „Ciekawość to najlepsza przyprawa.”
+- „Daj się jej poprowadzić i wybierz coś dla siebie.”
 
 ## Sekcja kategorii
 
