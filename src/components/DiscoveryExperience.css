@@ -504,19 +504,37 @@
   box-shadow: inset 0 0 0 2px var(--color-search);
 }
 
-.search-field > span:not(.visually-hidden) {
-  font-size: var(--font-size-32);
+.search-field-icon {
+  display: grid;
+  align-self: stretch;
+  place-items: center;
+}
+
+.search-field-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
 }
 
 .search-field input {
   width: 100%;
+  min-height: 64px;
   min-width: 0;
+  padding: 0;
   border: 0;
   outline: 0;
   color: var(--color-text);
   font: inherit;
   font-size: 18px;
+  line-height: 64px;
   background: transparent;
+}
+
+.search-field input::placeholder {
+  font-size: var(--font-size-16);
 }
 
 /* Natywny „X" (::-webkit-search-cancel-button) pojawia się tylko przy
@@ -538,10 +556,17 @@
   border: 0;
   background: transparent;
   color: var(--color-search-strong);
-  font-size: 28px;
-  line-height: 1;
   cursor: pointer;
   transition: color 120ms ease, transform 120ms ease;
+}
+
+.search-clear svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .search-clear:hover {
@@ -702,22 +727,9 @@
   .trope-tile:nth-child(15) { grid-area: b10; }
   .trope-tile:nth-child(16) { grid-area: w2; }   /* 2×1 */
 
-  /* Hero: ikona ⌕ u góry, słowo u dołu; największa typografia siatki. Ikona jest
-     pseudoelementem — nie trafia do textContent ani (dzięki aria-label) do nazwy
-     dostępnej. */
+  /* Hero zachowuje największą typografię siatki. */
   .trope-tile:nth-child(1) {
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
     font-size: var(--font-size-20);
-  }
-
-  .trope-tile:nth-child(1)::before {
-    content: "⌕";
-    color: var(--trope-accent);
-    font-size: var(--font-size-24);
-    font-weight: 400;
-    line-height: 1;
   }
 }
 

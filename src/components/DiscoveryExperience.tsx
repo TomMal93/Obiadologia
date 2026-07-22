@@ -194,16 +194,13 @@ function TropeList({
     <div className={`trope-block trope-block--${variant}`} role="group" aria-labelledby={labelId}>
       <p className="trope-label" id={labelId}>{label}</p>
       {variant === 'bento' ? (
-        // Bento: pierwszy kafel jest „hero" 2×2 (patrz CSS nth-child(1)) i niesie
-        // ikonę ⌕ przez pseudoelement; aria-label trzyma go poza nazwą dostępną,
-        // więc czytnik ogłasza sam trop, a nie znak dekoracyjny.
+        // Bento: pierwszy kafel jest „hero" 2×2 (patrz CSS nth-child(1)).
         <div className="trope-bento">
-          {tropes.map((trope, index) => (
+          {tropes.map((trope) => (
             <button
               key={`${trope.kind}:${trope.query}`}
               type="button"
               className={`trope-tile trope-tile--${tropeAccent[trope.kind]}`}
-              aria-label={index === 0 ? trope.label : undefined}
               onClick={() => onPick(trope.query)}
             >
               {trope.label}
@@ -612,10 +609,16 @@ export function DiscoveryExperience({ recipes }: Props) {
               </div>
               <label className="search-field">
                 <span className="visually-hidden">Szukaj przepisu</span>
-                <span aria-hidden="true">⌕</span>
+                <span className="search-field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <circle cx="11" cy="11" r="6.5" />
+                    <path d="m16 16 4 4" />
+                  </svg>
+                </span>
                 <input
                   ref={searchInputRef}
                   type="search"
+                  aria-label="Szukaj przepisu"
                   value={snapshot.query}
                   placeholder="np. kurczak, curry, szybko, bez mięsa"
                   autoComplete="off"
@@ -631,7 +634,9 @@ export function DiscoveryExperience({ recipes }: Props) {
                       searchInputRef.current?.focus();
                     }}
                   >
-                    ×
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M6 6 18 18M18 6 6 18" />
+                    </svg>
                   </button>
                 )}
               </label>
