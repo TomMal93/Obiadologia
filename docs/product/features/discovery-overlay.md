@@ -76,7 +76,13 @@ Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. 
 
 Oba tryby korzystają z jednego modelu `Recipe` i wspólnego komponentu karty.
 
-Sekcja wyników używa nagłówka „Propozycje”. Każda karta zawiera:
+Sekcja wyników używa nagłówka „Propozycje”, pokazuje po prawej odmienioną
+liczbę dopasowań i oddziela nagłówek linią od listy. Oba tryby korzystają z
+tego samego zwartego układu poziomych kart ze strzałką nawigacyjną. Kolor
+nagłówka i nazw przepisów odpowiada aktywnemu trybowi; w Mapie jest to ten sam
+niebieski token co tekst aktywnego segmentu „Mapa” w przełączniku.
+
+Każda karta zawiera:
 
 - zdjęcie potrawy albo wspólny placeholder;
 - nazwę przepisu;

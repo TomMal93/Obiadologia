@@ -146,6 +146,9 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.click(within(dialog).getByRole('button', { name: /Mapa/ }));
     expect(within(dialog).getByRole('button', { name: /Talerz na mapie: tempo neutralne · charakter neutralny/ })).toBeInTheDocument();
     expect(within(dialog).getAllByRole('link')).toHaveLength(4);
+    expect(within(dialog).getByText('4 dopasowania')).toBeInTheDocument();
+    expect(within(dialog).getByRole('heading', { name: 'Propozycje' }).closest('section'))
+      .toHaveClass('discovery-results--map');
 
     const point = within(dialog).getByRole('button', { name: /Talerz na mapie/ });
     fireEvent.keyDown(point, { key: 'ArrowLeft' });
@@ -153,6 +156,9 @@ describe('DiscoveryExperience overlay', () => {
 
     fireEvent.click(within(dialog).getByRole('button', { name: /Wyszukiwarka/ }));
     expect(within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('feta');
+    await waitFor(() => expect(within(dialog).getByText('1 dopasowanie')).toBeInTheDocument());
+    expect(within(dialog).getByRole('heading', { name: 'Propozycje' }).closest('section'))
+      .toHaveClass('discovery-results--search');
   });
 
   it('shows a live mood name under the map that stays neutral near the centre and changes past the band edge', async () => {

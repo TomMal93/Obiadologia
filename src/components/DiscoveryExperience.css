@@ -747,24 +747,98 @@
   .trope-tile { transition: none; }
 }
 
-/* Wyniki overlaya używają tej samej oprawy co ramka „Propozycje dla Ciebie”
-   w Kategoriach: biała karta z cieniem (z `.results`), wyśrodkowany nagłówek 20px
-   i lista oddzielona od nagłówka górną linią. */
+/* Wspólna lista wyników Wyszukiwarki i Mapy. Tryby różni wyłącznie kolor
+   akcentu tekstu; Mapa dzieli token z aktywnym segmentem przełącznika. */
 .discovery-results {
+  --result-accent: color-mix(in srgb, var(--color-search) 30%, var(--color-search-strong));
+
   margin-top: var(--space-24);
-  padding: var(--space-12) var(--space-16);
+  padding: 0 var(--space-16) var(--space-16);
+  overflow: hidden;
 }
 
-.discovery-results h3 {
-  margin-bottom: 0;
-  font-size: var(--font-size-20);
-  text-align: center;
+.discovery-results--map {
+  --result-accent: var(--color-map-strong);
+}
+
+.discovery-results__header {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.discovery-results__header h3 {
+  margin: 0;
+  color: var(--result-accent);
+  font-size: var(--font-size-14);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.discovery-results__header > span {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-16);
 }
 
 .discovery-results .recipe-list {
   margin-top: var(--space-12);
-  padding-top: var(--space-12);
-  border-top: 1px solid var(--color-border);
+}
+
+.discovery-results .recipe-card {
+  grid-template-columns: 88px minmax(0, 1fr) 32px;
+  min-height: 116px;
+  border-radius: var(--radius-card);
+}
+
+.discovery-results .recipe-media {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-field);
+}
+
+.discovery-results .recipe-content {
+  gap: var(--space-4);
+  padding-right: 0;
+}
+
+.discovery-results .recipe-content strong {
+  color: var(--result-accent);
+  font-size: clamp(17px, 4.7vw, var(--font-size-20));
+}
+
+.discovery-results .recipe-meta,
+.discovery-results .tag-list > span {
+  padding: 0;
+  color: var(--color-text-muted);
+  font-size: clamp(13px, 3.8vw, var(--font-size-16));
+  background: transparent;
+}
+
+.discovery-results .tag-list {
+  gap: var(--space-4);
+}
+
+.discovery-results .tag-list::before,
+.discovery-results .tag-list > span + span::before {
+  margin-right: var(--space-4);
+  content: '·';
+}
+
+.recipe-chevron {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  align-self: center;
+  color: var(--color-text-muted);
+}
+
+.recipe-chevron svg {
+  width: 24px;
+  height: 24px;
 }
 
 .preference-map {

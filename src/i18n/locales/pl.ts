@@ -84,6 +84,12 @@ export const pl = {
       searchMode: 'Wyszukiwarka',
       mapMode: 'Mapa',
       resultsHeading: 'Propozycje',
+      resultCount: {
+        one: '{count} dopasowanie',
+        few: '{count} dopasowania',
+        many: '{count} dopasowań',
+        other: '{count} dopasowania',
+      },
       resultAnnouncement: {
         one: 'Znaleziono {count} propozycję.',
         few: 'Znaleziono {count} propozycje.',

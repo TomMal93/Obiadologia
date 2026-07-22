@@ -110,10 +110,12 @@ function RecipeItems({
   recipes,
   common,
   messages,
+  discovery = false,
 }: {
   recipes: Recipe[];
   common: AppMessages['common'];
   messages: AppMessages['experience']['recipeCard'];
+  discovery?: boolean;
 }) {
   return (
     <ul className="recipe-list">
@@ -140,6 +142,11 @@ function RecipeItems({
                 </span>
               </span>
             </span>
+            {discovery && (
+              <span className="recipe-chevron" aria-hidden="true">
+                <Icon><path d="m9 6 6 6-6 6" /></Icon>
+              </span>
+            )}
           </a>
         </li>
       ))}
@@ -209,19 +216,28 @@ function RecipeList({
   recipes,
   headingId,
   title,
+  mode,
+  locale,
+  countMessages,
   common,
   messages,
 }: {
   recipes: Recipe[];
   headingId: string;
   title: string;
+  mode: DiscoveryMode;
+  locale: Locale;
+  countMessages: AppMessages['experience']['discovery']['resultCount'];
   common: AppMessages['common'];
   messages: AppMessages['experience']['recipeCard'];
 }) {
   return (
-    <section className="results discovery-results" aria-labelledby={headingId}>
-      <h3 id={headingId}>{title}</h3>
-      <RecipeItems recipes={recipes} common={common} messages={messages} />
+    <section className={`results discovery-results discovery-results--${mode}`} aria-labelledby={headingId}>
+      <div className="discovery-results__header">
+        <h3 id={headingId}>{title}</h3>
+        <span>{formatCountMessage(locale, recipes.length, countMessages)}</span>
+      </div>
+      <RecipeItems recipes={recipes} common={common} messages={messages} discovery />
     </section>
   );
 }
@@ -711,6 +727,9 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
                   recipes={searchResults}
                   headingId="search-results-heading"
                   title={discoveryMessages.resultsHeading}
+                  mode="search"
+                  locale={locale}
+                  countMessages={discoveryMessages.resultCount}
                   common={common}
                   messages={messages.recipeCard}
                 />
@@ -782,6 +801,9 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
                   recipes={mapResults}
                   headingId="map-results-heading"
                   title={discoveryMessages.resultsHeading}
+                  mode="map"
+                  locale={locale}
+                  countMessages={discoveryMessages.resultCount}
                   common={common}
                   messages={messages.recipeCard}
                 />
