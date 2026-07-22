@@ -212,16 +212,38 @@
   fill: var(--color-categories);
 }
 
-.tree-node-glow {
-  /* Nieprzezroczysta mieszanka zachowuje efekt poświaty, ale maskuje linie
-     namalowane wcześniej w SVG, więc węzeł pozostaje wyraźnie nad nimi. */
-  fill: color-mix(in srgb, var(--color-coral) 12%, var(--color-surface));
+.tree-node-ring-frame {
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Obręcz ma średnicę dawnej poświaty. Jej radialna maska przechodzi od pełnej
+   przezroczystości w centrum do 20% krycia na krawędzi, a krótkie przejścia
+   kątowe występują wyłącznie na stykach trzech czystych segmentów marki. */
+.tree-node-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(circle, transparent 0%, rgb(0 0 0 / 20%) 100%);
+  mask: radial-gradient(circle, transparent 0%, rgb(0 0 0 / 20%) 100%);
+  background: conic-gradient(
+    from 0deg,
+    var(--color-search) 0deg 118deg,
+    var(--color-categories) 122deg 238deg,
+    var(--color-map) 242deg 358deg,
+    var(--color-search) 360deg
+  );
+  background: conic-gradient(
+    from 0deg in oklch shorter hue,
+    var(--color-search) 0deg 118deg,
+    var(--color-categories) 122deg 238deg,
+    var(--color-map) 242deg 358deg,
+    var(--color-search) 360deg
+  );
 }
 
 .tree-node {
   fill: var(--color-surface);
-  stroke: var(--color-border);
-  stroke-width: 1.5;
 }
 
 .tree-node-icon {
