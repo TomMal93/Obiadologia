@@ -117,9 +117,9 @@ W prototypie opartym wyłącznie na lokalnych danych nie należy sztucznie symul
 Wyszukiwarka jest przeznaczona dla użytkownika, który ma już pierwszą myśl: składnik, nazwę dania, smak, kategorię albo tag. Zapytanie nie musi być pełną ani dokładną nazwą przepisu.
 
 - nagłówek: „Co chodzi Ci po głowie?”;
-- opis: „Składnik, danie, smak — jedno słowo wystarczy.”;
+- opis: „Zacznij od składnika, smaku albo dania.”;
 - etykieta lub dostępna nazwa pola: „Szukaj przepisu”;
-- placeholder: „np. kurczak, curry, szybko, bez mięsa”.
+- placeholder: „np. makaron, kurczak, pikantnie”.
 
 ### Stan początkowy
 
@@ -129,7 +129,7 @@ Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 - sugestie powiązane z zapytaniem nie są widoczne;
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań;
-- pod polem widoczny jest blok „A może coś z tego?” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj podpowiedzi, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie podpowiedzi ustawia ją jako jedno aktywne zapytanie.
+- pod polem widoczny jest blok „A może w tę stronę?” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj podpowiedzi, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie podpowiedzi ustawia ją jako jedno aktywne zapytanie.
 
 Usunięcie całej treści przywraca ten stan.
 

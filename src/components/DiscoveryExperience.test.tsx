@@ -104,7 +104,7 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.click(addOpener('search'));
 
     const dialog = await screen.findByRole('dialog');
-    const tropes = within(dialog).getByRole('group', { name: 'A może coś z tego?' });
+    const tropes = within(dialog).getByRole('group', { name: 'A może w tę stronę?' });
     const tiles = within(tropes).getAllByRole('button');
     expect(tiles.length).toBeGreaterThan(8);
 
@@ -114,7 +114,7 @@ describe('DiscoveryExperience overlay', () => {
     // ukrywa siatkę, a wyniki pojawiają się po debounce.
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
     expect(input).not.toHaveValue('');
-    expect(within(dialog).queryByRole('group', { name: 'A może coś z tego?' })).not.toBeInTheDocument();
+    expect(within(dialog).queryByRole('group', { name: 'A może w tę stronę?' })).not.toBeInTheDocument();
     await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
   });
 
