@@ -21,7 +21,7 @@ Strona zawiera:
 
 Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
 
-W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Stałe są odstępy między dolną krawędzią notatki a ramką panelu oraz między dolną ramką panelu a końcem sekcji. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Centralną ikonę drzewka otacza okrągły pierścień o średnicy dawnej poświaty: od godziny 12, zgodnie z ruchem wskazówek zegara, biegną kolejno jednolite wycinki Szukaj (koral), Kategorie (zieleń) i Mapa (niebieski), połączone wyłącznie wąskimi przejściami na stykach. Pierścień jest całkowicie przezroczysty w centrum, a jego krycie narasta do `20%` na zewnętrznej krawędzi. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
+W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Stałe są odstępy między dolną krawędzią notatki a ramką panelu oraz między dolną ramką panelu a końcem sekcji. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Centralną ikonę drzewka otacza okrągły pierścień o średnicy dawnej poświaty: od godziny 12, zgodnie z ruchem wskazówek zegara, biegną kolejno jednolite wycinki Szukaj (koral), Mapa (niebieski) i Kategorie (zieleń), połączone wyłącznie wąskimi przejściami na stykach. Kolor zaczyna się od krycia `0.8`, utrzymuje je przez większość promienia, po czym dopiero blisko obrzeża zanika do pełnej przezroczystości na zewnętrznej krawędzi. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
 Ikona menu widoczna na makiecie zapowiada późniejszą nawigację i nie należy do bieżącego przepływu MVP. Dopóki zakres oraz zawartość menu nie zostaną określone, implementacja nie renderuje jej jako pozornie działającego przycisku.
 
@@ -151,11 +151,11 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Panel jest dosuwany do dolnej kotwicy pierwszej sekcji.
 - Kafel każdej drogi znajduje się bezpośrednio pod tytułem i kolorową kreską,
   ma górny margines `6px`, a osobna strzałka nie jest renderowana.
-- Centralną ikonę drzewka otacza pierścień o średnicy dawnej poświaty, całkowicie
-  przezroczysty w centrum i osiągający `20%` krycia na zewnętrznej krawędzi.
-  Tworzą go trzy równe, jednolite wycinki: koralowy od godziny 12, następnie
-  zielony i niebieski zgodnie z ruchem wskazówek zegara; tylko styki kolorów mają
-  wąskie przejścia.
+- Centralną ikonę drzewka otacza pierścień o średnicy dawnej poświaty. Kolor ma
+  krycie `0.8` w centrum i przez większość promienia, a dopiero blisko obrzeża
+  zanika do pełnej przezroczystości. Pierścień tworzą trzy
+  równe, jednolite wycinki: koralowy od godziny 12, następnie niebieski i zielony
+  zgodnie z ruchem wskazówek zegara; tylko styki kolorów mają wąskie przejścia.
 - Wysokość panelu dopasowuje się do responsywnej zawartości, a pionowy odstęp
   między każdą grupą akcji a notatką wynosi `22px`.
 - Odstęp między drzewem a siatką dróg jest stały w mobilnych viewportach i zgodny z referencją Pixel 7 (`412 × 839px`).

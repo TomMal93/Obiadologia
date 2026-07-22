@@ -212,34 +212,39 @@
   fill: var(--color-categories);
 }
 
-.tree-node-ring-frame {
-  overflow: visible;
-  pointer-events: none;
+.tree-node-ring-solid {
+  stop-opacity: 0.8;
 }
 
-/* Obręcz ma średnicę dawnej poświaty. Jej radialna maska przechodzi od pełnej
-   przezroczystości w centrum do 20% krycia na krawędzi, a krótkie przejścia
-   kątowe występują wyłącznie na stykach trzech czystych segmentów marki. */
-.tree-node-ring {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  -webkit-mask: radial-gradient(circle, transparent 0%, rgb(0 0 0 / 20%) 100%);
-  mask: radial-gradient(circle, transparent 0%, rgb(0 0 0 / 20%) 100%);
-  background: conic-gradient(
-    from 0deg,
-    var(--color-search) 0deg 118deg,
-    var(--color-categories) 122deg 238deg,
-    var(--color-map) 242deg 358deg,
-    var(--color-search) 360deg
-  );
-  background: conic-gradient(
-    from 0deg in oklch shorter hue,
-    var(--color-search) 0deg 118deg,
-    var(--color-categories) 122deg 238deg,
-    var(--color-map) 242deg 358deg,
-    var(--color-search) 360deg
-  );
+.tree-node-ring-clear {
+  stop-opacity: 0;
+}
+
+.tree-node-ring-solid--search,
+.tree-node-ring-clear--search {
+  stop-color: var(--color-search);
+}
+
+.tree-node-ring-solid--categories,
+.tree-node-ring-clear--categories {
+  stop-color: var(--color-categories);
+}
+
+.tree-node-ring-solid--map,
+.tree-node-ring-clear--map {
+  stop-color: var(--color-map);
+}
+
+.tree-node-ring-segment--search {
+  fill: url('#tree-node-ring-search');
+}
+
+.tree-node-ring-segment--categories {
+  fill: url('#tree-node-ring-categories');
+}
+
+.tree-node-ring-segment--map {
+  fill: url('#tree-node-ring-map');
 }
 
 .tree-node {

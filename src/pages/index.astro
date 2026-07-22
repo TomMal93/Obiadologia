@@ -50,6 +50,18 @@ const messages = getMessages(defaultLocale);
               <stop class="tree-gradient-start tree-gradient-start--categories" offset="0" />
               <stop class="tree-gradient-end--categories" offset="1" />
             </linearGradient>
+            <radialGradient id="tree-node-ring-search" cx="150" cy="30" r="30" gradientUnits="userSpaceOnUse">
+              <stop class="tree-node-ring-solid tree-node-ring-solid--search" offset="0.72" />
+              <stop class="tree-node-ring-clear tree-node-ring-clear--search" offset="0.92" />
+            </radialGradient>
+            <radialGradient id="tree-node-ring-categories" cx="150" cy="30" r="30" gradientUnits="userSpaceOnUse">
+              <stop class="tree-node-ring-solid tree-node-ring-solid--categories" offset="0.72" />
+              <stop class="tree-node-ring-clear tree-node-ring-clear--categories" offset="0.92" />
+            </radialGradient>
+            <radialGradient id="tree-node-ring-map" cx="150" cy="30" r="30" gradientUnits="userSpaceOnUse">
+              <stop class="tree-node-ring-solid tree-node-ring-solid--map" offset="0.72" />
+              <stop class="tree-node-ring-clear tree-node-ring-clear--map" offset="0.92" />
+            </radialGradient>
           </defs>
           <path class="tree-line tree-line--map" d="M150 52 C150 90 50 74 50 124" />
           <path class="tree-line tree-line--search" d="M150 52 L150 124" />
@@ -57,9 +69,11 @@ const messages = getMessages(defaultLocale);
           <circle class="tree-dot tree-dot--map" cx="50" cy="124" r="5" />
           <circle class="tree-dot tree-dot--search" cx="150" cy="124" r="5" />
           <circle class="tree-dot tree-dot--categories" cx="250" cy="124" r="5" />
-          <foreignObject class="tree-node-ring-frame" x="120" y="0" width="60" height="60">
-            <div class="tree-node-ring"></div>
-          </foreignObject>
+          <g transform="rotate(180 150 30)">
+            <path class="tree-node-ring-segment tree-node-ring-segment--categories" d="M150 30 L150 0 A30 30 0 0 1 175.981 45 Z" />
+            <path class="tree-node-ring-segment tree-node-ring-segment--search" d="M150 30 L175.981 45 A30 30 0 0 1 124.019 45 Z" />
+            <path class="tree-node-ring-segment tree-node-ring-segment--map" d="M150 30 L124.019 45 A30 30 0 0 1 150 0 Z" />
+          </g>
           <circle class="tree-node" cx="150" cy="30" r="22" />
           <g class="tree-node-icon">
             <g transform="translate(-2 0) rotate(-37.5 150 30)">

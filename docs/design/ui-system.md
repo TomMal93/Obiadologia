@@ -66,11 +66,12 @@ Trzy drogi odkrywania mają stały kolor tożsamości. Ten sam kolor identyfikuj
 - Wariant bazowy to akcent (ikony i obramowania). Linie łączące drzewka na Hero zaczynają się z kryciem `40%` mieszanką `70%` wariantu `-soft` i `30%` wariantu bazowego odpowiedniej drogi, po czym płynnie przechodzą do pełnego koloru i krycia w środku dolnej kropki. Kropka jest częścią końca przejścia i używa pełnego koloru bazowego.
 - Centralny węzeł drzewka zawiera koralową ikonę talerza ze sztućcami. Ikona jest dekoracyjna i pozostaje częścią SVG ukrytego przed technologiami asystującymi.
 - Ramkę centralnego węzła otacza lekka obręcz o średnicy `60` jednostek w układzie
-  SVG drzewka. Jest całkowicie przezroczysta w centrum, a jej krycie narasta
-  radialnie do `20%` na zewnętrznej krawędzi. Tworzą ją trzy równe wycinki kolorów
-  dróg. Od godziny 12, zgodnie z ruchem wskazówek zegara, kolejność to Szukaj
-  (`--color-search`), Kategorie (`--color-categories`) i Mapa (`--color-map`),
-  z wąskim, delikatnym przejściem wyłącznie przy każdym styku.
+  SVG drzewka. Kolor ma krycie `0.8` do `72%` promienia, zanika radialnie
+  do pełnej przezroczystości przy `92%` promienia i pozostaje niewidoczny aż do
+  zewnętrznej krawędzi. Obręcz tworzą trzy równe wycinki kolorów dróg. Od godziny 12, zgodnie z ruchem
+  wskazówek zegara, kolejność to Szukaj (`--color-search`), Mapa
+  (`--color-map`) i Kategorie (`--color-categories`), z wąskim, delikatnym przejściem
+  wyłącznie przy każdym styku.
 - Wariant `-strong` jest przeznaczony do tekstu i etykiet na jasnym tle i MUSI spełniać kontrast WCAG 2.2 AA. Dla Mapy kolor bazowy spełnia próg samodzielnie, więc `-strong` jest mu równy.
 - Wariant `-soft` to delikatne tło stanu aktywnego lub kafla.
 - Kolory przewodnie są aliasami odcieni bazowych (`--color-blue`/`--color-coral`/`--color-green`); te odcienie mogą nadal służyć innym rolom (np. koral marki i pierścienia fokusu). W kodzie tożsamość drogi zawsze używa tokenu przewodniego, nie odcienia bazowego.
