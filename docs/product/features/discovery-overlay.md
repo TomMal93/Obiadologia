@@ -41,7 +41,7 @@ Makiety określają hierarchię, treści i kierunek wizualny. Przykładowe zapyt
 Overlay:
 
 - jest pełnoekranowym dialogiem w granicach mobilnego kontenera aplikacji;
-- zawiera logo i nazwę „Obiadologia”;
+- zawiera logo i nazwę „Obiadologia” w tym samym rozmiarze i położeniu co wspólny nagłówek strony;
 - zawiera przycisk zamknięcia;
 - zawiera jeden przełącznik „Wyszukiwarka / Mapa”;
 - zawiera obszar właściwy dla aktywnego trybu;
@@ -207,7 +207,11 @@ Użytkownik może zmienić położenie przez:
 - kliknięcie lub dotknięcie miejsca na Mapie;
 - klawisze strzałek po ustawieniu fokusu na punkcie.
 
-Punkt jest jeden, pozostaje wewnątrz granic Mapy i ma widoczny fokus. Klawisze `←` i `→` zmieniają tempo, a `↑` i `↓` zmieniają charakter. Krok klawiatury jest decyzją lokalnej implementacji, ale musi być równy, przewidywalny i pozwalać osiągnąć oba końce oraz środek osi.
+Punkt jest jeden, używa ikony skrzyżowanych sztućców znanej z panelu dróg na
+stronie głównej, pozostaje wewnątrz granic Mapy i ma widoczny fokus. Klawisze
+`←` i `→` zmieniają tempo, a `↑` i `↓` zmieniają charakter. Krok klawiatury
+jest decyzją lokalnej implementacji, ale musi być równy, przewidywalny i
+pozwalać osiągnąć oba końce oraz środek osi.
 
 Położenie wizualne i podsumowanie aktualizują się natychmiast podczas ruchu. Wyniki również są przeliczane podczas przeciągania, bez przycisku zatwierdzającego. Implementacja może ograniczyć częstotliwość kosztownych obliczeń, jeżeli nie opóźnia ruchu punktu ani nie zmienia końcowego wyniku.
 

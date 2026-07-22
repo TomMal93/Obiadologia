@@ -365,7 +365,7 @@
   overflow-y: auto;
   border: 0;
   overscroll-behavior: contain;
-  padding: max(var(--space-16), env(safe-area-inset-top)) var(--gutter) max(var(--space-24), env(safe-area-inset-bottom));
+  padding: 0 var(--gutter) max(var(--space-24), env(safe-area-inset-bottom));
   background: var(--color-surface);
   box-shadow: var(--shadow-surface);
 }
@@ -375,12 +375,14 @@
   grid-template-columns: 48px 1fr 48px;
   gap: var(--space-12);
   align-items: center;
+  height: calc(var(--header-block) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
   margin-bottom: var(--space-24);
 }
 
 .overlay-header > strong {
-  font-size: clamp(24px, 7vw, 32px);
-  letter-spacing: -0.05em;
+  font-size: var(--font-size-20);
+  font-weight: 800;
 }
 
 .overlay-brand-mark {
@@ -390,21 +392,32 @@
   place-items: center;
   border-radius: var(--radius-field);
   color: white;
-  font-size: var(--font-size-32);
+  font-size: var(--font-size-20);
   font-weight: 800;
   background: var(--brand-gradient);
+  box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
 }
 
 .overlay-close {
+  display: grid;
   width: 48px;
   height: 48px;
+  padding: 0;
+  place-items: center;
   border: 1px solid var(--color-border);
   border-radius: 50%;
   color: var(--color-text);
-  font-size: var(--font-size-32);
-  line-height: 1;
   cursor: pointer;
   background: var(--color-bg);
+}
+
+.overlay-close svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
 }
 
 /* Segmentowy przełącznik: jedna pigułka z dwoma segmentami. Aktywny segment
@@ -901,6 +914,12 @@
 
 .map-point:active { cursor: grabbing; }
 
+.map-point-icon {
+  width: 36px;
+  height: 36px;
+  fill: currentcolor;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .map-point { transition: none; }
 }
@@ -947,8 +966,4 @@
 
 @media (max-width: 350px) {
   .discovery-overlay { padding-inline: var(--space-16); }
-  .overlay-header { grid-template-columns: 44px 1fr 44px; gap: var(--space-8); }
-  .overlay-brand-mark,
-  .overlay-close { width: 44px; height: 44px; }
-  .overlay-header > strong { font-size: var(--font-size-24); }
 }
