@@ -113,6 +113,16 @@ export const pl = {
         accessibleLabel: 'Mapa preferencji: szybko do bez pośpiechu oraz lekko do konkretnie',
         pointLabel: 'Talerz na mapie: {summary}',
         moodLabel: 'Twój apetyt prowadzi nas tutaj:',
+        bestMatchLabel: 'Najbliżej Twojego apetytu',
+        matchReasonLabel: 'Dlaczego pasuje:',
+        matchTraits: {
+          quick: 'szybkie',
+          neutralPace: 'w sam raz czasowo',
+          unhurried: 'bez pośpiechu',
+          light: 'lekkie',
+          neutralCharacter: 'zbalansowane',
+          substantial: 'konkretne',
+        },
         emptyResults: 'Nie znaleźliśmy propozycji dla tego miejsca.',
         axes: {
           light: 'lekko',

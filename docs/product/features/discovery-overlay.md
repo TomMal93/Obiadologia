@@ -93,6 +93,14 @@ Każda karta zawiera:
 
 Cała karta jest linkiem do `/recipes/:slug` — strony przepisu opisanej w [recipe-page.md](./recipe-page.md).
 
+W trybie Mapy pierwszy wynik rankingu jest wyróżniony jako „Najbliżej Twojego
+apetytu”: ma większy format, pokazuje krótki opis i używa aktualnego akcentu
+Mapy na obramowaniu oraz subtelnym tle. Karta wyjaśnia dopasowanie dwoma
+krótkimi cechami wynikającymi z `mapPosition` przepisu, osobno dla tempa i
+charakteru (np. „lekkie”, „szybkie”). Pozostałe wyniki zachowują wspólny,
+spokojny format listy. Etykieta wyróżnienia i uzasadnienie sprawiają, że
+hierarchia nie opiera się wyłącznie na kolorze.
+
 Kolejność wyników odpowiada aktualnym kryteriom aktywnego trybu. Starsza odpowiedź asynchroniczna nie może nadpisać wyników dla nowszego zapytania albo położenia Mapy.
 
 Zmiana wyników i ich liczby jest ogłaszana technologiom asystującym bez przenoszenia fokusu. Komunikaty nie mogą być emitowane tak często, aby utrudniały obsługę pola lub Mapy.

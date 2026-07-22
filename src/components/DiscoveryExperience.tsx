@@ -57,6 +57,11 @@ type SelectionChip = {
   label: string;
 };
 
+interface FeaturedReason {
+  label: string;
+  traits: [string, string];
+}
+
 function Icon({ children }: { children: ReactNode }) {
   return (
     <svg
@@ -111,45 +116,66 @@ function RecipeItems({
   common,
   messages,
   discovery = false,
+  featuredLabel,
+  featuredReason,
 }: {
   recipes: Recipe[];
   common: AppMessages['common'];
   messages: AppMessages['experience']['recipeCard'];
   discovery?: boolean;
+  featuredLabel?: string;
+  featuredReason?: FeaturedReason;
 }) {
   return (
     <ul className="recipe-list">
-      {recipes.map((recipe) => (
-        <li key={recipe.id}>
-          <a className="recipe-card" href={`/recipes/${recipe.slug}`}>
-            <span className="recipe-media">
-              {recipe.image ? (
-                <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
-              ) : (
-                <span className="recipe-placeholder" aria-hidden="true">O</span>
+      {recipes.map((recipe, index) => {
+        const featured = Boolean(featuredLabel && index === 0);
+        return (
+          <li key={recipe.id}>
+            <a
+              className={`recipe-card${featured ? ' recipe-card--featured' : ''}`}
+              href={`/recipes/${recipe.slug}`}
+            >
+              {featured && <span className="recipe-featured-label">{featuredLabel}</span>}
+              <span className="recipe-media">
+                {recipe.image ? (
+                  <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
+                ) : (
+                  <span className="recipe-placeholder" aria-hidden="true">O</span>
+                )}
+              </span>
+              <span className="recipe-content">
+                <strong>{recipe.title}</strong>
+                <span className={`recipe-description${featured ? '' : ' visually-hidden'}`}>
+                  {recipe.description}
+                </span>
+                <span className="recipe-facts">
+                  <span className="recipe-meta">
+                    ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
+                    {recipe.preparationMinutes} {common.minuteAbbreviation}
+                  </span>
+                  <span className="tag-list" aria-label={common.tagsLabel}>
+                    {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
+                  </span>
+                </span>
+              </span>
+              {featured && featuredReason && (
+                <span className="recipe-match-reason">
+                  <span className="recipe-match-reason__label">{featuredReason.label}</span>
+                  <span className="recipe-match-reason__traits">
+                    {featuredReason.traits.map((trait) => <span key={trait}>{trait}</span>)}
+                  </span>
+                </span>
               )}
-            </span>
-            <span className="recipe-content">
-              <strong>{recipe.title}</strong>
-              <span className="recipe-description visually-hidden">{recipe.description}</span>
-              <span className="recipe-facts">
-                <span className="recipe-meta">
-                  ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
-                  {recipe.preparationMinutes} {common.minuteAbbreviation}
+              {discovery && (
+                <span className="recipe-chevron" aria-hidden="true">
+                  <Icon><path d="m9 6 6 6-6 6" /></Icon>
                 </span>
-                <span className="tag-list" aria-label={common.tagsLabel}>
-                  {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
-                </span>
-              </span>
-            </span>
-            {discovery && (
-              <span className="recipe-chevron" aria-hidden="true">
-                <Icon><path d="m9 6 6 6-6 6" /></Icon>
-              </span>
-            )}
-          </a>
-        </li>
-      ))}
+              )}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -221,6 +247,9 @@ function RecipeList({
   countMessages,
   common,
   messages,
+  featuredLabel,
+  featuredAccent,
+  featuredReason,
 }: {
   recipes: Recipe[];
   headingId: string;
@@ -230,19 +259,53 @@ function RecipeList({
   countMessages: AppMessages['experience']['discovery']['resultCount'];
   common: AppMessages['common'];
   messages: AppMessages['experience']['recipeCard'];
+  featuredLabel?: string;
+  featuredAccent?: string;
+  featuredReason?: FeaturedReason;
 }) {
   return (
-    <section className={`results discovery-results discovery-results--${mode}`} aria-labelledby={headingId}>
+    <section
+      className={`results discovery-results discovery-results--${mode}`}
+      aria-labelledby={headingId}
+      style={featuredAccent ? { '--featured-accent': featuredAccent } as CSSProperties : undefined}
+    >
       <div className="discovery-results__header">
         <h3 id={headingId}>{title}</h3>
         <span>{formatCountMessage(locale, recipes.length, countMessages)}</span>
       </div>
-      <RecipeItems recipes={recipes} common={common} messages={messages} discovery />
+      <RecipeItems
+        recipes={recipes}
+        common={common}
+        messages={messages}
+        discovery
+        featuredLabel={featuredLabel}
+        featuredReason={featuredReason}
+      />
     </section>
   );
 }
 
 type MapMessages = AppMessages['experience']['discovery']['map'];
+
+function mapMatchReason(recipe: Recipe | undefined, messages: MapMessages): FeaturedReason | undefined {
+  if (!recipe) return undefined;
+  const pace = moodBand(recipe.mapPosition.pace * 100);
+  const character = moodBand((1 - recipe.mapPosition.lightness) * 100);
+  const paceLabel = {
+    low: messages.matchTraits.quick,
+    mid: messages.matchTraits.neutralPace,
+    high: messages.matchTraits.unhurried,
+  }[pace];
+  const characterLabel = {
+    low: messages.matchTraits.light,
+    mid: messages.matchTraits.neutralCharacter,
+    high: messages.matchTraits.substantial,
+  }[character];
+  return {
+    label: messages.matchReasonLabel,
+    traits: [characterLabel, paceLabel],
+  };
+}
 
 function mapSummary({ x, y }: MapCoordinates, messages: MapMessages): string {
   const pace = x < 50
@@ -853,6 +916,9 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
                   countMessages={discoveryMessages.resultCount}
                   common={common}
                   messages={messages.recipeCard}
+                  featuredLabel={discoveryMessages.map.bestMatchLabel}
+                  featuredAccent={moodColor(snapshot.map)}
+                  featuredReason={mapMatchReason(mapResults[0], discoveryMessages.map)}
                 />
               )}
               {mapResults.length === 0 && <p className="empty-state overlay-empty">{discoveryMessages.map.emptyResults}</p>}

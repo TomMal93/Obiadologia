@@ -147,6 +147,11 @@ describe('DiscoveryExperience overlay', () => {
     expect(within(dialog).getByRole('button', { name: /Talerz na mapie: tempo neutralne · charakter neutralny/ })).toBeInTheDocument();
     expect(within(dialog).getAllByRole('link')).toHaveLength(4);
     expect(within(dialog).getByText('4 dopasowania')).toBeInTheDocument();
+    const featuredCard = within(dialog).getByText('Najbliżej Twojego apetytu').closest('a');
+    expect(featuredCard).toHaveClass('recipe-card--featured');
+    expect(within(featuredCard as HTMLAnchorElement).getByText('Dlaczego pasuje:')).toBeInTheDocument();
+    expect(within(featuredCard as HTMLAnchorElement).getByText('lekkie')).toBeInTheDocument();
+    expect(within(featuredCard as HTMLAnchorElement).getByText('szybkie')).toBeInTheDocument();
     expect(within(dialog).getByRole('heading', { name: 'Propozycje' }).closest('section'))
       .toHaveClass('discovery-results--map');
 
