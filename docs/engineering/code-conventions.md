@@ -14,6 +14,7 @@ Reguły zachowania, wyglądu, danych, decyzji technicznych i jakości mają wła
 - organizacja i miejsce styli (CSS, tokeny, style lokalne komponentów);
 - nazewnictwo klas i modyfikatorów;
 - konwencje TypeScript i importów;
+- organizacja tekstów interfejsu i przygotowanie pod lokalizację;
 - dyscyplina hydratacji na granicy Astro/React;
 - reguły struktury plików i współlokowania testów spinające istniejące źródła prawdy.
 
@@ -53,6 +54,15 @@ Reguły zachowania, wyglądu, danych, decyzji technicznych i jakości mają wła
 
 - Domyślnie tworzymy komponenty `.astro`. React obsługuje wyłącznie interaktywny obszar `DiscoveryExperience`; publiczne strony i pozostała treść pozostają statyczne bez hydratacji ([TD-015](./technical-decisions.md)).
 - Wyspę hydratujemy najwęższą pasującą dyrektywą `client:*` (np. `client:visible`, `client:idle`). `client:load` stosujemy tylko wtedy, gdy interakcja musi być gotowa natychmiast po wczytaniu.
+
+## Treści interfejsu i lokalizacja
+
+- Teksty UI, dostępne nazwy, placeholdery oraz metadane stron MUSZĄ pochodzić z właściwego słownika w `src/i18n/locales/`; komponenty i strony nie zapisują ich lokalnie jako polskich literałów. Treści redakcyjne modelu `Recipe`, hasła wyszukiwania oraz domenowe formatowanie miar i czasu pozostają poza tym kontraktem.
+- `src/i18n/locales/pl.ts` jest kompletnym słownikiem aktywnego języka i wyznacza typ `AppMessages` eksportowany przez `src/i18n/messages.ts`. Nowy słownik MUSI spełniać ten typ; nie dodajemy pustych lub częściowych plików językowych ani cichego fallbacku pojedynczych kluczy.
+- Aktywne języki i ich znaczniki HTML definiuje wyłącznie `src/i18n/config.ts`. Dodanie pliku słownika nie oznacza automatycznie uruchomienia języka ani jego publicznych tras.
+- Strona Astro wybiera słownik i przekazuje odpowiedni, typowany zakres do komponentu. Wyspa React nie wykrywa języka z globalnego stanu przeglądarki i nie importuje na stałe polskiego słownika.
+- Dynamiczne komunikaty używają pełnych szablonów ze słownika i pomocników z `src/i18n/format.ts`. Nie sklejamy zdań z przetłumaczonych fragmentów; komunikaty zależne od liczby używają `Intl.PluralRules`.
+- Routing, linki między wersjami, lokalizacja danych i SEO kolejnych języków pozostają decyzją `OPEN-008`; do jej rozstrzygnięcia aktywne jest wyłącznie `pl` zgodnie z `TD-017`.
 
 ## Struktura plików i testy
 

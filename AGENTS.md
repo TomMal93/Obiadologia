@@ -27,6 +27,10 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | logika czasu etapów „Wcześniej” (formatowanie wyprzedzenia, godziny startu) | `src/domain/recipe-schedule.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
 | dane prototypowe zgodne z `Recipe` | `src/data/prototype-recipes.ts` |
+| aktywne locale i metadane języków | `src/i18n/config.ts` |
+| typowany dostęp do słowników UI | `src/i18n/messages.ts` |
+| polskie treści interfejsu | `src/i18n/locales/pl.ts` |
+| interpolacja i odmiana komunikatów UI | `src/i18n/format.ts` |
 | wyspa interaktywna (wybór ścieżki, Kategorie, wyniki) | `src/components/DiscoveryExperience.tsx` |
 | style współlokowane wyspy interaktywnej | `src/components/DiscoveryExperience.css` |
 | wspólny nagłówek z logo/brandem | `src/components/SiteHeader.astro` |
@@ -50,6 +54,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Obszar | Stan | Uwagi |
 |---|---|---|
 | Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod` w `src/domain/recipe-schema.ts`, uruchamianą na etapie builda) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`) |
+| Przygotowanie treści UI pod lokalizację | wersja wstępna | komponenty i strony pobierają teksty interfejsu z typowanego słownika; aktywny jest wyłącznie polski, bez wielojęzycznego routingu i bez lokalizacji danych przepisów oraz wyszukiwania |
 | Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |

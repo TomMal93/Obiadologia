@@ -82,6 +82,11 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (porcje, zdjęcia; prototypowe kroki są już w modelu),
 - wiele wersji językowych.
 
+Typowane wydzielenie polskich tekstów interfejsu jest przygotowaniem technicznym,
+nie rozszerzeniem zakresu MVP. Dopóki nie zostanie rozstrzygnięty kontrakt opisany
+w `OPEN-008` w [technical-decisions.md](../engineering/technical-decisions.md), aplikacja
+nie udostępnia przełącznika języka, dodatkowych locale ani wielojęzycznych tras.
+
 W drugiej fazie „Pokaż więcej” prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane razem z tą podstroną.
 
 Bieżący prototyp może prowadzić z przycisku „Szczegółowe wyszukiwanie” do

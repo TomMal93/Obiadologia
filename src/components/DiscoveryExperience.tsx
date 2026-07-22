@@ -13,10 +13,16 @@ import {
   rankRecipesForMap,
 } from '@/domain/recipe-search';
 import type { MapCoordinates, Trope, TropeKind } from '@/domain/recipe-search';
+import type { Locale } from '@/i18n/config';
+import { formatCountMessage, formatMessage } from '@/i18n/format';
+import type { AppMessages } from '@/i18n/messages';
 import './DiscoveryExperience.css';
 
 interface Props {
   recipes: Recipe[];
+  common: AppMessages['common'];
+  messages: AppMessages['experience'];
+  locale: Locale;
 }
 
 type DiscoveryMode = 'search' | 'map';
@@ -45,46 +51,9 @@ const initialSnapshot = (mode: DiscoveryMode): DiscoverySnapshot => ({
 
 const endedSessionsKey = 'obiadologia-ended-discovery-sessions';
 
-const categoryGroups = [
-  {
-    key: 'mealTime',
-    label: 'Pora dnia',
-    accent: 'daypart',
-    options: [
-      ['breakfast', 'Śniadanie'],
-      ['lunch', 'Obiad'],
-      ['dinner', 'Kolacja'],
-    ] as const satisfies ReadonlyArray<readonly [MealTime, string]>,
-  },
-  {
-    key: 'tempo',
-    label: 'Tempo',
-    accent: 'tempo',
-    options: [
-      ['now', 'Na już'],
-      ['today', 'Na dziś'],
-      ['two_days', 'Na dwa dni'],
-    ] as const satisfies ReadonlyArray<readonly [Tempo, string]>,
-  },
-  {
-    key: 'occasion',
-    label: 'Okazja',
-    accent: 'occasion',
-    options: [
-      ['kids', 'Dla dzieci'],
-      ['guests', 'Dla gości'],
-      ['grill', 'Na grilla'],
-    ] as const satisfies ReadonlyArray<readonly [Occasion, string]>,
-  },
-] as const;
-
-const optionLabels: Record<string, string> = Object.fromEntries(
-  categoryGroups.flatMap((group) => group.options.map(([value, label]) => [value, label])),
-);
-
 type SelectionChip = {
-  key: (typeof categoryGroups)[number]['key'];
-  accent: (typeof categoryGroups)[number]['accent'];
+  key: keyof CategorySelection;
+  accent: 'daypart' | 'tempo' | 'occasion';
   label: string;
 };
 
@@ -137,7 +106,15 @@ function markSessionEnded(id: string) {
   window.sessionStorage.setItem(endedSessionsKey, JSON.stringify([...ended].slice(-20)));
 }
 
-function RecipeItems({ recipes }: { recipes: Recipe[] }) {
+function RecipeItems({
+  recipes,
+  common,
+  messages,
+}: {
+  recipes: Recipe[];
+  common: AppMessages['common'];
+  messages: AppMessages['experience']['recipeCard'];
+}) {
   return (
     <ul className="recipe-list">
       {recipes.map((recipe) => (
@@ -154,8 +131,11 @@ function RecipeItems({ recipes }: { recipes: Recipe[] }) {
               <strong>{recipe.title}</strong>
               <span className="recipe-description visually-hidden">{recipe.description}</span>
               <span className="recipe-facts">
-                <span className="recipe-meta">◷ {recipe.preparationMinutes} min</span>
-                <span className="tag-list" aria-label="Tagi">
+                <span className="recipe-meta">
+                  ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
+                  {recipe.preparationMinutes} {common.minuteAbbreviation}
+                </span>
+                <span className="tag-list" aria-label={common.tagsLabel}>
                   {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
                 </span>
               </span>
@@ -228,24 +208,38 @@ function TropeList({
 function RecipeList({
   recipes,
   headingId,
-  title = 'Propozycje',
+  title,
+  common,
+  messages,
 }: {
   recipes: Recipe[];
   headingId: string;
-  title?: string;
+  title: string;
+  common: AppMessages['common'];
+  messages: AppMessages['experience']['recipeCard'];
 }) {
   return (
     <section className="results discovery-results" aria-labelledby={headingId}>
       <h3 id={headingId}>{title}</h3>
-      <RecipeItems recipes={recipes} />
+      <RecipeItems recipes={recipes} common={common} messages={messages} />
     </section>
   );
 }
 
-function mapSummary({ x, y }: MapCoordinates): string {
-  const pace = x < 50 ? `szybko ${100 - x}%` : x > 50 ? `bez pośpiechu ${x}%` : 'tempo neutralne';
-  const character = y < 50 ? `lekko ${100 - y}%` : y > 50 ? `konkretnie ${y}%` : 'charakter neutralny';
-  return `${pace} · ${character}`;
+type MapMessages = AppMessages['experience']['discovery']['map'];
+
+function mapSummary({ x, y }: MapCoordinates, messages: MapMessages): string {
+  const pace = x < 50
+    ? formatMessage(messages.summary.quick, { percent: 100 - x })
+    : x > 50
+      ? formatMessage(messages.summary.unhurried, { percent: x })
+      : messages.summary.neutralPace;
+  const character = y < 50
+    ? formatMessage(messages.summary.light, { percent: 100 - y })
+    : y > 50
+      ? formatMessage(messages.summary.substantial, { percent: y })
+      : messages.summary.neutralCharacter;
+  return `${pace}${messages.summary.separator}${character}`;
 }
 
 type MoodBand = 'low' | 'mid' | 'high';
@@ -260,13 +254,24 @@ function moodBand(value: number): MoodBand {
 
 // Wiersze: tempo (low = szybko, high = bez pośpiechu).
 // Kolumny: charakter (low = lekko, high = konkretnie).
-const moodNames: Record<MoodBand, Record<MoodBand, string>> = {
-  low: { low: 'Ekspres na lekko', mid: 'Szybki strzał', high: 'Ekspresowy konkret' },
-  mid: { low: 'Lekki luz', mid: 'Codzienny środek', high: 'Solidny standard' },
-  high: { low: 'Powolna lekkość', mid: 'Spokojny rytm', high: 'Wolny rytuał' },
-};
-
-function moodName({ x, y }: MapCoordinates): string {
+function moodName({ x, y }: MapCoordinates, messages: MapMessages): string {
+  const moodNames: Record<MoodBand, Record<MoodBand, string>> = {
+    low: {
+      low: messages.moods.quickLight,
+      mid: messages.moods.quickNeutral,
+      high: messages.moods.quickSubstantial,
+    },
+    mid: {
+      low: messages.moods.neutralLight,
+      mid: messages.moods.neutral,
+      high: messages.moods.neutralSubstantial,
+    },
+    high: {
+      low: messages.moods.unhurriedLight,
+      mid: messages.moods.unhurriedNeutral,
+      high: messages.moods.unhurriedSubstantial,
+    },
+  };
   return moodNames[moodBand(x)][moodBand(y)];
 }
 
@@ -295,7 +300,44 @@ function moodTextColor({ x, y }: MapCoordinates): string {
   return `hsl(${hue} ${saturation}% 32%)`;
 }
 
-export function DiscoveryExperience({ recipes }: Props) {
+export function DiscoveryExperience({ recipes, common, messages, locale }: Props) {
+  const categoryMessages = messages.categories;
+  const discoveryMessages = messages.discovery;
+  const categoryGroups = [
+    {
+      key: 'mealTime',
+      label: categoryMessages.groups.mealTime.label,
+      accent: 'daypart',
+      options: [
+        ['breakfast', categoryMessages.groups.mealTime.options.breakfast],
+        ['lunch', categoryMessages.groups.mealTime.options.lunch],
+        ['dinner', categoryMessages.groups.mealTime.options.dinner],
+      ] as const satisfies ReadonlyArray<readonly [MealTime, string]>,
+    },
+    {
+      key: 'tempo',
+      label: categoryMessages.groups.tempo.label,
+      accent: 'tempo',
+      options: [
+        ['now', categoryMessages.groups.tempo.options.now],
+        ['today', categoryMessages.groups.tempo.options.today],
+        ['two_days', categoryMessages.groups.tempo.options.twoDays],
+      ] as const satisfies ReadonlyArray<readonly [Tempo, string]>,
+    },
+    {
+      key: 'occasion',
+      label: categoryMessages.groups.occasion.label,
+      accent: 'occasion',
+      options: [
+        ['kids', categoryMessages.groups.occasion.options.kids],
+        ['guests', categoryMessages.groups.occasion.options.guests],
+        ['grill', categoryMessages.groups.occasion.options.grill],
+      ] as const satisfies ReadonlyArray<readonly [Occasion, string]>,
+    },
+  ] as const;
+  const optionLabels: Record<string, string> = Object.fromEntries(
+    categoryGroups.flatMap((group) => group.options.map(([value, label]) => [value, label])),
+  );
   const [selection, setSelection] = useState<CategorySelection>({});
   const [session, setSession] = useState<DiscoverySession | null>(null);
   const [announcement, setAnnouncement] = useState('');
@@ -457,10 +499,14 @@ export function DiscoveryExperience({ recipes }: Props) {
       ? searchResults.length
       : mapResults.length;
     const timer = window.setTimeout(() => {
-      setAnnouncement(resultCount === 1 ? 'Znaleziono 1 propozycję.' : `Znaleziono ${resultCount} propozycje.`);
+      setAnnouncement(formatCountMessage(
+        locale,
+        resultCount,
+        discoveryMessages.resultAnnouncement,
+      ));
     }, 250);
     return () => window.clearTimeout(timer);
-  }, [activeMode, currentMap, currentQuery, isOpen, mapResults.length, searchResults.length]);
+  }, [activeMode, currentMap, currentQuery, discoveryMessages, isOpen, locale, mapResults.length, searchResults.length]);
 
   function handleDialogKeyDown(event: KeyboardEvent<HTMLDialogElement>) {
     if (event.key === 'Escape') {
@@ -522,8 +568,10 @@ export function DiscoveryExperience({ recipes }: Props) {
     <>
       <section id="kategorie" className="screen category-section" aria-labelledby="categories-heading">
         <div className="section-heading">
-          <h2 id="categories-heading" className="category-heading">Kategorie</h2>
-          <p className="category-subtitle">Wybierz co najmniej jedną opcję:<br />porę dnia, tempo lub okazję.</p>
+          <h2 id="categories-heading" className="category-heading">{categoryMessages.heading}</h2>
+          <p className="category-subtitle">
+            {categoryMessages.subtitleLead}<br />{categoryMessages.subtitleDetails}
+          </p>
         </div>
         <div className="category-panel">
           {categoryGroups.map((group) => (
@@ -542,15 +590,15 @@ export function DiscoveryExperience({ recipes }: Props) {
             </fieldset>
           ))}
           <a className="category-details-link" href="/categories">
-            Szczegółowe wyszukiwanie
+            {categoryMessages.detailedSearch}
           </a>
         </div>
         <section className="results category-results-frame" aria-labelledby="category-results-heading">
-          <h3 id="category-results-heading">Propozycje dla Ciebie</h3>
+          <h3 id="category-results-heading">{categoryMessages.resultsHeading}</h3>
           <div className="category-selection-summary" aria-live="polite">
             {hasSelection ? (
               <>
-                <span className="selection-summary-label">Wybrano:</span>
+                <span className="selection-summary-label">{categoryMessages.selectedLabel}</span>
                 <span className="selection-summary-chips">
                   {selectedChips.map((chip) => (
                     <span key={chip.key} className={`selection-chip selection-chip--${chip.accent}`}>{chip.label}</span>
@@ -558,20 +606,22 @@ export function DiscoveryExperience({ recipes }: Props) {
                 </span>
               </>
             ) : (
-              <span className="selection-summary-hint">Wybierz co najmniej jedną opcję.</span>
+              <span className="selection-summary-hint">{categoryMessages.selectionHint}</span>
             )}
           </div>
           <div
             className={`category-results-body${hasSelection && categoryResults.length > 0 ? '' : ' is-message'}`}
             role="region"
-            aria-label="Wyniki kategorii"
+            aria-label={categoryMessages.resultsRegionLabel}
             aria-live="polite"
             aria-atomic="true"
             tabIndex={hasSelection && categoryResults.length > 0 ? 0 : undefined}
           >
-            {!hasSelection && <p className="category-results-message">Tutaj pojawią się dopasowane przepisy.</p>}
-            {hasSelection && categoryResults.length === 0 && <p className="category-results-message">Brak dopasowań. Zmień lub usuń wybrane kryterium.</p>}
-            {hasSelection && categoryResults.length > 0 && <RecipeItems recipes={categoryResults} />}
+            {!hasSelection && <p className="category-results-message">{categoryMessages.initialResults}</p>}
+            {hasSelection && categoryResults.length === 0 && <p className="category-results-message">{categoryMessages.emptyResults}</p>}
+            {hasSelection && categoryResults.length > 0 && (
+              <RecipeItems recipes={categoryResults} common={common} messages={messages.recipeCard} />
+            )}
           </div>
         </section>
       </section>
@@ -588,27 +638,27 @@ export function DiscoveryExperience({ recipes }: Props) {
         >
           <div className="overlay-header">
             <span className="overlay-brand-mark" aria-hidden="true">O</span>
-            <strong>Obiadologia</strong>
-            <button type="button" className="overlay-close" aria-label="Zamknij discovery" onClick={requestClose}>×</button>
+            <strong>{common.brand}</strong>
+            <button type="button" className="overlay-close" aria-label={discoveryMessages.closeLabel} onClick={requestClose}>×</button>
           </div>
 
-          <div className="mode-switch" role="group" aria-label="Tryb odkrywania">
+          <div className="mode-switch" role="group" aria-label={discoveryMessages.modeLabel}>
             <button type="button" className={snapshot.activeMode === 'search' ? 'is-active' : ''} aria-pressed={snapshot.activeMode === 'search'} onClick={() => updateSnapshot({ activeMode: 'search' })}>
-              Wyszukiwarka
+              {discoveryMessages.searchMode}
             </button>
             <button type="button" className={snapshot.activeMode === 'map' ? 'is-active' : ''} aria-pressed={snapshot.activeMode === 'map'} onClick={() => updateSnapshot({ activeMode: 'map' })}>
-              Mapa
+              {discoveryMessages.mapMode}
             </button>
           </div>
 
           {snapshot.activeMode === 'search' ? (
             <div className="overlay-mode">
               <div className="overlay-intro">
-                <h2 id="discovery-title">Masz trop? Wpisz go tutaj</h2>
-                <p>Składnik, danie, smak albo tag.</p>
+                <h2 id="discovery-title">{discoveryMessages.search.heading}</h2>
+                <p>{discoveryMessages.search.description}</p>
               </div>
               <label className="search-field">
-                <span className="visually-hidden">Szukaj przepisu</span>
+                <span className="visually-hidden">{discoveryMessages.search.inputLabel}</span>
                 <span className="search-field-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
                     <circle cx="11" cy="11" r="6.5" />
@@ -618,9 +668,9 @@ export function DiscoveryExperience({ recipes }: Props) {
                 <input
                   ref={searchInputRef}
                   type="search"
-                  aria-label="Szukaj przepisu"
+                  aria-label={discoveryMessages.search.inputLabel}
                   value={snapshot.query}
-                  placeholder="np. kurczak, curry, szybko, bez mięsa"
+                  placeholder={discoveryMessages.search.placeholder}
                   autoComplete="off"
                   onChange={(event) => updateSnapshot({ query: event.target.value })}
                 />
@@ -628,7 +678,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                   <button
                     type="button"
                     className="search-clear"
-                    aria-label="Wyczyść wyszukiwanie"
+                    aria-label={discoveryMessages.search.clearLabel}
                     onClick={() => {
                       updateSnapshot({ query: '' });
                       searchInputRef.current?.focus();
@@ -641,7 +691,7 @@ export function DiscoveryExperience({ recipes }: Props) {
                 )}
               </label>
               {snapshot.query && suggestions.length > 0 && (
-                <div className="suggestion-list" aria-label="Sugestie wyszukiwania">
+                <div className="suggestion-list" aria-label={discoveryMessages.search.suggestionsLabel}>
                   {suggestions.map((suggestion) => (
                     <button key={suggestion} type="button" onClick={() => updateSnapshot({ query: suggestion })}>{suggestion}</button>
                   ))}
@@ -649,19 +699,27 @@ export function DiscoveryExperience({ recipes }: Props) {
               )}
               {!snapshot.query && (
                 <TropeList
-                  label="Popularne tropy"
+                  label={discoveryMessages.search.initialSuggestions}
                   labelId="search-tropes-heading"
                   tropes={tropes}
                   onPick={(trope) => updateSnapshot({ query: trope })}
                   variant="bento"
                 />
               )}
-              {snapshot.query && searchResults.length > 0 && <RecipeList recipes={searchResults} headingId="search-results-heading" />}
+              {snapshot.query && searchResults.length > 0 && (
+                <RecipeList
+                  recipes={searchResults}
+                  headingId="search-results-heading"
+                  title={discoveryMessages.resultsHeading}
+                  common={common}
+                  messages={messages.recipeCard}
+                />
+              )}
               {snapshot.query && debouncedQuery === snapshot.query && searchResults.length === 0 && (
                 <>
-                  <p className="empty-state overlay-empty">Nie znaleźliśmy pasujących propozycji.</p>
+                  <p className="empty-state overlay-empty">{discoveryMessages.search.emptyResults}</p>
                   <TropeList
-                    label="Spróbuj popularnych tropów:"
+                    label={discoveryMessages.search.retrySuggestions}
                     labelId="search-empty-tropes-heading"
                     tropes={tropes}
                     onPick={(trope) => updateSnapshot({ query: trope })}
@@ -673,14 +731,14 @@ export function DiscoveryExperience({ recipes }: Props) {
           ) : (
             <div className="overlay-mode">
               <div className="overlay-intro">
-                <h2 id="discovery-title">Wskaż klimat na mapie</h2>
-                <p>Przesuń talerz tam, gdzie dziś Ci pasuje.</p>
+                <h2 id="discovery-title">{discoveryMessages.map.heading}</h2>
+                <p>{discoveryMessages.map.description}</p>
               </div>
               <div
                 ref={mapRef}
                 className="preference-map"
                 role="application"
-                aria-label="Mapa preferencji: szybko do bez pośpiechu oraz lekko do konkretnie"
+                aria-label={discoveryMessages.map.accessibleLabel}
                 onPointerDown={(event) => {
                   draggingRef.current = true;
                   event.currentTarget.setPointerCapture(event.pointerId);
@@ -692,10 +750,10 @@ export function DiscoveryExperience({ recipes }: Props) {
                   event.currentTarget.releasePointerCapture(event.pointerId);
                 }}
               >
-                <span className="map-label map-label--top">lekko</span>
-                <span className="map-label map-label--right">bez pośpiechu</span>
-                <span className="map-label map-label--bottom">konkretnie</span>
-                <span className="map-label map-label--left">szybko</span>
+                <span className="map-label map-label--top">{discoveryMessages.map.axes.light}</span>
+                <span className="map-label map-label--right">{discoveryMessages.map.axes.unhurried}</span>
+                <span className="map-label map-label--bottom">{discoveryMessages.map.axes.substantial}</span>
+                <span className="map-label map-label--left">{discoveryMessages.map.axes.quick}</span>
                 <button
                   ref={mapPointRef}
                   type="button"
@@ -705,20 +763,30 @@ export function DiscoveryExperience({ recipes }: Props) {
                     top: `${snapshot.map.y}%`,
                     '--map-point-mood': moodColor(snapshot.map),
                   } as CSSProperties}
-                  aria-label={`Talerz na mapie: ${mapSummary(snapshot.map)}`}
+                  aria-label={formatMessage(discoveryMessages.map.pointLabel, {
+                    summary: mapSummary(snapshot.map, discoveryMessages.map),
+                  })}
                   onKeyDown={handleMapKeyDown}
                 >
                   <span aria-hidden="true">♨</span>
                 </button>
               </div>
               <p className="map-mood" aria-hidden="true">
-                <span className="map-mood__label">Nastrój na dziś:</span>
+                <span className="map-mood__label">{discoveryMessages.map.moodLabel}</span>
                 <span className="map-mood__value" style={{ color: moodTextColor(snapshot.map) }}>
-                  {moodName(snapshot.map)}
+                  {moodName(snapshot.map, discoveryMessages.map)}
                 </span>
               </p>
-              {mapResults.length > 0 && <RecipeList recipes={mapResults} headingId="map-results-heading" />}
-              {mapResults.length === 0 && <p className="empty-state overlay-empty">Nie znaleźliśmy propozycji dla tego miejsca.</p>}
+              {mapResults.length > 0 && (
+                <RecipeList
+                  recipes={mapResults}
+                  headingId="map-results-heading"
+                  title={discoveryMessages.resultsHeading}
+                  common={common}
+                  messages={messages.recipeCard}
+                />
+              )}
+              {mapResults.length === 0 && <p className="empty-state overlay-empty">{discoveryMessages.map.emptyResults}</p>}
             </div>
           )}
           <p className="visually-hidden" role="status" aria-live="polite">{announcement}</p>

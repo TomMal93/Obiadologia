@@ -1,7 +1,22 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { prototypeRecipes } from '@/data/prototype-recipes';
+import { defaultLocale } from '@/i18n/config';
+import { getMessages } from '@/i18n/messages';
 import { DiscoveryExperience } from './DiscoveryExperience';
+
+const messages = getMessages(defaultLocale);
+
+function renderExperience(recipes = prototypeRecipes) {
+  return render(
+    <DiscoveryExperience
+      recipes={recipes}
+      common={messages.common}
+      messages={messages.experience}
+      locale={defaultLocale}
+    />,
+  );
+}
 
 beforeEach(() => {
   window.history.replaceState({}, '', '/');
@@ -10,7 +25,7 @@ beforeEach(() => {
 
 describe('DiscoveryExperience categories', () => {
   it('starts with a stable empty results frame and without recipe cards', () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
 
     for (const button of screen.getAllByRole('button', { pressed: false })) {
       expect(button).toHaveAttribute('aria-pressed', 'false');
@@ -24,7 +39,7 @@ describe('DiscoveryExperience categories', () => {
   });
 
   it('filters after every change and hides results after removing the last selection', () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
 
     const lunch = screen.getByRole('button', { name: /Obiad/ });
     fireEvent.click(lunch);
@@ -47,7 +62,7 @@ describe('DiscoveryExperience categories', () => {
   });
 
   it('keeps the same results frame when a selection has no matches', () => {
-    render(<DiscoveryExperience recipes={[]} />);
+    renderExperience([]);
 
     const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
     fireEvent.click(screen.getByRole('button', { name: /Obiad/ }));
@@ -67,7 +82,7 @@ describe('DiscoveryExperience overlay', () => {
   }
 
   it('opens search with an empty field and focus on the dialog (no auto keyboard), then updates suggestions and results after a typing pause', async () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
     const opener = addOpener('search');
     fireEvent.click(opener);
 
@@ -85,11 +100,11 @@ describe('DiscoveryExperience overlay', () => {
   });
 
   it('fills the empty field with popular tropes and runs one when picked', async () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
     fireEvent.click(addOpener('search'));
 
     const dialog = await screen.findByRole('dialog');
-    const tropes = within(dialog).getByRole('group', { name: 'Popularne tropy' });
+    const tropes = within(dialog).getByRole('group', { name: 'A może coś z tego?' });
     const tiles = within(tropes).getAllByRole('button');
     expect(tiles.length).toBeGreaterThan(8);
 
@@ -99,20 +114,20 @@ describe('DiscoveryExperience overlay', () => {
     // ukrywa siatkę, a wyniki pojawiają się po debounce.
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
     expect(input).not.toHaveValue('');
-    expect(within(dialog).queryByRole('group', { name: 'Popularne tropy' })).not.toBeInTheDocument();
+    expect(within(dialog).queryByRole('group', { name: 'A może coś z tego?' })).not.toBeInTheDocument();
     await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
   });
 
   it('offers rescue tropes when a query returns no results', async () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
     fireEvent.click(addOpener('search'));
 
     const dialog = await screen.findByRole('dialog');
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
     fireEvent.change(input, { target: { value: 'xyzzy' } });
 
-    expect(await within(dialog).findByText('Nie znaleźliśmy pasujących propozycji.')).toBeInTheDocument();
-    const rescue = within(dialog).getByRole('group', { name: 'Spróbuj popularnych tropów:' });
+    expect(await within(dialog).findByText('Tego nie znaleźliśmy. Spróbujmy inaczej.')).toBeInTheDocument();
+    const rescue = within(dialog).getByRole('group', { name: 'Może coś z tego?' });
     // Brak wyników pokazuje tę samą siatkę bento co stan pusty (wiele kafli).
     const rescueTiles = within(rescue).getAllByRole('button');
     expect(rescueTiles.length).toBeGreaterThan(8);
@@ -122,7 +137,7 @@ describe('DiscoveryExperience overlay', () => {
   });
 
   it('preserves search state while the map reacts to keyboard input', async () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
     fireEvent.click(addOpener('search'));
     const dialog = await screen.findByRole('dialog');
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
@@ -141,7 +156,7 @@ describe('DiscoveryExperience overlay', () => {
   });
 
   it('shows a live mood name under the map that stays neutral near the centre and changes past the band edge', async () => {
-    render(<DiscoveryExperience recipes={prototypeRecipes} />);
+    renderExperience();
     fireEvent.click(addOpener('map'));
     const dialog = await screen.findByRole('dialog');
 

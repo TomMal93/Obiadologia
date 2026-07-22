@@ -1,17 +1,20 @@
 ---
 import '@/styles/global.css';
+import { defaultLocale, localeMetadata } from '@/i18n/config';
+import type { Locale } from '@/i18n/config';
 import './BaseLayout.css';
 
 interface Props {
   title: string;
   description: string;
+  locale?: Locale;
 }
 
-const { title, description } = Astro.props;
+const { title, description, locale = defaultLocale } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="pl-PL">
+<html lang={localeMetadata[locale].htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

@@ -114,10 +114,10 @@ W prototypie opartym wyłącznie na lokalnych danych nie należy sztucznie symul
 
 ### Cel i treści
 
-Wyszukiwarka jest przeznaczona dla użytkownika, który ma już trop: składnik, nazwę dania, smak, kategorię albo tag. Zapytanie nie musi być pełną ani dokładną nazwą przepisu.
+Wyszukiwarka jest przeznaczona dla użytkownika, który ma już pierwszą myśl: składnik, nazwę dania, smak, kategorię albo tag. Zapytanie nie musi być pełną ani dokładną nazwą przepisu.
 
-- nagłówek: „Masz trop? Wpisz go tutaj”;
-- opis: „Składnik, danie, smak albo tag.”;
+- nagłówek: „Co chodzi Ci po głowie?”;
+- opis: „Składnik, danie, smak — jedno słowo wystarczy.”;
 - etykieta lub dostępna nazwa pola: „Szukaj przepisu”;
 - placeholder: „np. kurczak, curry, szybko, bez mięsa”.
 
@@ -129,7 +129,7 @@ Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 - sugestie powiązane z zapytaniem nie są widoczne;
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań;
-- pod polem widoczny jest blok „Popularne tropy” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj tropu, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie tropu ustawia je jako jedno aktywne zapytanie.
+- pod polem widoczny jest blok „A może coś z tego?” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj podpowiedzi, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie podpowiedzi ustawia ją jako jedno aktywne zapytanie.
 
 Usunięcie całej treści przywraca ten stan.
 
@@ -145,7 +145,7 @@ Usunięcie całej treści przywraca ten stan.
 
 Kolor koralowy identyfikuje aktywną Wyszukiwarkę, fokus pola i aktywną sugestię, ale nie jest jedynym nośnikiem ich stanu.
 
-Komunikat braku wyników: „Nie znaleźliśmy pasujących propozycji.” Pod komunikatem powtarza się blok „Popularne tropy” (etykieta „Spróbuj popularnych tropów:”) w tej samej mozaice bento co w stanie pustym, aby brak trafień nie był ślepym zaułkiem — wybranie tropu od razu ustawia nowe zapytanie z wynikami.
+Komunikat braku wyników: „Tego nie znaleźliśmy. Spróbujmy inaczej.” Pod komunikatem powtarza się blok podpowiedzi z etykietą „Może coś z tego?” w tej samej mozaice bento co w stanie pustym, aby brak trafień nie był ślepym zaułkiem — wybranie podpowiedzi od razu ustawia nowe zapytanie z wynikami.
 
 ## Tryb Mapy
 

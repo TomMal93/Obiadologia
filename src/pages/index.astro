@@ -2,34 +2,34 @@
 import { DiscoveryExperience } from '@/components/DiscoveryExperience';
 import SiteHeader from '@/components/SiteHeader.astro';
 import { prototypeRecipes } from '@/data/prototype-recipes';
+import { defaultLocale } from '@/i18n/config';
+import { getMessages } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import './home-page.css';
+
+const messages = getMessages(defaultLocale);
 ---
 
 <BaseLayout
-  title="Obiadologia — Co dziś jemy?"
-  description="Mobilny prototyp trzech sposobów odkrywania pomysłów na posiłek."
+  title={messages.home.meta.title}
+  description={messages.home.meta.description}
+  locale={defaultLocale}
 >
-  <SiteHeader />
+  <SiteHeader messages={messages.common} />
 
   <main>
     <div class="intro-screen">
       <div class="home-hero-bg" aria-hidden="true">
-        <span>na obiad?</span>
-        <span>co zjemy?</span>
-        <span>coś szybkiego</span>
-        <span>na przy garach</span>
-        <span>coś słodkiego</span>
-        <span>szybko i zdrowo</span>
+        {messages.home.backgroundPhrases.map((phrase) => <span>{phrase}</span>)}
       </div>
 
       <section class="home-hero" aria-labelledby="main-heading">
-        <h1 id="main-heading">Co dziś <span>jemy?</span></h1>
+        <h1 id="main-heading">{messages.home.hero.lead} <span>{messages.home.hero.emphasis}</span></h1>
       </section>
 
       <section class="path-panel" aria-labelledby="paths-heading">
-        <p class="path-pill">Apetyt nie zawsze mówi pełnym zdaniem</p>
-        <h2 id="paths-heading">Rzuć pierwszą myśl na stół</h2>
+        <p class="path-pill">{messages.home.paths.eyebrow}</p>
+        <h2 id="paths-heading">{messages.home.paths.heading}</h2>
 
         <svg
           class="path-tree"
@@ -75,7 +75,7 @@ import './home-page.css';
 
         <div class="path-grid">
           <article class="path-col path-col--map">
-            <p class="path-title">Obierz kierunek</p>
+            <p class="path-title">{messages.home.paths.mapLead}</p>
             <span class="path-rule" aria-hidden="true"></span>
             <div class="path-action">
               <button class="path-tile" type="button" data-discovery-mode="map">
@@ -88,13 +88,13 @@ import './home-page.css';
                     <circle class="path-icon-pin-dot" cx="24" cy="20" r="4.5" />
                   </svg>
                 </span>
-                <span class="path-tile-label">Mapa</span>
+                <span class="path-tile-label">{messages.home.paths.mapAction}</span>
               </button>
             </div>
           </article>
 
           <article class="path-col path-col--search">
-            <p class="path-title">Znajdź konkret</p>
+            <p class="path-title">{messages.home.paths.searchLead}</p>
             <span class="path-rule" aria-hidden="true"></span>
             <div class="path-action">
               <button class="path-tile" type="button" data-discovery-mode="search">
@@ -104,13 +104,13 @@ import './home-page.css';
                     <line class="path-icon-handle" x1="29" y1="29" x2="38" y2="38" />
                   </svg>
                 </span>
-                <span class="path-tile-label">Szukaj</span>
+                <span class="path-tile-label">{messages.home.paths.searchAction}</span>
               </button>
             </div>
           </article>
 
           <article class="path-col path-col--categories">
-            <p class="path-title">Ustal kryteria</p>
+            <p class="path-title">{messages.home.paths.categoriesLead}</p>
             <span class="path-rule" aria-hidden="true"></span>
             <div class="path-action">
               <a class="path-tile" href="#kategorie">
@@ -122,22 +122,28 @@ import './home-page.css';
                     <rect class="path-icon-cell" x="26" y="26" width="13" height="13" rx="3.5" />
                   </svg>
                 </span>
-                <span class="path-tile-label">Kategorie</span>
+                <span class="path-tile-label">{messages.home.paths.categoriesAction}</span>
               </a>
             </div>
           </article>
         </div>
 
         <p class="path-note">
-          <strong>Ciekawość to najlepsza przyprawa.</strong> Daj się jej poprowadzić i wybierz coś dla siebie.
+          <strong>{messages.home.paths.noteLead}</strong> {messages.home.paths.noteBody}
         </p>
       </section>
     </div>
 
-    <DiscoveryExperience recipes={prototypeRecipes} client:load />
+    <DiscoveryExperience
+      recipes={prototypeRecipes}
+      common={messages.common}
+      messages={messages.experience}
+      locale={defaultLocale}
+      client:load
+    />
   </main>
 
   <footer class="home-footer">
-    <p>Obiadologia — prototyp interakcji MVP.</p>
+    <p>{messages.home.footer}</p>
   </footer>
 </BaseLayout>

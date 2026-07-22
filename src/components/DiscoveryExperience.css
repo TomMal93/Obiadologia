@@ -469,8 +469,7 @@
   text-align: center;
 }
 
-/* Nagłówek trybu mieści się w jednej linii w całym zakresie mobilnym
-   (320–480px) — najdłuższy tytuł „Masz trop? Wpisz go tutaj”. */
+/* Nagłówek trybu mieści się w jednej linii w całym zakresie mobilnym. */
 .overlay-intro h2 {
   margin: 0 0 var(--space-8);
   font-size: clamp(19px, 5.6vw, 26px);
@@ -609,7 +608,7 @@
   background: color-mix(in srgb, var(--color-search) 16%, var(--color-surface));
 }
 
-/* Blok popularnych „tropów” zapełnia stan pusty i stan braku wyników — w obu
+/* Blok popularnych podpowiedzi zapełnia stan pusty i stan braku wyników — w obu
    przypadkach wariantem `bento` (mozaika kafli). Wariant `pills` (koralowe
    pigułki `.suggestion-list`) pozostaje w zapasie jako kompaktowa alternatywa,
    oba spięte wspólną, wyciszoną etykietą. */
@@ -627,7 +626,7 @@
   margin: var(--space-8) 0 0;
 }
 
-/* Pigułki ratunkowe dziedziczą koral z `.suggestion-list`; tropy tempa i okazji
+/* Pigułki ratunkowe dziedziczą koral z `.suggestion-list`; hasła tempa i okazji
    przejmują kolor swojej drogi (zielony / niebieski), tak jak kafle bento. */
 .trope-list .trope-chip--tempo {
   color: var(--color-categories-strong);

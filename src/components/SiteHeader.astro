@@ -1,11 +1,19 @@
 ---
 // Wspólny nagłówek z logo/brandem, osadzany na stronach Astro poza wyspą React.
+import type { AppMessages } from '@/i18n/messages';
 import './SiteHeader.css';
+
+interface Props {
+  messages: AppMessages['common'];
+  homeHref?: string;
+}
+
+const { messages, homeHref = '/' } = Astro.props;
 ---
 
 <header class="site-header">
-  <a class="site-brand" href="/" aria-label="Obiadologia — strona główna">
+  <a class="site-brand" href={homeHref} aria-label={messages.brandHomeLabel}>
     <span class="site-brand-mark" aria-hidden="true">O</span>
-    <span>Obiadologia</span>
+    <span>{messages.brand}</span>
   </a>
 </header>

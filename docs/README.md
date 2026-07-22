@@ -49,6 +49,7 @@ obiadologia/
 | kolory, typografia, odstępy, komponenty | [ui-system.md](design/ui-system.md) |
 | pola przepisu i reguły dopasowania | [data-model.md](engineering/data-model.md) |
 | framework, API, hosting lub test runner | [technical-decisions.md](engineering/technical-decisions.md) |
+| słowniki UI, locale i przygotowanie pod kolejne języki | [code-conventions.md](engineering/code-conventions.md) oraz [technical-decisions.md](engineering/technical-decisions.md) |
 | uzasadnienie zaakceptowanej decyzji kosztownej do odwrócenia | właściwy dokument w [`engineering/adr/`](engineering/adr/) wskazany przez rejestr decyzji |
 | dostępność, wydajność i Definition of Done | [quality-requirements.md](engineering/quality-requirements.md) |
 | miejsce styli, nazewnictwo klas, importy i hydratacja | [code-conventions.md](engineering/code-conventions.md) |

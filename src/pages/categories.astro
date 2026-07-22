@@ -1,24 +1,26 @@
 ---
 import SiteHeader from '@/components/SiteHeader.astro';
+import { defaultLocale } from '@/i18n/config';
+import { getMessages } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import './categories-page.css';
+
+const messages = getMessages(defaultLocale);
 ---
 
 <BaseLayout
-  title="Szczegółowe wyszukiwanie — Obiadologia"
-  description="Ekran zapowiadający szczegółowe filtrowanie przepisów w Obiadologii."
+  title={messages.categoriesPlaceholder.meta.title}
+  description={messages.categoriesPlaceholder.meta.description}
+  locale={defaultLocale}
 >
-  <SiteHeader />
+  <SiteHeader messages={messages.common} />
 
   <main class="categories-placeholder">
     <section class="categories-placeholder-card" aria-labelledby="categories-placeholder-heading">
-      <p class="eyebrow">Kategorie</p>
-      <h1 id="categories-placeholder-heading">Szczegółowe wyszukiwanie</h1>
-      <p>
-        Ta funkcja jest w przygotowaniu. Wróć do prostego wyboru kategorii,
-        aby znaleźć propozycje na dziś.
-      </p>
-      <a class="categories-placeholder-back" href="/#kategorie">Wróć do kategorii</a>
+      <p class="eyebrow">{messages.categoriesPlaceholder.eyebrow}</p>
+      <h1 id="categories-placeholder-heading">{messages.categoriesPlaceholder.heading}</h1>
+      <p>{messages.categoriesPlaceholder.description}</p>
+      <a class="categories-placeholder-back" href="/#kategorie">{messages.categoriesPlaceholder.back}</a>
     </section>
   </main>
 </BaseLayout>
