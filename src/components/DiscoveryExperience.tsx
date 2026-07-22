@@ -291,29 +291,46 @@ function moodName({ x, y }: MapCoordinates, messages: MapMessages): string {
   return moodNames[moodBand(x)][moodBand(y)];
 }
 
-// Barwa płynie wraz z osiami: odcień ciepły (koralowy) przy „szybko” i chłodny
-// (niebieski) przy „bez pośpiechu”, jasność maleje ku „konkretnie”, a nasycenie
-// rośnie z odległością od neutralnego środka. Kolor jest dekoracją — znaczenie
-// niesie nazwa oraz dostępna etykieta punktu.
-function moodColor({ x, y }: MapCoordinates): string {
-  const hue = Math.round(12 + (x / 100) * 200);
-  const intensity = Math.max(Math.abs(x - 50), Math.abs(y - 50)) / 50;
-  const saturation = Math.round(22 + intensity * 58);
-  const lightness = Math.round(52 - (y / 100) * 20);
-  return `hsl(${hue} ${saturation}% ${lightness}%)`;
+const moodPalette = {
+  quickLight: 'var(--color-map-mood-quick-light)',
+  unhurriedLight: 'var(--color-map-mood-unhurried-light)',
+  quickSubstantial: 'var(--color-map-mood-quick-substantial)',
+  unhurriedSubstantial: 'var(--color-map-mood-unhurried-substantial)',
+  neutral: 'var(--color-map)',
+} as const;
+
+function mixMoodColors(first: string, second: string, progress: number): string {
+  const secondWeight = Math.round(progress * 1000) / 10;
+  return `color-mix(in oklch shorter hue, ${first} ${100 - secondWeight}%, ${second} ${secondWeight}%)`;
 }
 
-// Wariant dla tekstu nazwy nastroju: ten sam odcień i nasycenie co punkt, ale
-// jasność przypięta do najciemniejszego końca palety (32%). Pełna barwa punktu
-// bywa zbyt jasna — najjaśniejsze odcienie (żółć/zieleń przy „lekko”) na białym
-// tle nie osiągają kontrastu WCAG 3:1 dla dużego, pogrubionego tekstu. 32% daje
-// ≥3,3:1 w całym zakresie odcieni; dekoracyjny punkt mapy zostaje przy pełnej
-// palecie.
-function moodTextColor({ x, y }: MapCoordinates): string {
-  const hue = Math.round(12 + (x / 100) * 200);
-  const intensity = Math.max(Math.abs(x - 50), Math.abs(y - 50)) / 50;
-  const saturation = Math.round(22 + intensity * 58);
-  return `hsl(${hue} ${saturation}% 32%)`;
+// Cztery narożniki mają własne barwy, a neutralny środek pozostaje niebieski.
+// Dodatkowe kotwice na połowach krawędzi są perceptualnymi mieszankami narożników.
+// Interpolacja osobno w każdej ćwiartce daje widoczną zmianę przy ruchu punktu,
+// zachowując ciągłość na obu osiach i unikając szarych mieszanek RGB.
+function moodColor({ x, y }: MapCoordinates): string {
+  const topMiddle = mixMoodColors(moodPalette.quickLight, moodPalette.unhurriedLight, 0.5);
+  const leftMiddle = mixMoodColors(moodPalette.quickLight, moodPalette.quickSubstantial, 0.5);
+  const rightMiddle = mixMoodColors(moodPalette.unhurriedLight, moodPalette.unhurriedSubstantial, 0.5);
+  const bottomMiddle = mixMoodColors(moodPalette.quickSubstantial, moodPalette.unhurriedSubstantial, 0.5);
+  const anchors = [
+    [moodPalette.quickLight, topMiddle, moodPalette.unhurriedLight],
+    [leftMiddle, moodPalette.neutral, rightMiddle],
+    [moodPalette.quickSubstantial, bottomMiddle, moodPalette.unhurriedSubstantial],
+  ];
+  const column = x < 50 ? 0 : 1;
+  const row = y < 50 ? 0 : 1;
+  const localX = x < 50 ? x / 50 : (x - 50) / 50;
+  const localY = y < 50 ? y / 50 : (y - 50) / 50;
+  const upper = mixMoodColors(anchors[row][column], anchors[row][column + 1], localX);
+  const lower = mixMoodColors(anchors[row + 1][column], anchors[row + 1][column + 1], localX);
+  return mixMoodColors(upper, lower, localY);
+}
+
+// Tekst zachowuje bieżący odcień, ale domieszka koloru tekstu zapewnia mu
+// czytelność na jasnym tle. Dekoracyjny talerzyk i ramka używają pełnej palety.
+function moodTextColor(coordinates: MapCoordinates): string {
+  return `color-mix(in oklch, ${moodColor(coordinates)} 62%, var(--color-text))`;
 }
 
 export function DiscoveryExperience({ recipes, common, messages, locale }: Props) {
@@ -805,10 +822,25 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
                   </svg>
                 </button>
               </div>
-              <p className="map-mood" aria-hidden="true">
-                <span className="map-mood__label">{discoveryMessages.map.moodLabel}</span>
-                <span className="map-mood__value" style={{ color: moodTextColor(snapshot.map) }}>
-                  {moodName(snapshot.map, discoveryMessages.map)}
+              <p
+                className="map-mood"
+                aria-hidden="true"
+                style={{
+                  '--map-mood-accent': moodColor(snapshot.map),
+                  '--map-mood-text': moodTextColor(snapshot.map),
+                } as CSSProperties}
+              >
+                <span className="map-mood__copy">
+                  <span className="map-mood__label">{discoveryMessages.map.moodLabel}</span>
+                  <span className="map-mood__value">
+                    {moodName(snapshot.map, discoveryMessages.map)}
+                  </span>
+                </span>
+                <span className="map-mood__marker">
+                  <Icon>
+                    <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+                    <circle cx="12" cy="10" r="2" fill="currentColor" stroke="none" />
+                  </Icon>
                 </span>
               </p>
               {mapResults.length > 0 && (

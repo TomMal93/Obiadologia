@@ -893,7 +893,7 @@
 
 .map-point {
   --map-point-mood: var(--color-map);
-  --map-point-tint: color-mix(in srgb, var(--map-point-mood) 45%, var(--color-map));
+  --map-point-tint: color-mix(in srgb, var(--map-point-mood) 72%, var(--color-map));
 
   position: absolute;
   z-index: 2;
@@ -925,34 +925,71 @@
 }
 
 .map-mood {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: clamp(var(--space-4), 1.5vw, var(--space-8));
+  --map-mood-accent: var(--color-map);
+  --map-mood-text: var(--color-map-strong);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: var(--space-12);
   margin: 0;
-  padding: var(--space-8) var(--space-12) var(--space-12);
-  border: 1px solid var(--color-border);
+  padding: var(--space-12) var(--space-16);
+  border: 1px solid color-mix(in srgb, var(--map-mood-accent) 48%, var(--color-border));
   border-top: 0;
   border-radius: 0 0 var(--radius-card) var(--radius-card);
-  line-height: 1.2;
-  text-align: center;
-  white-space: nowrap;
-  background: var(--color-surface);
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--map-mood-accent) 8%, var(--color-surface)),
+      var(--color-surface) 68%
+    );
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.map-mood__marker {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--map-mood-accent) 62%, var(--color-border));
+  border-radius: 50%;
+  color: var(--map-mood-text);
+  background: color-mix(in srgb, var(--map-mood-accent) 8%, var(--color-surface));
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--map-mood-accent) 15%, transparent);
+}
+
+.map-mood__marker svg {
+  width: 22px;
+  height: 22px;
+}
+
+.map-mood__copy {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
 }
 
 .map-mood__label {
   color: var(--color-text-muted);
-  font-size: clamp(11px, 3.35vw, var(--font-size-14));
+  font-size: var(--font-size-14);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
 .map-mood__value {
-  font-size: clamp(var(--font-size-14), 4.1vw, var(--font-size-20));
-  font-weight: 700;
+  overflow: hidden;
+  color: var(--map-mood-text);
+  font-size: clamp(var(--font-size-16), 4.8vw, var(--font-size-20));
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   transition: color 140ms ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .map-mood,
   .map-mood__value { transition: none; }
 }
 

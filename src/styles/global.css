@@ -34,6 +34,10 @@
   --color-map: var(--color-blue);
   --color-map-strong: var(--color-blue);
   --color-map-soft: var(--color-blue-soft);
+  --color-map-mood-quick-light: #52bd73;
+  --color-map-mood-unhurried-light: #4d9fe8;
+  --color-map-mood-quick-substantial: #e64137;
+  --color-map-mood-unhurried-substantial: #8949b8;
   --color-search: var(--color-coral);
   --color-search-strong: var(--color-coral-strong);
   --color-search-soft: var(--color-coral-soft);

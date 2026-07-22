@@ -251,7 +251,12 @@ Dla osi pionowej:
 
 Makieta nie jest źródłem dokładnych współrzędnych przykładowego punktu.
 
-Kolor niebieski identyfikuje Mapę, aktywny punkt i aktywny tryb, ale położenie i stan są także przekazane dostępną nazwą punktu, geometrią oraz semantyką.
+Kolor niebieski identyfikuje Mapę i aktywny tryb. Akcent aktywnego punktu oraz
+ramki podsumowania płynnie odpowiada położeniu: „szybko + lekko” prowadzi ku
+jasnej zieleni, „bez pośpiechu + lekko” ku błękitowi, „szybko + konkretnie” ku
+czerwieni, a „bez pośpiechu + konkretnie” ku śliwce. Położenie i stan są także
+przekazane dostępną nazwą punktu, geometrią oraz semantyką, więc kolor nie jest
+jedynym nośnikiem znaczenia.
 
 Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 

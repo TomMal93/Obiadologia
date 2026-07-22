@@ -76,6 +76,13 @@ Trzy drogi odkrywania mają stały kolor tożsamości. Ten sam kolor identyfikuj
 - Wariant `-soft` to delikatne tło stanu aktywnego lub kafla.
 - Kolory przewodnie są aliasami odcieni bazowych (`--color-blue`/`--color-coral`/`--color-green`); te odcienie mogą nadal służyć innym rolom (np. koral marki i pierścienia fokusu). W kodzie tożsamość drogi zawsze używa tokenu przewodniego, nie odcienia bazowego.
 
+Akcent ruchomego talerzyka i ramki `map-mood` jest lokalną paletą Mapy,
+interpolowaną perceptualnie między `--color-map-mood-quick-light` (`#52BD73`),
+`--color-map-mood-unhurried-light` (`#4D9FE8`),
+`--color-map-mood-quick-substantial` (`#E64137`) i
+`--color-map-mood-unhurried-substantial` (`#8949B8`). Neutralny środek używa
+`--color-map`; przejścia pozostają ciągłe i wyraźne podczas przesuwania punktu.
+
 #### Akcenty grup Kategorii (docelowe)
 
 Kolory CTA (dróg) i kolory wyboru w Kategoriach to **ten sam zestaw trzech kolorów**. Każda grupa wyboru dziedziczy kolor sparowanej drogi:
