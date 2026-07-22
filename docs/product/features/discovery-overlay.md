@@ -153,8 +153,8 @@ Komunikat braku wyników: „Tego nie znaleźliśmy. Spróbujmy inaczej.” Pod 
 
 Mapa pomaga użytkownikowi, który nie zna nazwy dania, ale potrafi określić oczekiwany charakter posiłku.
 
-- nagłówek: „Wskaż klimat na mapie”;
-- opis: „Przesuń talerz tam, gdzie dziś Ci pasuje.”.
+- nagłówek: „W którą stronę dziś idziemy?”;
+- opis: „Przesuń talerz i zobacz, co czeka po drodze.”.
 
 ### Osie i reprezentacja danych
 
@@ -211,6 +211,20 @@ Zmiana rozmiaru viewportu nie zmienia logicznych współrzędnych punktu.
 Aktualne położenie jest przekazywane przez dostępną nazwę punktu Mapy (`aria-label`); nie ma osobnego widocznego paska podsumowania. Nazwa pokazuje dominujący kierunek każdej osi i procent jego nasilenia, na przykład:
 
 > Talerz na mapie: szybko 72% · lekko 64%
+
+Pod Mapą widoczne jest prezentacyjne podsumowanie „Twój apetyt prowadzi nas tutaj:” z nazwą obszaru odpowiadającą położeniu punktu:
+
+| Tempo | Charakter | Nazwa obszaru |
+|---|---|---|
+| szybko | lekko | Lekko na już |
+| szybko | neutralny | Szybki strzał |
+| szybko | konkretnie | Konkret na już |
+| neutralne | lekko | Lekka sprawa |
+| neutralne | neutralny | Złoty środek |
+| neutralne | konkretnie | Porządna porcja |
+| bez pośpiechu | lekko | Powolna lekkość |
+| bez pośpiechu | neutralny | Spokojny rytm |
+| bez pośpiechu | konkretnie | Uczta bez pośpiechu |
 
 Dla osi poziomej:
 

@@ -160,18 +160,18 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.click(addOpener('map'));
     const dialog = await screen.findByRole('dialog');
 
-    expect(within(dialog).getByText('Codzienny środek')).toBeInTheDocument();
+    expect(within(dialog).getByText('Złoty środek')).toBeInTheDocument();
 
     const point = within(dialog).getByRole('button', { name: /Talerz na mapie/ });
 
     // Pojedynczy krok (x = 45) nie wychodzi z pasma neutralnego.
     fireEvent.keyDown(point, { key: 'ArrowLeft' });
-    expect(within(dialog).getByText('Codzienny środek')).toBeInTheDocument();
+    expect(within(dialog).getByText('Złoty środek')).toBeInTheDocument();
 
     // Przekroczenie granicy pasma (x = 35) przełącza na strefę „szybko”.
     fireEvent.keyDown(point, { key: 'ArrowLeft' });
     fireEvent.keyDown(point, { key: 'ArrowLeft' });
     expect(within(dialog).getByText('Szybki strzał')).toBeInTheDocument();
-    expect(within(dialog).queryByText('Codzienny środek')).not.toBeInTheDocument();
+    expect(within(dialog).queryByText('Złoty środek')).not.toBeInTheDocument();
   });
 });
