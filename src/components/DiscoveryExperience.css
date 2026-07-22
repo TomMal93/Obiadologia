@@ -752,7 +752,7 @@
 .discovery-results {
   --result-accent: color-mix(in srgb, var(--color-search) 30%, var(--color-search-strong));
 
-  margin-top: var(--space-24);
+  margin-top: var(--space-16);
   padding: 0 var(--space-16) var(--space-16);
   overflow: hidden;
 }
@@ -780,7 +780,9 @@
 
 .discovery-results__header > span {
   color: var(--color-text-muted);
-  font-size: var(--font-size-16);
+  font-size: var(--font-size-14);
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .discovery-results .recipe-list {
@@ -788,15 +790,15 @@
 }
 
 .discovery-results .recipe-card {
-  grid-template-columns: 88px minmax(0, 1fr) 32px;
-  min-height: 116px;
-  border-radius: var(--radius-card);
+  grid-template-columns: 72px minmax(0, 1fr) 28px;
+  min-height: 88px;
+  border-radius: var(--radius-field);
 }
 
 .discovery-results .recipe-media {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--radius-field);
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
 }
 
 .discovery-results .recipe-content {
@@ -805,15 +807,15 @@
 }
 
 .discovery-results .recipe-content strong {
-  color: var(--result-accent);
-  font-size: clamp(17px, 4.7vw, var(--font-size-20));
+  color: var(--color-text);
+  font-size: var(--font-size-16);
 }
 
 .discovery-results .recipe-meta,
 .discovery-results .tag-list > span {
   padding: 0;
   color: var(--color-text-muted);
-  font-size: clamp(13px, 3.8vw, var(--font-size-16));
+  font-size: var(--font-size-14);
   background: transparent;
 }
 
@@ -833,12 +835,12 @@
   height: 24px;
   place-items: center;
   align-self: center;
-  color: var(--color-text-muted);
+  color: color-mix(in srgb, var(--color-text-muted) 70%, transparent);
 }
 
 .recipe-chevron svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .preference-map {

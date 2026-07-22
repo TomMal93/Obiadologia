@@ -78,9 +78,10 @@ Oba tryby korzystają z jednego modelu `Recipe` i wspólnego komponentu karty.
 
 Sekcja wyników używa nagłówka „Propozycje”, pokazuje po prawej odmienioną
 liczbę dopasowań i oddziela nagłówek linią od listy. Oba tryby korzystają z
-tego samego zwartego układu poziomych kart ze strzałką nawigacyjną. Kolor
-nagłówka i nazw przepisów odpowiada aktywnemu trybowi; w Mapie jest to ten sam
-niebieski token co tekst aktywnego segmentu „Mapa” w przełączniku.
+tego samego minimalistycznego układu poziomych kart ze strzałką nawigacyjną.
+Nazwy przepisów używają neutralnego koloru tekstu. Kolor nagłówka odpowiada
+aktywnemu trybowi; w Mapie jest to ten sam niebieski token co tekst aktywnego
+segmentu „Mapa” w przełączniku.
 
 Każda karta zawiera:
 
