@@ -132,7 +132,9 @@ button {
   text-transform: uppercase;
 }
 
-/* Sekcja pełnoekranowa: wypełnia jeden ekran (100dvh) i centruje treść w pionie.
+/* Sekcja pełnoekranowa: wypełnia jeden ekran (100svh) i centruje treść w pionie.
+   Używamy `svh` (a nie `dvh`), aby wysokość nie zmieniała się przy chowaniu paska
+   adresu na mobile — to eliminowało skok układu podczas przewijania.
    Treść jest projektowana tak, aby mieściła się w jednym ekranie; przy bazowych
    ustawieniach sekcja nie przekracza wysokości ekranu. Gdy treść (np. wyniki lub
    powiększony tekst) przekroczy ekran, `min-height` pozwala sekcji urosnąć bez
@@ -142,7 +144,7 @@ button {
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   padding: var(--screen-pad-y) var(--gutter);
 }
 
