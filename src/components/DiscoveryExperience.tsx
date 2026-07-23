@@ -582,7 +582,12 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
         // Kotwiczony link (menu na stronie głównej) nie może dodatkowo
         // przewijać ani nawigować — overlay przejmuje otwarcie trybu.
         event.preventDefault();
-        openOverlay(mode, target);
+        // Fokus po zamknięciu wraca na widoczny przycisk menu, a nie na ukryty
+        // link w zamkniętym już panelu.
+        const menuToggle = target.closest('[data-site-menu]')
+          ? document.querySelector<HTMLElement>('[data-site-menu-toggle]')
+          : null;
+        openOverlay(mode, menuToggle ?? target);
       }
     };
     window.addEventListener('popstate', onPopState);

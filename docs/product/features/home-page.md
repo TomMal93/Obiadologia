@@ -136,6 +136,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Wszystkie trzy drogi są widoczne jako równorzędne.
 - Ikona menu w nagłówku otwiera i zamyka mobilne menu nawigacyjne z pozycjami „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”.
 - Pozycje „Szukaj” i „Mapa” w menu otwierają właściwy tryb wspólnego overlaya, także wtedy, gdy wybór następuje z innej strony niż główna.
+- Po otwarciu overlaya z menu (Szukaj lub Mapa) jego zamknięcie — przyciskiem, klawiszem `Escape` albo „Wstecz” — zawsze pozostawia użytkownika na stronie głównej, niezależnie od strony, z której nastąpił wybór.
 - Menu jest obsługiwalne klawiaturą: `aria-expanded` odzwierciedla stan, otwarcie przenosi fokus do panelu, a `Escape` oraz klik w tło zamykają je i przywracają fokus na przycisk.
 - Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
 - Kategorie prowadzą do odpowiedniej sekcji.

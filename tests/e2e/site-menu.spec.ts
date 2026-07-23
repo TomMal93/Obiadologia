@@ -43,6 +43,44 @@ test('menu Mapa from another page returns home and opens the map mode', async ({
   await expect(dialog.getByRole('button', { name: /Talerz na mapie/ })).toBeVisible();
 });
 
+// Otwarcie Szukaj/Mapa z menu i późniejsze zamknięcie overlaya zawsze wraca na
+// stronę główną, niezależnie od strony startowej i sposobu zamknięcia.
+for (const start of ['/', '/categories', '/recipes/owsianka-z-owocami']) {
+  for (const item of ['Szukaj', 'Mapa']) {
+    test(`menu ${item} from ${start}: closing always lands on the home page`, async ({ page }) => {
+      // Zamknięcie przyciskiem X.
+      await page.goto(start);
+      await toggle(page).click();
+      await menu(page).getByRole('link', { name: item }).click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.getByRole('button', { name: 'Zamknij discovery' }).click();
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+      await expect(page).toHaveURL(/\/$/);
+      await expect(page.locator('.home-hero')).toBeVisible();
+
+      // Zamknięcie klawiszem Escape.
+      await page.goto(start);
+      await toggle(page).click();
+      await menu(page).getByRole('link', { name: item }).click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+      await expect(page).toHaveURL(/\/$/);
+      await expect(page.locator('.home-hero')).toBeVisible();
+
+      // Zamknięcie przyciskiem „Wstecz” przeglądarki.
+      await page.goto(start);
+      await toggle(page).click();
+      await menu(page).getByRole('link', { name: item }).click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.goBack();
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+      await expect(page).toHaveURL(/\/$/);
+      await expect(page.locator('.home-hero')).toBeVisible();
+    });
+  }
+}
+
 test('clicking the backdrop closes the menu', async ({ page }) => {
   await page.goto('/');
   await toggle(page).click();
