@@ -3,6 +3,9 @@
 // stronach Astro poza wyspą React. Pozycje Szukaj/Mapa niosą atrybut
 // data-discovery-mode, który na stronie głównej otwiera wspólny overlay; z
 // pozostałych stron prowadzą do „/” z kotwicą, a wyspa otwiera tryb po wejściu.
+// Otwarte menu jest pełnoekranowym panelem spójnym z Discovery overlay: ten sam
+// wyśrodkowany kontener mobilny, nagłówek z brand-markiem i okrągłym przyciskiem
+// zamknięcia oraz pozycje z akcentami trzech dróg (Kategorie/Szukaj/Mapa).
 import type { AppMessages } from '@/i18n/messages';
 import './SiteHeader.css';
 
@@ -33,32 +36,65 @@ const menu = messages.menu;
   </button>
 </header>
 
-<div class="site-menu-backdrop" data-site-menu-backdrop></div>
+<nav id="site-menu" class="site-menu" aria-label={menu.label} data-site-menu>
+  <div class="site-menu-header">
+    <span class="site-menu-brand">
+      <span class="site-brand-mark" aria-hidden="true">O</span>
+      <span>{messages.brand}</span>
+    </span>
+    <button type="button" class="site-menu-close" aria-label={menu.closeLabel} data-site-menu-close>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 6 18 18M18 6 6 18" />
+      </svg>
+    </button>
+  </div>
 
-<nav id="site-menu" class="site-menu" aria-label={menu.label} data-site-menu data-close-label={menu.closeLabel}>
   <ul class="site-menu-list">
-    <li><a class="site-menu-link" href="/">{menu.home}</a></li>
-    <li><a class="site-menu-link" href="/#kategorie">{menu.categories}</a></li>
-    <li><a class="site-menu-link" href="/#szukaj" data-discovery-mode="search">{menu.search}</a></li>
-    <li><a class="site-menu-link" href="/#mapa" data-discovery-mode="map">{menu.map}</a></li>
+    <li>
+      <a class="site-menu-link site-menu-link--home" href="/">
+        <span class="site-menu-mark" aria-hidden="true"></span>
+        <span>{menu.home}</span>
+      </a>
+    </li>
+    <li>
+      <a class="site-menu-link site-menu-link--categories" href="/#kategorie">
+        <span class="site-menu-mark" aria-hidden="true"></span>
+        <span>{menu.categories}</span>
+      </a>
+    </li>
+    <li>
+      <a class="site-menu-link site-menu-link--search" href="/#szukaj" data-discovery-mode="search">
+        <span class="site-menu-mark" aria-hidden="true"></span>
+        <span>{menu.search}</span>
+      </a>
+    </li>
+    <li>
+      <a class="site-menu-link site-menu-link--map" href="/#mapa" data-discovery-mode="map">
+        <span class="site-menu-mark" aria-hidden="true"></span>
+        <span>{menu.map}</span>
+      </a>
+    </li>
   </ul>
 </nav>
 
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('[data-site-menu-toggle]');
   const menu = document.querySelector<HTMLElement>('[data-site-menu]');
-  const backdrop = document.querySelector<HTMLElement>('[data-site-menu-backdrop]');
+  const closeButton = document.querySelector<HTMLButtonElement>('[data-site-menu-close]');
 
-  if (toggle && menu && backdrop) {
+  if (toggle && menu && closeButton) {
     const openLabel = toggle.getAttribute('aria-label') ?? '';
-    const closeLabel = menu.getAttribute('data-close-label') ?? openLabel;
+    const closeLabel = closeButton.getAttribute('aria-label') ?? openLabel;
 
     const focusableLinks = () =>
       Array.from(menu.querySelectorAll<HTMLElement>('.site-menu-link'));
 
+    // Kolejność pętli fokusu w otwartym panelu: przycisk zamknięcia, potem linki.
+    // Hamburger jest zasłonięty pełnoekranową powierzchnią, więc nie bierze udziału.
+    const focusStops = () => [closeButton, ...focusableLinks()];
+
     const setOpen = (open: boolean) => {
       menu.classList.toggle('is-open', open);
-      backdrop.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? closeLabel : openLabel);
       document.body.classList.toggle('site-menu-open', open);
@@ -79,7 +115,7 @@ const menu = messages.menu;
       else open();
     });
 
-    backdrop.addEventListener('click', () => close());
+    closeButton.addEventListener('click', () => close());
 
     // Wybór pozycji domyka menu; nawigacja (lub otwarcie overlaya na stronie
     // głównej przez wyspę) dzieje się poza tym zamknięciem.
@@ -97,8 +133,8 @@ const menu = messages.menu;
       }
 
       if (event.key === 'Tab') {
-        // Pętla fokusu w obrębie otwartego menu (toggle + linki).
-        const stops = [toggle, ...focusableLinks()];
+        // Pętla fokusu w obrębie otwartego menu (zamknięcie + linki).
+        const stops = focusStops();
         const first = stops[0];
         const last = stops[stops.length - 1];
         const active = document.activeElement;
