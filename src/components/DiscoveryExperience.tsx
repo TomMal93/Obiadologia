@@ -146,7 +146,7 @@ function RecipeItems({
               </span>
               <span className="recipe-content">
                 <strong>{recipe.title}</strong>
-                <span className={`recipe-description${featured ? '' : ' visually-hidden'}`}>
+                <span className="recipe-description visually-hidden">
                   {recipe.description}
                 </span>
                 <span className="recipe-facts">
@@ -154,9 +154,11 @@ function RecipeItems({
                     ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
                     {recipe.preparationMinutes} {common.minuteAbbreviation}
                   </span>
-                  <span className="tag-list" aria-label={common.tagsLabel}>
-                    {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
-                  </span>
+                  {!featured && (
+                    <span className="tag-list" aria-label={common.tagsLabel}>
+                      {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
+                    </span>
+                  )}
                 </span>
               </span>
               {featured && featuredReason && (
