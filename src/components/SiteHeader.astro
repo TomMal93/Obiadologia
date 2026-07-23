@@ -1,5 +1,8 @@
 ---
-// Wspólny nagłówek z logo/brandem, osadzany na stronach Astro poza wyspą React.
+// Wspólny nagłówek z logo/brandem oraz mobilnym menu (hamburger), osadzany na
+// stronach Astro poza wyspą React. Pozycje Szukaj/Mapa niosą atrybut
+// data-discovery-mode, który na stronie głównej otwiera wspólny overlay; z
+// pozostałych stron prowadzą do „/” z kotwicą, a wyspa otwiera tryb po wejściu.
 import type { AppMessages } from '@/i18n/messages';
 import './SiteHeader.css';
 
@@ -9,6 +12,7 @@ interface Props {
 }
 
 const { messages, homeHref = '/' } = Astro.props;
+const menu = messages.menu;
 ---
 
 <header class="site-header">
@@ -16,4 +20,96 @@ const { messages, homeHref = '/' } = Astro.props;
     <span class="site-brand-mark" aria-hidden="true">O</span>
     <span>{messages.brand}</span>
   </a>
+
+  <button
+    type="button"
+    class="site-menu-toggle"
+    aria-label={menu.openLabel}
+    aria-controls="site-menu"
+    aria-expanded="false"
+    data-site-menu-toggle
+  >
+    <span class="site-menu-toggle-bars" aria-hidden="true"></span>
+  </button>
 </header>
+
+<div class="site-menu-backdrop" data-site-menu-backdrop></div>
+
+<nav id="site-menu" class="site-menu" aria-label={menu.label} data-site-menu data-close-label={menu.closeLabel}>
+  <ul class="site-menu-list">
+    <li><a class="site-menu-link" href="/">{menu.home}</a></li>
+    <li><a class="site-menu-link" href="/#kategorie">{menu.categories}</a></li>
+    <li><a class="site-menu-link" href="/#szukaj" data-discovery-mode="search">{menu.search}</a></li>
+    <li><a class="site-menu-link" href="/#mapa" data-discovery-mode="map">{menu.map}</a></li>
+  </ul>
+</nav>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-site-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-site-menu]');
+  const backdrop = document.querySelector<HTMLElement>('[data-site-menu-backdrop]');
+
+  if (toggle && menu && backdrop) {
+    const openLabel = toggle.getAttribute('aria-label') ?? '';
+    const closeLabel = menu.getAttribute('data-close-label') ?? openLabel;
+
+    const focusableLinks = () =>
+      Array.from(menu.querySelectorAll<HTMLElement>('.site-menu-link'));
+
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('is-open', open);
+      backdrop.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? closeLabel : openLabel);
+      document.body.classList.toggle('site-menu-open', open);
+    };
+
+    const open = () => {
+      setOpen(true);
+      focusableLinks()[0]?.focus();
+    };
+
+    const close = (returnFocus = true) => {
+      setOpen(false);
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      if (menu.classList.contains('is-open')) close();
+      else open();
+    });
+
+    backdrop.addEventListener('click', () => close());
+
+    // Wybór pozycji domyka menu; nawigacja (lub otwarcie overlaya na stronie
+    // głównej przez wyspę) dzieje się poza tym zamknięciem.
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('.site-menu-link')) close(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!menu.classList.contains('is-open')) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        // Pętla fokusu w obrębie otwartego menu (toggle + linki).
+        const stops = [toggle, ...focusableLinks()];
+        const first = stops[0];
+        const last = stops[stops.length - 1];
+        const active = document.activeElement;
+        if (event.shiftKey && active === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+  }
+</script>

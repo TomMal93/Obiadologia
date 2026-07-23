@@ -55,7 +55,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 |---|---|---|
 | Model `Recipe` i dane prototypowe | wersja wstępna | jedna reprezentacja z walidacją (`zod` w `src/domain/recipe-schema.ts`, uruchamianą na etapie builda) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`) |
 | Przygotowanie treści UI pod lokalizację | wersja wstępna | komponenty i strony pobierają teksty interfejsu z typowanego słownika; aktywny jest wyłącznie polski, bez wielojęzycznego routingu i bez lokalizacji danych przepisów oraz wyszukiwania |
-| Nagłówek (logo/brand) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu jeszcze nie renderowana |
+| Nagłówek (logo/brand + menu) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu (hamburger) otwiera mobilne menu nawigacyjne (Strona główna, Kategorie, Szukaj, Mapa) obsługiwane skryptem współlokowanym w `SiteHeader.astro`; Szukaj/Mapa otwierają wspólny overlay (na stronie głównej wprost, z innych stron przez kotwicę `/#szukaj`/`/#mapa`) |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
 | Kategorie | wersja wstępna | wybór, filtr AND, wyniki i ich ukrywanie zgodnie ze specyfikacją |
 | Szczegółowe wyszukiwanie Kategorii | ekran zastępczy | przycisk w panelu prowadzi do statycznej informacji o funkcji w przygotowaniu; filtry pozostają poza MVP |
