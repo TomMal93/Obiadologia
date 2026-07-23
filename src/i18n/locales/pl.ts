@@ -4,6 +4,15 @@ export const pl = {
     brandHomeLabel: 'Obiadologia — strona główna',
     tagsLabel: 'Tagi',
     minuteAbbreviation: 'min',
+    menu: {
+      label: 'Menu główne',
+      openLabel: 'Otwórz menu',
+      closeLabel: 'Zamknij menu',
+      home: 'Strona główna',
+      categories: 'Kategorie',
+      search: 'Szukaj',
+      map: 'Mapa',
+    },
   },
   home: {
     meta: {

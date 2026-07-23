@@ -8,6 +8,8 @@
 .site-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
   height: var(--header-block);
   padding: 0 var(--gutter);
 }
@@ -31,4 +33,124 @@
   color: white;
   background: var(--brand-gradient);
   box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
+}
+
+/* Hamburger — otwiera mobilne menu nawigacyjne. */
+.site-menu-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-field);
+  color: var(--color-text);
+  background: transparent;
+  cursor: pointer;
+}
+
+.site-menu-toggle-bars {
+  position: relative;
+  width: 22px;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.site-menu-toggle-bars::before,
+.site-menu-toggle-bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.site-menu-toggle-bars::before {
+  top: -7px;
+}
+
+.site-menu-toggle-bars::after {
+  top: 7px;
+}
+
+/* Przyciemnione tło pod otwartym menu; klik zamyka. */
+.site-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgb(31 26 23 / 45%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 0s linear 200ms;
+}
+
+.site-menu-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms ease, visibility 0s;
+}
+
+/*
+  Powłoka menu obejmuje wyśrodkowaną kolumnę mobilną (jak overlay), ale sama
+  nie przechwytuje kliknięć — robi to dopiero panel. Dzięki temu tapnięcie obok
+  panelu trafia w tło i zamyka menu.
+*/
+.site-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 91;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear 240ms;
+}
+
+.site-menu.is-open {
+  visibility: visible;
+  transition: visibility 0s;
+}
+
+.site-menu-list {
+  width: min(78%, 320px);
+  height: 100%;
+  margin: 0;
+  padding: calc(var(--header-block) + var(--space-16)) var(--gutter) var(--space-24);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  pointer-events: auto;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-surface);
+  transform: translateX(100%);
+  transition: transform 240ms ease;
+}
+
+.site-menu.is-open .site-menu-list {
+  transform: none;
+}
+
+.site-menu-link {
+  display: block;
+  padding: var(--space-12);
+  border-radius: var(--radius-field);
+  color: var(--color-text);
+  font-size: var(--font-size-16);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-menu-link:hover {
+  background: var(--color-bg-shell);
+}
+
+body.site-menu-open {
+  overflow: hidden;
 }

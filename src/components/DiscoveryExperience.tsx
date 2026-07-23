@@ -51,6 +51,12 @@ const initialSnapshot = (mode: DiscoveryMode): DiscoverySnapshot => ({
 
 const endedSessionsKey = 'obiadologia-ended-discovery-sessions';
 
+// Kotwice, którymi menu z innych stron prosi o otwarcie trybu po wejściu na „/”.
+const hashToMode: Record<string, DiscoveryMode> = {
+  '#szukaj': 'search',
+  '#mapa': 'map',
+};
+
 type SelectionChip = {
   key: keyof CategorySelection;
   accent: 'daypart' | 'tempo' | 'occasion';
@@ -545,18 +551,39 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
 
   useEffect(() => {
     const restoreTimer = window.setTimeout(() => {
-      restoreFromHistory(window.history.state as DiscoveryHistoryState | null);
+      const state = window.history.state as DiscoveryHistoryState | null;
+      restoreFromHistory(state);
+      // Wejście z innej strony przez menu („/#szukaj”, „/#mapa”) otwiera tryb,
+      // o ile nie wracamy do zawieszonej sesji zapisanej w historii.
+      if (!state?.discovery) {
+        const hashMode = hashToMode[window.location.hash];
+        if (hashMode) {
+          window.history.replaceState(state, '', window.location.pathname + window.location.search);
+          const opener = document.querySelector<HTMLElement>('[data-site-menu-toggle]');
+          openOverlay(hashMode, opener ?? document.body);
+        }
+      }
     }, 0);
     const onPopState = (event: PopStateEvent) => {
       restoreFromHistory(event.state as DiscoveryHistoryState | null);
     };
     const onOpenRequest = (event: MouseEvent) => {
+      // Zmodyfikowane kliknięcia (nowa karta, środkowy przycisk) zostawiamy
+      // przeglądarce — link menu i tak prowadzi do „/” z kotwicą trybu.
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
       const target = event.target instanceof Element
         ? event.target.closest('[data-discovery-mode]')
         : null;
       if (!(target instanceof HTMLElement)) return;
       const mode = target.dataset.discoveryMode;
-      if (mode === 'search' || mode === 'map') openOverlay(mode, target);
+      if (mode === 'search' || mode === 'map') {
+        // Kotwiczony link (menu na stronie głównej) nie może dodatkowo
+        // przewijać ani nawigować — overlay przejmuje otwarcie trybu.
+        event.preventDefault();
+        openOverlay(mode, target);
+      }
     };
     window.addEventListener('popstate', onPopState);
     document.addEventListener('click', onOpenRequest);
