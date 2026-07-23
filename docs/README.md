@@ -20,7 +20,8 @@ obiadologia/
     │   └── features/
     │       ├── home-page.md
     │       ├── discovery-overlay.md
-    │       └── recipe-page.md
+    │       ├── recipe-page.md
+    │       └── surprise-me.md    # propozycja (roboczy)
     ├── design/
     │   └── ui-system.md
     ├── engineering/
@@ -46,6 +47,7 @@ obiadologia/
 | hero lub wybory kategorii | [home-page.md](product/features/home-page.md) |
 | Wyszukiwarka, Mapa lub ich wspólny modal | [discovery-overlay.md](product/features/discovery-overlay.md) |
 | strona przepisu `/recipes/:slug` | [recipe-page.md](product/features/recipe-page.md) |
+| propozycja sekcji „Zaskocz mnie” (roboczy) | [surprise-me.md](product/features/surprise-me.md) |
 | kolory, typografia, odstępy, komponenty | [ui-system.md](design/ui-system.md) |
 | pola przepisu i reguły dopasowania | [data-model.md](engineering/data-model.md) |
 | framework, API, hosting lub test runner | [technical-decisions.md](engineering/technical-decisions.md) |
