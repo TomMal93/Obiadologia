@@ -81,11 +81,12 @@ for (const start of ['/', '/categories', '/recipes/owsianka-z-owocami']) {
   }
 }
 
-test('clicking the backdrop closes the menu', async ({ page }) => {
+test('the close button closes the menu and restores focus to the toggle', async ({ page }) => {
   await page.goto('/');
   await toggle(page).click();
   await expect(toggle(page)).toHaveAttribute('aria-expanded', 'true');
 
-  await page.locator('[data-site-menu-backdrop]').click({ position: { x: 8, y: 220 } });
+  await menu(page).getByRole('button', { name: 'Zamknij menu' }).click();
   await expect(toggle(page)).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle(page)).toBeFocused();
 });
