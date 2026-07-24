@@ -25,7 +25,9 @@ obiadologia/
     ├── design/
     │   └── ui-system.md
     ├── content/
-    │   └── recipe-template.md
+    │   ├── recipe-template.md
+    │   └── recipes/
+    │       └── kotlet-schabowy-z-ziemniakami.md
     ├── engineering/
     │   ├── technical-decisions.md
     │   ├── data-model.md
