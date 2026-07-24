@@ -21,4 +21,10 @@ describe('Recipe schema', () => {
     expect(recipeSchema.parse(testRecipes[0]).tips).toEqual(['Zapamiętaj poradę testową.']);
     expect(() => recipeSchema.parse({ ...testRecipes[0], tips: [] })).toThrow();
   });
+
+  it('rejects an unknown difficulty and servings outside the supported range', () => {
+    expect(() => recipeSchema.parse({ ...testRecipes[0], difficulty: 'expert' })).toThrow();
+    expect(() => recipeSchema.parse({ ...testRecipes[0], servings: 0 })).toThrow();
+    expect(() => recipeSchema.parse({ ...testRecipes[0], servings: 13 })).toThrow();
+  });
 });

@@ -8,10 +8,12 @@ export type { AdvanceStep, Recipe } from '@/domain/recipe-schema';
 export const mealTimes = ['breakfast', 'lunch', 'dinner'] as const;
 export const tempos = ['now', 'today', 'two_days'] as const;
 export const occasions = ['kids', 'guests', 'grill'] as const;
+export const difficulties = ['easy', 'medium', 'hard'] as const;
 
 export type MealTime = (typeof mealTimes)[number];
 export type Tempo = (typeof tempos)[number];
 export type Occasion = (typeof occasions)[number];
+export type Difficulty = (typeof difficulties)[number];
 
 export interface CategorySelection {
   mealTime?: MealTime;

@@ -7,7 +7,7 @@
 
 Strona przepisu jest celem nawigacji wszystkich trzech dróg odkrywania: karta wyniku z Kategorii, Wyszukiwarki i Mapy prowadzi do `/recipes/:slug`. Strona prezentuje jeden przepis na podstawie wspólnego modelu `Recipe` i pozwala wrócić do dalszego odkrywania.
 
-Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [data-model.md](../../engineering/data-model.md). Treść redakcyjna spoza modelu (porcje, wartości odżywcze) pozostaje poza zakresem — zob. [mvp-scope.md](../mvp-scope.md).
+Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [data-model.md](../../engineering/data-model.md). Treść redakcyjna spoza modelu, w tym wartości odżywcze, pozostaje poza zakresem — zob. [mvp-scope.md](../mvp-scope.md).
 
 ## Referencja projektu
 
@@ -28,8 +28,6 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 | Element projektu | Status w MVP | Powód |
 |---|---|---|
-| trudność | pominięta | brak pola w `Recipe` |
-| liczba porcji i przeliczanie ilości | pominięte | porcje są poza zakresem MVP |
 | wartości odżywcze | pominięte | brak danych w modelu i poza zakresem MVP |
 | „Podobne przepisy” | pominięte | brak uzgodnionego kontraktu podobieństwa |
 
@@ -37,6 +35,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 - trasa `/recipes/:slug` i jej prerendering;
 - prezentacja pól modelu `Recipe` dla jednego przepisu;
+- pasek trudności, bazowej liczby porcji i czasu oraz lokalne przeliczanie ilości składników;
 - placeholder braku zdjęcia;
 - lokalne, nietrwałe odhaczanie składników i kroków;
 - opcjonalna sekcja porad redakcyjnych „Coś jeszcze”;
@@ -44,8 +43,8 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 ## Poza zakresem
 
-- porcje, wartości odżywcze i inne pola spoza modelu `Recipe` — granice etapu definiuje [mvp-scope.md](../mvp-scope.md);
-- trudność i sekcja podobnych przepisów;
+- wartości odżywcze i inne pola spoza modelu `Recipe` — granice etapu definiuje [mvp-scope.md](../mvp-scope.md);
+- sekcja podobnych przepisów;
 - docelowy zestaw przepisów i produkcyjne obrazy — otwarte `OPEN-003` i `OPEN-005` w [technical-decisions.md](../../engineering/technical-decisions.md);
 - oceny, komentarze, zapisywanie ulubionych i udostępnianie — poza MVP.
 
@@ -53,8 +52,10 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 - Trasa `/recipes/:slug` jest prerenderowana dla każdego przepisu o statusie `published`; slug spoza katalogu nie generuje strony.
 - Strona przepisu nie powiela wspólnego nagłówka. Pierwszym elementem jest hero z akcją powrotu, dzięki czemu zdjęcie i tytuł rozpoczynają stronę zgodnie z projektem.
-- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tagami i tytułem (`h1`); pasek czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”); kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
-- Pasek pod hero pokazuje wyłącznie metadane istniejące w modelu. W MVP jest to czas z `preparationMinutes`, z widoczną etykietą „Czas”; nie pokazuje pustych komórek trudności ani porcji.
+- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tagami i tytułem (`h1`); pasek trudności, porcji i czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”); kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
+- Pasek bezpośrednio pod hero ma trzy komórki: przetłumaczony poziom `difficulty`, bazową liczbę `servings` z akcjami zmniejszenia i zwiększenia oraz czas z `preparationMinutes`. Liczbę porcji można ustawić w zakresie `1–12`.
+- Zmiana liczby porcji skaluje ilość każdego składnika względem bazowej wartości według reguły z [data-model.md](../../engineering/data-model.md). Obie prezentacje miar — metryczna i domowa — korzystają z przeliczonej ilości. Stan jest lokalny i resetuje się po opuszczeniu strony.
+- Regulacja porcji jest wzbogaceniem progresywnym: bez skryptu strona pokazuje bazową liczbę porcji i bazowe ilości, a akcje zmiany pozostają ukryte.
 - Każdy składnik pokazuje nazwę i grammaturę z pola `ingredients` ([data-model.md](../../engineering/data-model.md)). Przełącznik nad listą zmienia formę miary między metryczną (`gramy / ml`) a domową (`szklanki / szczypty`); domowa forma wynika z przeliczenia miary metrycznej i pozostaje w jednostce naturalnej tam, gdzie miara domowa nie ma sensu (liczba sztuk, masa bez znanej gęstości).
 - Przełącznik jest wzbogaceniem progresywnym: bez skryptu strona pokazuje sprawną listę w formie metrycznej, a sam przełącznik pozostaje ukryty.
 - Każdy składnik można odhaczyć niezależnie. Stan jest lokalny dla otwartej strony, nie zmienia danych przepisu i nie jest zapisywany między wizytami. Odhaczenie pokazuje znacznik oraz zmianę tekstu, a nad listą widoczny jest postęp „{wybrane}/{wszystkie} odhaczonych”. Bez skryptu składniki pozostają zwykłą, kompletną listą, a kontrolki odhaczania i postęp są ukryte.
@@ -77,6 +78,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 - Hero zajmuje pełną szerokość kontenera mobilnego, ma stałą wysokość w rytmie projektu i `object-fit: cover`; awaria lub brak obrazu nie zmienia jego geometrii.
 - Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia.
 - Akcja „Wróć” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
+- Akcje zmiany porcji są okrągłe, mają minimalny obszar aktywny `44 × 44px`, dostępne nazwy i stan `disabled` na granicach zakresu.
 - Strona przepisu jest długim dokumentem przewijanym w normalnym przepływie. Nie podlega regule „jedna sekcja = jeden ekran”; nie może mieć wewnętrznego przewijania całego artykułu ani ściskać treści do wysokości viewportu.
 - Sekcja „Coś jeszcze” używa jasnego koralowego panelu z nagłówkiem w ciemnym koralu oraz dekoracyjnymi znacznikami porad, zgodnie z referencją projektu.
 
@@ -90,7 +92,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | # | Kryterium |
 |---|---|
 | 1 | Kliknięcie karty wyniku na dowolnej drodze otwiera `/recipes/:slug` z tytułem przepisu w `h1`. |
-| 2 | Strona pokazuje opis, czas przygotowania, wszystkie tagi, pełną listę składników przepisu z grammaturą oraz numerowane kroki przygotowania. |
+| 2 | Strona pokazuje opis, trudność, bazową liczbę porcji, czas przygotowania, wszystkie tagi, pełną listę składników przepisu z grammaturą oraz numerowane kroki przygotowania. |
 | 3 | Przy `image: null` widoczny jest dekoracyjny placeholder, a układ strony nie zmienia wymiarów. |
 | 4 | Akcja „Wróć” w hero prowadzi do `/`; przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję. |
 | 5 | Tytuł dokumentu i meta description są unikalne dla przepisu. |
@@ -100,5 +102,6 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | 9 | Przepis z polem `advance`/`preparation` pokazuje sekcje „Wcześniej”/„Przygotowanie” przed krokami; przepis bez tych pól ich nie pokazuje i nie udostępnia przełącznika trybu. |
 | 10 | Pomocnik „Kiedy zacząć” wylicza początek głównego gotowania i godzinę rozpoczęcia każdej czynności z wyprzedzeniem z podanej pory podania; przełącznik „Tryb asystenta / Tylko kroki” zwija i przywraca etapy wspierające. Bez skryptu obie funkcje pozostają ukryte, a treść jest pełna. |
 | 11 | Składniki i kroki można niezależnie odhaczać; stan ukończenia jest widoczny nie tylko kolorem, nie zmienia danych i resetuje się po opuszczeniu strony. Bez skryptu obie listy pozostają kompletne i czytelne. |
-| 12 | Hero, nakładka tytułu, pasek czasu i kolejność treści odpowiadają `recipe-page.html`; elementy bez pól w modelu są pominięte bez pustych komórek i fikcyjnych danych. |
+| 12 | Hero, nakładka tytułu, trzykomórkowy pasek metadanych i kolejność treści odpowiadają `recipe-page.html`; elementy bez pól w modelu są pominięte bez pustych komórek i fikcyjnych danych. |
 | 13 | Przepis z polem `tips` pokazuje po krokach sekcję „Coś jeszcze” ze wszystkimi poradami; bez pola sekcja nie jest renderowana. |
+| 14 | Zmniejszenie lub zwiększenie liczby porcji w zakresie `1–12` proporcjonalnie przelicza metryczne i domowe ilości wszystkich składników; bez skryptu widoczne są bazowe porcje i ilości bez aktywnych kontrolek. |

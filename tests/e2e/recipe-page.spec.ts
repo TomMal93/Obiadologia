@@ -10,6 +10,14 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
   ).toBeVisible();
   await expect(page.getByText(/Chrupiący kotlet schabowy w klasycznej panierce/)).toBeVisible();
   await expect(page.getByText('Czas przygotowania: 50 min')).toBeVisible();
+  await expect(page.getByText('Średnia', { exact: true })).toBeVisible();
+
+  const servings = page.locator('[data-servings-output]');
+  const decreaseServings = page.getByRole('button', { name: 'Zmniejsz liczbę porcji' });
+  const increaseServings = page.getByRole('button', { name: 'Zwiększ liczbę porcji' });
+  await expect(servings).toHaveText('4');
+  await expect(decreaseServings).toBeVisible();
+  await expect(increaseServings).toBeVisible();
 
   const tags = page.getByRole('list', { name: 'Tagi' });
   for (const tag of ['obiad', 'domowe', 'klasyka']) {
@@ -29,7 +37,16 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
   ).toBeVisible();
 
   const flour = ingredients.locator('.ingredient').filter({ hasText: 'mąka pszenna' });
+  const pork = ingredients.locator('.ingredient').filter({ hasText: 'schab bez kości' });
   await expect(flour.locator('.ingredient__measure-metric')).toHaveText('60 g');
+  await expect(pork.locator('.ingredient__measure-metric')).toHaveText('600 g');
+  await increaseServings.click();
+  await expect(servings).toHaveText('5');
+  await expect(pork.locator('.ingredient__measure-metric')).toHaveText('750 g');
+  await decreaseServings.click();
+  await expect(servings).toHaveText('4');
+  await expect(pork.locator('.ingredient__measure-metric')).toHaveText('600 g');
+
   await page.getByRole('button', { name: 'Miary domowe' }).click();
   await expect(flour.locator('.ingredient__measure-household')).toHaveText('½ szklanki');
 

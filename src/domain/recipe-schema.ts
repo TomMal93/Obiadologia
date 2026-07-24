@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ingredientSchema } from '@/domain/ingredient';
-import { mealTimes, occasions, tempos } from '@/domain/recipe';
+import { difficulties, mealTimes, occasions, tempos } from '@/domain/recipe';
 
 // Schematy zod mieszkają osobno od typów i reguł Kategorii (`recipe.ts`),
 // bo walidacja danych odbywa się w całości na etapie builda (`src/data`).
@@ -38,6 +38,8 @@ export const recipeSchema = z
     description: z.string().trim().min(1),
     image: imageReferenceSchema.nullable(),
     preparationMinutes: z.number().int().positive(),
+    difficulty: z.enum(difficulties),
+    servings: z.number().int().positive().max(12),
     ingredients: z.array(ingredientSchema).min(1),
     // Czynności z wyprzedzeniem czasowym; opcjonalne — brak pola oznacza przepis
     // bez etapu „zrób wcześniej”. Jeśli pole istnieje, MUSI mieć co najmniej jeden krok.

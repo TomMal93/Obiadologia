@@ -31,7 +31,9 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `description` | string | krótki opis dania |
 | `image` | ImageReference \| null | zdjęcie i tekst alternatywny; `null` oznacza użycie wspólnego placeholdera |
 | `preparationMinutes` | integer | dodatnia liczba minut |
-| `ingredients` | Ingredient[] | składniki z grammaturą; `name` zasila wyszukiwanie |
+| `difficulty` | Difficulty | kontrolowany poziom trudności |
+| `servings` | integer | bazowa liczba porcji od `1` do `12` |
+| `ingredients` | Ingredient[] | składniki z grammaturą dla bazowej liczby porcji; `name` zasila wyszukiwanie |
 | `advance` | AdvanceStep[] \| — | opcjonalne czynności z wyprzedzeniem czasowym (namoczenie, marynowanie); jeśli pole istnieje, ma co najmniej jeden krok |
 | `preparation` | string[] \| — | opcjonalne przygotowanie wstępne (mise en place, sprzęt); jeśli pole istnieje, ma co najmniej jeden krok |
 | `steps` | string[] | co najmniej jeden krok przygotowania; kolejność określa numerację na stronie przepisu |
@@ -50,6 +52,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 MealTime = breakfast | lunch | dinner
 Tempo = now | today | two_days
 Occasion = kids | guests | grill
+Difficulty = easy | medium | hard
 MapPosition = { pace: 0..1, lightness: 0..1 }
 ImageReference = { src: string, alt: string }
 IngredientUnit = g | ml | szt
@@ -66,6 +69,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 - Punkt `(0.5, 0.5)` jest neutralnym środkiem mapy.
 - Miarą bazową składnika jest zawsze wartość metryczna (`g`, `ml` albo `szt`). Formę domową (szklanki/łyżki/łyżeczki/szczypta) wyliczamy z miary metrycznej — nie jest osobno przechowywana, aby obie prezentacje nie mogły się rozjechać.
 - `gramsPerCup` (gramy na szklankę 250 ml) jest opcjonalną gęstością składnika sypkiego; pozwala przeliczyć masę na miarę domową. Bez niej masa (`g`) pozostaje w gramach, bo dla wielu produktów miara domowa nie ma sensu.
+- Ilości w `ingredients` odpowiadają liczbie `servings`. Zmiana liczby porcji na stronie skaluje każdą ilość przez iloraz `wybrane porcje / servings`; nie zmienia danych przepisu ani nie jest zapisywana między wizytami.
 
 ## Przykład
 
@@ -80,6 +84,8 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
     "alt": "Grillowany kurczak podany na zielonej sałatce"
   },
   "preparationMinutes": 25,
+  "difficulty": "easy",
+  "servings": 2,
   "ingredients": [
     { "name": "kurczak", "amount": 400, "unit": "g" },
     { "name": "sałata", "amount": 1, "unit": "szt" },
@@ -140,7 +146,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 ## Integralność danych
 
 - Tylko `published` może pojawić się użytkownikowi.
-- `slug`, `id`, czas, słowniki i obecność co najmniej jednego tagu MUSZĄ być walidowane przed publikacją.
+- `slug`, `id`, czas, trudność, bazowa liczba porcji, słowniki i obecność co najmniej jednego tagu MUSZĄ być walidowane przed publikacją.
 - Karta pokazuje od jednego do trzech pierwszych tagów zgodnie z kolejnością zapisaną w `tags`; pozostałe tagi nadal mogą uczestniczyć w wyszukiwaniu.
 - Każdy przepis MUSI mieć komplet danych potrzebny co najmniej jednej ścieżce oraz kartę możliwą do wyrenderowania bez dodatkowych wyjątków.
 - Nieznana wartość słownika jest błędem danych, a nie nową kategorią tworzoną automatycznie.

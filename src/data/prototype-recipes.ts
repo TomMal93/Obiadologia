@@ -8,6 +8,8 @@ export const prototypeRecipes = parseRecipes([
     description: 'Chrupiący kotlet schabowy w klasycznej panierce, podany z młodymi ziemniaczkami albo kremowym purée. Ziemniaki można polać tłuszczem ze skwarkami lub posypać świeżym koperkiem.',
     image: null,
     preparationMinutes: 50,
+    difficulty: 'medium',
+    servings: 4,
     ingredients: [
       { name: 'schab bez kości', amount: 600, unit: 'g' },
       {

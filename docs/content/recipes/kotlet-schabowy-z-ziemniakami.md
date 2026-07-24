@@ -17,6 +17,8 @@
   ziemniaczkami albo kremowym purée. Ziemniaki można polać tłuszczem ze
   skwarkami lub posypać świeżym koperkiem.
 - **Czas przygotowania:** 50 minut
+- **Trudność:** `medium` — średnia
+- **Bazowa liczba porcji:** 4
 
 ## Zdjęcie
 
@@ -31,6 +33,8 @@
 3. klasyka
 
 ## Składniki
+
+Ilości bazowe są podane dla 4 porcji.
 
 | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) |
 |---|---:|---|---:|

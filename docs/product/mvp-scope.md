@@ -82,8 +82,8 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - portal z artykułami,
 - podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
-- docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (porcje, zdjęcia; prototypowe kroki są już w modelu),
-- rozszerzenia strony przepisu wymagające nowych danych lub reguł: trudność, wartości odżywcze, przeliczanie porcji i podobne przepisy,
+- docelowy zestaw przykładowych przepisów, produkcyjne zdjęcia i pełna treść redakcyjna katalogu (prototypowe kroki są już w modelu),
+- rozszerzenia strony przepisu wymagające nowych danych lub reguł: wartości odżywcze i podobne przepisy,
 - wiele wersji językowych.
 
 Typowane wydzielenie polskich tekstów interfejsu jest przygotowaniem technicznym,

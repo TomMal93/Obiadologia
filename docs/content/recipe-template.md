@@ -26,6 +26,8 @@ można pominąć w całości.
 - **Tytuł:** [krótka, naturalna nazwa dania]
 - **Opis:** [jedno lub dwa zdania opisujące smak, charakter i najważniejsze cechy dania]
 - **Czas przygotowania:** [dodatnia liczba minut]
+- **Trudność:** `[easy | medium | hard]`
+- **Bazowa liczba porcji:** `[liczba całkowita od 1 do 12]`
 
 ## Zdjęcie
 
@@ -48,7 +50,8 @@ najważniejsze.
 
 Każdy składnik musi mieć dodatnią ilość i jednostkę `g`, `ml` albo `szt`.
 `gramsPerCup` jest opcjonalne i oznacza masę jednej szklanki 250 ml; uzupełnij
-je tylko wtedy, gdy masa składnika ma być przeliczana na miary domowe.
+je tylko wtedy, gdy masa składnika ma być przeliczana na miary domowe. Wszystkie
+ilości podaj dla bazowej liczby porcji wskazanej wyżej.
 
 | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) |
 |---|---:|---|---:|
@@ -127,6 +130,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] ID i slug są unikalne.
 - [ ] Tytuł i opis są naturalne oraz napisane po polsku.
 - [ ] Czas jest dodatnią liczbą całkowitą.
+- [ ] Trudność ma jedną z dozwolonych wartości, a bazowa liczba porcji mieści się w zakresie `1–12`.
 - [ ] Każdy składnik ma dodatnią ilość i dozwoloną jednostkę.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.

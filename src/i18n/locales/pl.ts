@@ -175,6 +175,15 @@ export const pl = {
   recipe: {
     preparationTimeLabel: 'Czas przygotowania:',
     timeLabel: 'Czas',
+    difficultyLabel: 'Trudność',
+    difficulty: {
+      easy: 'Łatwa',
+      medium: 'Średnia',
+      hard: 'Trudna',
+    },
+    servingsLabel: 'Porcje',
+    decreaseServingsLabel: 'Zmniejsz liczbę porcji',
+    increaseServingsLabel: 'Zwiększ liczbę porcji',
     backLabel: 'Wróć do strony głównej',
     backShort: '← Wróć',
     ingredientsHeading: 'Składniki',

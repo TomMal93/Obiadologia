@@ -24,7 +24,8 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 |---|---|
 | typy modelu `Recipe` i reguły Kategorii (bez zod, bezpieczne dla paczki klienckiej) | `src/domain/recipe.ts` |
 | schematy `zod` i walidacja `parseRecipes` (wyłącznie etap builda) | `src/domain/recipe-schema.ts` |
-| model `Ingredient`, grammatura i przeliczanie miar (metryczne ↔ domowe) | `src/domain/ingredient.ts` |
+| schemat `Ingredient` i jego walidacja buildowa | `src/domain/ingredient.ts` |
+| kliencki model ilości składnika, formatowanie i przeliczanie miar | `src/domain/ingredient-measure.ts` |
 | logika czasu etapów „Wcześniej” (formatowanie wyprzedzenia, godziny startu) | `src/domain/recipe-schedule.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
 | katalog danych przepisów zgodnych z `Recipe` | `src/data/prototype-recipes.ts` |
@@ -63,7 +64,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Szczegółowe wyszukiwanie Kategorii | ekran zastępczy | przycisk w panelu prowadzi do statycznej informacji o funkcji w przygotowaniu; filtry pozostają poza MVP |
 | Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
-| Strona przepisu `/recipes/:slug` | wersja wstępna | implementacja prezentuje pola modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki z grammaturą i przełącznikiem miar metryczne/domowe); opcjonalne etapy „Wcześniej” (z pomocnikiem startu) i „Przygotowanie” z przełącznikiem „Tryb asystenta / Tylko kroki”, oba jako wzbogacenie progresywne; opcjonalne `tips` tworzy panel „Coś jeszcze”; opublikowane rekordy otrzymują prerenderowane trasy |
+| Strona przepisu `/recipes/:slug` | wersja wstępna | implementacja prezentuje pola modelu `Recipe` (zdjęcie/placeholder, opis, trudność, czas, porcje, tagi, składniki z grammaturą i przełącznikiem miar metryczne/domowe); zmiana liczby porcji skaluje ilości; opcjonalne etapy „Wcześniej” (z pomocnikiem startu) i „Przygotowanie” z przełącznikiem „Tryb asystenta / Tylko kroki”, oba jako wzbogacenie progresywne; opcjonalne `tips` tworzy panel „Coś jeszcze”; opublikowane rekordy otrzymują prerenderowane trasy |
 
 Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.
 

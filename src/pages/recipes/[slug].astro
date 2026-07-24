@@ -46,6 +46,7 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
       data-start-previous-day={messages.recipe.startPreviousDay}
       data-start-same-day={messages.recipe.startSameDay}
       data-preparation-minutes={recipe.preparationMinutes}
+      data-base-servings={recipe.servings}
     >
       <header class="recipe-hero">
         <div class="recipe-hero__media">
@@ -74,12 +75,42 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
         </div>
       </header>
 
-      <div class="recipe-meta">
-        <span class="recipe-meta__label">{messages.recipe.timeLabel}</span>
-        <strong>
-          <span class="visually-hidden">{messages.recipe.preparationTimeLabel} </span>
-          {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
-        </strong>
+      <div class="recipe-meta" aria-label={`${messages.recipe.difficultyLabel}, ${messages.recipe.servingsLabel}, ${messages.recipe.timeLabel}`}>
+        <div class="recipe-meta__item">
+          <span class="recipe-meta__label">{messages.recipe.difficultyLabel}</span>
+          <strong>{messages.recipe.difficulty[recipe.difficulty]}</strong>
+        </div>
+        <div class="recipe-meta__item recipe-meta__item--servings">
+          <span class="recipe-meta__label">{messages.recipe.servingsLabel}</span>
+          <div class="servings-control">
+            <button
+              type="button"
+              class="servings-control__button"
+              data-servings-delta="-1"
+              aria-label={messages.recipe.decreaseServingsLabel}
+              hidden
+            >
+              −
+            </button>
+            <strong data-servings-output aria-live="polite">{recipe.servings}</strong>
+            <button
+              type="button"
+              class="servings-control__button"
+              data-servings-delta="1"
+              aria-label={messages.recipe.increaseServingsLabel}
+              hidden
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div class="recipe-meta__item">
+          <span class="recipe-meta__label">{messages.recipe.timeLabel}</span>
+          <strong>
+            <span class="visually-hidden">{messages.recipe.preparationTimeLabel} </span>
+            {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
+          </strong>
+        </div>
       </div>
 
       <div class="recipe-body">
@@ -120,7 +151,12 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
           <ul class="ingredient-list" data-units="metric">
             {
               recipe.ingredients.map((ingredient) => (
-                <li class="ingredient">
+                <li
+                  class="ingredient"
+                  data-base-amount={ingredient.amount}
+                  data-unit={ingredient.unit}
+                  data-grams-per-cup={ingredient.gramsPerCup}
+                >
                   <button
                     type="button"
                     class="ingredient__toggle"
@@ -309,6 +345,13 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
 </BaseLayout>
 
 <script>
+  import {
+    formatHouseholdMeasure,
+    formatMetricMeasure,
+    ingredientUnits,
+    type IngredientMeasure,
+    type IngredientUnit,
+  } from '@/domain/ingredient-measure';
   import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
 
   const article = document.querySelector<HTMLElement>('.recipe-article');
@@ -333,6 +376,66 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
         }
       });
     }
+  }
+
+  const baseServings = Number(article?.dataset.baseServings);
+  const servingsOutput = article?.querySelector<HTMLElement>('[data-servings-output]');
+  const servingsButtons = Array.from(
+    article?.querySelectorAll<HTMLButtonElement>('[data-servings-delta]') ?? [],
+  );
+  const ingredientRows = Array.from(
+    article?.querySelectorAll<HTMLElement>('.ingredient[data-base-amount][data-unit]') ?? [],
+  );
+
+  const isIngredientUnit = (value: string | undefined): value is IngredientUnit =>
+    ingredientUnits.some((unit) => unit === value);
+
+  if (
+    Number.isInteger(baseServings)
+    && baseServings > 0
+    && servingsOutput
+    && servingsButtons.length === 2
+  ) {
+    let servings = baseServings;
+    for (const button of servingsButtons) button.hidden = false;
+
+    const renderServings = () => {
+      servingsOutput.textContent = String(servings);
+
+      for (const button of servingsButtons) {
+        const delta = Number(button.dataset.servingsDelta);
+        button.disabled = servings + delta < 1 || servings + delta > 12;
+      }
+
+      for (const row of ingredientRows) {
+        const amount = Number(row.dataset.baseAmount);
+        const unit = row.dataset.unit;
+        const gramsPerCup = Number(row.dataset.gramsPerCup);
+        if (!Number.isFinite(amount) || !isIngredientUnit(unit)) continue;
+
+        const ingredient: IngredientMeasure = {
+          name: '',
+          amount: (amount * servings) / baseServings,
+          unit,
+          ...(Number.isFinite(gramsPerCup) ? { gramsPerCup } : {}),
+        };
+        const metric = row.querySelector<HTMLElement>('.ingredient__measure-metric');
+        const household = row.querySelector<HTMLElement>('.ingredient__measure-household');
+        if (metric) metric.textContent = formatMetricMeasure(ingredient);
+        if (household) household.textContent = formatHouseholdMeasure(ingredient);
+      }
+    };
+
+    for (const button of servingsButtons) {
+      button.addEventListener('click', () => {
+        const delta = Number(button.dataset.servingsDelta);
+        if (!Number.isFinite(delta)) return;
+        servings = Math.max(1, Math.min(12, servings + delta));
+        renderServings();
+      });
+    }
+
+    renderServings();
   }
 
   const progress = article?.querySelector<HTMLElement>('[data-ingredient-progress]');
