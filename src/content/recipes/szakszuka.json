@@ -1,0 +1,128 @@
+{
+  "id": "recipe_009",
+  "slug": "szakszuka",
+  "title": "Szakszuka",
+  "description": "Jajka zapieczone w gęstym, aromatycznym sosie z pomidorów, papryki i cebuli z nutą kuminu i słodkiej papryki. Danie z jednej patelni na leniwe śniadanie lub szybką kolację, najlepsze z chrupiącym pieczywem.",
+  "image": null,
+  "preparationMinutes": 30,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "name": "jajka",
+      "amount": 6,
+      "unit": "szt"
+    },
+    {
+      "name": "pomidory krojone z puszki albo passata",
+      "amount": 800,
+      "unit": "g"
+    },
+    {
+      "name": "papryka czerwona",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "name": "cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "name": "czosnek",
+      "amount": 3,
+      "unit": "szt"
+    },
+    {
+      "name": "koncentrat pomidorowy",
+      "amount": 30,
+      "unit": "g"
+    },
+    {
+      "name": "oliwa",
+      "amount": 40,
+      "unit": "ml"
+    },
+    {
+      "name": "kmin rzymski mielony",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "name": "papryka słodka mielona",
+      "amount": 10,
+      "unit": "ml"
+    },
+    {
+      "name": "papryka ostra albo chili, opcjonalnie",
+      "amount": 3,
+      "unit": "ml"
+    },
+    {
+      "name": "feta albo ser typu feta, opcjonalnie",
+      "amount": 100,
+      "unit": "g"
+    },
+    {
+      "name": "świeża kolendra albo natka, opcjonalnie",
+      "amount": 15,
+      "unit": "g"
+    },
+    {
+      "name": "pieczywo do podania",
+      "amount": 4,
+      "unit": "szt"
+    },
+    {
+      "name": "sól",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "name": "pieprz",
+      "amount": 2,
+      "unit": "ml"
+    }
+  ],
+  "preparation": [
+    "Cebulę pokrój w kostkę, paprykę w paski, a czosnek drobno posiekaj.",
+    "Przygotuj szeroką patelnię z pokrywką, na której sos rozłoży się jedną warstwą."
+  ],
+  "steps": [
+    "Na patelni rozgrzej oliwę i zeszklij cebulę. Dodaj paprykę i smaż kilka minut, aż zmięknie.",
+    "Dodaj czosnek, kmin rzymski, słodką paprykę oraz opcjonalnie ostrą i chwilę smaż, mieszając, aby przyprawy uwolniły aromat.",
+    "Wlej pomidory, dodaj koncentrat i duś sos około 10 minut, aż zgęstnieje. Dopraw solą i pieprzem.",
+    "W gęstym sosie zrób łyżką zagłębienia i wbij w nie po jednym jajku.",
+    "Przykryj patelnię i gotuj na małym ogniu 6–8 minut, aż białka się zetną, a żółtka pozostaną płynne.",
+    "Posyp pokruszoną fetą i świeżą kolendrą, podawaj prosto z patelni z pieczywem."
+  ],
+  "tips": [
+    "Wbijaj każde jajko najpierw do miseczki, a potem przelewaj do sosu — łatwiej rozłożysz je równomiernie.",
+    "Pilnuj żółtek — kilka minut różnicy decyduje, czy będą płynne, czy ścięte.",
+    "Gęsty sos to podstawa: jeśli jest zbyt rzadki, odparuj go przed dodaniem jajek."
+  ],
+  "tags": [
+    "śniadanie",
+    "jajka",
+    "jednogarnkowe"
+  ],
+  "mealTimes": [
+    "breakfast",
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "now",
+    "today"
+  ],
+  "occasions": [
+    "kids",
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.35,
+    "lightness": 0.55
+  },
+  "editorialPriority": 60,
+  "status": "published"
+}

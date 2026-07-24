@@ -1,5 +1,5 @@
 ---
-import { prototypeRecipes } from '@/data/prototype-recipes';
+import { getPublishedRecipes } from '@/data/recipes';
 import type { Recipe } from '@/domain/recipe';
 import { formatHouseholdMeasure, formatMetricMeasure } from '@/domain/ingredient';
 import { formatLeadTime } from '@/domain/recipe-schedule';
@@ -9,13 +9,12 @@ import { getMessages } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import './recipe-page.css';
 
-export function getStaticPaths() {
-  return prototypeRecipes
-    .filter((recipe) => recipe.status === 'published')
-    .map((recipe) => ({
-      params: { slug: recipe.slug },
-      props: { recipe },
-    }));
+export async function getStaticPaths() {
+  const recipes = await getPublishedRecipes();
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.slug },
+    props: { recipe },
+  }));
 }
 
 interface Props {

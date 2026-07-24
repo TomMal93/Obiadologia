@@ -1,0 +1,111 @@
+{
+  "id": "recipe_008",
+  "slug": "leczo-z-kielbasa-i-papryka",
+  "title": "Leczo z kiełbasą i papryką",
+  "description": "Szybkie, jednogarnkowe leczo z podsmażoną kiełbasą, kolorową papryką i cebulą w aromatycznym sosie pomidorowym. Sycące danie na leniwy wieczór, pyszne z kromką chleba.",
+  "image": null,
+  "preparationMinutes": 40,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "name": "kiełbasa śląska albo podwawelska",
+      "amount": 400,
+      "unit": "g"
+    },
+    {
+      "name": "papryka czerwona i żółta",
+      "amount": 4,
+      "unit": "szt"
+    },
+    {
+      "name": "cebula",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "name": "passata pomidorowa albo pomidory z puszki",
+      "amount": 400,
+      "unit": "g"
+    },
+    {
+      "name": "koncentrat pomidorowy",
+      "amount": 30,
+      "unit": "g"
+    },
+    {
+      "name": "czosnek",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "name": "olej",
+      "amount": 30,
+      "unit": "ml"
+    },
+    {
+      "name": "papryka słodka mielona",
+      "amount": 10,
+      "unit": "ml"
+    },
+    {
+      "name": "papryka ostra albo chili, opcjonalnie",
+      "amount": 3,
+      "unit": "ml"
+    },
+    {
+      "name": "cukier",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "name": "sól",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "name": "pieprz",
+      "amount": 2,
+      "unit": "ml"
+    }
+  ],
+  "preparation": [
+    "Kiełbasę pokrój w plastry, paprykę w paski, a cebulę w piórka.",
+    "Czosnek obierz i drobno posiekaj albo przeciśnij przez praskę."
+  ],
+  "steps": [
+    "W szerokim garnku albo na głębokiej patelni rozgrzej olej i podsmaż plastry kiełbasy, aż się zrumienią. Wyjmij je na chwilę.",
+    "Na tym samym tłuszczu zeszklij cebulę, dodaj paprykę i smaż kilka minut, aż lekko zmięknie.",
+    "Dodaj czosnek, słodką paprykę oraz opcjonalnie ostrą i chwilę smaż, aby przyprawy uwolniły aromat.",
+    "Wlej passatę, dodaj koncentrat pomidorowy i szczyptę cukru, wymieszaj i duś pod przykryciem około 15 minut.",
+    "Dołóż z powrotem kiełbasę, dopraw solą i pieprzem i pogotuj jeszcze kilka minut, aż smaki się połączą. Podawaj z pieczywem."
+  ],
+  "tips": [
+    "Zrumienienie kiełbasy przed duszeniem daje leczo głębszy, wędzony smak.",
+    "Leczo dobrze znosi odgrzewanie i następnego dnia często smakuje jeszcze lepiej.",
+    "Lubisz gęstszy sos? Duś pod uchyloną pokrywką, aby część płynu odparowała."
+  ],
+  "tags": [
+    "obiad",
+    "jednogarnkowe",
+    "domowe"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "now",
+    "today"
+  ],
+  "occasions": [
+    "kids",
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.3,
+    "lightness": 0.4
+  },
+  "editorialPriority": 60,
+  "status": "published"
+}

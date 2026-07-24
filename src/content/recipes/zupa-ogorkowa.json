@@ -1,0 +1,110 @@
+{
+  "id": "recipe_006",
+  "slug": "zupa-ogorkowa",
+  "title": "Zupa ogórkowa",
+  "description": "Rozgrzewająca ogórkowa na wywarze, z tartymi ogórkami kiszonymi i ziemniakami, zabielona śmietaną. Lekko kwaskowa, sycąca i idealna na domowy obiad.",
+  "image": null,
+  "preparationMinutes": 50,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "name": "bulion drobiowy albo warzywny",
+      "amount": 1500,
+      "unit": "ml"
+    },
+    {
+      "name": "ogórki kiszone",
+      "amount": 400,
+      "unit": "g"
+    },
+    {
+      "name": "zalewa z ogórków kiszonych",
+      "amount": 100,
+      "unit": "ml"
+    },
+    {
+      "name": "ziemniaki",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "name": "marchew",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "name": "korzeń pietruszki",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "name": "cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "name": "śmietana 18%",
+      "amount": 200,
+      "unit": "ml"
+    },
+    {
+      "name": "masło",
+      "amount": 20,
+      "unit": "g"
+    },
+    {
+      "name": "świeży koperek, opcjonalnie",
+      "amount": 10,
+      "unit": "g"
+    },
+    {
+      "name": "sól",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "name": "pieprz",
+      "amount": 2,
+      "unit": "ml"
+    }
+  ],
+  "preparation": [
+    "Ogórki kiszone zetrzyj na tarcie o grubych oczkach.",
+    "Marchew, pietruszkę i cebulę obierz, a ziemniaki obierz i pokrój w kostkę."
+  ],
+  "steps": [
+    "W garnku rozpuść masło i zeszklij pokrojoną cebulę. Dodaj startą marchew z pietruszką i chwilę podsmaż.",
+    "Wlej bulion, dodaj ziemniaki i gotuj około 15 minut, aż zaczną mięknąć.",
+    "Dodaj starte ogórki kiszone i gotuj na małym ogniu kolejne 10–15 minut, aby smaki się połączyły. Dopraw zalewą z ogórków do preferowanej kwasowości.",
+    "Zdejmij garnek z ognia. Zahartuj śmietanę kilkoma łyżkami gorącej zupy, wlej ją do garnka i delikatnie wymieszaj.",
+    "Dopraw solą i pieprzem, pamiętając, że ogórki i zalewa są już słone. Posyp koperkiem i podawaj."
+  ],
+  "tips": [
+    "Ogórki dodawaj dopiero, gdy ziemniaki zaczną mięknąć — kwas spowalnia ich gotowanie.",
+    "Solij ostrożnie na końcu, bo ogórki i ich zalewa mocno solą zupę.",
+    "Dla głębszego smaku część śmietany możesz zastąpić łyżką śmietany kwaśnej 30%."
+  ],
+  "tags": [
+    "zupa",
+    "obiad",
+    "domowe"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [
+    "kids",
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.5,
+    "lightness": 0.5
+  },
+  "editorialPriority": 60,
+  "status": "published"
+}

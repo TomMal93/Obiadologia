@@ -1,13 +1,14 @@
 ---
 import { DiscoveryExperience } from '@/components/DiscoveryExperience';
 import SiteHeader from '@/components/SiteHeader.astro';
-import { prototypeRecipes } from '@/data/prototype-recipes';
+import { getPublishedRecipes } from '@/data/recipes';
 import { defaultLocale } from '@/i18n/config';
 import { getMessages } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import './home-page.css';
 
 const messages = getMessages(defaultLocale);
+const recipes = await getPublishedRecipes();
 ---
 
 <BaseLayout
@@ -151,7 +152,7 @@ const messages = getMessages(defaultLocale);
     </div>
 
     <DiscoveryExperience
-      recipes={prototypeRecipes}
+      recipes={recipes}
       common={messages.common}
       messages={messages.experience}
       locale={defaultLocale}
