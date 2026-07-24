@@ -32,45 +32,87 @@
 
 .home-hero-bg span {
   position: absolute;
+  left: 0;
   font-size: clamp(15px, 4.6vw, 22px);
   white-space: nowrap;
   opacity: 0.05;
+  animation: home-phrase-drift 48s linear infinite;
 }
 
 .home-hero-bg span:nth-of-type(1) {
-  top: 6%;
-  left: -2%;
-  transform: rotate(-9deg);
+  top: 7%;
+  animation-delay: -2s;
 }
 
 .home-hero-bg span:nth-of-type(2) {
-  top: 3%;
-  right: 6%;
-  transform: rotate(6deg);
+  top: 7%;
+  animation-delay: -18s;
 }
 
 .home-hero-bg span:nth-of-type(3) {
-  top: 12%;
-  right: -4%;
-  transform: rotate(-7deg);
+  top: 7%;
+  animation-delay: -34s;
 }
 
 .home-hero-bg span:nth-of-type(4) {
-  top: 22%;
-  right: 2%;
-  transform: rotate(8deg);
+  top: 21%;
+  animation-delay: -8s;
 }
 
 .home-hero-bg span:nth-of-type(5) {
-  top: 46%;
-  left: -3%;
-  transform: rotate(-8deg);
+  top: 21%;
+  animation-delay: -24s;
 }
 
 .home-hero-bg span:nth-of-type(6) {
-  top: 34%;
-  left: 4%;
-  transform: rotate(7deg);
+  top: 21%;
+  animation-delay: -40s;
+}
+
+.home-hero-bg span:nth-of-type(7) {
+  top: 35%;
+  animation-delay: -14s;
+}
+
+.home-hero-bg span:nth-of-type(8) {
+  top: 35%;
+  animation-delay: -30s;
+}
+
+.home-hero-bg span:nth-of-type(9) {
+  top: 35%;
+  animation-delay: -46s;
+}
+
+.home-hero-bg span:nth-of-type(10) {
+  top: 49%;
+  animation-delay: -4s;
+}
+
+.home-hero-bg span:nth-of-type(11) {
+  top: 49%;
+  animation-delay: -20s;
+}
+
+.home-hero-bg span:nth-of-type(12) {
+  top: 49%;
+  animation-delay: -36s;
+}
+
+@keyframes home-phrase-drift {
+  from {
+    transform: translateX(calc(-100% - 24px)) rotate(-10deg);
+  }
+
+  to {
+    transform: translateX(calc(100vw + 24px)) rotate(-10deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-bg span {
+    animation-play-state: paused;
+  }
 }
 
 .home-hero {

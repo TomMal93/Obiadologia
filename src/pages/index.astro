@@ -9,6 +9,10 @@ import './home-page.css';
 
 const messages = getMessages(defaultLocale);
 const recipes = await getPublishedRecipes();
+const backgroundPhrases = [
+  ...messages.home.backgroundPhrases,
+  ...messages.home.backgroundPhrases,
+];
 ---
 
 <BaseLayout
@@ -21,7 +25,7 @@ const recipes = await getPublishedRecipes();
   <main>
     <div class="intro-screen">
       <div class="home-hero-bg" aria-hidden="true">
-        {messages.home.backgroundPhrases.map((phrase) => <span>{phrase}</span>)}
+        {backgroundPhrases.map((phrase) => <span>{phrase}</span>)}
       </div>
 
       <section class="home-hero" aria-labelledby="main-heading">

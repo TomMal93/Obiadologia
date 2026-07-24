@@ -20,12 +20,12 @@ export const pl = {
       description: 'Mobilny prototyp trzech sposobów odkrywania pomysłów na posiłek.',
     },
     backgroundPhrases: [
-      'na obiad?',
-      'co zjemy?',
-      'coś szybkiego',
-      'na przy garach',
-      'coś słodkiego',
-      'szybko i zdrowo',
+      'Co na obiad?',
+      'Co dziś zjemy?',
+      'Co na kolację?',
+      'Co jutro ugotować?',
+      'Na co masz ochotę?',
+      'Co zrobić do jedzenia?',
     ],
     hero: {
       lead: 'Co dziś',
