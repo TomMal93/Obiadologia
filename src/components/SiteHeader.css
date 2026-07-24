@@ -194,7 +194,7 @@
   outline-offset: 2px;
 }
 
-/* Wiodący kafel akcentu z kropką w kolorze drogi — echo palety trzech ścieżek
+/* Wiodący kafel akcentu z ikoną w kolorze drogi — echo palety trzech ścieżek
    i kafli grup Kategorii. */
 .site-menu-mark {
   display: grid;
@@ -207,12 +207,14 @@
   background: var(--menu-accent-soft, var(--color-bg));
 }
 
-.site-menu-mark::before {
-  content: '';
-  width: 12px;
-  height: 12px;
-  border-radius: var(--radius-pill);
-  background: currentcolor;
+.site-menu-mark svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .site-menu-link--categories {
