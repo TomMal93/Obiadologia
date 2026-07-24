@@ -1,13 +1,13 @@
 # Przepis: Kotlet schabowy z ziemniakami
 
-> Status redakcyjny: wersja robocza przygotowana na podstawie
+> Status redakcyjny: opublikowany w katalogu aplikacji na podstawie
 > [szablonu przepisu](../recipe-template.md)
 
 ## Dane podstawowe
 
 - **ID:** `recipe_001`
 - **Slug:** `kotlet-schabowy-z-ziemniakami`
-- **Status:** `draft`
+- **Status:** `published`
 - **Priorytet redakcyjny:** `80`
 
 ## Tytuł i opis
@@ -79,6 +79,15 @@
    tłuszczu i dodaj skwarki albo obficie posyp posiekanym koperkiem. Podawaj
    od razu z gorącym kotletem schabowym.
 
+## Coś jeszcze
+
+1. Smaż kotlety na dobrze rozgrzanym tłuszczu, ale na średnim ogniu — panierka
+   powinna zezłocić się, zanim mięso zdąży wyschnąć.
+2. Nie wkładaj na patelnię zbyt wielu kotletów naraz. Spadek temperatury
+   sprawi, że panierka nasiąknie tłuszczem zamiast stać się chrupiąca.
+3. Purée ugniataj tłuczkiem i dodawaj ciepłe mleko stopniowo. Blender uwolni
+   za dużo skrobi i może zmienić ziemniaki w kleistą masę.
+
 ## Dopasowanie do sposobów odkrywania
 
 ### Pora dnia (`mealTimes`)
@@ -106,14 +115,15 @@
 
 ## Kontrola przed przekazaniem
 
-- [x] ID i slug są unikalne w aktualnie pustym katalogu.
+- [x] ID i slug są unikalne w katalogu aplikacji.
 - [x] Tytuł i opis są naturalne oraz napisane po polsku.
 - [x] Czas jest dodatnią liczbą całkowitą.
 - [x] Każdy składnik ma dodatnią ilość i dozwoloną jednostkę.
 - [x] Przepis ma co najmniej jeden tag i jeden krok.
+- [x] Każda porada w sekcji „Coś jeszcze” jest niepusta.
 - [x] Każda grupa dopasowania ma co najmniej jedną wartość.
 - [x] Wartości Mapy mieszczą się w zakresie `0–1`.
 - [x] Brak zdjęcia jest jawnie oznaczony jako `null`.
 - [x] Opcjonalna sekcja „Wcześniej” została pominięta, ponieważ przepis nie
   wymaga rozpoczęcia czynności z wyprzedzeniem.
-- [x] Status pozostaje `draft` do czasu zatwierdzenia treści i dodania zdjęcia.
+- [x] Status ustawiono na `published`; brak zdjęcia obsługuje dekoracyjny placeholder.

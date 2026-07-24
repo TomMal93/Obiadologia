@@ -14,9 +14,10 @@ test('search session switches modes and explicit close resets on browser Forward
   await expect(search).not.toBeFocused();
   await expect(dialog.getByRole('heading', { name: 'Propozycje' })).toHaveCount(0);
 
-  await search.fill('kurczak');
-  await expect(dialog.getByText('Tego nie znaleźliśmy. Spróbujmy inaczej.')).toBeVisible();
-  await expect(dialog.getByRole('link')).toHaveCount(0);
+  await search.fill('schab');
+  await expect(
+    dialog.getByRole('link', { name: /Kotlet schabowy z ziemniakami/ }),
+  ).toBeVisible();
 
   await dialog.getByRole('button', { name: /Mapa/ }).click();
   await expect(
@@ -28,7 +29,7 @@ test('search session switches modes and explicit close resets on browser Forward
   ).toBeVisible();
 
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
-  await expect(search).toHaveValue('kurczak');
+  await expect(search).toHaveValue('schab');
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
   await expect(opener).toBeFocused();
@@ -56,7 +57,7 @@ test('the close (X) button closes the overlay and returns focus to the opener', 
   await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('');
 });
 
-test('map supports pointer input and preserves the search query with an empty catalog', async ({ page }) => {
+test('map supports pointer input and preserves an unmatched search query', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Mapa' }).click();

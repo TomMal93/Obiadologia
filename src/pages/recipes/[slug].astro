@@ -286,6 +286,22 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
           </ol>
         </section>
 
+        {
+          recipe.tips && (
+            <section class="recipe-tips" aria-labelledby="tips-heading">
+              <h2 id="tips-heading">{messages.recipe.tipsHeading}</h2>
+              <ul class="tips-list">
+                {recipe.tips.map((tip) => (
+                  <li>
+                    <span class="tips-list__mark" aria-hidden="true">✦</span>
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
         <p class="prototype-note">{messages.recipe.prototypeNote}</p>
       </div>
     </article>

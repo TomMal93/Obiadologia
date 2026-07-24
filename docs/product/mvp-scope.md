@@ -54,6 +54,9 @@ Opis modelu danych: [data-model.md](../engineering/data-model.md).
 
 Cała karta prowadzi do `/recipes/:slug` — prerenderowanej strony przepisu prezentującej pola modelu `Recipe`. Zachowanie strony opisuje [recipe-page.md](./features/recipe-page.md).
 
+Strona przepisu może zawierać opcjonalną sekcję krótkich porad redakcyjnych
+„Coś jeszcze”, jeśli przepis dostarcza pole `tips`.
+
 ### Jakość podstawowa
 
 MVP musi być:
@@ -80,7 +83,7 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
 - docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (porcje, zdjęcia; prototypowe kroki są już w modelu),
-- rozszerzenia strony przepisu wymagające nowych danych lub reguł: trudność, wartości odżywcze, przeliczanie porcji, osobne porady redakcyjne i podobne przepisy,
+- rozszerzenia strony przepisu wymagające nowych danych lub reguł: trudność, wartości odżywcze, przeliczanie porcji i podobne przepisy,
 - wiele wersji językowych.
 
 Typowane wydzielenie polskich tekstów interfejsu jest przygotowaniem technicznym,

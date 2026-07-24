@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { prototypeRecipes } from '@/data/prototype-recipes';
 import { parseRecipes, recipeSchema } from './recipe-schema';
 import { testRecipes } from '@/test/fixtures/recipes';
 
@@ -7,7 +8,17 @@ describe('Recipe schema', () => {
     expect(parseRecipes(testRecipes)).toHaveLength(5);
   });
 
+  it('validates the published application catalog', () => {
+    expect(prototypeRecipes).toHaveLength(1);
+    expect(prototypeRecipes[0]?.slug).toBe('kotlet-schabowy-z-ziemniakami');
+  });
+
   it('rejects an incomplete image reference', () => {
     expect(() => recipeSchema.parse({ ...testRecipes[0], image: { src: '/dish.webp' } })).toThrow();
+  });
+
+  it('accepts non-empty tips and rejects an empty tips section', () => {
+    expect(recipeSchema.parse(testRecipes[0]).tips).toEqual(['Zapamiętaj poradę testową.']);
+    expect(() => recipeSchema.parse({ ...testRecipes[0], tips: [] })).toThrow();
   });
 });

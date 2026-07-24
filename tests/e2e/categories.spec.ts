@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('category selection shows an empty state when the recipe catalog is empty', async ({ page }) => {
+test('category selection opens the published pork cutlet recipe', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Co dziś jemy?' })).toBeVisible();
@@ -22,13 +22,18 @@ test('category selection shows an empty state when the recipe catalog is empty',
 
   await page.getByRole('button', { name: /Obiad/ }).click();
   const results = page.getByRole('region', { name: 'Wyniki kategorii' });
-  await expect(results.getByRole('link')).toHaveCount(0);
-  await expect(
-    results.getByText('Brak dopasowań. Zmień lub usuń wybrane kryterium.'),
-  ).toBeVisible();
+  await expect(results.getByRole('link')).toHaveCount(1);
+  const card = results.getByRole('link', { name: /Kotlet schabowy z ziemniakami/ });
+  await expect(card).toBeVisible();
   const selectedFrameGeometry = await readFrameGeometry();
   expect(selectedFrameGeometry.documentTop).toBeCloseTo(initialFrameGeometry.documentTop, 0);
   expect(selectedFrameGeometry.height).toBeCloseTo(initialFrameGeometry.height, 0);
+
+  await card.click();
+  await expect(page).toHaveURL(/\/recipes\/kotlet-schabowy-z-ziemniakami$/);
+  await expect(
+    page.getByRole('heading', { name: 'Kotlet schabowy z ziemniakami' }),
+  ).toBeVisible();
 });
 
 test('initial homepage has no automatically detectable accessibility violations', async ({ page }) => {

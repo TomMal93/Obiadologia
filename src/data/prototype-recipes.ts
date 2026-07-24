@@ -1,6 +1,62 @@
 import { parseRecipes } from '@/domain/recipe-schema';
 
-// Katalog pozostaje świadomie pusty do czasu dostarczenia nowych treści.
-// Zachowujemy walidację na granicy danych, aby kolejne rekordy od razu
-// podlegały temu samemu kontraktowi co wyszukiwarka, Mapa i Kategorie.
-export const prototypeRecipes = parseRecipes([]);
+export const prototypeRecipes = parseRecipes([
+  {
+    id: 'recipe_001',
+    slug: 'kotlet-schabowy-z-ziemniakami',
+    title: 'Kotlet schabowy z ziemniakami',
+    description: 'Chrupiący kotlet schabowy w klasycznej panierce, podany z młodymi ziemniaczkami albo kremowym purée. Ziemniaki można polać tłuszczem ze skwarkami lub posypać świeżym koperkiem.',
+    image: null,
+    preparationMinutes: 50,
+    ingredients: [
+      { name: 'schab bez kości', amount: 600, unit: 'g' },
+      {
+        name: 'młode ziemniaki albo ziemniaki mączyste na purée',
+        amount: 800,
+        unit: 'g',
+      },
+      { name: 'jajka', amount: 2, unit: 'szt' },
+      { name: 'bułka tarta', amount: 120, unit: 'g', gramsPerCup: 110 },
+      { name: 'mąka pszenna', amount: 60, unit: 'g', gramsPerCup: 150 },
+      { name: 'olej do smażenia', amount: 150, unit: 'ml' },
+      { name: 'masło', amount: 40, unit: 'g' },
+      { name: 'mleko, tylko do purée', amount: 120, unit: 'ml' },
+      {
+        name: 'słonina albo wędzony boczek, opcjonalnie do skwarek',
+        amount: 120,
+        unit: 'g',
+      },
+      { name: 'świeży koperek, opcjonalnie', amount: 15, unit: 'g' },
+      { name: 'sól', amount: 5, unit: 'ml' },
+      { name: 'pieprz', amount: 2, unit: 'ml' },
+    ],
+    preparation: [
+      'Wybierz formę ziemniaków: młode ziemniaczki albo purée.',
+      'Wybierz wykończenie ziemniaków: tłuszcz ze skwarkami albo świeży koperek.',
+      'Przygotuj tłuczek do mięsa, patelnię oraz trzy głębokie talerze do panierowania.',
+      'Jeśli robisz purée, podgrzej mleko, aby nie studziło ugotowanych ziemniaków.',
+    ],
+    steps: [
+      'Jeśli używasz młodych ziemniaków, dokładnie je wyszoruj i zostaw w całości lub przekrój większe sztuki. Ziemniaki na purée obierz i pokrój na równe kawałki. Zalej wybrany wariant zimną, osoloną wodą.',
+      'Schab pokrój na plastry o podobnej grubości. Każdy plaster rozbij tłuczkiem na cienki kotlet, a następnie oprósz z obu stron solą i pieprzem.',
+      'Przygotuj trzy talerze: z mąką, roztrzepanymi jajkami oraz bułką tartą. Kotlety panieruj kolejno w mące, jajku i bułce, delikatnie dociskając panierkę.',
+      'Ziemniaki gotuj do miękkości: młode zwykle 15–20 minut, a pokrojone ziemniaki na purée około 15 minut.',
+      'Jeśli wybierasz skwarki, pokrój słoninę albo boczek w drobną kostkę i wytapiaj powoli na osobnej patelni, aż kawałki staną się rumiane i chrupiące. Zachowaj wytopiony tłuszcz.',
+      'Na dużej patelni rozgrzej olej. Smaż kotlety partiami na średnim ogniu po około 3–4 minuty z każdej strony, aż panierka będzie złocista, a mięso usmażone. Gotowe kotlety odkładaj na papierowy ręcznik.',
+      'Młode ziemniaki odcedź i wymieszaj z połową masła. Ziemniaki na purée po odcedzeniu odparuj przez chwilę w garnku, a następnie utłucz z całym masłem i stopniowo dodawanym ciepłym mlekiem, aż będą gładkie.',
+      'Ziemniaki wykończ wybranym sposobem: polej niewielką ilością ciepłego tłuszczu i dodaj skwarki albo obficie posyp posiekanym koperkiem. Podawaj od razu z gorącym kotletem schabowym.',
+    ],
+    tips: [
+      'Smaż kotlety na dobrze rozgrzanym tłuszczu, ale na średnim ogniu — panierka powinna zezłocić się, zanim mięso zdąży wyschnąć.',
+      'Nie wkładaj na patelnię zbyt wielu kotletów naraz. Spadek temperatury sprawi, że panierka nasiąknie tłuszczem zamiast stać się chrupiąca.',
+      'Purée ugniataj tłuczkiem i dodawaj ciepłe mleko stopniowo. Blender uwolni za dużo skrobi i może zmienić ziemniaki w kleistą masę.',
+    ],
+    tags: ['obiad', 'domowe', 'klasyka'],
+    mealTimes: ['lunch'],
+    tempos: ['today'],
+    occasions: ['kids', 'guests'],
+    mapPosition: { pace: 0.65, lightness: 0.2 },
+    editorialPriority: 80,
+    status: 'published',
+  },
+]);

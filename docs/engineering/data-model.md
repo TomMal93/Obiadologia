@@ -35,6 +35,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `advance` | AdvanceStep[] \| — | opcjonalne czynności z wyprzedzeniem czasowym (namoczenie, marynowanie); jeśli pole istnieje, ma co najmniej jeden krok |
 | `preparation` | string[] \| — | opcjonalne przygotowanie wstępne (mise en place, sprzęt); jeśli pole istnieje, ma co najmniej jeden krok |
 | `steps` | string[] | co najmniej jeden krok przygotowania; kolejność określa numerację na stronie przepisu |
+| `tips` | string[] \| — | opcjonalne porady redakcyjne pokazywane po krokach; jeśli pole istnieje, ma co najmniej jedną poradę |
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
 | `tempos` | Tempo[] | co najmniej jedno tempo |
@@ -57,6 +58,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 ```
 
 - `advance` i `preparation` są opcjonalne i niezależne. Ich brak oznacza przepis bez etapów wspierających — strona przepisu pokazuje wtedy same kroki (zob. [recipe-page.md](../product/features/recipe-page.md)). Pole obecne MUSI mieć co najmniej jeden element.
+- `tips` jest opcjonalną listą krótkich porad uzupełniających właściwe kroki. Brak pola oznacza brak sekcji „Coś jeszcze”; pusta tablica jest błędem danych.
 - `AdvanceStep.leadTimeMinutes` to liczba minut przed podaniem, o którą trzeba zacząć dany krok. Wartość jest strukturalna (a nie „noc” czy „2h”), aby strona mogła z niej policzyć godzinę startu przy zadanej porze serwowania. Wartość „na noc” zapisujemy jako pełne minuty (np. `720`).
 
 - `pace: 0` oznacza „szybko”, a `pace: 1` — „bez pośpiechu”.
@@ -93,6 +95,9 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
   "steps": [
     "Grilluj kurczaka po 6–7 minut z każdej strony.",
     "Podawaj na świeżej sałatce."
+  ],
+  "tips": [
+    "Po grillowaniu odstaw mięso na kilka minut przed pokrojeniem."
   ],
   "tags": ["grill", "lekko"],
   "mealTimes": ["lunch"],
@@ -141,6 +146,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 - Nieznana wartość słownika jest błędem danych, a nie nową kategorią tworzoną automatycznie.
 - `image` może mieć wartość `null`; brak obrazu nie może blokować wyniku, a UI używa wtedy wspólnego placeholdera.
 - `advance` i `preparation` są opcjonalne; gdy występują, każdy element jest niepusty, a `leadTimeMinutes` to dodatnia liczba całkowita. Pusta tablica jest błędem danych — brak etapu wyrażamy pominięciem pola, nie pustą listą.
+- `tips` jest opcjonalne; gdy występuje, każda porada jest niepusta. Pusta tablica jest błędem danych — brak porad wyrażamy pominięciem pola.
 - Jeżeli `image` istnieje, `src` i opisujący danie `alt` MUSZĄ być niepustymi wartościami. Placeholder dla `image: null` jest dekoracyjny i nie powiela dostępnej nazwy przepisu.
 
 ## Weryfikacja i ukończenie

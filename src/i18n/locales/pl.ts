@@ -200,6 +200,7 @@ export const pl = {
     preparationHeading: 'Przygotowanie',
     preparationHint: 'Zbierz i przygotuj wszystko, zanim ruszysz z gotowaniem.',
     stepsHeading: 'Kroki',
+    tipsHeading: 'Coś jeszcze',
     checkStepLabel: 'Oznacz krok {number} jako wykonany',
     uncheckStepLabel: 'Cofnij wykonanie kroku {number}',
     prototypeNote: 'Dane przepisu pochodzą z prototypowego katalogu. Docelowe zdjęcia i ostateczna treść redakcyjna powstaną po wyborze źródła danych.',

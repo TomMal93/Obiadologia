@@ -83,6 +83,14 @@ kolejnością prezentowaną użytkownikowi.
 2. [drugi krok]
 3. [kolejny krok]
 
+## Coś jeszcze — opcjonalne
+
+Dodaj tę sekcję tylko dla krótkich porad uzupełniających kroki: wskazówek
+dotyczących techniki, typowych błędów albo sposobu uzyskania lepszego efektu.
+
+1. [porada]
+2. [porada]
+
 ## Dopasowanie do sposobów odkrywania
 
 Wybierz co najmniej jedną wartość w każdej grupie. Można zaznaczyć kilka
@@ -121,6 +129,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Czas jest dodatnią liczbą całkowitą.
 - [ ] Każdy składnik ma dodatnią ilość i dozwoloną jednostkę.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
+- [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
 - [ ] Każda grupa dopasowania ma co najmniej jedną wartość.
 - [ ] Wartości Mapy mieszczą się w zakresie `0–1`.
 - [ ] Zdjęcie ma opis alternatywny albo jest jawnie oznaczone jako `null`.

@@ -12,6 +12,7 @@ export const testRecipes = [
     advance: [{ text: 'Przygotuj wcześniej.', leadTimeMinutes: 60 }],
     preparation: ['Przygotuj sprzęt.'],
     steps: ['Wykonaj krok testowy.'],
+    tips: ['Zapamiętaj poradę testową.'],
     tags: ['szybko'],
     mealTimes: ['lunch'],
     tempos: ['now'],

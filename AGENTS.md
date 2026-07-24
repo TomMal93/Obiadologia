@@ -27,7 +27,7 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | model `Ingredient`, grammatura i przeliczanie miar (metryczne ↔ domowe) | `src/domain/ingredient.ts` |
 | logika czasu etapów „Wcześniej” (formatowanie wyprzedzenia, godziny startu) | `src/domain/recipe-schedule.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
-| katalog danych przepisów zgodnych z `Recipe` (obecnie pusty) | `src/data/prototype-recipes.ts` |
+| katalog danych przepisów zgodnych z `Recipe` | `src/data/prototype-recipes.ts` |
 | syntetyczne przepisy używane wyłącznie w testach jednostkowych i komponentowych | `src/test/fixtures/recipes.ts` |
 | aktywne locale i metadane języków | `src/i18n/config.ts` |
 | typowany dostęp do słowników UI | `src/i18n/messages.ts` |
@@ -55,7 +55,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 
 | Obszar | Stan | Uwagi |
 |---|---|---|
-| Model `Recipe` i katalog danych | wersja wstępna | jedna reprezentacja z walidacją (`zod` w `src/domain/recipe-schema.ts`, uruchamianą na etapie builda) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`); katalog aplikacji jest obecnie pusty |
+| Model `Recipe` i katalog danych | wersja wstępna | jedna reprezentacja z walidacją (`zod` w `src/domain/recipe-schema.ts`, uruchamianą na etapie builda) współdzielona przez ścieżki; `ingredients` to obiekty `Ingredient` z grammaturą (`src/domain/ingredient.ts`); katalog zawiera pierwszy opublikowany przepis |
 | Przygotowanie treści UI pod lokalizację | wersja wstępna | komponenty i strony pobierają teksty interfejsu z typowanego słownika; aktywny jest wyłącznie polski, bez wielojęzycznego routingu i bez lokalizacji danych przepisów oraz wyszukiwania |
 | Nagłówek (logo/brand + menu) | wersja wstępna | statyczny `<header>` z brandem poza wyspą React; ikona menu (hamburger) otwiera mobilne menu nawigacyjne (Strona główna, Kategorie, Szukaj, Mapa) obsługiwane skryptem współlokowanym w `SiteHeader.astro`; Szukaj/Mapa otwierają wspólny overlay (na stronie głównej wprost, z innych stron przez kotwicę `/#szukaj`/`/#mapa`) |
 | Hero (komunikat główny) | wersja wstępna | statyczna sekcja Astro z tłem znaków wodnych i `<h1>` „Co dziś jemy?” zgodnie z makietą `home-hero.png` |
@@ -63,7 +63,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Szczegółowe wyszukiwanie Kategorii | ekran zastępczy | przycisk w panelu prowadzi do statycznej informacji o funkcji w przygotowaniu; filtry pozostają poza MVP |
 | Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
-| Strona przepisu `/recipes/:slug` | wersja wstępna | implementacja prezentuje pola modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki z grammaturą i przełącznikiem miar metryczne/domowe); opcjonalne etapy „Wcześniej” (z pomocnikiem startu) i „Przygotowanie” z przełącznikiem „Tryb asystenta / Tylko kroki”, oba jako wzbogacenie progresywne; przy pustym katalogu nie są generowane żadne trasy |
+| Strona przepisu `/recipes/:slug` | wersja wstępna | implementacja prezentuje pola modelu `Recipe` (zdjęcie/placeholder, opis, czas, tagi, składniki z grammaturą i przełącznikiem miar metryczne/domowe); opcjonalne etapy „Wcześniej” (z pomocnikiem startu) i „Przygotowanie” z przełącznikiem „Tryb asystenta / Tylko kroki”, oba jako wzbogacenie progresywne; opcjonalne `tips` tworzy panel „Coś jeszcze”; opublikowane rekordy otrzymują prerenderowane trasy |
 
 Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.
 

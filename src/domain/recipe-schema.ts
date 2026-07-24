@@ -46,6 +46,9 @@ export const recipeSchema = z
     // zwykły tekst — struktura czasu nie jest tu potrzebna.
     preparation: z.array(z.string().trim().min(1)).min(1).optional(),
     steps: z.array(z.string().trim().min(1)).min(1),
+    // Opcjonalne, krótkie porady redakcyjne prezentowane po krokach.
+    // Brak pola oznacza przepis bez sekcji „Coś jeszcze”.
+    tips: z.array(z.string().trim().min(1)).min(1).optional(),
     tags: z.array(z.string().trim().min(1)).min(1),
     mealTimes: z.array(z.enum(mealTimes)).min(1),
     tempos: z.array(z.enum(tempos)).min(1),
