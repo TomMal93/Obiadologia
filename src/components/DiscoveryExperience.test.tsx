@@ -1,13 +1,13 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { prototypeRecipes } from '@/data/prototype-recipes';
 import { defaultLocale } from '@/i18n/config';
 import { getMessages } from '@/i18n/messages';
+import { testRecipes } from '@/test/fixtures/recipes';
 import { DiscoveryExperience } from './DiscoveryExperience';
 
 const messages = getMessages(defaultLocale);
 
-function renderExperience(recipes = prototypeRecipes) {
+function renderExperience(recipes = testRecipes) {
   return render(
     <DiscoveryExperience
       recipes={recipes}
@@ -45,7 +45,7 @@ describe('DiscoveryExperience categories', () => {
     fireEvent.click(lunch);
 
     const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
-    expect(within(results).getAllByRole('link')).toHaveLength(4);
+    expect(within(results).getAllByRole('link')).toHaveLength(3);
     expect(lunch).toHaveAttribute('aria-pressed', 'true');
     const resultsFrame = screen.getByRole('heading', { name: 'Propozycje dla Ciebie' }).parentElement as HTMLElement;
     expect(within(resultsFrame).getByText(/Wybrano:/)).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.change(input, { target: { value: 'kurczak' } });
     expect(within(dialog).queryByRole('button', { name: 'kurczak' })).not.toBeInTheDocument();
     expect(await within(dialog).findByRole('button', { name: 'kurczak' })).toBeInTheDocument();
-    expect(within(dialog).getByRole('link', { name: /Kurczak z grilla z sałatką/ })).toBeInTheDocument();
+    expect(within(dialog).getByRole('link', { name: /Testowe danie z kurczakiem/ })).toBeInTheDocument();
   });
 
   it('fills the empty field with popular tropes and runs one when picked', async () => {
@@ -141,7 +141,7 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.click(addOpener('search'));
     const dialog = await screen.findByRole('dialog');
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
-    fireEvent.change(input, { target: { value: 'feta' } });
+    fireEvent.change(input, { target: { value: 'cukinia' } });
 
     fireEvent.click(within(dialog).getByRole('button', { name: /Mapa/ }));
     expect(within(dialog).getByRole('button', { name: /Talerz na mapie: tempo neutralne · charakter neutralny/ })).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe('DiscoveryExperience overlay', () => {
     expect(within(dialog).getByRole('button', { name: /Talerz na mapie: szybko 55% · charakter neutralny/ })).toBeInTheDocument();
 
     fireEvent.click(within(dialog).getByRole('button', { name: /Wyszukiwarka/ }));
-    expect(within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('feta');
+    expect(within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('cukinia');
     await waitFor(() => expect(within(dialog).getByText('1 dopasowanie')).toBeInTheDocument());
     expect(within(dialog).getByRole('heading', { name: 'Propozycje' }).closest('section'))
       .toHaveClass('discovery-results--search');

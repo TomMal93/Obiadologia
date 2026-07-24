@@ -15,8 +15,8 @@ test('search session switches modes and explicit close resets on browser Forward
   await expect(dialog.getByRole('heading', { name: 'Propozycje' })).toHaveCount(0);
 
   await search.fill('kurczak');
-  await expect(dialog.getByRole('button', { name: 'kurczak', exact: true })).toBeVisible();
-  await expect(dialog.getByRole('link', { name: /Kurczak z grilla z sałatką/ })).toBeVisible();
+  await expect(dialog.getByText('Tego nie znaleźliśmy. Spróbujmy inaczej.')).toBeVisible();
+  await expect(dialog.getByRole('link')).toHaveCount(0);
 
   await dialog.getByRole('button', { name: /Mapa/ }).click();
   await expect(
@@ -56,7 +56,7 @@ test('the close (X) button closes the overlay and returns focus to the opener', 
   await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('');
 });
 
-test('map supports pointer input and returning from a recipe restores the suspended session', async ({ page }) => {
+test('map supports pointer input and preserves the search query with an empty catalog', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
   await page.getByRole('button', { name: 'Mapa' }).click();
@@ -71,14 +71,12 @@ test('map supports pointer input and returning from a recipe restores the suspen
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
   const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
   await search.fill('feta');
-  await dialog.getByRole('link', { name: /Makaron z cukinią i fetą/ }).click();
-  await expect(page).toHaveURL(/\/recipes\/makaron-z-cukinia-i-feta$/);
-
-  await page.goBack();
-  await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('feta');
-  await page.getByRole('dialog').getByRole('button', { name: /Mapa/ }).click();
+  await expect(dialog.getByText('Tego nie znaleźliśmy. Spróbujmy inaczej.')).toBeVisible();
+  await expect(dialog.getByRole('link')).toHaveCount(0);
+  await dialog.getByRole('button', { name: /Mapa/ }).click();
   await expect(page.getByRole('button', { name: /Talerz na mapie: szybko 80% · lekko 80%/ })).toBeVisible();
+  await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
+  await expect(search).toHaveValue('feta');
 
   const accessibility = await new AxeBuilder({ page }).include('.discovery-overlay').analyze();
   expect(accessibility.violations).toEqual([]);

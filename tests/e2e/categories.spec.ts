@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('category selection opens a prerendered recipe page', async ({ page }) => {
+test('category selection shows an empty state when the recipe catalog is empty', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Co dziś jemy?' })).toBeVisible();
@@ -12,24 +12,23 @@ test('category selection opens a prerendered recipe page', async ({ page }) => {
     return { documentTop: bounds.top + window.scrollY, height: bounds.height };
   });
   const initialFrameGeometry = await readFrameGeometry();
-  await expect(page.getByText('Tutaj pojawią się dopasowane przepisy.')).toBeVisible();
+  await expect(
+    page.locator('.category-results-body').getByText(
+      'Tutaj pojawią się dopasowane przepisy.',
+      { exact: true },
+    ),
+  ).toBeVisible();
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
 
   await page.getByRole('button', { name: /Obiad/ }).click();
-  await expect(page.getByRole('region', { name: 'Wyniki kategorii' }).getByRole('link')).toHaveCount(4);
-  const cardHeights = await page.locator('.category-results-body .recipe-card').evaluateAll(
-    (cards) => cards.map((card) => card.getBoundingClientRect().height),
-  );
-  expect(Math.max(...cardHeights)).toBeLessThanOrEqual(92);
+  const results = page.getByRole('region', { name: 'Wyniki kategorii' });
+  await expect(results.getByRole('link')).toHaveCount(0);
+  await expect(
+    results.getByText('Brak dopasowań. Zmień lub usuń wybrane kryterium.'),
+  ).toBeVisible();
   const selectedFrameGeometry = await readFrameGeometry();
   expect(selectedFrameGeometry.documentTop).toBeCloseTo(initialFrameGeometry.documentTop, 0);
   expect(selectedFrameGeometry.height).toBeCloseTo(initialFrameGeometry.height, 0);
-
-  await page.getByRole('link', { name: /Kurczak z grilla z sałatką/ }).click();
-  await expect(page).toHaveURL(/\/recipes\/kurczak-z-grilla-z-salatka$/);
-  await expect(page.getByRole('heading', { name: 'Kurczak z grilla z sałatką' })).toBeVisible();
-  await page.getByRole('link', { name: /Wróć do strony głównej/ }).click();
-  await expect(page).toHaveURL('/');
 });
 
 test('initial homepage has no automatically detectable accessibility violations', async ({ page }) => {

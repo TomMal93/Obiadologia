@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { prototypeRecipes } from '@/data/prototype-recipes';
 import {
   createRecipeSearch,
   normalizeSearchText,
   rankRecipesForMap,
 } from '@/domain/recipe-search';
+import { testRecipes } from '@/test/fixtures/recipes';
 
 describe('recipe search', () => {
   it('normalizes case, whitespace and Polish diacritics', () => {
@@ -12,16 +12,16 @@ describe('recipe search', () => {
   });
 
   it('ranks title and ingredient matches and returns related suggestions', () => {
-    const search = createRecipeSearch(prototypeRecipes);
+    const search = createRecipeSearch(testRecipes);
 
-    expect(search.search('KURCZAK')[0]?.slug).toBe('kurczak-z-grilla-z-salatka');
-    expect(search.search('mieso').map((recipe) => recipe.slug)).toContain('burgery-z-halloumi');
+    expect(search.search('KURCZAK')[0]?.slug).toBe('testowe-danie-z-kurczakiem');
+    expect(search.search('cukinia').map((recipe) => recipe.slug)).toContain('testowe-danie-warzywne');
     expect(search.suggest('kur')).toContain('kurczak');
     expect(search.search('')).toEqual([]);
   });
 
   it('offers typed tropes from categories and ingredients, each a real query', () => {
-    const search = createRecipeSearch(prototypeRecipes);
+    const search = createRecipeSearch(testRecipes);
     const tropes = search.tropes();
 
     expect(tropes.length).toBeGreaterThan(0);
@@ -38,7 +38,7 @@ describe('recipe search', () => {
 
 describe('map ranking', () => {
   it('returns four diverse proposals for the neutral centre', () => {
-    const results = rankRecipesForMap(prototypeRecipes, { x: 50, y: 50 });
+    const results = rankRecipesForMap(testRecipes, { x: 50, y: 50 });
     const mealTimes = new Set(results.flatMap((recipe) => recipe.mealTimes));
 
     expect(results).toHaveLength(4);
@@ -46,8 +46,8 @@ describe('map ranking', () => {
   });
 
   it('maps the upper-left corner to quick and light recipes', () => {
-    expect(rankRecipesForMap(prototypeRecipes, { x: 0, y: 0 })[0]?.slug).toBe(
-      'owsianka-z-owocami',
+    expect(rankRecipesForMap(testRecipes, { x: 0, y: 0 })[0]?.slug).toBe(
+      'testowe-sniadanie',
     );
   });
 });
