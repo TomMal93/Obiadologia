@@ -848,17 +848,45 @@
 }
 
 .discovery-results .recipe-card {
-  grid-template-columns: 72px minmax(0, 1fr) auto;
-  min-height: 88px;
+  --card-accent: var(--result-accent);
+  --card-surface: color-mix(in srgb, var(--card-accent) 6%, var(--color-surface));
+
+  position: relative;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  min-height: 92px;
+  border-color: color-mix(in srgb, var(--card-accent) 16%, var(--color-border));
   border-radius: var(--radius-field);
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--card-accent) 9%, var(--color-surface)),
+      var(--card-surface) 54%,
+      var(--color-surface) 100%
+    );
+  box-shadow: 0 4px 14px rgb(89 55 29 / 5%);
+}
+
+.discovery-results--search .recipe-card {
+  --card-accent: var(--color-search);
+}
+
+.discovery-results--map .recipe-card {
+  --card-accent: var(--color-map);
+}
+
+.discovery-results .recipe-card:hover {
+  border-color: color-mix(in srgb, var(--card-accent) 28%, var(--color-border));
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--card-accent) 8%, transparent);
 }
 
 .discovery-results .recipe-card--featured {
+  --card-accent: var(--featured-accent);
+
   grid-template-areas:
     "label label label"
     "media content meta"
     "reason reason reason";
-  grid-template-columns: 72px minmax(0, 1fr) auto;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
   grid-template-rows: auto auto;
   min-height: 0;
   border-color: color-mix(in srgb, var(--featured-accent) 44%, var(--color-border));
@@ -922,25 +950,55 @@
   content: '·';
 }
 
-.discovery-results .recipe-card--featured .recipe-media {
-  width: 56px;
-  height: 56px;
-}
-
 .discovery-results .recipe-media {
-  width: 56px;
-  height: 56px;
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  min-height: 76px;
+  align-self: stretch;
+  justify-self: stretch;
+  border: 0;
+  border-radius: 0;
+  opacity: 0.94;
+  box-shadow: none;
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      #000 0%,
+      #000 44%,
+      rgb(0 0 0 / 82%) 62%,
+      rgb(0 0 0 / 38%) 84%,
+      transparent 100%
+    );
+  mask-image:
+    linear-gradient(
+      to right,
+      #000 0%,
+      #000 44%,
+      rgb(0 0 0 / 82%) 62%,
+      rgb(0 0 0 / 38%) 84%,
+      transparent 100%
+    );
 }
 
 .discovery-results .recipe-content {
   gap: var(--space-4);
+  margin-left: -24px;
+  padding-left: var(--space-12);
   padding-right: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .discovery-results .recipe-content strong {
   color: var(--color-text);
   font-size: var(--font-size-16);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-shadow:
+    0 1px 0 var(--card-surface),
+    0 0 14px var(--card-surface);
+  text-wrap: balance;
 }
 
 .discovery-results .recipe-meta {
@@ -951,6 +1009,8 @@
   align-items: center;
   align-self: center;
   justify-self: end;
+  position: relative;
+  z-index: 1;
   padding: var(--space-4) var(--space-8);
   border: 1px solid color-mix(in srgb, var(--result-accent) 18%, transparent);
   border-radius: var(--radius-pill);

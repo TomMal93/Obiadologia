@@ -82,22 +82,27 @@ tego samego minimalistycznego układu poziomych kart bez dodatkowej strzałki
 nawigacyjnej; rolę przejścia do przepisu komunikuje interaktywność całej karty.
 Nazwy przepisów używają neutralnego koloru tekstu. Kolor nagłówka odpowiada
 aktywnemu trybowi; w Mapie jest to ten sam niebieski token co tekst aktywnego
-segmentu „Mapa” w przełączniku.
+segmentu „Mapa” w przełączniku. Zdjęcie zaczyna się przy lewej krawędzi karty,
+wypełnia jej lewą część i stopniowo zanika w kierunku tytułu. Subtelny akcent
+aktywnej ścieżki na tle nie konkuruje z czasem przygotowania umieszczonym po
+prawej stronie.
 
 Każda karta zawiera:
 
 - zdjęcie potrawy albo wspólny placeholder;
 - nazwę przepisu;
-- opcjonalny krótki opis;
 - wyróżniony wizualnie czas przygotowania.
 
-Karty propozycji w overlayu nie pokazują tagów, aby zachować spokojną hierarchię i ułatwić szybkie porównanie czasu. Tagi pozostają częścią danych przepisu i dopasowania wyszukiwarki.
+Karty propozycji w overlayu nie pokazują opisu ani tagów, aby zachować spokojną
+hierarchię i ułatwić szybkie porównanie tytułu oraz czasu. Opis pozostaje
+dostępny semantycznie, a tagi pozostają częścią danych przepisu i dopasowania
+wyszukiwarki.
 
 Cała karta jest linkiem do `/recipes/:slug` — strony przepisu opisanej w [recipe-page.md](./recipe-page.md).
 
 W trybie Mapy pierwszy wynik rankingu jest wyróżniony jako „Najbliżej Twojego
-apetytu”: ma większy format, pokazuje krótki opis i używa aktualnego akcentu
-Mapy na obramowaniu oraz subtelnym tle. Karta wyjaśnia dopasowanie dwoma
+apetytu”: ma większy format i używa aktualnego akcentu Mapy na obramowaniu oraz
+subtelnym tle. Karta wyjaśnia dopasowanie dwoma
 krótkimi cechami wynikającymi z `mapPosition` przepisu, osobno dla tempa i
 charakteru (np. „lekkie”, „szybkie”). Pozostałe wyniki zachowują wspólny,
 spokojny format listy. Etykieta wyróżnienia i uzasadnienie sprawiają, że

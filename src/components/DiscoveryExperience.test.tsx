@@ -100,6 +100,8 @@ describe('DiscoveryExperience overlay', () => {
     expect(result).toBeInTheDocument();
     expect(within(result).queryByLabelText('Tagi')).not.toBeInTheDocument();
     expect(within(result).getByText(/20 min/)).toHaveClass('recipe-meta');
+    expect(within(result).getByText('Dane przeznaczone wyłącznie do testów.'))
+      .toHaveClass('visually-hidden');
   });
 
   it('fills the empty field with popular tropes and runs one when picked', async () => {
