@@ -43,9 +43,10 @@ test('menu Mapa from another page returns home and opens the map mode', async ({
   await expect(dialog.getByRole('button', { name: /Talerz na mapie/ })).toBeVisible();
 });
 
-// Otwarcie Szukaj/Mapa z menu i późniejsze zamknięcie overlaya zawsze wraca na
-// stronę główną, niezależnie od strony startowej i sposobu zamknięcia.
-for (const start of ['/', '/categories', '/recipes/owsianka-z-owocami']) {
+// Otwarcie Szukaj/Mapa ze wspólnego nagłówka i późniejsze zamknięcie overlaya
+// zawsze wraca na stronę główną, niezależnie od sposobu zamknięcia. Strona
+// przepisu celowo nie powiela wspólnego nagłówka.
+for (const start of ['/', '/categories']) {
   for (const item of ['Szukaj', 'Mapa']) {
     test(`menu ${item} from ${start}: closing always lands on the home page`, async ({ page }) => {
       // Zamknięcie przyciskiem X.
@@ -62,7 +63,13 @@ for (const start of ['/', '/categories', '/recipes/owsianka-z-owocami']) {
       await page.goto(start);
       await toggle(page).click();
       await menu(page).getByRole('link', { name: item }).click();
-      await expect(page.getByRole('dialog')).toBeVisible();
+      const dialog = page.getByRole('dialog');
+      await expect(dialog).toBeVisible();
+      if (item === 'Mapa') {
+        await expect(dialog.getByRole('button', { name: /Talerz na mapie/ })).toBeFocused();
+      } else {
+        await expect(dialog).toBeFocused();
+      }
       await page.keyboard.press('Escape');
       await expect(page.getByRole('dialog')).toHaveCount(0);
       await expect(page).toHaveURL(/\/$/);

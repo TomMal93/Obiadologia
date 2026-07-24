@@ -1,13 +1,12 @@
 ---
-import SiteHeader from '@/components/SiteHeader.astro';
 import { prototypeRecipes } from '@/data/prototype-recipes';
-import BaseLayout from '@/layouts/BaseLayout.astro';
 import type { Recipe } from '@/domain/recipe';
 import { formatHouseholdMeasure, formatMetricMeasure } from '@/domain/ingredient';
 import { formatLeadTime } from '@/domain/recipe-schedule';
 import { defaultLocale } from '@/i18n/config';
 import { formatMessage } from '@/i18n/format';
 import { getMessages } from '@/i18n/messages';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import './recipe-page.css';
 
 export function getStaticPaths() {
@@ -25,11 +24,11 @@ interface Props {
 
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
-
-// Sekcje wspierające gotowanie („Wcześniej” i „Przygotowanie”) są opcjonalne.
-// Tryb asystenta ma sens tylko, gdy jest co pokazać poza samymi krokami —
-// prostota przepisu wynika więc z pustych pól, bez osobnego przełącznika treści.
 const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
+const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
+  checked: 0,
+  total: recipe.ingredients.length,
+});
 ---
 
 <BaseLayout
@@ -37,63 +36,72 @@ const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
   description={recipe.description}
   locale={defaultLocale}
 >
-  <SiteHeader messages={messages.common} />
-
   <main class="recipe-page">
     <article
       class="recipe-article"
       data-view="assistant"
+      data-progress-template={messages.recipe.ingredientsProgress}
+      data-main-start-same-day={messages.recipe.mainStartSameDay}
+      data-main-start-previous-day={messages.recipe.mainStartPreviousDay}
       data-start-previous-day={messages.recipe.startPreviousDay}
       data-start-same-day={messages.recipe.startSameDay}
+      data-preparation-minutes={recipe.preparationMinutes}
     >
-      <div class="recipe-hero">
-        {
-          recipe.image ? (
-            <img src={recipe.image.src} alt={recipe.image.alt} loading="eager" />
-          ) : (
-            <span class="recipe-placeholder" aria-hidden="true">O</span>
-          )
-        }
-      </div>
-
-      <header class="recipe-intro">
-        <div class="recipe-intro__top">
+      <header class="recipe-hero">
+        <div class="recipe-hero__media">
+          <span class="recipe-hero__placeholder recipe-placeholder" aria-hidden="true">O</span>
+          {
+            recipe.image && (
+              <img
+                class="recipe-hero__image"
+                src={recipe.image.src}
+                alt={recipe.image.alt}
+                loading="eager"
+                fetchpriority="high"
+              />
+            )
+          }
+        </div>
+        <div class="recipe-hero__shade" aria-hidden="true"></div>
+        <a class="recipe-back" href="/" aria-label={messages.recipe.backLabel}>
+          {messages.recipe.backShort}
+        </a>
+        <div class="recipe-hero__caption">
           <ul class="recipe-tags" aria-label={messages.common.tagsLabel}>
             {recipe.tags.map((tag) => <li>{tag}</li>)}
           </ul>
-          <p class="prep-time">
-            <svg
-              class="prep-time__icon"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v5l3.5 2" />
-            </svg>
-            <span class="visually-hidden">{messages.recipe.preparationTimeLabel}</span>{' '}
-            <span class="prep-time__value">
-              {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
-            </span>
-          </p>
+          <h1>{recipe.title}</h1>
         </div>
-        <h1>{recipe.title}</h1>
-        <p class="recipe-lead">{recipe.description}</p>
       </header>
 
-      <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
-        <div class="recipe-ingredients__head">
-          <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
-          <div class="unit-toggle" role="group" aria-label={messages.recipe.unitsLabel} hidden>
+      <div class="recipe-meta">
+        <span class="recipe-meta__label">{messages.recipe.timeLabel}</span>
+        <strong>
+          <span class="visually-hidden">{messages.recipe.preparationTimeLabel} </span>
+          {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
+        </strong>
+      </div>
+
+      <div class="recipe-body">
+        <p class="recipe-lead">{recipe.description}</p>
+
+        <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
+          <div class="recipe-section-head">
+            <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
+            <p
+              class="ingredient-progress"
+              data-ingredient-progress
+              aria-live="polite"
+              hidden
+            >
+              {ingredientProgress}
+            </p>
+          </div>
+
+          <div class="unit-toggle recipe-segmented" role="group" aria-label={messages.recipe.unitsLabel} hidden>
             <button
               type="button"
-              class="unit-toggle__option is-active"
+              class="recipe-segmented__option is-active"
               data-units-target="metric"
               aria-pressed="true"
             >
@@ -101,133 +109,185 @@ const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
             </button>
             <button
               type="button"
-              class="unit-toggle__option"
+              class="recipe-segmented__option"
               data-units-target="household"
               aria-pressed="false"
             >
               {messages.recipe.householdUnits}
             </button>
           </div>
-        </div>
-        <ul class="ingredient-list" data-units="metric">
-          {
-            recipe.ingredients.map((ingredient) => (
-              <li class="ingredient">
-                <span class="ingredient__name">{ingredient.name}</span>
-                <span class="ingredient__measure">
-                  <span class="ingredient__measure-metric">{formatMetricMeasure(ingredient)}</span>
-                  <span class="ingredient__measure-household">
-                    {formatHouseholdMeasure(ingredient)}
-                  </span>
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
 
-      {
-        hasAssistantContent && (
-          <div
-            class="assistant-toggle"
-            role="group"
-            aria-label={messages.recipe.assistantLabel}
-            hidden
-          >
-            <button
-              type="button"
-              class="assistant-toggle__option is-active"
-              data-view-target="assistant"
-              aria-pressed="true"
-            >
-              {messages.recipe.assistantMode}
-            </button>
-            <button
-              type="button"
-              class="assistant-toggle__option"
-              data-view-target="steps"
-              aria-pressed="false"
-            >
-              {messages.recipe.stepsOnlyMode}
-            </button>
-          </div>
-        )
-      }
-
-      {
-        recipe.advance && (
-          <section
-            class="recipe-advance assistant-section"
-            aria-labelledby="advance-heading"
-          >
-            <div class="assistant-section__head">
-              <h2 id="advance-heading">{messages.recipe.advanceHeading}</h2>
-              <p class="assistant-section__hint">
-                {messages.recipe.advanceHint}
-              </p>
-            </div>
-            <div class="advance-calc" hidden>
-              <label class="advance-calc__label" for="serve-time">
-                {messages.recipe.serveTimeLabel}
-              </label>
-              <input class="advance-calc__input" id="serve-time" type="time" />
-              <p class="advance-calc__hint">
-                {messages.recipe.serveTimeHint}
-              </p>
-            </div>
-            <ol class="advance-list">
-              {recipe.advance.map((step) => (
-                <li class="advance-step">
-                  <p class="advance-step__text">{step.text}</p>
-                  <p class="advance-step__timing">
-                    <span class="advance-step__lead">
-                      {formatMessage(messages.recipe.advanceTiming, {
-                        time: formatLeadTime(step.leadTimeMinutes),
-                      })}
+          <ul class="ingredient-list" data-units="metric">
+            {
+              recipe.ingredients.map((ingredient) => (
+                <li class="ingredient">
+                  <button
+                    type="button"
+                    class="ingredient__toggle"
+                    data-checkable-ingredient
+                    aria-pressed="false"
+                    aria-label={formatMessage(messages.recipe.checkIngredientLabel, {
+                      name: ingredient.name,
+                    })}
+                    data-check-label={formatMessage(messages.recipe.checkIngredientLabel, {
+                      name: ingredient.name,
+                    })}
+                    data-uncheck-label={formatMessage(messages.recipe.uncheckIngredientLabel, {
+                      name: ingredient.name,
+                    })}
+                    hidden
+                  >
+                    <span class="ingredient__box" aria-hidden="true"></span>
+                    <span class="ingredient__name">{ingredient.name}</span>
+                    <span class="ingredient__measure">
+                      <span class="ingredient__measure-metric">{formatMetricMeasure(ingredient)}</span>
+                      <span class="ingredient__measure-household">
+                        {formatHouseholdMeasure(ingredient)}
+                      </span>
                     </span>
-                    <span
-                      class="advance-step__start"
-                      data-lead-minutes={step.leadTimeMinutes}
-                      hidden
-                    />
-                  </p>
+                  </button>
+                  <span class="ingredient__fallback">
+                    <span>{ingredient.name}</span>
+                    <span class="ingredient__measure">{formatMetricMeasure(ingredient)}</span>
+                  </span>
                 </li>
-              ))}
-            </ol>
-          </section>
-        )
-      }
+              ))
+            }
+          </ul>
+        </section>
 
-      {
-        recipe.preparation && (
-          <section class="recipe-prep assistant-section" aria-labelledby="prep-heading">
-            <div class="assistant-section__head">
-              <h2 id="prep-heading">{messages.recipe.preparationHeading}</h2>
-              <p class="assistant-section__hint">
-                {messages.recipe.preparationHint}
-              </p>
+        {
+          hasAssistantContent && (
+            <div
+              class="assistant-toggle recipe-segmented"
+              role="group"
+              aria-label={messages.recipe.assistantLabel}
+              hidden
+            >
+              <button
+                type="button"
+                class="recipe-segmented__option is-active"
+                data-view-target="assistant"
+                aria-pressed="true"
+              >
+                {messages.recipe.assistantMode}
+              </button>
+              <button
+                type="button"
+                class="recipe-segmented__option"
+                data-view-target="steps"
+                aria-pressed="false"
+              >
+                {messages.recipe.stepsOnlyMode}
+              </button>
             </div>
-            <ul class="prep-list">
-              {recipe.preparation.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </section>
-        )
-      }
+          )
+        }
 
-      <section class="recipe-steps" aria-labelledby="steps-heading">
-        <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
-        <ol class="step-list">
-          {recipe.steps.map((step) => <li>{step}</li>)}
-        </ol>
-      </section>
+        {
+          hasAssistantContent && (
+            <section
+              class="start-helper assistant-section"
+              aria-labelledby="start-helper-heading"
+              hidden
+            >
+              <h2 id="start-helper-heading">{messages.recipe.startHelperHeading}</h2>
+              <label class="start-helper__field" for="serve-time">
+                <span>{messages.recipe.serveTimeLabel}</span>
+                <input class="start-helper__input" id="serve-time" type="time" />
+              </label>
+              <p class="start-helper__hint">{messages.recipe.serveTimeHint}</p>
+              <p class="start-helper__result" data-main-start hidden></p>
+            </section>
+          )
+        }
 
-      <p class="prototype-note">
-        {messages.recipe.prototypeNote}
-      </p>
+        {
+          recipe.advance && (
+            <section class="recipe-advance assistant-section" aria-labelledby="advance-heading">
+              <div class="recipe-section-head recipe-section-head--stacked">
+                <h2 id="advance-heading">{messages.recipe.advanceHeading}</h2>
+                <p>{messages.recipe.advanceHint}</p>
+              </div>
+              <ol class="advance-list">
+                {recipe.advance.map((step) => (
+                  <li class="advance-step">
+                    <span class="advance-step__mark" aria-hidden="true">✓</span>
+                    <div>
+                      <p class="advance-step__text">{step.text}</p>
+                      <p class="advance-step__timing">
+                        <span>
+                          {formatMessage(messages.recipe.advanceTiming, {
+                            time: formatLeadTime(step.leadTimeMinutes),
+                          })}
+                        </span>
+                        <span
+                          class="advance-step__start"
+                          data-lead-minutes={step.leadTimeMinutes}
+                          hidden
+                        />
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )
+        }
 
-      <a class="back-link" href="/">{messages.recipe.backHome}</a>
+        {
+          recipe.preparation && (
+            <section class="recipe-prep assistant-section" aria-labelledby="prep-heading">
+              <div class="recipe-section-head recipe-section-head--stacked">
+                <h2 id="prep-heading">{messages.recipe.preparationHeading}</h2>
+                <p>{messages.recipe.preparationHint}</p>
+              </div>
+              <ul class="prep-list">
+                {recipe.preparation.map((item) => (
+                  <li>
+                    <span class="prep-list__mark" aria-hidden="true">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        <section class="recipe-steps" aria-labelledby="steps-heading">
+          <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
+          <ol class="step-list">
+            {
+              recipe.steps.map((step, index) => (
+                <li class="recipe-step">
+                  <button
+                    type="button"
+                    class="recipe-step__toggle"
+                    data-checkable-step
+                    aria-pressed="false"
+                    aria-label={formatMessage(messages.recipe.checkStepLabel, {
+                      number: index + 1,
+                    })}
+                    data-check-label={formatMessage(messages.recipe.checkStepLabel, {
+                      number: index + 1,
+                    })}
+                    data-uncheck-label={formatMessage(messages.recipe.uncheckStepLabel, {
+                      number: index + 1,
+                    })}
+                    hidden
+                  >
+                    <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
+                    <span class="recipe-step__text">{step}</span>
+                  </button>
+                  <span class="recipe-step__fallback">{step}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
+
+        <p class="prototype-note">{messages.recipe.prototypeNote}</p>
+      </div>
     </article>
   </main>
 </BaseLayout>
@@ -235,21 +295,21 @@ const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
 <script>
   import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
 
-  // Progresywne wzbogacenie: bez JS strona pokazuje sprawną listę w jednostkach
-  // metrycznych, a przełącznik pozostaje ukryty. Skrypt go odsłania i przełącza
-  // formę miary, przełączając wyłącznie klasę na liście (obie formy są w HTML).
-  const toggle = document.querySelector<HTMLElement>('.unit-toggle');
-  const list = document.querySelector<HTMLElement>('.ingredient-list');
+  const article = document.querySelector<HTMLElement>('.recipe-article');
+  const unitToggle = article?.querySelector<HTMLElement>('.unit-toggle');
+  const ingredientList = article?.querySelector<HTMLElement>('.ingredient-list');
 
-  if (toggle && list) {
-    toggle.hidden = false;
-    const options = Array.from(toggle.querySelectorAll<HTMLButtonElement>('.unit-toggle__option'));
+  if (unitToggle && ingredientList) {
+    unitToggle.hidden = false;
+    const options = Array.from(
+      unitToggle.querySelectorAll<HTMLButtonElement>('[data-units-target]'),
+    );
 
     for (const option of options) {
       option.addEventListener('click', () => {
         const target = option.dataset.unitsTarget;
         if (!target) return;
-        list.dataset.units = target;
+        ingredientList.dataset.units = target;
         for (const other of options) {
           const active = other === option;
           other.classList.toggle('is-active', active);
@@ -259,23 +319,54 @@ const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
     }
   }
 
-  // Tryb prowadzenia przez przepis: przełącznik zwija etapy Wcześniej/Przygotowanie
-  // do samej listy kroków. Bez JS pozostaje ukryty, a strona pokazuje pełną treść.
-  const article = document.querySelector<HTMLElement>('.recipe-article');
-  const assistantToggle = document.querySelector<HTMLElement>('.assistant-toggle');
+  const progress = article?.querySelector<HTMLElement>('[data-ingredient-progress]');
+  const ingredientToggles = Array.from(
+    article?.querySelectorAll<HTMLButtonElement>('[data-checkable-ingredient]') ?? [],
+  );
 
+  if (progress && ingredientToggles.length > 0 && article?.dataset.progressTemplate) {
+    progress.hidden = false;
+    const progressTemplate = article.dataset.progressTemplate;
+
+    const updateProgress = () => {
+      const checked = ingredientToggles.filter(
+        (button) => button.getAttribute('aria-pressed') === 'true',
+      ).length;
+      progress.textContent = progressTemplate
+        .replace('{checked}', String(checked))
+        .replace('{total}', String(ingredientToggles.length));
+    };
+
+    for (const button of ingredientToggles) {
+      button.hidden = false;
+      button.parentElement?.querySelector<HTMLElement>('.ingredient__fallback')
+        ?.setAttribute('hidden', '');
+      button.addEventListener('click', () => {
+        const checked = button.getAttribute('aria-pressed') === 'true';
+        button.setAttribute('aria-pressed', String(!checked));
+        button.classList.toggle('is-checked', !checked);
+        button.setAttribute(
+          'aria-label',
+          (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
+        );
+        updateProgress();
+      });
+    }
+  }
+
+  const assistantToggle = article?.querySelector<HTMLElement>('.assistant-toggle');
   if (article && assistantToggle) {
     assistantToggle.hidden = false;
-    const viewOptions = Array.from(
-      assistantToggle.querySelectorAll<HTMLButtonElement>('.assistant-toggle__option'),
+    const options = Array.from(
+      assistantToggle.querySelectorAll<HTMLButtonElement>('[data-view-target]'),
     );
 
-    for (const option of viewOptions) {
+    for (const option of options) {
       option.addEventListener('click', () => {
         const target = option.dataset.viewTarget;
         if (!target) return;
         article.dataset.view = target;
-        for (const other of viewOptions) {
+        for (const other of options) {
           const active = other === option;
           other.classList.toggle('is-active', active);
           other.setAttribute('aria-pressed', String(active));
@@ -284,47 +375,91 @@ const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
     }
   }
 
-  // Kalkulator startu: po podaniu pory podania liczy godzinę rozpoczęcia każdego
-  // etapu z wyprzedzeniem. Bez JS pole i wyliczenia pozostają ukryte, a lista
-  // etapów sama w sobie pokazuje potrzebne wyprzedzenie („na 2 godz przed…”).
-  const calc = document.querySelector<HTMLElement>('.advance-calc');
-  const serveInput = document.querySelector<HTMLInputElement>('#serve-time');
-  const startSlots = Array.from(document.querySelectorAll<HTMLElement>('.advance-step__start'));
-  const startPreviousDayTemplate = article?.dataset.startPreviousDay;
-  const startSameDayTemplate = article?.dataset.startSameDay;
+  const startHelper = article?.querySelector<HTMLElement>('.start-helper');
+  const serveInput = article?.querySelector<HTMLInputElement>('#serve-time');
+  const mainStart = article?.querySelector<HTMLElement>('[data-main-start]');
+  const startSlots = Array.from(
+    article?.querySelectorAll<HTMLElement>('.advance-step__start') ?? [],
+  );
 
-  if (
-    calc
-    && serveInput
-    && startSlots.length > 0
-    && startPreviousDayTemplate
-    && startSameDayTemplate
-  ) {
-    calc.hidden = false;
+  if (article && startHelper && serveInput && mainStart) {
+    startHelper.hidden = false;
+    const preparationMinutes = Number(article.dataset.preparationMinutes);
+    const mainSameDayTemplate = article.dataset.mainStartSameDay;
+    const mainPreviousDayTemplate = article.dataset.mainStartPreviousDay;
+    const stepSameDayTemplate = article.dataset.startSameDay;
+    const stepPreviousDayTemplate = article.dataset.startPreviousDay;
 
-    const render = () => {
+    const renderSchedule = () => {
       const serveMinutes = parseClock(serveInput.value);
+      if (
+        serveMinutes === null
+        || !Number.isFinite(preparationMinutes)
+        || !mainSameDayTemplate
+        || !mainPreviousDayTemplate
+      ) {
+        mainStart.hidden = true;
+        for (const slot of startSlots) slot.hidden = true;
+        return;
+      }
+
+      const rawMainStart = serveMinutes - preparationMinutes;
+      const mainTemplate = rawMainStart < 0 ? mainPreviousDayTemplate : mainSameDayTemplate;
+      mainStart.textContent = mainTemplate
+        .replace('{time}', formatClock(rawMainStart))
+        .replace('{minutes}', String(preparationMinutes));
+      mainStart.hidden = false;
 
       for (const slot of startSlots) {
         const leadMinutes = Number(slot.dataset.leadMinutes);
-
-        if (serveMinutes === null || !Number.isFinite(leadMinutes)) {
+        if (
+          !Number.isFinite(leadMinutes)
+          || !stepSameDayTemplate
+          || !stepPreviousDayTemplate
+        ) {
           slot.hidden = true;
-          slot.textContent = '';
           continue;
         }
-
-        const [scheduled] = scheduleAdvanceSteps([{ text: '', leadTimeMinutes: leadMinutes }], serveMinutes);
-        const clock = formatClock(scheduled.startMinutes);
+        const [scheduled] = scheduleAdvanceSteps(
+          [{ text: '', leadTimeMinutes: leadMinutes }],
+          serveMinutes,
+        );
         const template = scheduled.dayOffset < 0
-          ? startPreviousDayTemplate
-          : startSameDayTemplate;
-        slot.textContent = template.replace('{time}', clock);
+          ? stepPreviousDayTemplate
+          : stepSameDayTemplate;
+        slot.textContent = template.replace('{time}', formatClock(scheduled.startMinutes));
         slot.hidden = false;
       }
     };
 
-    serveInput.addEventListener('input', render);
-    render();
+    serveInput.addEventListener('input', renderSchedule);
+  }
+
+  const stepToggles = Array.from(
+    article?.querySelectorAll<HTMLButtonElement>('[data-checkable-step]') ?? [],
+  );
+  for (const button of stepToggles) {
+    button.hidden = false;
+    button.parentElement?.querySelector<HTMLElement>('.recipe-step__fallback')
+      ?.setAttribute('hidden', '');
+    button.addEventListener('click', () => {
+      const checked = button.getAttribute('aria-pressed') === 'true';
+      const badge = button.querySelector<HTMLElement>('.recipe-step__badge');
+      button.setAttribute('aria-pressed', String(!checked));
+      button.classList.toggle('is-checked', !checked);
+      button.setAttribute(
+        'aria-label',
+        (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
+      );
+      if (badge) badge.textContent = !checked ? '✓' : String(stepToggles.indexOf(button) + 1);
+    });
+  }
+
+  for (const image of Array.from(
+    article?.querySelectorAll<HTMLImageElement>('.recipe-hero__image') ?? [],
+  )) {
+    image.addEventListener('error', () => {
+      image.hidden = true;
+    });
   }
 </script>
