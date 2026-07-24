@@ -154,6 +154,8 @@ Usunięcie całej treści przywraca ten stan.
 - Zapytanie jest normalizowane zgodnie z regułami w `data-model.md`, w tym bez rozróżniania wielkości liter i z tolerancją polskich znaków.
 - Implementacja może zastosować krótkie opóźnienie około `200ms`, jeżeli zachowuje odczucie wyszukiwania na żywo.
 - Sugestie są powiązane z aktualnym zapytaniem i mogą reprezentować danie, składnik, smak, kategorię albo tag.
+- Sugestie zachowują naturalną szerokość pigułek, zawijają się w obrębie dostępnej szerokości i układają się w najwyżej dwóch wierszach bez przewijania wewnętrznego.
+- Pojedyncza sugestia ma najwyżej dwa słowa, aby zachować zwarty format pigułki.
 - Sugestie są dostępne z klawiatury.
 - Wybranie sugestii ustawia ją jako jedno aktywne zapytanie i odświeża wyniki.
 - Sugestie nie są zestawem filtrów wielokrotnego wyboru.

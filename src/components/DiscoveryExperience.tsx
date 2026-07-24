@@ -486,7 +486,9 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
     [recipeSearch, debouncedQuery],
   );
   const suggestions = useMemo(
-    () => recipeSearch.suggest(debouncedQuery),
+    // Cztery naturalnie szerokie pigułki mieszczą się w maksymalnie dwóch
+    // wierszach dzięki ograniczeniu ich szerokości do połowy listy.
+    () => recipeSearch.suggest(debouncedQuery, 4),
     [recipeSearch, debouncedQuery],
   );
   const tropes = useMemo(() => recipeSearch.tropes(), [recipeSearch]);

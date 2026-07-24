@@ -17,7 +17,28 @@ describe('recipe search', () => {
     expect(search.search('KURCZAK')[0]?.slug).toBe('testowe-danie-z-kurczakiem');
     expect(search.search('cukinia').map((recipe) => recipe.slug)).toContain('testowe-danie-warzywne');
     expect(search.suggest('kur')).toContain('kurczak');
+    const compactSuggestions = search.suggest('testowe');
+    expect(compactSuggestions.length).toBeGreaterThan(0);
+    expect(compactSuggestions.every((suggestion) => suggestion.trim().split(/\s+/u).length <= 2))
+      .toBe(true);
+    expect(search.suggest('na')).not.toContain('na');
+    expect(search.suggest('dla')).not.toContain('dla');
+    expect(search.suggest('dla')).toContain('dla dzieci');
     expect(search.search('')).toEqual([]);
+  });
+
+  it('does not suggest standalone connector words from catalog data', () => {
+    const recipeWithNoisyTags = {
+      ...testRecipes[0],
+      id: 'test_noisy_suggestions',
+      slug: 'testowe-szumy-sugestii',
+      tags: ['albo', 'bez', 'dla', 'do', 'i', 'lub', 'na', 'oraz', 'w', 'z'],
+    };
+    const search = createRecipeSearch([...testRecipes, recipeWithNoisyTags]);
+
+    for (const stopword of recipeWithNoisyTags.tags) {
+      expect(search.suggest(stopword)).not.toContain(stopword);
+    }
   });
 
   it('offers typed tropes from categories and ingredients, each a real query', () => {

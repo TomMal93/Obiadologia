@@ -58,6 +58,30 @@ function capitalize(value: string): string {
   return value.charAt(0).toLocaleUpperCase('pl-PL') + value.slice(1);
 }
 
+const standaloneSuggestionStopwords = new Set([
+  'albo',
+  'bez',
+  'dla',
+  'do',
+  'i',
+  'lub',
+  'na',
+  'opcjonalnie',
+  'oraz',
+  'tylko',
+  'w',
+  'z',
+  'ze',
+]);
+
+function isUsefulCompactSuggestion(value: string): boolean {
+  const words = value.trim().split(/\s+/u);
+  return words.length <= 2 && (
+    words.length > 1 ||
+    !standaloneSuggestionStopwords.has(normalizeSearchText(words[0] ?? ''))
+  );
+}
+
 // Rozkłada tropy z kilku koszyków naprzemiennie (round-robin), aby kolory
 // rodzajów rozłożyły się po siatce, zamiast zbijać w jednolite bloki.
 function interleave(buckets: Trope[][]): Trope[] {
@@ -82,6 +106,18 @@ const categoryTerms: Record<MealTime | Tempo | Occasion, string> = {
   kids: 'dla dzieci',
   guests: 'dla gości',
   grill: 'na grilla grill',
+};
+
+const categorySuggestions: Record<MealTime | Tempo | Occasion, string> = {
+  breakfast: 'śniadanie',
+  lunch: 'obiad',
+  dinner: 'kolacja',
+  now: 'na już',
+  today: 'na dziś',
+  two_days: 'dwa dni',
+  kids: 'dla dzieci',
+  guests: 'dla gości',
+  grill: 'na grilla',
 };
 
 export function normalizeSearchText(value: string): string {
@@ -124,7 +160,7 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
         ...recipe.ingredients.map((ingredient) => ingredient.name),
         ...recipe.tags,
         ...[...recipe.mealTimes, ...recipe.tempos, ...recipe.occasions].map(
-          (value) => categoryTerms[value].split(' ')[0],
+          (value) => categorySuggestions[value],
         ),
       ]),
     ),
@@ -141,6 +177,7 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
       if (!normalized) return [];
       return suggestions
         .filter((suggestion) => normalizeSearchText(suggestion).includes(normalized))
+        .filter(isUsefulCompactSuggestion)
         .sort((left, right) => left.length - right.length)
         .slice(0, limit);
     },
