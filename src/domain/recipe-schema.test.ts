@@ -1,7 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { prototypeRecipes } from '@/data/prototype-recipes';
 import { parseRecipes, recipeSchema } from './recipe-schema';
 import { testRecipes } from '@/test/fixtures/recipes';
+
+// Katalog przepisów mieszka teraz w Content Collections: jeden plik JSON na
+// przepis. Test czyta te same pliki co build i sortuje po `id` tak jak
+// `getRecipes`, więc weryfikuje realny katalog bez runtime'u Astro.
+const recipeModules = import.meta.glob('../content/recipes/*.json', {
+  eager: true,
+  import: 'default',
+});
+const catalog = parseRecipes(Object.values(recipeModules)).sort((left, right) =>
+  left.id.localeCompare(right.id),
+);
 
 describe('Recipe schema', () => {
   it('accepts the validated prototype dataset with unique identifiers', () => {
@@ -9,10 +19,10 @@ describe('Recipe schema', () => {
   });
 
   it('validates the published application catalog', () => {
-    expect(prototypeRecipes).toHaveLength(10);
-    expect(prototypeRecipes[0]?.slug).toBe('kotlet-schabowy-z-ziemniakami');
-    expect(prototypeRecipes[1]?.slug).toBe('podudzia-kurczaka-z-ziemniakami');
-    expect(prototypeRecipes.map((recipe) => recipe.slug)).toEqual([
+    expect(catalog).toHaveLength(10);
+    expect(catalog[0]?.slug).toBe('kotlet-schabowy-z-ziemniakami');
+    expect(catalog[1]?.slug).toBe('podudzia-kurczaka-z-ziemniakami');
+    expect(catalog.map((recipe) => recipe.slug)).toEqual([
       'kotlet-schabowy-z-ziemniakami',
       'podudzia-kurczaka-z-ziemniakami',
       'kotlet-mielony-z-ziemniakami',

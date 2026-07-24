@@ -1,0 +1,84 @@
+{
+  "id": "recipe_010",
+  "slug": "jajecznica",
+  "title": "Jajecznica — wariacje",
+  "description": "Puszysta jajecznica smażona na maśle, w dwóch ulubionych wariantach: klasyczna posypana świeżym szczypiorkiem albo z chrupiącym, podsmażonym boczkiem. Śniadanie gotowe w kilka minut.",
+  "image": null,
+  "preparationMinutes": 15,
+  "difficulty": "easy",
+  "servings": 2,
+  "ingredients": [
+    {
+      "name": "jajka",
+      "amount": 6,
+      "unit": "szt"
+    },
+    {
+      "name": "masło",
+      "amount": 20,
+      "unit": "g"
+    },
+    {
+      "name": "boczek wędzony, tylko do wariantu z boczkiem",
+      "amount": 100,
+      "unit": "g"
+    },
+    {
+      "name": "szczypiorek",
+      "amount": 15,
+      "unit": "g"
+    },
+    {
+      "name": "pieczywo do podania",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "name": "sól",
+      "amount": 3,
+      "unit": "ml"
+    },
+    {
+      "name": "pieprz",
+      "amount": 2,
+      "unit": "ml"
+    }
+  ],
+  "preparation": [
+    "Wybierz wariant: klasyczna jajecznica na maśle ze szczypiorkiem albo jajecznica z podsmażonym boczkiem.",
+    "Jajka wbij do miski, dopraw solą i pieprzem i lekko rozmąć widelcem, jeśli lubisz jajecznicę bardziej jednolitą."
+  ],
+  "steps": [
+    "Do wariantu z boczkiem pokrój go w kostkę i wysmaż na suchej, zimnej patelni, aż będzie chrupiący; zachowaj część wytopionego tłuszczu i pomiń masło.",
+    "Do wariantu klasycznego rozpuść na patelni masło i poczekaj, aż zacznie się pienić, nie brązowiejąc.",
+    "Wlej jajka na rozgrzany tłuszcz i smaż na małym ogniu, delikatnie zgarniając masę łopatką ku środkowi.",
+    "Zdejmij patelnię z ognia, gdy jajka są jeszcze lekko wilgotne — dojdą od własnego ciepła i pozostaną puszyste.",
+    "Wariant klasyczny posyp obficie posiekanym szczypiorkiem. Podawaj od razu z pieczywem."
+  ],
+  "tips": [
+    "Smaż na małym ogniu — zbyt wysoka temperatura sprawia, że jajka twardnieją i wysychają.",
+    "Zdejmij jajecznicę z ognia chwilę przed osiągnięciem pełnej ściętości; resztę dopiecze ciepło patelni.",
+    "Wariant z boczkiem zwykle nie wymaga dodatkowego solenia — boczek jest już słony."
+  ],
+  "tags": [
+    "śniadanie",
+    "jajka",
+    "szybkie"
+  ],
+  "mealTimes": [
+    "breakfast"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [
+    "kids",
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.15,
+    "lightness": 0.45
+  },
+  "editorialPriority": 50,
+  "status": "published"
+}

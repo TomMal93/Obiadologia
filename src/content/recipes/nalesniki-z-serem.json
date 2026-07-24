@@ -1,0 +1,107 @@
+{
+  "id": "recipe_004",
+  "slug": "nalesniki-z-serem",
+  "title": "Naleśniki z serem",
+  "description": "Cienkie, delikatne naleśniki zawinięte z słodkim nadzieniem z twarogu z nutą wanilii. Świetne na słodkie śniadanie albo kolację, podane ze śmietaną, jogurtem lub ulubionym musem owocowym.",
+  "image": null,
+  "preparationMinutes": 40,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "name": "mąka pszenna",
+      "amount": 250,
+      "unit": "g",
+      "gramsPerCup": 150
+    },
+    {
+      "name": "mleko",
+      "amount": 400,
+      "unit": "ml"
+    },
+    {
+      "name": "woda gazowana",
+      "amount": 100,
+      "unit": "ml"
+    },
+    {
+      "name": "jajka do ciasta",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "name": "olej do ciasta",
+      "amount": 20,
+      "unit": "ml"
+    },
+    {
+      "name": "olej do smażenia",
+      "amount": 40,
+      "unit": "ml"
+    },
+    {
+      "name": "twaróg półtłusty",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "name": "cukier",
+      "amount": 60,
+      "unit": "g",
+      "gramsPerCup": 200
+    },
+    {
+      "name": "cukier waniliowy",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "name": "śmietana albo jogurt do podania, opcjonalnie",
+      "amount": 150,
+      "unit": "g"
+    },
+    {
+      "name": "sól",
+      "amount": 2,
+      "unit": "ml"
+    }
+  ],
+  "preparation": [
+    "Zmiel albo dokładnie rozgnieć twaróg, aby nadzienie było gładkie.",
+    "Rozgrzej patelnię do naleśników i przygotuj chochlę do nalewania ciasta."
+  ],
+  "steps": [
+    "Wymieszaj mąkę z solą, jajkami i mlekiem na gładkie ciasto, a następnie wmieszaj dalej, dolewając wodę gazowaną i olej, aż powstanie płynna, jednolita masa.",
+    "Rozgrzej patelnię i przetrzyj ją odrobiną oleju. Nalewaj cienką warstwę ciasta, obracając patelnią, i smaż naleśniki z obu stron na złoto.",
+    "Twaróg połącz z cukrem i cukrem waniliowym, ucierając na gładką, kremową masę.",
+    "Na każdy naleśnik nałóż porcję sera, złóż go w trójkąt albo zawiń w rulon.",
+    "Podawaj naleśniki ciepłe, według uznania ze śmietaną, jogurtem lub musem owocowym."
+  ],
+  "tips": [
+    "Odstaw ciasto na 15 minut przed smażeniem — naleśniki będą bardziej elastyczne i mniej się rwą.",
+    "Woda gazowana napowietrza ciasto i sprawia, że naleśniki wychodzą cieńsze.",
+    "Do sera możesz dodać odrobinę startej skórki cytryny lub garść rodzynek dla urozmaicenia."
+  ],
+  "tags": [
+    "naleśniki",
+    "na słodko",
+    "domowe"
+  ],
+  "mealTimes": [
+    "breakfast",
+    "dinner"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [
+    "kids",
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.5,
+    "lightness": 0.8
+  },
+  "editorialPriority": 65,
+  "status": "published"
+}

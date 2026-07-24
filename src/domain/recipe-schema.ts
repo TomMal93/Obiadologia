@@ -68,8 +68,14 @@ export const recipeSchema = z
 
 export type Recipe = z.infer<typeof recipeSchema>;
 
-export function parseRecipes(input: unknown): Recipe[] {
-  const recipes = z.array(recipeSchema).parse(input);
+/**
+ * Sprawdza unikalność `id` i `slug` w obrębie całego katalogu. `recipeSchema`
+ * waliduje pojedynczy rekord, ale nie widzi pozostałych — integralność między
+ * rekordami trzeba wymusić osobno. Współdzielone przez `parseRecipes` (dane
+ * ładowane jako jedna tablica) i przez katalog Content Collections, gdzie każdy
+ * przepis jest osobnym plikiem walidowanym niezależnie.
+ */
+export function assertUniqueRecipeIdentity(recipes: readonly Recipe[]): void {
   const ids = new Set<string>();
   const slugs = new Set<string>();
 
@@ -79,6 +85,10 @@ export function parseRecipes(input: unknown): Recipe[] {
     ids.add(recipe.id);
     slugs.add(recipe.slug);
   }
+}
 
+export function parseRecipes(input: unknown): Recipe[] {
+  const recipes = z.array(recipeSchema).parse(input);
+  assertUniqueRecipeIdentity(recipes);
   return recipes;
 }
