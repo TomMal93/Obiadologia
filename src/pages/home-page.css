@@ -145,10 +145,8 @@
   }
 }
 
-/* Słowo emfazy „jemy?" to tekst — pastel byłby na kremowym tle niewidoczny,
-   więc bierze czytelny koral (rola akcentu marki). */
 .home-hero h1 span {
-  color: var(--color-coral);
+  color: var(--brand-pulse);
 }
 
 @media (prefers-reduced-motion: reduce) {
