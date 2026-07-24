@@ -96,7 +96,10 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.change(input, { target: { value: 'kurczak' } });
     expect(within(dialog).queryByRole('button', { name: 'kurczak' })).not.toBeInTheDocument();
     expect(await within(dialog).findByRole('button', { name: 'kurczak' })).toBeInTheDocument();
-    expect(within(dialog).getByRole('link', { name: /Testowe danie z kurczakiem/ })).toBeInTheDocument();
+    const result = within(dialog).getByRole('link', { name: /Testowe danie z kurczakiem/ });
+    expect(result).toBeInTheDocument();
+    expect(within(result).queryByLabelText('Tagi')).not.toBeInTheDocument();
+    expect(within(result).getByText(/20 min/)).toHaveClass('recipe-meta');
   });
 
   it('fills the empty field with popular tropes and runs one when picked', async () => {

@@ -155,29 +155,32 @@ function RecipeItems({
                 <span className="recipe-description visually-hidden">
                   {recipe.description}
                 </span>
-                <span className="recipe-facts">
-                  <span className="recipe-meta">
-                    ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
-                    {recipe.preparationMinutes} {common.minuteAbbreviation}
-                  </span>
-                  {!featured && (
+                {!discovery && (
+                  <span className="recipe-facts">
+                    <span className="recipe-meta">
+                      ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
+                      {recipe.preparationMinutes} {common.minuteAbbreviation}
+                    </span>
+                    {!featured && (
                     <span className="tag-list" aria-label={common.tagsLabel}>
                       {recipe.tags.slice(0, 2).map((tag) => <span key={tag}>{tag}</span>)}
                     </span>
-                  )}
-                </span>
+                    )}
+                  </span>
+                )}
               </span>
+              {discovery && (
+                <span className="recipe-meta recipe-meta--discovery">
+                  <span className="visually-hidden">{messages.preparationTimeLabel}</span>
+                  {recipe.preparationMinutes} {common.minuteAbbreviation}
+                </span>
+              )}
               {featured && featuredReason && (
                 <span className="recipe-match-reason">
                   <span className="recipe-match-reason__label">{featuredReason.label}</span>
                   <span className="recipe-match-reason__traits">
                     {featuredReason.traits.map((trait) => <span key={trait}>{trait}</span>)}
                   </span>
-                </span>
-              )}
-              {discovery && (
-                <span className="recipe-chevron" aria-hidden="true">
-                  <Icon><path d="m9 6 6 6-6 6" /></Icon>
                 </span>
               )}
             </a>

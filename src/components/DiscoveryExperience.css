@@ -848,7 +848,7 @@
 }
 
 .discovery-results .recipe-card {
-  grid-template-columns: 72px minmax(0, 1fr) 28px;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
   min-height: 88px;
   border-radius: var(--radius-field);
 }
@@ -856,9 +856,9 @@
 .discovery-results .recipe-card--featured {
   grid-template-areas:
     "label label label"
-    "media content chevron"
+    "media content meta"
     "reason reason reason";
-  grid-template-columns: 72px minmax(0, 1fr) 28px;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
   grid-template-rows: auto auto;
   min-height: 0;
   border-color: color-mix(in srgb, var(--featured-accent) 44%, var(--color-border));
@@ -883,7 +883,7 @@
 
 .recipe-card--featured .recipe-media { grid-area: media; }
 .recipe-card--featured .recipe-content { grid-area: content; }
-.recipe-card--featured .recipe-chevron { grid-area: chevron; }
+.recipe-card--featured .recipe-meta { grid-area: meta; }
 
 .recipe-match-reason {
   display: flex;
@@ -943,36 +943,22 @@
   font-size: var(--font-size-16);
 }
 
-.discovery-results .recipe-meta,
-.discovery-results .tag-list > span {
-  padding: 0;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-14);
-  background: transparent;
-}
-
-.discovery-results .tag-list {
-  gap: var(--space-4);
-}
-
-.discovery-results .tag-list::before,
-.discovery-results .tag-list > span + span::before {
-  margin-right: var(--space-4);
-  content: '·';
-}
-
-.recipe-chevron {
-  display: grid;
-  width: 24px;
-  height: 24px;
-  place-items: center;
+.discovery-results .recipe-meta {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 28px;
+  margin-inline-end: var(--space-8);
+  align-items: center;
   align-self: center;
-  color: color-mix(in srgb, var(--color-text-muted) 70%, transparent);
-}
-
-.recipe-chevron svg {
-  width: 20px;
-  height: 20px;
+  justify-self: end;
+  padding: var(--space-4) var(--space-8);
+  border: 1px solid color-mix(in srgb, var(--result-accent) 18%, transparent);
+  border-radius: var(--radius-pill);
+  color: color-mix(in srgb, var(--result-accent) 72%, var(--color-text));
+  font-size: var(--font-size-14);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  background: color-mix(in srgb, var(--result-accent) 7%, var(--color-surface));
 }
 
 .preference-map {

@@ -78,7 +78,8 @@ Oba tryby korzystają z jednego modelu `Recipe` i wspólnego komponentu karty.
 
 Sekcja wyników używa nagłówka „Propozycje”, pokazuje po prawej odmienioną
 liczbę dopasowań i oddziela nagłówek linią od listy. Oba tryby korzystają z
-tego samego minimalistycznego układu poziomych kart ze strzałką nawigacyjną.
+tego samego minimalistycznego układu poziomych kart bez dodatkowej strzałki
+nawigacyjnej; rolę przejścia do przepisu komunikuje interaktywność całej karty.
 Nazwy przepisów używają neutralnego koloru tekstu. Kolor nagłówka odpowiada
 aktywnemu trybowi; w Mapie jest to ten sam niebieski token co tekst aktywnego
 segmentu „Mapa” w przełączniku.
@@ -88,8 +89,9 @@ Każda karta zawiera:
 - zdjęcie potrawy albo wspólny placeholder;
 - nazwę przepisu;
 - opcjonalny krótki opis;
-- czas przygotowania;
-- od jednego do trzech tagów.
+- wyróżniony wizualnie czas przygotowania.
+
+Karty propozycji w overlayu nie pokazują tagów, aby zachować spokojną hierarchię i ułatwić szybkie porównanie czasu. Tagi pozostają częścią danych przepisu i dopasowania wyszukiwarki.
 
 Cała karta jest linkiem do `/recipes/:slug` — strony przepisu opisanej w [recipe-page.md](./recipe-page.md).
 
