@@ -827,9 +827,17 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
                 )}
               </label>
               {snapshot.query && suggestions.length > 0 && (
-                <div className="suggestion-list" aria-label={discoveryMessages.search.suggestionsLabel}>
+                <div className="suggestion-list search-suggestion-list" aria-label={discoveryMessages.search.suggestionsLabel}>
                   {suggestions.map((suggestion) => (
-                    <button key={suggestion} type="button" onClick={() => updateSnapshot({ query: suggestion })}>{suggestion}</button>
+                    <button key={suggestion} type="button" onClick={() => updateSnapshot({ query: suggestion })}>
+                      <span className="search-suggestion-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" focusable="false">
+                          <circle cx="8.5" cy="8.5" r="4.75" />
+                          <path d="m12 12 4 4" />
+                        </svg>
+                      </span>
+                      <span>{suggestion}</span>
+                    </button>
                   ))}
                 </div>
               )}

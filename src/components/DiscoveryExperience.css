@@ -606,47 +606,57 @@
 .suggestion-list button {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: 6px;
   max-width: calc(50% - var(--space-4));
   min-height: 44px;
-  padding: var(--space-8) 14px;
-  border: 1px solid color-mix(in srgb, var(--color-search) 24%, var(--color-border));
+  padding: var(--space-8) 13px;
+  border: 1px solid color-mix(in srgb, var(--color-search) 12%, var(--color-border));
   border-radius: var(--radius-pill);
-  color: var(--color-text);
-  font-weight: 650;
+  color: var(--color-text-muted);
+  font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
-  background:
-    linear-gradient(
-      145deg,
-      var(--color-surface),
-      color-mix(in srgb, var(--color-search-soft) 72%, var(--color-surface))
-    );
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 80%) inset,
-    0 5px 14px rgb(89 55 29 / 7%);
+  background: color-mix(in srgb, var(--color-search-soft) 32%, var(--color-surface));
+  box-shadow: 0 2px 7px rgb(89 55 29 / 4%);
   overflow-wrap: anywhere;
   transition:
+    background-color 180ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
 }
 
-.suggestion-list button::before {
-  width: 7px;
-  height: 7px;
+.search-suggestion-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  place-items: center;
   border-radius: 50%;
-  background: var(--color-search);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-search) 11%, transparent);
-  content: "";
+  color: color-mix(in srgb, var(--color-search) 58%, var(--color-text-muted));
+  background: color-mix(in srgb, var(--color-search-soft) 38%, var(--color-surface));
+}
+
+.search-suggestion-icon svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.search-suggestion-list button > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .suggestion-list button:hover,
 .suggestion-list button:focus-visible {
-  border-color: color-mix(in srgb, var(--color-search) 48%, var(--color-border));
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 85%) inset,
-    0 8px 20px rgb(168 45 24 / 12%);
+  border-color: color-mix(in srgb, var(--color-search) 28%, var(--color-border));
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-search-soft) 52%, var(--color-surface));
+  box-shadow: 0 4px 12px rgb(89 55 29 / 7%);
   transform: translateY(-1px);
 }
 
