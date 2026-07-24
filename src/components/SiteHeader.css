@@ -99,15 +99,13 @@
   box-shadow: var(--shadow-surface);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px);
-  transition: opacity 200ms ease, transform 200ms ease, visibility 0s linear 200ms;
+  transition: opacity 200ms ease, visibility 0s linear 200ms;
 }
 
 .site-menu.is-open {
   opacity: 1;
   visibility: visible;
-  transform: none;
-  transition: opacity 200ms ease, transform 200ms ease, visibility 0s;
+  transition: opacity 200ms ease, visibility 0s;
 }
 
 /* Nagłówek panelu odwzorowuje overlay-header: brand po lewej, okrągły przycisk
