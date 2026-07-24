@@ -103,8 +103,19 @@
   initial-value: #3877ff;
 }
 
+/* Miękki (pastelowy) odpowiednik pulsu marki — te same trzy kolory dróg, lecz w
+   odcieniu `-soft` używanym jako tło kafli. Pulsuje w tym samym rytmie co
+   `--brand-pulse`, dzięki czemu pastelowe tła (pigułka, ramka) i akcent koralowy
+   pozostają spójne z kaflami. */
+@property --brand-pulse-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #eaf3ff;
+}
+
 .intro-screen {
   --brand-pulse: var(--color-map);
+  --brand-pulse-soft: var(--color-map-soft);
 
   animation: brand-pulse 9s ease-in-out infinite;
 }
@@ -113,31 +124,38 @@
   0%,
   17% {
     --brand-pulse: var(--color-map);
+    --brand-pulse-soft: var(--color-map-soft);
   }
 
   33%,
   50% {
     --brand-pulse: var(--color-coral);
+    --brand-pulse-soft: var(--color-coral-soft);
   }
 
   67%,
   83% {
     --brand-pulse: var(--color-categories);
+    --brand-pulse-soft: var(--color-categories-soft);
   }
 
   100% {
     --brand-pulse: var(--color-map);
+    --brand-pulse-soft: var(--color-map-soft);
   }
 }
 
+/* Słowo emfazy „jemy?" to tekst — pastel byłby na kremowym tle niewidoczny,
+   więc bierze czytelny koral (rola akcentu marki). */
 .home-hero h1 span {
-  color: var(--brand-pulse);
+  color: var(--color-coral);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .intro-screen {
     animation: none;
     --brand-pulse: var(--color-coral);
+    --brand-pulse-soft: var(--color-coral-soft);
   }
 }
 
@@ -153,7 +171,7 @@
   grid-template-rows: auto max-content 7px max-content 22px auto;
   min-height: min-content;
   padding: clamp(30px, 5vh, 40px) clamp(12px, 3vw, 18px) 22px;
-  border: 1px solid var(--brand-pulse);
+  border: 1px solid var(--brand-pulse-soft);
   border-radius: var(--radius-panel);
   background: rgb(255 255 255 / 84%);
   box-shadow: var(--shadow-surface);
@@ -172,12 +190,14 @@
   margin: 0;
   padding: var(--space-8) var(--space-16);
   border-radius: var(--radius-pill);
-  color: white;
+  /* Tło pigułki to pastelowy puls (jak tło kafli), więc biały tekst zastępuje
+     czytelny koral. */
+  color: var(--color-coral);
   font-size: clamp(13px, 3.3vw, 15px);
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
-  background: var(--brand-pulse);
+  background: var(--brand-pulse-soft);
   box-shadow: var(--shadow-surface);
   transform: translate(-50%, -50%);
 }
