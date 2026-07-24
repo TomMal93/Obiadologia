@@ -9,8 +9,21 @@ describe('Recipe schema', () => {
   });
 
   it('validates the published application catalog', () => {
-    expect(prototypeRecipes).toHaveLength(1);
+    expect(prototypeRecipes).toHaveLength(10);
     expect(prototypeRecipes[0]?.slug).toBe('kotlet-schabowy-z-ziemniakami');
+    expect(prototypeRecipes[1]?.slug).toBe('podudzia-kurczaka-z-ziemniakami');
+    expect(prototypeRecipes.map((recipe) => recipe.slug)).toEqual([
+      'kotlet-schabowy-z-ziemniakami',
+      'podudzia-kurczaka-z-ziemniakami',
+      'kotlet-mielony-z-ziemniakami',
+      'nalesniki-z-serem',
+      'zupa-pomidorowa',
+      'zupa-ogorkowa',
+      'krupnik',
+      'leczo-z-kielbasa-i-papryka',
+      'szakszuka',
+      'jajecznica',
+    ]);
   });
 
   it('rejects an incomplete image reference', () => {
