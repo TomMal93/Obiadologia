@@ -7,6 +7,7 @@
 - strona główna: `docs/product/features/home-page.md`
 - wspólny overlay Mapa/Wyszukiwarka: `docs/product/features/discovery-overlay.md`
 - strona przepisu: `docs/product/features/recipe-page.md`
+- szablon do przygotowania treści przepisu: `docs/content/recipe-template.md`
 - wygląd i komponenty: `docs/design/ui-system.md`
 - model danych: `docs/engineering/data-model.md`
 - przyjęte i otwarte decyzje techniczne: `docs/engineering/technical-decisions.md`; zaakceptowane decyzje kosztowne do odwrócenia: `docs/engineering/adr/`
