@@ -9,8 +9,9 @@ describe('Recipe schema', () => {
   });
 
   it('validates the published application catalog', () => {
-    expect(prototypeRecipes).toHaveLength(1);
+    expect(prototypeRecipes).toHaveLength(2);
     expect(prototypeRecipes[0]?.slug).toBe('kotlet-schabowy-z-ziemniakami');
+    expect(prototypeRecipes[1]?.slug).toBe('podudzia-kurczaka-z-ziemniakami');
   });
 
   it('rejects an incomplete image reference', () => {
