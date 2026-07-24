@@ -103,8 +103,19 @@
   initial-value: #3877ff;
 }
 
+/* Miękki (pastelowy) odpowiednik pulsu marki — te same trzy kolory dróg, lecz w
+   odcieniu `-soft` używanym jako tło kafli. Pulsuje w tym samym rytmie co
+   `--brand-pulse`, dzięki czemu pastelowe tła (pigułka, ramka) i akcent koralowy
+   pozostają spójne z kaflami. */
+@property --brand-pulse-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #eaf3ff;
+}
+
 .intro-screen {
   --brand-pulse: var(--color-map);
+  --brand-pulse-soft: var(--color-map-soft);
 
   animation: brand-pulse 9s ease-in-out infinite;
 }
@@ -113,20 +124,24 @@
   0%,
   17% {
     --brand-pulse: var(--color-map);
+    --brand-pulse-soft: var(--color-map-soft);
   }
 
   33%,
   50% {
     --brand-pulse: var(--color-coral);
+    --brand-pulse-soft: var(--color-coral-soft);
   }
 
   67%,
   83% {
     --brand-pulse: var(--color-categories);
+    --brand-pulse-soft: var(--color-categories-soft);
   }
 
   100% {
     --brand-pulse: var(--color-map);
+    --brand-pulse-soft: var(--color-map-soft);
   }
 }
 
@@ -138,6 +153,7 @@
   .intro-screen {
     animation: none;
     --brand-pulse: var(--color-coral);
+    --brand-pulse-soft: var(--color-coral-soft);
   }
 }
 
@@ -171,13 +187,17 @@
   max-width: calc(100% - 24px);
   margin: 0;
   padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--brand-pulse);
   border-radius: var(--radius-pill);
-  color: white;
+  /* Tło pigułki to pastelowy puls (jak tło kafli), a tekst pulsuje w tym samym
+     rytmie nasyconym odcieniem marki — nasycony kolor na swoim jasnym
+     odpowiedniku pozostaje czytelny w każdej fazie. */
+  color: var(--brand-pulse);
   font-size: clamp(13px, 3.3vw, 15px);
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
-  background: var(--brand-pulse);
+  background: var(--brand-pulse-soft);
   box-shadow: var(--shadow-surface);
   transform: translate(-50%, -50%);
 }
