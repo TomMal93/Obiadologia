@@ -9,42 +9,73 @@ Strona przepisu jest celem nawigacji wszystkich trzech dróg odkrywania: karta w
 
 Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [data-model.md](../../engineering/data-model.md). Treść redakcyjna spoza modelu (porcje, wartości odżywcze) pozostaje poza zakresem — zob. [mvp-scope.md](../mvp-scope.md).
 
+## Referencja projektu
+
+Interaktywny projekt [recipe-page.html](../../assets/ui/recipe-page.html) jest referencją kompozycji, hierarchii wizualnej i stanów interakcji strony przepisu. Niniejsza specyfikacja pozostaje źródłem prawdy dla zachowania, a [data-model.md](../../engineering/data-model.md) dla dostępnych danych. Element projektu wymagający pola spoza modelu nie może być uzupełniany fikcyjną wartością.
+
+Z projektu obowiązują w MVP:
+
+- pełnoszerokie zdjęcie hero lub placeholder z nakładką poprawiającą czytelność tekstu;
+- akcja powrotu w lewym górnym rogu hero oraz tagi i tytuł na jego dolnej krawędzi;
+- jasny, koralowy pasek metadanych bezpośrednio pod hero;
+- jedna przewijana kolumna treści: opis, Składniki, przełącznik trybu gotowania, etapy wspierające i Kroki;
+- segmentowe przełączniki jednostek oraz trybu gotowania;
+- możliwość lokalnego odhaczania składników i wykonanych kroków;
+- koral jako akcent strony, jasne powierzchnie, zwarte nagłówki i numerowane znaczniki kroków.
+
+Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku referencyjnym nie rozszerza bieżącego zakresu:
+
+| Element projektu | Status w MVP | Powód |
+|---|---|---|
+| trudność | pominięta | brak pola w `Recipe` |
+| liczba porcji i przeliczanie ilości | pominięte | porcje są poza zakresem MVP |
+| wartości odżywcze | pominięte | brak danych w modelu i poza zakresem MVP |
+| „Coś jeszcze” | pominięte | brak osobnego pola porad redakcyjnych |
+| „Podobne przepisy” | pominięte | brak uzgodnionego kontraktu podobieństwa |
+
 ## W zakresie
 
 - trasa `/recipes/:slug` i jej prerendering;
 - prezentacja pól modelu `Recipe` dla jednego przepisu;
 - placeholder braku zdjęcia;
+- lokalne, nietrwałe odhaczanie składników i kroków;
 - powrót do strony głównej i współpraca z historią przeglądarki.
 
 ## Poza zakresem
 
 - porcje, wartości odżywcze i inne pola spoza modelu `Recipe` — granice etapu definiuje [mvp-scope.md](../mvp-scope.md);
+- trudność, osobne porady redakcyjne i sekcja podobnych przepisów;
 - docelowy zestaw przepisów i produkcyjne obrazy — otwarte `OPEN-003` i `OPEN-005` w [technical-decisions.md](../../engineering/technical-decisions.md);
 - oceny, komentarze, zapisywanie ulubionych i udostępnianie — poza MVP.
 
 ## Zachowanie
 
 - Trasa `/recipes/:slug` jest prerenderowana dla każdego przepisu o statusie `published`; slug spoza katalogu nie generuje strony.
-- Strona używa wspólnego nagłówka z brandem prowadzącym do strony głównej.
-- Strona prezentuje w kolejności: zdjęcie albo placeholder, pasek metadanych nad tytułem (tagi po lewej, czas przygotowania po prawej w jednej linii), tytuł (`h1`), opis, listę składników z nagłówkiem „Składniki”, opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”) oraz kroki przygotowania z nagłówkiem „Kroki”.
+- Strona przepisu nie powiela wspólnego nagłówka. Pierwszym elementem jest hero z akcją powrotu, dzięki czemu zdjęcie i tytuł rozpoczynają stronę zgodnie z projektem.
+- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tagami i tytułem (`h1`); pasek czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”); kroki przygotowania z nagłówkiem „Kroki”.
+- Pasek pod hero pokazuje wyłącznie metadane istniejące w modelu. W MVP jest to czas z `preparationMinutes`, z widoczną etykietą „Czas”; nie pokazuje pustych komórek trudności ani porcji.
 - Każdy składnik pokazuje nazwę i grammaturę z pola `ingredients` ([data-model.md](../../engineering/data-model.md)). Przełącznik nad listą zmienia formę miary między metryczną (`gramy / ml`) a domową (`szklanki / szczypty`); domowa forma wynika z przeliczenia miary metrycznej i pozostaje w jednostce naturalnej tam, gdzie miara domowa nie ma sensu (liczba sztuk, masa bez znanej gęstości).
 - Przełącznik jest wzbogaceniem progresywnym: bez skryptu strona pokazuje sprawną listę w formie metrycznej, a sam przełącznik pozostaje ukryty.
+- Każdy składnik można odhaczyć niezależnie. Stan jest lokalny dla otwartej strony, nie zmienia danych przepisu i nie jest zapisywany między wizytami. Odhaczenie pokazuje znacznik oraz zmianę tekstu, a nad listą widoczny jest postęp „{wybrane}/{wszystkie} odhaczonych”. Bez skryptu składniki pozostają zwykłą, kompletną listą, a kontrolki odhaczania i postęp są ukryte.
 - Strona pokazuje kroki przygotowania z pola `steps` jako uporządkowaną, numerowaną listę (`ol`) w kolejności zapisanej w danych ([data-model.md](../../engineering/data-model.md)).
+- Każdy krok można lokalnie oznaczyć jako wykonany. Numer zmienia się wtedy w znacznik, a tekst otrzymuje drugi, niekolorystyczny sygnał ukończenia. Oznaczenie nie zwija kroku, nie przechodzi automatycznie dalej i nie jest zapisywane między wizytami. Bez skryptu pozostaje semantyczna lista `ol` bez kontrolek ukończenia.
 - Gdy przepis ma pole `advance`, strona pokazuje sekcję „Wcześniej” z czynnościami wykonywanymi z wyprzedzeniem; każda pozycja podaje wymagane wyprzedzenie po ludzku (np. „na 2 godz przed podaniem”) wyliczone z `leadTimeMinutes` ([data-model.md](../../engineering/data-model.md)).
 - Gdy przepis ma pole `preparation`, strona pokazuje sekcję „Przygotowanie” (mise en place, kompletowanie sprzętu) jako listę wstępnych czynności przed krokami.
-- Sekcja „Wcześniej” zawiera pomocnik startu: po podaniu pory podania strona wylicza godzinę rozpoczęcia każdej czynności (`pora − leadTimeMinutes`); start przed północą jest oznaczony jako dzień wcześniej. Pomocnik jest wzbogaceniem progresywnym — bez skryptu pozostaje ukryty, a sekcja i tak pokazuje wymagane wyprzedzenie.
+- Tryb asystenta zaczyna się panelem „Kiedy zacząć”. Po podaniu pory podania pokazuje rozpoczęcie głównego gotowania (`pora − preparationMinutes`), a przy każdej czynności „Wcześniej” godzinę jej rozpoczęcia (`pora − leadTimeMinutes`); start przypadający poprzedniego dnia jest jednoznacznie oznaczony. Pomocnik jest wzbogaceniem progresywnym — bez skryptu pozostaje ukryty, a sekcja i tak pokazuje wymagane wyprzedzenie.
 - Gdy przepis ma choć jedną z sekcji `advance`/`preparation`, strona udostępnia przełącznik „Tryb asystenta / Tylko kroki”: „Tryb asystenta” pokazuje etapy wspierające, „Tylko kroki” zwija je do samej listy kroków. Przełącznik jest wzbogaceniem progresywnym — bez skryptu pozostaje ukryty, a strona pokazuje pełną treść. Przepis bez tych pól nie pokazuje przełącznika i wygląda jak sama lista kroków.
-- Strona pokazuje wszystkie tagi w kolejności zapisanej w `tags`, nad tytułem po lewej, jako drobne etykiety pisane wielkimi literami (bez punktorów i bez tła pigułki); reguła „od jednego do trzech tagów” dotyczy karty wyniku, nie strony przepisu ([data-model.md](../../engineering/data-model.md)).
+- Strona pokazuje wszystkie tagi w kolejności zapisanej w `tags`, na dolnej nakładce hero nad tytułem, jako drobne etykiety pisane wielkimi literami (bez punktorów i bez tła pigułki); reguła „od jednego do trzech tagów” dotyczy karty wyniku, nie strony przepisu ([data-model.md](../../engineering/data-model.md)).
 - Brak zdjęcia (`image: null`) pokazuje wspólny, dekoracyjny placeholder bez zmiany układu strony; placeholder nie powiela dostępnej nazwy przepisu ([data-model.md](../../engineering/data-model.md)).
-- Link „Wróć do strony głównej” prowadzi do `/`. Przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md).
+- Widoczna akcja „Wróć” w hero jest linkiem do `/` i ma dostępną nazwę wyjaśniającą powrót do strony głównej. Przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md).
 - Do czasu rozstrzygnięcia źródła danych (`OPEN-003`) strona jawnie oznacza dane jako prototypowe i wskazuje, że pełna treść redakcyjna powstanie później.
 
 ## Prezentacja
 
 Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px`, progi `16px` tekstu i `44 × 44px` obszaru akcji) definiuje [ui-system.md](../../design/ui-system.md).
 
-- Zdjęcie ma stałe proporcje i `object-fit: cover`; awaria lub brak obrazu nie zmienia geometrii strony.
-- Treść wersji wstępnej jest projektowana tak, aby mieściła się na jednym ekranie telefonu; przy powiększeniu tekstu lub niższym ekranie strona rośnie i przewija się zgodnie z regułą reflow z [ui-system.md](../../design/ui-system.md).
+- Hero zajmuje pełną szerokość kontenera mobilnego, ma stałą wysokość w rytmie projektu i `object-fit: cover`; awaria lub brak obrazu nie zmienia jego geometrii.
+- Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia.
+- Akcja „Wróć” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
+- Strona przepisu jest długim dokumentem przewijanym w normalnym przepływie. Nie podlega regule „jedna sekcja = jeden ekran”; nie może mieć wewnętrznego przewijania całego artykułu ani ściskać treści do wysokości viewportu.
 
 ## SEO
 
@@ -57,11 +88,13 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 |---|---|
 | 1 | Kliknięcie karty wyniku na dowolnej drodze otwiera `/recipes/:slug` z tytułem przepisu w `h1`. |
 | 2 | Strona pokazuje opis, czas przygotowania, wszystkie tagi, pełną listę składników przepisu z grammaturą oraz numerowane kroki przygotowania. |
-| 8 | Przełącznik jednostek zmienia formę miary składników między metryczną a domową i z powrotem; bez skryptu widoczna jest lista w formie metrycznej. |
-| 9 | Przepis z polem `advance`/`preparation` pokazuje sekcje „Wcześniej”/„Przygotowanie” przed krokami; przepis bez tych pól ich nie pokazuje i nie udostępnia przełącznika trybu. |
-| 10 | Pomocnik startu w sekcji „Wcześniej” wylicza godzinę rozpoczęcia każdej czynności z podanej pory podania; przełącznik „Tryb asystenta / Tylko kroki” zwija i przywraca etapy wspierające. Bez skryptu obie funkcje pozostają ukryte, a treść jest pełna. |
 | 3 | Przy `image: null` widoczny jest dekoracyjny placeholder, a układ strony nie zmienia wymiarów. |
-| 4 | Link „Wróć do strony głównej” prowadzi do `/`; „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję. |
+| 4 | Akcja „Wróć” w hero prowadzi do `/`; przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję. |
 | 5 | Tytuł dokumentu i meta description są unikalne dla przepisu. |
 | 6 | Strona przechodzi automatyczną kontrolę `axe-core`, działa klawiaturą i nie tworzy poziomego przewijania w zakresie `320–480px`. |
 | 7 | Dane prototypowe są jawnie oznaczone jako prototypowe. |
+| 8 | Przełącznik jednostek zmienia formę miary składników między metryczną a domową i z powrotem; bez skryptu widoczna jest lista w formie metrycznej. |
+| 9 | Przepis z polem `advance`/`preparation` pokazuje sekcje „Wcześniej”/„Przygotowanie” przed krokami; przepis bez tych pól ich nie pokazuje i nie udostępnia przełącznika trybu. |
+| 10 | Pomocnik „Kiedy zacząć” wylicza początek głównego gotowania i godzinę rozpoczęcia każdej czynności z wyprzedzeniem z podanej pory podania; przełącznik „Tryb asystenta / Tylko kroki” zwija i przywraca etapy wspierające. Bez skryptu obie funkcje pozostają ukryte, a treść jest pełna. |
+| 11 | Składniki i kroki można niezależnie odhaczać; stan ukończenia jest widoczny nie tylko kolorem, nie zmienia danych i resetuje się po opuszczeniu strony. Bez skryptu obie listy pozostają kompletne i czytelne. |
+| 12 | Hero, nakładka tytułu, pasek czasu i kolejność treści odpowiadają `recipe-page.html`; elementy bez pól w modelu są pominięte bez pustych komórek i fikcyjnych danych. |

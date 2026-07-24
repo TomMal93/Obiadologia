@@ -1,14 +1,16 @@
 # System UI
 
 > Status: obowiązujący dla MVP  
-> Źródło: makiety w `../assets/ui/`  
+> Źródło: makiety i projekty interaktywne w `../assets/ui/`
 > Aktualizacja: przy zmianie wspólnego wyglądu lub zachowania komponentów
 
 ## Cel
 
 Ten dokument jest jednym źródłem prawdy dla reguł wizualnych wspólnych dla całej aplikacji. Specyfikacje funkcji opisują zachowanie ekranów i odwołują się tutaj zamiast powtarzać kolory, odstępy i stany komponentów.
 
-Wartości zostały odczytane z makiet rastrowych, dlatego pozostałe tokeny są początkowymi wartościami implementacyjnymi. Po uzyskaniu projektu źródłowego można je jednorazowo skalibrować, zachowując nazwy semantyczne.
+Wartości zostały odczytane z makiet rastrowych oraz interaktywnych projektów HTML, dlatego pozostałe tokeny są początkowymi wartościami implementacyjnymi. Po uzyskaniu projektu źródłowego można je jednorazowo skalibrować, zachowując nazwy semantyczne.
+
+Projekt [recipe-page.html](../assets/ui/recipe-page.html) jest referencją kompozycji strony przepisu. Jego lokalne zachowanie interpretuje [recipe-page.md](../product/features/recipe-page.md): plik projektu nie rozszerza samodzielnie modelu danych ani zakresu MVP.
 
 Wyjątkiem są **kolory przewodnie dróg** (Mapa, Szukaj, Kategorie) opisane niżej — to wartości **docelowe**, potwierdzone jako tożsamość trzech ścieżek odkrywania. Nie podlegają już kalibracji „na później”; ich zmiana jest decyzją projektową, nie technicznym przybliżeniem.
 
@@ -177,6 +179,7 @@ Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi.
 - Każda główna sekcja MUSI wypełniać jeden ekran, tj. wysokość widocznego obszaru (`100dvh`) z uwzględnieniem bezpiecznych obszarów urządzenia i klawiatury ekranowej.
 - Sekcja przy bazowych ustawieniach nie może być wyższa niż ekran. Treść projektujemy tak, aby mieściła się w jednym ekranie; jeśli się nie mieści, ograniczamy lub upraszczamy treść, zamiast rozciągać sekcję albo wprowadzać przewijanie wewnątrz sekcji.
 - Wyjątkiem jest stała ramka wyników Kategorii opisana w [home-page.md](../product/features/home-page.md): jej lista może przewijać się pionowo, aby wybór i stany pusty/sukces nie zmieniały geometrii sekcji. Przewijalny region musi być dostępny z klawiatury i mieć nazwę dostępną dla technologii asystujących.
+- Strona przepisu jest wyjątkiem dokumentowym, a nie sekcją pełnoekranową: jej artykuł ma naturalną wysokość treści i przewija się wraz ze stroną. Lokalną kompozycję definiuje [recipe-page.md](../product/features/recipe-page.md).
 - Przewijanie między sekcjami jest swobodne. Na tym etapie nie wprowadzamy wymuszonego zatrzaskiwania (`scroll-snap`); ewentualne dodanie snapu jest osobną decyzją produktową.
 - Reguła nie może łamać dostępności. Przy powiększeniu tekstu, bardzo niskim ekranie lub otwartej klawiaturze treść MUSI pozostać w pełni osiągalna (bez przycięcia), nawet jeśli wymaga to przewinięcia — zgodnie z wymaganiem reflow WCAG 2.2 AA.
 - Fokus i kolejność czytania MUSZĄ pozostać poprawne mimo pełnoekranowego układu; granica ekranu nie może ukrywać treści ani kontrolek przed czytnikiem i klawiaturą.
@@ -220,7 +223,7 @@ W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokośc
 | klawiatura | wszystkie akcje działają bez myszy, a fokus jest widoczny |
 | kontrast | tekst, kontrolki i fokus spełniają WCAG 2.2 AA |
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
-| sekcje pełnoekranowe | każda główna sekcja wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
+| sekcje pełnoekranowe | każda główna sekcja poza dokumentową stroną przepisu wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
 | spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
 | geometria pierwszego ekranu | środek komunikatu głównego wypada w połowie przestrzeni między wspólnym nagłówkiem a panelem dróg; panel jest dosuwany do dolnej kotwicy sekcji, jego wysokość dopasowuje się do zawartości, a odstępy notatki od ramki panelu oraz drzewa od siatki dróg pozostają stałe między mobilnymi viewportami; referencje: iPhone 12 Pro (`390 × 844px`) i Pixel 7 (`412 × 839px`); lokalna geometria grupy akcji jest w [home-page.md](../product/features/home-page.md) |
 | brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |

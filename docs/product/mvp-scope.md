@@ -80,6 +80,7 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
 - docelowy zestaw przykładowych przepisów i pełna treść redakcyjna przepisów (porcje, zdjęcia; prototypowe kroki są już w modelu),
+- rozszerzenia strony przepisu wymagające nowych danych lub reguł: trudność, wartości odżywcze, przeliczanie porcji, osobne porady redakcyjne i podobne przepisy,
 - wiele wersji językowych.
 
 Typowane wydzielenie polskich tekstów interfejsu jest przygotowaniem technicznym,
@@ -94,6 +95,8 @@ jawnego, statycznego ekranu zastępczego. Nie oznacza to włączenia zaawansowan
 filtrowania do MVP ani ustalenia jego docelowego kontraktu.
 
 Dobór reprezentatywnego zestawu przepisów pozostaje odłożony do rozstrzygnięcia źródła danych o daniach. Do tego czasu strona przepisu i pozostałe ścieżki korzystają wyłącznie z jawnie zastępczych danych prototypowych potrzebnych do sprawdzenia bieżących przepływów.
+
+Interaktywny projekt `docs/assets/ui/recipe-page.html` pokazuje także powyższe rozszerzenia jako kierunek wizualny. Nie włącza ich do MVP; wiążącą interpretację projektu dla bieżącego modelu zawiera [recipe-page.md](./features/recipe-page.md).
 
 ## Nierozstrzygnięte
 
