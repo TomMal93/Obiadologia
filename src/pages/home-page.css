@@ -188,9 +188,10 @@
   margin: 0;
   padding: var(--space-8) var(--space-16);
   border-radius: var(--radius-pill);
-  /* Tło pigułki to pastelowy puls (jak tło kafli), więc biały tekst zastępuje
-     czytelny koral. */
-  color: var(--color-coral);
+  /* Tło pigułki to pastelowy puls (jak tło kafli), a tekst pulsuje w tym samym
+     rytmie nasyconym odcieniem marki — nasycony kolor na swoim jasnym
+     odpowiedniku pozostaje czytelny w każdej fazie. */
+  color: var(--brand-pulse);
   font-size: clamp(13px, 3.3vw, 15px);
   font-weight: 800;
   line-height: 1.15;
