@@ -142,7 +142,7 @@
 @property --brand-pulse {
   syntax: "<color>";
   inherits: true;
-  initial-value: #3877ff;
+  initial-value: #ff4f2e;
 }
 
 /* Miękki (pastelowy) odpowiednik pulsu marki — te same trzy kolory dróg, lecz w
@@ -152,12 +152,12 @@
 @property --brand-pulse-soft {
   syntax: "<color>";
   inherits: true;
-  initial-value: #eaf3ff;
+  initial-value: #fff1ec;
 }
 
 .intro-screen {
-  --brand-pulse: var(--color-map);
-  --brand-pulse-soft: var(--color-map-soft);
+  --brand-pulse: var(--color-coral);
+  --brand-pulse-soft: var(--color-coral-soft);
 
   animation: brand-pulse 9s ease-in-out infinite;
 }
@@ -165,25 +165,25 @@
 @keyframes brand-pulse {
   0%,
   17% {
-    --brand-pulse: var(--color-map);
-    --brand-pulse-soft: var(--color-map-soft);
-  }
-
-  33%,
-  50% {
     --brand-pulse: var(--color-coral);
     --brand-pulse-soft: var(--color-coral-soft);
   }
 
-  67%,
-  83% {
+  33%,
+  50% {
     --brand-pulse: var(--color-categories);
     --brand-pulse-soft: var(--color-categories-soft);
   }
 
-  100% {
+  67%,
+  83% {
     --brand-pulse: var(--color-map);
     --brand-pulse-soft: var(--color-map-soft);
+  }
+
+  100% {
+    --brand-pulse: var(--color-coral);
+    --brand-pulse-soft: var(--color-coral-soft);
   }
 }
 
