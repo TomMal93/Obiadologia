@@ -20,7 +20,14 @@ const menu = messages.menu;
 
 <header class="site-header">
   <a class="site-brand" href={homeHref} aria-label={messages.brandHomeLabel}>
-    <span class="site-brand-mark" aria-hidden="true">O</span>
+    <img
+      class="site-brand-mark"
+      src="/assets/obiadologia-logo.png"
+      width="48"
+      height="48"
+      alt=""
+      aria-hidden="true"
+    />
     <span>{messages.brand}</span>
   </a>
 
@@ -39,7 +46,14 @@ const menu = messages.menu;
 <nav id="site-menu" class="site-menu" aria-label={menu.label} data-site-menu>
   <div class="site-menu-header">
     <span class="site-menu-brand">
-      <span class="site-brand-mark" aria-hidden="true">O</span>
+      <img
+        class="site-brand-mark"
+        src="/assets/obiadologia-logo.png"
+        width="48"
+        height="48"
+        alt=""
+        aria-hidden="true"
+      />
       <span>{messages.brand}</span>
     </span>
     <button type="button" class="site-menu-close" aria-label={menu.closeLabel} data-site-menu-close>

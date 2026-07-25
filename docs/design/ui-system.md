@@ -122,6 +122,12 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 
 ## Komponenty wspólne
 
+### Znak marki
+
+- Znak marki wykorzystuje grafikę `public/assets/obiadologia-logo.png`: biały krąg z trzema punktami w kolorach niebieskim, koralowym i zielonym oraz miękką, wielobarwną poświatą.
+- Wspólny nagłówek strony, nagłówek menu i nagłówek overlaya pokazują ten sam znak w polu `48 × 48px`, obok nazwy „Obiadologia”.
+- Grafika jest dekoracyjna, ponieważ dostępna nazwa marki wynika z tekstu lub etykiety całego elementu.
+
 ### Przycisk i kafel wyboru
 
 - MUSI obsługiwać: `default`, `hover`, `focus-visible`, `active/selected`, `disabled` i `loading`.

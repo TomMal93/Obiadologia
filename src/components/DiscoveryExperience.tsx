@@ -772,7 +772,14 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
           onKeyDown={handleDialogKeyDown}
         >
           <div className="overlay-header">
-            <span className="overlay-brand-mark" aria-hidden="true">O</span>
+            <img
+              className="overlay-brand-mark"
+              src="/assets/obiadologia-logo.png"
+              width="48"
+              height="48"
+              alt=""
+              aria-hidden="true"
+            />
             <strong>{common.brand}</strong>
             <button type="button" className="overlay-close" aria-label={discoveryMessages.closeLabel} onClick={requestClose}>
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">

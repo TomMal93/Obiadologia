@@ -25,15 +25,13 @@
 }
 
 .site-brand-mark {
-  display: grid;
+  display: block;
+  flex: 0 0 auto;
   width: 48px;
   height: 48px;
-  place-items: center;
-  border-radius: var(--radius-field);
-  color: white;
-  font-weight: 800;
-  background: var(--brand-gradient);
-  box-shadow: 0 8px 20px rgb(255 79 46 / 24%);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Hamburger — otwiera mobilne menu nawigacyjne. */
