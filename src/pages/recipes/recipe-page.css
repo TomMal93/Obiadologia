@@ -242,6 +242,7 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 .recipe-segmented {
@@ -252,8 +253,36 @@
   background: var(--color-bg-shell);
 }
 
+.recipe-ingredients__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+}
+
+.recipe-ingredients__head > h2 {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+}
+
+.recipe-ingredients__tools {
+  display: grid;
+  justify-items: end;
+  gap: var(--space-4);
+}
+
 .unit-toggle {
-  margin-bottom: var(--space-8);
+  min-width: 0;
+  gap: 0;
+  padding: 0;
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.unit-toggle .recipe-segmented__option {
+  min-width: 0;
+  flex: 0 1 auto;
+  padding-inline: var(--space-4);
+  white-space: nowrap;
 }
 
 .recipe-segmented[hidden] {

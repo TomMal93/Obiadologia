@@ -121,35 +121,41 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
         <p class="recipe-lead">{recipe.description}</p>
 
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
-          <div class="recipe-section-head">
+          <div class="recipe-section-head recipe-ingredients__head">
             <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
-            <p
-              class="ingredient-progress"
-              data-ingredient-progress
-              aria-live="polite"
-              hidden
-            >
-              {ingredientProgress}
-            </p>
-          </div>
-
-          <div class="unit-toggle recipe-segmented" role="group" aria-label={messages.recipe.unitsLabel} hidden>
-            <button
-              type="button"
-              class="recipe-segmented__option is-active"
-              data-units-target="metric"
-              aria-pressed="true"
-            >
-              {messages.recipe.metricUnits}
-            </button>
-            <button
-              type="button"
-              class="recipe-segmented__option"
-              data-units-target="household"
-              aria-pressed="false"
-            >
-              {messages.recipe.householdUnits}
-            </button>
+            <div class="recipe-ingredients__tools">
+              <div
+                class="unit-toggle recipe-segmented"
+                role="group"
+                aria-label={messages.recipe.unitsLabel}
+                hidden
+              >
+                <button
+                  type="button"
+                  class="recipe-segmented__option is-active"
+                  data-units-target="metric"
+                  aria-pressed="true"
+                >
+                  {messages.recipe.metricUnits}
+                </button>
+                <button
+                  type="button"
+                  class="recipe-segmented__option"
+                  data-units-target="household"
+                  aria-pressed="false"
+                >
+                  {messages.recipe.householdUnits}
+                </button>
+              </div>
+              <p
+                class="ingredient-progress"
+                data-ingredient-progress
+                aria-live="polite"
+                hidden
+              >
+                {ingredientProgress}
+              </p>
+            </div>
           </div>
 
           <ul class="ingredient-list" data-units="metric">

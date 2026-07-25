@@ -35,6 +35,47 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
   await expect(ingredients.getByText('0/12 odhaczonych')).toBeVisible();
+  const ingredientHeadGeometry = await ingredients.evaluate((section) => {
+    const heading = section.querySelector('#ingredients-heading');
+    const unitToggle = section.querySelector('.unit-toggle');
+    const progress = section.querySelector('.ingredient-progress');
+    if (
+      !(heading instanceof HTMLElement)
+      || !(unitToggle instanceof HTMLElement)
+      || !(progress instanceof HTMLElement)
+    ) {
+      throw new Error('Ingredient section header was not found');
+    }
+    const headingBounds = heading.getBoundingClientRect();
+    const toggleBounds = unitToggle.getBoundingClientRect();
+    const progressBounds = progress.getBoundingClientRect();
+    return {
+      headingCenter: headingBounds.top + headingBounds.height / 2,
+      toggleCenter: toggleBounds.top + toggleBounds.height / 2,
+      headingRight: headingBounds.right,
+      toggleLeft: toggleBounds.left,
+      toggleBottom: toggleBounds.bottom,
+      toggleRight: toggleBounds.right,
+      toggleHeight: toggleBounds.height,
+      progressTop: progressBounds.top,
+      progressRight: progressBounds.right,
+    };
+  });
+  expect(ingredientHeadGeometry.toggleCenter).toBeCloseTo(
+    ingredientHeadGeometry.headingCenter,
+    0,
+  );
+  expect(ingredientHeadGeometry.toggleLeft).toBeGreaterThan(
+    ingredientHeadGeometry.headingRight,
+  );
+  expect(ingredientHeadGeometry.progressTop).toBeGreaterThanOrEqual(
+    ingredientHeadGeometry.toggleBottom,
+  );
+  expect(ingredientHeadGeometry.progressRight).toBeCloseTo(
+    ingredientHeadGeometry.toggleRight,
+    0,
+  );
+  expect(ingredientHeadGeometry.toggleHeight).toBe(44);
   await expect(
     ingredients.getByRole('button', { name: /Odhacz składnik: młode ziemniaki/ }),
   ).toBeVisible();
