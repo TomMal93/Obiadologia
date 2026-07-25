@@ -68,7 +68,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 - Gdy przepis ma pole `tips`, strona pokazuje po krokach sekcję „Coś jeszcze” z poradami w kolejności zapisanej w danych. Brak pola nie pozostawia pustej sekcji. Porady są zwykłą treścią HTML i pozostają dostępne bez JavaScriptu.
 - Strona pokazuje wszystkie tagi w kolejności zapisanej w `tags`, na dolnej nakładce hero nad tytułem, jako drobne etykiety pisane wielkimi literami (bez punktorów i bez tła pigułki); reguła „od jednego do trzech tagów” dotyczy karty wyniku, nie strony przepisu ([data-model.md](../../engineering/data-model.md)).
 - Brak zdjęcia (`image: null`) pokazuje wspólny, dekoracyjny placeholder bez zmiany układu strony; placeholder nie powiela dostępnej nazwy przepisu ([data-model.md](../../engineering/data-model.md)).
-- Widoczna akcja „Wróć” w hero jest linkiem do `/` i ma dostępną nazwę wyjaśniającą powrót do strony głównej. Przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md).
+- Widoczna akcja „Wróć” w hero cofa do poprzedniego wpisu historii przeglądarki, dzięki czemu przywraca widok, z którego otwarto przepis — w tym zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md). Gdy przepis otwarto bezpośrednio i nie ma poprzedniego wpisu, link prowadzi awaryjnie do `/`. Dostępna nazwa wyjaśnia powrót do poprzedniego widoku.
 - Do czasu rozstrzygnięcia źródła danych (`OPEN-003`) strona jawnie oznacza dane jako prototypowe i wskazuje, że pełna treść redakcyjna powstanie później.
 
 ## Prezentacja
@@ -94,7 +94,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | 1 | Kliknięcie karty wyniku na dowolnej drodze otwiera `/recipes/:slug` z tytułem przepisu w `h1`. |
 | 2 | Strona pokazuje opis, trudność, bazową liczbę porcji, czas przygotowania, wszystkie tagi, pełną listę składników przepisu z grammaturą oraz numerowane kroki przygotowania. |
 | 3 | Przy `image: null` widoczny jest dekoracyjny placeholder, a układ strony nie zmienia wymiarów. |
-| 4 | Akcja „Wróć” w hero prowadzi do `/`; przeglądarkowe „Wstecz” po wejściu z overlaya przywraca zawieszoną sesję. |
+| 4 | Akcja „Wróć” w hero przywraca poprzedni widok z historii, w tym zawieszoną sesję discovery; przy bezpośrednim otwarciu przepisu prowadzi awaryjnie do `/`. |
 | 5 | Tytuł dokumentu i meta description są unikalne dla przepisu. |
 | 6 | Strona przechodzi automatyczną kontrolę `axe-core`, działa klawiaturą i nie tworzy poziomego przewijania w zakresie `320–480px`. |
 | 7 | Dane prototypowe są jawnie oznaczone jako prototypowe. |

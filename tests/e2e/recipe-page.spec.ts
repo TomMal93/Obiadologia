@@ -73,8 +73,25 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
     ),
   ).toBe(true);
 
-  await page.getByRole('link', { name: 'Wróć do strony głównej' }).click();
+  await page.getByRole('link', { name: 'Wróć do poprzedniego widoku' }).click();
   await expect(page).toHaveURL('/');
+});
+
+test('recipe back action restores the previous discovery view', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Szukaj' }).click();
+
+  const dialog = page.getByRole('dialog');
+  const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
+  await search.fill('schab');
+  await dialog.getByRole('link', { name: /Kotlet schabowy z ziemniakami/ }).click();
+  await expect(page).toHaveURL(/\/recipes\/kotlet-schabowy-z-ziemniakami$/);
+
+  await page.getByRole('link', { name: 'Wróć do poprzedniego widoku' }).click();
+
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('schab');
 });
 
 test('recipe preparation enables assistant mode and start-time calculation', async ({ page }) => {

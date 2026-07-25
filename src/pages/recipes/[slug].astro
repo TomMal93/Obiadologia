@@ -63,7 +63,12 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
           }
         </div>
         <div class="recipe-hero__shade" aria-hidden="true"></div>
-        <a class="recipe-back" href="/" aria-label={messages.recipe.backLabel}>
+        <a
+          class="recipe-back"
+          href="/"
+          aria-label={messages.recipe.backLabel}
+          data-recipe-back
+        >
           {messages.recipe.backShort}
         </a>
         <div class="recipe-hero__caption">
@@ -354,8 +359,26 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
   import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
 
   const article = document.querySelector<HTMLElement>('.recipe-article');
+  const backLink = document.querySelector<HTMLAnchorElement>('[data-recipe-back]');
   const unitToggle = article?.querySelector<HTMLElement>('.unit-toggle');
   const ingredientList = article?.querySelector<HTMLElement>('.ingredient-list');
+
+  backLink?.addEventListener('click', (event) => {
+    if (
+      event.button !== 0
+      || event.metaKey
+      || event.ctrlKey
+      || event.shiftKey
+      || event.altKey
+      || window.history.length <= 1
+      || !document.referrer
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    window.history.back();
+  });
 
   if (unitToggle && ingredientList) {
     unitToggle.hidden = false;

@@ -184,7 +184,7 @@ export const pl = {
     servingsLabel: 'Porcje',
     decreaseServingsLabel: 'Zmniejsz liczbę porcji',
     increaseServingsLabel: 'Zwiększ liczbę porcji',
-    backLabel: 'Wróć do strony głównej',
+    backLabel: 'Wróć do poprzedniego widoku',
     backShort: '← Wróć',
     ingredientsHeading: 'Składniki',
     ingredientsProgress: '{checked}/{total} odhaczonych',
