@@ -18,6 +18,15 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
   await expect(servings).toHaveText('4');
   await expect(decreaseServings).toBeVisible();
   await expect(increaseServings).toBeVisible();
+  await expect(decreaseServings).toHaveCSS('width', '44px');
+  await expect(decreaseServings.locator('.servings-control__button-mark')).toHaveCSS(
+    'width',
+    '32px',
+  );
+  const metaLabelTops = await page.locator('.recipe-meta__label').evaluateAll(
+    (labels) => labels.map((label) => label.getBoundingClientRect().top),
+  );
+  expect(new Set(metaLabelTops.map(Math.round)).size).toBe(1);
 
   const tags = page.getByRole('list', { name: 'Tagi' });
   for (const tag of ['obiad', 'domowe', 'klasyka']) {

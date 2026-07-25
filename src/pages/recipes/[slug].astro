@@ -94,7 +94,7 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
               aria-label={messages.recipe.decreaseServingsLabel}
               hidden
             >
-              −
+              <span class="servings-control__button-mark" aria-hidden="true">−</span>
             </button>
             <strong data-servings-output aria-live="polite">{recipe.servings}</strong>
             <button
@@ -104,7 +104,7 @@ const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
               aria-label={messages.recipe.increaseServingsLabel}
               hidden
             >
-              +
+              <span class="servings-control__button-mark" aria-hidden="true">+</span>
             </button>
           </div>
         </div>
