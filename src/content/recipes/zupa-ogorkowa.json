@@ -9,61 +9,73 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "pantry",
       "name": "bulion drobiowy albo warzywny",
       "amount": 1500,
       "unit": "ml"
     },
     {
+      "category": "produce",
       "name": "ogórki kiszone",
       "amount": 400,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "zalewa z ogórków kiszonych",
       "amount": 100,
       "unit": "ml"
     },
     {
+      "category": "produce",
       "name": "ziemniaki",
       "amount": 500,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "marchew",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "korzeń pietruszki",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "cebula",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "dairy",
       "name": "śmietana 18%",
       "amount": 200,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "masło",
       "amount": 20,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "świeży koperek, opcjonalnie",
       "amount": 10,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

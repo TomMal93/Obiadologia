@@ -48,16 +48,19 @@ najważniejsze.
 
 ## Składniki
 
-Każdy składnik musi mieć dodatnią ilość i jednostkę `g`, `ml` albo `szt`.
+Każdy składnik musi mieć kategorię zakupową, dodatnią ilość i jednostkę `g`,
+`ml` albo `szt`. Dozwolone kategorie to `produce`, `meat`, `dairy`, `grains`,
+`pantry` i `spices`; ich znaczenie definiuje
+[data-model.md](../engineering/data-model.md).
 `gramsPerCup` jest opcjonalne i oznacza masę jednej szklanki 250 ml; uzupełnij
 je tylko wtedy, gdy masa składnika ma być przeliczana na miary domowe. Wszystkie
 ilości podaj dla bazowej liczby porcji wskazanej wyżej.
 
-| Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) |
-|---|---:|---|---:|
-| [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
-| [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
-| [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
+| Kategoria zakupowa | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) |
+|---|---|---:|---|---:|
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
 
 ## Wcześniej — opcjonalne
 
@@ -131,7 +134,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Tytuł i opis są naturalne oraz napisane po polsku.
 - [ ] Czas jest dodatnią liczbą całkowitą.
 - [ ] Trudność ma jedną z dozwolonych wartości, a bazowa liczba porcji mieści się w zakresie `1–12`.
-- [ ] Każdy składnik ma dodatnią ilość i dozwoloną jednostkę.
+- [ ] Każdy składnik ma kategorię zakupową, dodatnią ilość i dozwoloną jednostkę.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
 - [ ] Każda grupa dopasowania ma co najmniej jedną wartość.

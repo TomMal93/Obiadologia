@@ -9,51 +9,61 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "meat",
       "name": "podudzia z kurczaka",
       "amount": 8,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "ziemniaki",
       "amount": 1000,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "oliwa albo olej",
       "amount": 60,
       "unit": "ml"
     },
     {
+      "category": "produce",
       "name": "czosnek",
       "amount": 3,
       "unit": "szt"
     },
     {
+      "category": "spices",
       "name": "papryka słodka mielona",
       "amount": 10,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "majeranek suszony",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "masło, tylko do ziemniaków gotowanych",
       "amount": 30,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "świeży koperek albo natka pietruszki, opcjonalnie",
       "amount": 15,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 8,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 3,
       "unit": "ml"

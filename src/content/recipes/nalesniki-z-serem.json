@@ -9,58 +9,69 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "grains",
       "name": "mąka pszenna",
       "amount": 250,
       "unit": "g",
       "gramsPerCup": 150
     },
     {
+      "category": "dairy",
       "name": "mleko",
       "amount": 400,
       "unit": "ml"
     },
     {
+      "category": "pantry",
       "name": "woda gazowana",
       "amount": 100,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "jajka do ciasta",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "pantry",
       "name": "olej do ciasta",
       "amount": 20,
       "unit": "ml"
     },
     {
+      "category": "pantry",
       "name": "olej do smażenia",
       "amount": 40,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "twaróg półtłusty",
       "amount": 500,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "cukier",
       "amount": 60,
       "unit": "g",
       "gramsPerCup": 200
     },
     {
+      "category": "pantry",
       "name": "cukier waniliowy",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "dairy",
       "name": "śmietana albo jogurt do podania, opcjonalnie",
       "amount": 150,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 2,
       "unit": "ml"

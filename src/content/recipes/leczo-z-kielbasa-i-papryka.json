@@ -9,61 +9,73 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "meat",
       "name": "kiełbasa śląska albo podwawelska",
       "amount": 400,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "papryka czerwona i żółta",
       "amount": 4,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "cebula",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "pantry",
       "name": "passata pomidorowa albo pomidory z puszki",
       "amount": 400,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "koncentrat pomidorowy",
       "amount": 30,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "czosnek",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "pantry",
       "name": "olej",
       "amount": 30,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "papryka słodka mielona",
       "amount": 10,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "papryka ostra albo chili, opcjonalnie",
       "amount": 3,
       "unit": "ml"
     },
     {
+      "category": "pantry",
       "name": "cukier",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

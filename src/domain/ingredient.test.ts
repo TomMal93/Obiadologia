@@ -8,11 +8,18 @@ import {
 } from './ingredient';
 
 const make = (ingredient: Partial<Ingredient> & Pick<Ingredient, 'unit' | 'amount'>): Ingredient =>
-  ingredientSchema.parse({ name: 'test', ...ingredient });
+  ingredientSchema.parse({ category: 'pantry', name: 'test', ...ingredient });
 
 describe('ingredient schema', () => {
   it('accepts a metric ingredient with an optional density', () => {
-    expect(ingredientSchema.parse({ name: 'mąka', amount: 130, unit: 'g', gramsPerCup: 130 })).toEqual({
+    expect(ingredientSchema.parse({
+      category: 'grains',
+      name: 'mąka',
+      amount: 130,
+      unit: 'g',
+      gramsPerCup: 130,
+    })).toEqual({
+      category: 'grains',
       name: 'mąka',
       amount: 130,
       unit: 'g',
@@ -21,8 +28,16 @@ describe('ingredient schema', () => {
   });
 
   it('rejects a non-positive amount and an unknown unit', () => {
-    expect(() => ingredientSchema.parse({ name: 'sól', amount: 0, unit: 'g' })).toThrow();
-    expect(() => ingredientSchema.parse({ name: 'sól', amount: 5, unit: 'kg' })).toThrow();
+    expect(() =>
+      ingredientSchema.parse({ category: 'spices', name: 'sól', amount: 0, unit: 'g' }),
+    ).toThrow();
+    expect(() =>
+      ingredientSchema.parse({ category: 'spices', name: 'sól', amount: 5, unit: 'kg' }),
+    ).toThrow();
+    expect(() =>
+      ingredientSchema.parse({ category: 'frozen', name: 'groszek', amount: 200, unit: 'g' }),
+    ).toThrow();
+    expect(() => ingredientSchema.parse({ name: 'sól', amount: 5, unit: 'g' })).toThrow();
   });
 });
 

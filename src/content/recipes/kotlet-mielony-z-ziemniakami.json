@@ -9,62 +9,74 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "meat",
       "name": "mięso mielone wieprzowe albo wieprzowo-wołowe",
       "amount": 600,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "ziemniaki",
       "amount": 800,
       "unit": "g"
     },
     {
+      "category": "grains",
       "name": "czerstwa bułka",
       "amount": 80,
       "unit": "g"
     },
     {
+      "category": "dairy",
       "name": "mleko do namoczenia bułki",
       "amount": 80,
       "unit": "ml"
     },
     {
+      "category": "produce",
       "name": "cebula",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "dairy",
       "name": "jajko",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "grains",
       "name": "bułka tarta do panierowania",
       "amount": 80,
       "unit": "g",
       "gramsPerCup": 110
     },
     {
+      "category": "pantry",
       "name": "olej do smażenia",
       "amount": 80,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "masło do ziemniaków",
       "amount": 30,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "świeży koperek, opcjonalnie",
       "amount": 15,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 6,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

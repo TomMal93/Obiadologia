@@ -9,61 +9,73 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "pantry",
       "name": "bulion warzywny albo drobiowy",
       "amount": 1500,
       "unit": "ml"
     },
     {
+      "category": "pantry",
       "name": "passata pomidorowa albo przecier",
       "amount": 500,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "koncentrat pomidorowy",
       "amount": 60,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "marchew",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "korzeń pietruszki",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "cebula",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "dairy",
       "name": "śmietana 18%",
       "amount": 200,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "masło",
       "amount": 20,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "natka pietruszki, opcjonalnie",
       "amount": 10,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "cukier",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 6,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

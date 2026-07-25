@@ -9,76 +9,91 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "dairy",
       "name": "jajka",
       "amount": 6,
       "unit": "szt"
     },
     {
+      "category": "pantry",
       "name": "pomidory krojone z puszki albo passata",
       "amount": 800,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "papryka czerwona",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "cebula",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "czosnek",
       "amount": 3,
       "unit": "szt"
     },
     {
+      "category": "pantry",
       "name": "koncentrat pomidorowy",
       "amount": 30,
       "unit": "g"
     },
     {
+      "category": "pantry",
       "name": "oliwa",
       "amount": 40,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "kmin rzymski mielony",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "papryka słodka mielona",
       "amount": 10,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "papryka ostra albo chili, opcjonalnie",
       "amount": 3,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "feta albo ser typu feta, opcjonalnie",
       "amount": 100,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "świeża kolendra albo natka, opcjonalnie",
       "amount": 15,
       "unit": "g"
     },
     {
+      "category": "grains",
       "name": "pieczywo do podania",
       "amount": 4,
       "unit": "szt"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

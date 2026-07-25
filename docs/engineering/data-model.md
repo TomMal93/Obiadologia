@@ -56,7 +56,8 @@ Difficulty = easy | medium | hard
 MapPosition = { pace: 0..1, lightness: 0..1 }
 ImageReference = { src: string, alt: string }
 IngredientUnit = g | ml | szt
-Ingredient = { name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0 }
+IngredientCategory = produce | meat | dairy | grains | pantry | spices
+Ingredient = { category: IngredientCategory, name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0 }
 AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 ```
 
@@ -68,6 +69,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 - `lightness: 0` oznacza „konkretnie”, a `lightness: 1` — „lekko”.
 - Punkt `(0.5, 0.5)` jest neutralnym środkiem mapy.
 - Miarą bazową składnika jest zawsze wartość metryczna (`g`, `ml` albo `szt`). Formę domową (szklanki/łyżki/łyżeczki/szczypta) wyliczamy z miary metrycznej — nie jest osobno przechowywana, aby obie prezentacje nie mogły się rozjechać.
+- `category` przypisuje składnik do kontrolowanej grupy zakupowej: warzywa i owoce (`produce`), mięso i wędliny (`meat`), nabiał i jajka (`dairy`), pieczywo i produkty zbożowe (`grains`), produkty spiżarniane (`pantry`) albo przyprawy (`spices`). Strona przepisu prezentuje wyłącznie grupy obecne w danym przepisie, zawsze w tej kolejności.
 - `gramsPerCup` (gramy na szklankę 250 ml) jest opcjonalną gęstością składnika sypkiego; pozwala przeliczyć masę na miarę domową. Bez niej masa (`g`) pozostaje w gramach, bo dla wielu produktów miara domowa nie ma sensu.
 - Ilości w `ingredients` odpowiadają liczbie `servings`. Zmiana liczby porcji na stronie skaluje każdą ilość przez iloraz `wybrane porcje / servings`; nie zmienia danych przepisu ani nie jest zapisywana między wizytami.
 
@@ -87,9 +89,9 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
   "difficulty": "easy",
   "servings": 2,
   "ingredients": [
-    { "name": "kurczak", "amount": 400, "unit": "g" },
-    { "name": "sałata", "amount": 1, "unit": "szt" },
-    { "name": "oliwa", "amount": 30, "unit": "ml" }
+    { "category": "meat", "name": "kurczak", "amount": 400, "unit": "g" },
+    { "category": "produce", "name": "sałata", "amount": 1, "unit": "szt" },
+    { "category": "pantry", "name": "oliwa", "amount": 30, "unit": "ml" }
   ],
   "advance": [
     { "text": "Kurczaka natrzyj oliwą, solą i przyprawami, odstaw do zamarynowania.", "leadTimeMinutes": 120 }

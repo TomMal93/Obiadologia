@@ -25,6 +25,7 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | typy modelu `Recipe` i reguły Kategorii (bez zod, bezpieczne dla paczki klienckiej) | `src/domain/recipe.ts` |
 | schematy `zod` i walidacja `parseRecipes` (wyłącznie etap builda) | `src/domain/recipe-schema.ts` |
 | schemat `Ingredient` i jego walidacja buildowa | `src/domain/ingredient.ts` |
+| kontrolowany podział składników na grupy zakupowe | `src/domain/ingredient-category.ts` |
 | kliencki model ilości składnika, formatowanie i przeliczanie miar | `src/domain/ingredient-measure.ts` |
 | logika czasu etapów „Wcześniej” (formatowanie wyprzedzenia, godziny startu) | `src/domain/recipe-schedule.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |

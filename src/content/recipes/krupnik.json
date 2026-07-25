@@ -9,67 +9,80 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "pantry",
       "name": "bulion drobiowy",
       "amount": 1500,
       "unit": "ml"
     },
     {
+      "category": "grains",
       "name": "kasza jęczmienna",
       "amount": 100,
       "unit": "g",
       "gramsPerCup": 200
     },
     {
+      "category": "produce",
       "name": "ziemniaki",
       "amount": 400,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "marchew",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "korzeń pietruszki",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "seler korzeniowy",
       "amount": 100,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "cebula",
       "amount": 1,
       "unit": "szt"
     },
     {
+      "category": "dairy",
       "name": "masło",
       "amount": 20,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "liść laurowy",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "spices",
       "name": "ziele angielskie",
       "amount": 3,
       "unit": "szt"
     },
     {
+      "category": "produce",
       "name": "natka pietruszki, opcjonalnie",
       "amount": 10,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 6,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

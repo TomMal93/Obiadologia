@@ -9,36 +9,43 @@
   "servings": 2,
   "ingredients": [
     {
+      "category": "dairy",
       "name": "jajka",
       "amount": 6,
       "unit": "szt"
     },
     {
+      "category": "dairy",
       "name": "masło",
       "amount": 20,
       "unit": "g"
     },
     {
+      "category": "meat",
       "name": "boczek wędzony, tylko do wariantu z boczkiem",
       "amount": 100,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "szczypiorek",
       "amount": 15,
       "unit": "g"
     },
     {
+      "category": "grains",
       "name": "pieczywo do podania",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 3,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

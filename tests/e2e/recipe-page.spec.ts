@@ -35,6 +35,14 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
   await expect(ingredients.getByText('0/12 odhaczonych')).toBeVisible();
+  await expect(ingredients.getByRole('heading', { level: 3 })).toHaveText([
+    'Warzywa i owoce',
+    'Mięso i wędliny',
+    'Nabiał i jajka',
+    'Pieczywo i produkty zbożowe',
+    'Spiżarnia',
+    'Przyprawy',
+  ]);
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
     const unitToggle = section.querySelector('.unit-toggle');

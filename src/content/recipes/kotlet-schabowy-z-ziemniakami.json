@@ -9,63 +9,75 @@
   "servings": 4,
   "ingredients": [
     {
+      "category": "meat",
       "name": "schab bez kości",
       "amount": 600,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "młode ziemniaki albo ziemniaki mączyste na purée",
       "amount": 800,
       "unit": "g"
     },
     {
+      "category": "dairy",
       "name": "jajka",
       "amount": 2,
       "unit": "szt"
     },
     {
+      "category": "grains",
       "name": "bułka tarta",
       "amount": 120,
       "unit": "g",
       "gramsPerCup": 110
     },
     {
+      "category": "grains",
       "name": "mąka pszenna",
       "amount": 60,
       "unit": "g",
       "gramsPerCup": 150
     },
     {
+      "category": "pantry",
       "name": "olej do smażenia",
       "amount": 150,
       "unit": "ml"
     },
     {
+      "category": "dairy",
       "name": "masło",
       "amount": 40,
       "unit": "g"
     },
     {
+      "category": "dairy",
       "name": "mleko, tylko do purée",
       "amount": 120,
       "unit": "ml"
     },
     {
+      "category": "meat",
       "name": "słonina albo wędzony boczek, opcjonalnie do skwarek",
       "amount": 120,
       "unit": "g"
     },
     {
+      "category": "produce",
       "name": "świeży koperek, opcjonalnie",
       "amount": 15,
       "unit": "g"
     },
     {
+      "category": "spices",
       "name": "sól",
       "amount": 5,
       "unit": "ml"
     },
     {
+      "category": "spices",
       "name": "pieprz",
       "amount": 2,
       "unit": "ml"

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ingredientCategories } from './ingredient-category';
 import { ingredientUnits } from './ingredient-measure';
 
 export {
@@ -16,6 +17,7 @@ export type { IngredientMeasure, IngredientUnit } from './ingredient-measure';
  */
 export const ingredientSchema = z
   .object({
+    category: z.enum(ingredientCategories),
     name: z.string().trim().min(1),
     amount: z.number().positive(),
     unit: z.enum(ingredientUnits),

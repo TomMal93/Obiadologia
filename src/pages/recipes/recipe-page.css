@@ -326,6 +326,24 @@
   gap: var(--space-4);
 }
 
+.ingredient-groups {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.ingredient-group {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ingredient-group h3 {
+  margin: 0;
+  padding-inline: var(--space-8);
+  color: var(--color-coral-strong);
+  font-size: var(--font-size-16);
+  font-weight: 800;
+}
+
 .ingredient__toggle,
 .ingredient__fallback {
   width: 100%;
@@ -395,8 +413,8 @@
   white-space: nowrap;
 }
 
-.ingredient-list[data-units='metric'] .ingredient__measure-household,
-.ingredient-list[data-units='household'] .ingredient__measure-metric {
+.ingredient-groups[data-units='metric'] .ingredient__measure-household,
+.ingredient-groups[data-units='household'] .ingredient__measure-metric {
   display: none;
 }
 
