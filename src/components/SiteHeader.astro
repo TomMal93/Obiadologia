@@ -16,6 +16,17 @@ interface Props {
 
 const { messages, homeHref = '/' } = Astro.props;
 const menu = messages.menu;
+
+// Marka z akcentem: końcówka „logia" dostaje tęczowy gradient tekstu w trzech
+// kolorach kropek z logo (niebieski → czerwony → zielony). Podział liczymy raz,
+// bo nazwa renderuje się i w nagłówku, i w panelu menu. Reszta wyrazu zostaje
+// w standardowym kolorze tekstu, więc czytniki ekranu odczytują całość naturalnie.
+const brand = messages.brand;
+const accentText = 'logia';
+const accentIndex = brand.toLowerCase().lastIndexOf(accentText);
+const brandHead = accentIndex >= 0 ? brand.slice(0, accentIndex) : brand;
+const brandAccent = accentIndex >= 0 ? brand.slice(accentIndex, accentIndex + accentText.length) : '';
+const brandTail = accentIndex >= 0 ? brand.slice(accentIndex + accentText.length) : '';
 ---
 
 <header class="site-header">
@@ -28,7 +39,9 @@ const menu = messages.menu;
       alt=""
       aria-hidden="true"
     />
-    <span>{messages.brand}</span>
+    <span class="site-brand-name"
+      >{brandHead}<span class="site-brand-accent">{brandAccent}</span>{brandTail}</span
+    >
   </a>
 
   <button
@@ -54,7 +67,9 @@ const menu = messages.menu;
         alt=""
         aria-hidden="true"
       />
-      <span>{messages.brand}</span>
+      <span class="site-brand-name"
+        >{brandHead}<span class="site-brand-accent">{brandAccent}</span>{brandTail}</span
+      >
     </span>
     <button type="button" class="site-menu-close" aria-label={menu.closeLabel} data-site-menu-close>
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">

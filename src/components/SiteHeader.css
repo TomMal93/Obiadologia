@@ -24,6 +24,28 @@
   text-decoration: none;
 }
 
+/* Końcówka nazwy „logia" jako gradient tekstu w trzech kolorach kropek z logo:
+   niebieski → czerwony → zielony. Fallback na czysty kolor, gdyby przeglądarka
+   nie obsługiwała przycinania tła do tekstu. */
+.site-brand-accent {
+  color: var(--color-coral);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-blue) 0%,
+    var(--color-coral) 50%,
+    var(--color-green) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .site-brand-accent {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
 .site-brand-mark {
   display: block;
   flex: 0 0 auto;
