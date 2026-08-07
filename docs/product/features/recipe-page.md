@@ -79,7 +79,8 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 - Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia.
 - Akcja „Powrót” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
 - Akcje zmiany porcji są okrągłe, mają minimalny obszar aktywny `44 × 44px`, dostępne nazwy i stan `disabled` na granicach zakresu.
-- Przełącznik jednostek zajmuje osobny wiersz pod nagłówkiem „Składniki” i pełną szerokość kolumny treści, dzięki czemu oba segmenty zachowują wygodny obszar dotyku i czytelne odstępy w całym zakresie mobilnym.
+- Opis rozpoczyna właściwą kolumnę treści jako panel „O daniu” w tej samej neutralnej ramce i z takim samym nagłówkiem jak sekcja „Przygotowanie”. Nie jest częścią koralowego paska metadanych.
+- Sekcja „Składniki” korzysta z tej samej neutralnej ramki co panel „O daniu” i sekcja „Przygotowanie”. Przełącznik jednostek zajmuje w niej osobny wiersz pod nagłówkiem i pełną szerokość kolumny treści, dzięki czemu oba segmenty zachowują wygodny obszar dotyku i czytelne odstępy w całym zakresie mobilnym.
 - Pomocnik „Kiedy zacząć” używa tej samej jasnej koralowej powierzchni i ciemnego koralowego nagłówka co panel „Coś jeszcze”, ale zachowuje subtelne obramowanie, zwarty rytm odstępów i minimalistyczne pole czasu. Sekcje „Przygotowanie” i „Kroki” pozostają na wspólnej neutralnej, jasnej powierzchni z takim samym obramowaniem i promieniem, lecz luźniejszym paddingiem.
 - Strona przepisu jest długim dokumentem przewijanym w normalnym przepływie. Nie podlega regule „jedna sekcja = jeden ekran”; nie może mieć wewnętrznego przewijania całego artykułu ani ściskać treści do wysokości viewportu.
 - Sekcja „Coś jeszcze” używa jasnego koralowego panelu z nagłówkiem w ciemnym koralu oraz dekoracyjnymi znacznikami porad, zgodnie z referencją projektu.

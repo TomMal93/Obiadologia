@@ -134,10 +134,16 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
             </strong>
           </div>
         </div>
-        <p class="recipe-lead">{recipe.description}</p>
       </div>
 
       <div class="recipe-body">
+        <section class="recipe-lead" aria-labelledby="description-heading">
+          <div class="recipe-section-head recipe-section-head--stacked">
+            <h2 id="description-heading">{messages.recipe.descriptionHeading}</h2>
+          </div>
+          <p>{recipe.description}</p>
+        </section>
+
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
           <div class="recipe-section-head recipe-ingredients__head">
             <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
