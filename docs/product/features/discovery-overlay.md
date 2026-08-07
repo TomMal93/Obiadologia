@@ -152,12 +152,14 @@ Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań;
 - pod polem widoczny jest blok „A może w tę stronę?” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj podpowiedzi, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie podpowiedzi ustawia ją jako jedno aktywne zapytanie.
+- etykieta podpowiedzi ma najwyżej dwa słowa; rozbudowane nazwy składników zawierające warianty, zastosowanie albo uwagi z przepisu nie trafiają do mozaiki;
 
 Usunięcie całej treści przywraca ten stan.
 
 ### Zapytanie i sugestie
 
 - Wyniki i sugestie aktualizują się po każdej zmianie zapytania, bez przeładowania strony i bez przycisku zatwierdzającego.
+- Lista wyników pokazuje wszystkie przepisy dopasowane do bieżącego zapytania; nie stosuje limitu liczby pozycji.
 - Zapytanie jest normalizowane zgodnie z regułami w `data-model.md`, w tym bez rozróżniania wielkości liter i z tolerancją polskich znaków.
 - Implementacja może zastosować krótkie opóźnienie około `200ms`, jeżeli zachowuje odczucie wyszukiwania na żywo.
 - Sugestie są powiązane z aktualnym zapytaniem i mogą reprezentować danie, składnik, smak, kategorię albo tag.
@@ -309,8 +311,10 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 
 - Po otwarciu pole jest puste i nie pokazuje przypadkowych wyników; fokus trafia na dialog, więc klawiatura ekranowa nie otwiera się automatycznie.
 - Zmiana zapytania automatycznie aktualizuje sugestie i wyniki.
+- Wyniki wyszukiwania tekstowego obejmują wszystkie dopasowane przepisy.
 - Wybranie sugestii ustawia jedno aktywne zapytanie.
 - Wyczyszczenie pola przywraca stan początkowy.
+- Podpowiedzi w mozaice mają najwyżej dwa słowa i nie pokazują rozbudowanych opisów składników.
 - Pole i sugestie są w pełni obsługiwalne klawiaturą.
 
 ### Mapa

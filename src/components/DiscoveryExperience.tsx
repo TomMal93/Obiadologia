@@ -485,7 +485,7 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
   }, [currentMap]);
 
   const searchResults = useMemo(
-    () => recipeSearch.search(debouncedQuery).slice(0, 4),
+    () => recipeSearch.search(debouncedQuery),
     [recipeSearch, debouncedQuery],
   );
   const suggestions = useMemo(

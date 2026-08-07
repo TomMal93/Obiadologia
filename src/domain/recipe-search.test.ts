@@ -42,7 +42,21 @@ describe('recipe search', () => {
   });
 
   it('offers typed tropes from categories and ingredients, each a real query', () => {
-    const search = createRecipeSearch(testRecipes);
+    const recipeWithVerboseIngredient = {
+      ...testRecipes[0],
+      id: 'test_verbose_ingredient',
+      slug: 'testowy-rozbudowany-skladnik',
+      ingredients: [
+        ...testRecipes[0].ingredients,
+        {
+          category: 'produce' as const,
+          name: 'młode ziemniaki albo ziemniaki mączyste na purée',
+          amount: 500,
+          unit: 'g' as const,
+        },
+      ],
+    };
+    const search = createRecipeSearch([...testRecipes, recipeWithVerboseIngredient]);
     const tropes = search.tropes();
 
     expect(tropes.length).toBeGreaterThan(0);
@@ -52,6 +66,7 @@ describe('recipe search', () => {
     // Zapytania są unikalne i każde prowadzi do trafień.
     expect(new Set(tropes.map((trope) => trope.query)).size).toBe(tropes.length);
     for (const trope of tropes) {
+      expect(trope.label.trim().split(/\s+/u).length).toBeLessThanOrEqual(2);
       expect(search.search(trope.query).length).toBeGreaterThan(0);
     }
   });

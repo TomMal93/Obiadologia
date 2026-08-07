@@ -104,6 +104,20 @@ describe('DiscoveryExperience overlay', () => {
       .toHaveClass('visually-hidden');
   });
 
+  it('shows every recipe matching a text query', async () => {
+    renderExperience();
+    fireEvent.click(addOpener('search'));
+
+    const dialog = await screen.findByRole('dialog');
+    const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
+    fireEvent.change(input, { target: { value: 'testowe' } });
+
+    await waitFor(() => {
+      expect(within(dialog).getAllByRole('link', { name: /Testowe/ }))
+        .toHaveLength(testRecipes.length);
+    });
+  });
+
   it('fills the empty field with popular tropes and runs one when picked', async () => {
     renderExperience();
     fireEvent.click(addOpener('search'));

@@ -205,7 +205,11 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
       for (const recipe of published) {
         for (const { name } of recipe.ingredients) {
           const normalized = normalizeSearchText(name);
-          if (genericIngredients.has(name) || seenIngredient.has(normalized)) continue;
+          if (
+            genericIngredients.has(name) ||
+            seenIngredient.has(normalized) ||
+            !isUsefulCompactSuggestion(name)
+          ) continue;
           seenIngredient.add(normalized);
           ingredient.push({ label: capitalize(name), query: name, kind: 'ingredient' });
         }
