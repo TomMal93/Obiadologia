@@ -158,28 +158,45 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   const preparation = page.getByRole('region', { name: 'Przygotowanie' });
   const startHelper = page.getByRole('region', { name: 'Kiedy zacząć' });
   const steps = page.getByRole('region', { name: 'Kroki' });
+  const tips = page.getByRole('region', { name: 'Coś jeszcze' });
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(4);
+  await expect(startHelper.locator('.start-helper__hint')).toHaveCount(0);
+  await expect(startHelper.locator('.start-helper__field')).toHaveCSS('padding', '0px');
+  await expect(startHelper.locator('.start-helper__field')).toHaveCSS(
+    'background-color',
+    'rgba(0, 0, 0, 0)',
+  );
   const cardStyles = await Promise.all(
     [startHelper, preparation, steps].map((section) =>
       section.evaluate((element) => {
         const styles = getComputedStyle(element);
         return {
-          backgroundColor: styles.backgroundColor,
           border: styles.border,
           borderRadius: styles.borderRadius,
-          padding: styles.padding,
         };
       }),
     ),
   );
   expect(cardStyles[1]).toEqual(cardStyles[0]);
   expect(cardStyles[2]).toEqual(cardStyles[0]);
+  await expect(startHelper).toHaveCSS('padding', '12px');
+  await expect(startHelper).toHaveCSS('row-gap', '8px');
+  const accentStyles = await Promise.all(
+    [startHelper, tips].map((section) =>
+      section.evaluate((element) => ({
+        backgroundColor: getComputedStyle(element).backgroundColor,
+        headingColor: getComputedStyle(element.querySelector('h2')!).color,
+      })),
+    ),
+  );
+  expect(accentStyles[0]).toEqual(accentStyles[1]);
 
   await page.locator('#serve-time').fill('18:00');
   await expect(
     page.getByText('Zacznij główne gotowanie o 17:10 — całość zajmuje około 50 min.'),
   ).toBeVisible();
+  await expect(startHelper.locator('.start-helper__result')).toHaveCSS('font-size', '14px');
 
   await page.getByRole('button', { name: 'Tylko kroki' }).click();
   await expect(preparation).toBeHidden();
