@@ -121,32 +121,34 @@ function RecipeItems({
   recipes,
   common,
   messages,
-  discoveryMode,
+  presentation = 'compact',
   featuredLabel,
   featuredReason,
 }: {
   recipes: Recipe[];
   common: AppMessages['common'];
   messages: AppMessages['experience']['recipeCard'];
-  discoveryMode?: DiscoveryMode;
+  presentation?: 'compact' | 'panoramic';
   featuredLabel?: string;
   featuredReason?: FeaturedReason;
 }) {
+  const panoramic = presentation === 'panoramic';
+
   return (
-    <ul className="recipe-list">
+    <ul className={`recipe-list${panoramic ? ' recipe-list--panoramic' : ''}`}>
       {recipes.map((recipe, index) => {
         const featured = Boolean(featuredLabel && index === 0);
         return (
           <li key={recipe.id}>
             <a
-              className={`recipe-card${discoveryMode && !recipe.image ? ' recipe-card--placeholder' : ''}${featured ? ' recipe-card--featured' : ''}`}
+              className={`recipe-card${panoramic && !recipe.image ? ' recipe-card--placeholder' : ''}${featured ? ' recipe-card--featured' : ''}`}
               href={`/recipes/${recipe.slug}`}
             >
               {featured && <span className="recipe-featured-label">{featuredLabel}</span>}
               <span className="recipe-media">
                 {recipe.image ? (
                   <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
-                ) : discoveryMode ? (
+                ) : panoramic ? (
                   <span className="recipe-placeholder" aria-hidden="true">
                     <svg viewBox="0 0 48 48" focusable="false">
                       <rect x="6" y="7" width="36" height="34" rx="4" />
@@ -164,7 +166,7 @@ function RecipeItems({
                 <span className="recipe-description visually-hidden">
                   {recipe.description}
                 </span>
-                {!discoveryMode && (
+                {!panoramic && (
                   <span className="recipe-facts">
                     <span className="recipe-meta">
                       ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
@@ -178,7 +180,7 @@ function RecipeItems({
                   </span>
                 )}
               </span>
-              {discoveryMode && (
+              {panoramic && (
                 <span
                   className="recipe-meta recipe-meta--discovery"
                   aria-label={`${messages.preparationTimeLabel} ${recipe.preparationMinutes} ${common.minuteAbbreviation}`}
@@ -304,7 +306,7 @@ function RecipeList({
         recipes={recipes}
         common={common}
         messages={messages}
-        discoveryMode={mode}
+        presentation="panoramic"
         featuredLabel={featuredLabel}
         featuredReason={featuredReason}
       />
@@ -771,7 +773,12 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
             {!hasSelection && <p className="category-results-message">{categoryMessages.initialResults}</p>}
             {hasSelection && categoryResults.length === 0 && <p className="category-results-message">{categoryMessages.emptyResults}</p>}
             {hasSelection && categoryResults.length > 0 && (
-              <RecipeItems recipes={categoryResults} common={common} messages={messages.recipeCard} />
+              <RecipeItems
+                recipes={categoryResults}
+                common={common}
+                messages={messages.recipeCard}
+                presentation="panoramic"
+              />
             )}
           </div>
         </section>

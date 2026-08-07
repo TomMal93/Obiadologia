@@ -46,6 +46,10 @@ describe('DiscoveryExperience categories', () => {
 
     const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
     expect(within(results).getAllByRole('link')).toHaveLength(3);
+    expect(within(results).getByRole('list')).toHaveClass('recipe-list--panoramic');
+    const firstCard = within(results).getAllByRole('link')[0] as HTMLAnchorElement;
+    expect(within(firstCard).getByText(/min/)).toHaveClass('recipe-time-unit');
+    expect(within(firstCard).queryByLabelText('Tagi')).not.toBeInTheDocument();
     expect(lunch).toHaveAttribute('aria-pressed', 'true');
     const resultsFrame = screen.getByRole('heading', { name: 'Propozycje dla Ciebie' }).parentElement as HTMLElement;
     expect(within(resultsFrame).getByText(/Wybrano:/)).toBeInTheDocument();

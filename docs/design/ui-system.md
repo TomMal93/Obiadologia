@@ -155,9 +155,11 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
   tagów. Opis może pozostać dostępny semantycznie bez zajmowania osobnego
   wiersza w tym wariancie.
 - Wspólny komponent może mieć wariant prezentacyjny właściwy dla ścieżki.
-  Wyszukiwarka w discovery overlayu używa panoramicznej karty ze zdjęciem w tle,
-  tytułem i czasem nałożonymi przy dolnej krawędzi; szczegóły tego wariantu
-  definiuje [discovery-overlay.md](../product/features/discovery-overlay.md).
+  Lista propozycji na stronie głównej oraz Wyszukiwarka i Mapa w discovery
+  overlayu używają tego samego panoramicznego wariantu ze zdjęciem w tle,
+  tytułem i czasem nałożonymi przy dolnej krawędzi; szczegóły wariantu dla
+  overlaya definiuje [discovery-overlay.md](../product/features/discovery-overlay.md),
+  a jego użycie na stronie głównej — [home-page.md](../product/features/home-page.md).
 - Karta ma jeden wyraźny obszar interakcji; nie wolno zagnieżdżać w nim konkurujących elementów interaktywnych bez wyraźnej potrzeby.
 - Zachowanie nawigacyjne i bieżący zakres trasy przepisu definiuje [mvp-scope.md](../product/mvp-scope.md).
 - Zdjęcie używa `object-fit: cover`, stałych proporcji i tekstu alternatywnego opisującego danie.

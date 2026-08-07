@@ -129,7 +129,10 @@ zmienia się wyłącznie jej wnętrze:
 
 „Pokaż więcej” nie należy do bieżącego MVP. W drugiej fazie prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane w specyfikacji tej podstrony. Do tego czasu prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
 
-Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md).
+Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md)
+i z tego samego panoramicznego wariantu prezentacyjnego co lista w discovery
+overlayu: zdjęcie wypełnia kartę, a tytuł i czas są nałożone przy dolnej
+krawędzi. Brak zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
 
 ## Kryteria akceptacji
 
@@ -147,6 +150,7 @@ Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../enginee
 - Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.
 - Ramka wyników jest widoczna w każdym stanie i nie zmienia wysokości po wyborze, odznaczeniu ani braku dopasowań.
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.
+- Lista propozycji używa tego samego panoramicznego wariantu kart co discovery overlay.
 - Użytkownik może usunąć aktywny wybór.
 - Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
 - Każda główna sekcja wypełnia jeden ekran i nie jest wyższa niż ekran, zgodnie z regułą pełnoekranowych sekcji w [ui-system.md](../../design/ui-system.md).
