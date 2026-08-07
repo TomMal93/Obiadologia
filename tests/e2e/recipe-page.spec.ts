@@ -67,10 +67,15 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     const toggleBounds = unitToggle.getBoundingClientRect();
     const progressBounds = progress.getBoundingClientRect();
     const sectionBounds = section.getBoundingClientRect();
+    const sectionStyles = getComputedStyle(section);
     return {
       headingBottom: headingBounds.bottom,
       sectionLeft: sectionBounds.left,
       sectionRight: sectionBounds.right,
+      sectionBorderLeft: Number.parseFloat(sectionStyles.borderLeftWidth),
+      sectionBorderRight: Number.parseFloat(sectionStyles.borderRightWidth),
+      sectionPaddingLeft: Number.parseFloat(sectionStyles.paddingLeft),
+      sectionPaddingRight: Number.parseFloat(sectionStyles.paddingRight),
       toggleTop: toggleBounds.top,
       toggleLeft: toggleBounds.left,
       toggleBottom: toggleBounds.bottom,
@@ -83,8 +88,18 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   expect(ingredientHeadGeometry.toggleTop).toBeGreaterThan(
     ingredientHeadGeometry.headingBottom,
   );
-  expect(ingredientHeadGeometry.toggleLeft).toBeCloseTo(ingredientHeadGeometry.sectionLeft, 0);
-  expect(ingredientHeadGeometry.toggleRight).toBeCloseTo(ingredientHeadGeometry.sectionRight, 0);
+  expect(ingredientHeadGeometry.toggleLeft).toBeCloseTo(
+    ingredientHeadGeometry.sectionLeft
+      + ingredientHeadGeometry.sectionBorderLeft
+      + ingredientHeadGeometry.sectionPaddingLeft,
+    0,
+  );
+  expect(ingredientHeadGeometry.toggleRight).toBeCloseTo(
+    ingredientHeadGeometry.sectionRight
+      - ingredientHeadGeometry.sectionBorderRight
+      - ingredientHeadGeometry.sectionPaddingRight,
+    0,
+  );
   expect(ingredientHeadGeometry.progressTop).toBeGreaterThanOrEqual(
     ingredientHeadGeometry.toggleBottom,
   );
@@ -124,6 +139,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(chorizoToggle).toHaveAttribute('aria-pressed', 'true');
   await expect(ingredients.getByText('1/13 odhaczonych')).toBeVisible();
 
+  await page.getByRole('button', { name: 'Tylko kroki' }).click();
   const steps = page.getByRole('region', { name: 'Kroki' });
   await expect(steps.getByRole('listitem')).toHaveCount(7);
   const firstStep = steps.locator('[data-checkable-step]').first();
@@ -168,6 +184,19 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   const startHelper = page.getByRole('region', { name: 'Kiedy zacząć' });
   const steps = page.getByRole('region', { name: 'Kroki' });
   const tips = page.getByRole('region', { name: 'Coś jeszcze' });
+  const assistantMode = page.getByRole('button', { name: 'Tryb asystenta' });
+  const stepsMode = page.getByRole('button', { name: 'Tylko kroki' });
+  await expect(page.getByText('Wybierz tryb, aby zobaczyć dalszą część przepisu.')).toBeVisible();
+  await expect(assistantMode).toHaveAttribute('aria-pressed', 'false');
+  await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
+  await expect(preparation).toBeHidden();
+  await expect(startHelper).toBeHidden();
+  await expect(steps).toBeHidden();
+  await expect(tips).toBeHidden();
+
+  await assistantMode.click();
+  await expect(assistantMode).toHaveAttribute('aria-pressed', 'true');
+  await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(5);
   await expect(startHelper.locator('.start-helper__hint')).toHaveCount(0);
@@ -183,23 +212,16 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
         return {
           border: styles.border,
           borderRadius: styles.borderRadius,
+          padding: styles.padding,
+          rowGap: styles.rowGap,
+          backgroundColor: styles.backgroundColor,
+          headingColor: getComputedStyle(element.querySelector('h2')!).color,
         };
       }),
     ),
   );
   expect(cardStyles[1]).toEqual(cardStyles[0]);
   expect(cardStyles[2]).toEqual(cardStyles[0]);
-  await expect(startHelper).toHaveCSS('padding', '12px');
-  await expect(startHelper).toHaveCSS('row-gap', '8px');
-  const accentStyles = await Promise.all(
-    [startHelper, tips].map((section) =>
-      section.evaluate((element) => ({
-        backgroundColor: getComputedStyle(element).backgroundColor,
-        headingColor: getComputedStyle(element.querySelector('h2')!).color,
-      })),
-    ),
-  );
-  expect(accentStyles[0]).toEqual(accentStyles[1]);
 
   await page.locator('#serve-time').fill('18:00');
   await expect(
@@ -207,12 +229,12 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   ).toBeVisible();
   await expect(startHelper.locator('.start-helper__result')).toHaveCSS('font-size', '14px');
 
-  await page.getByRole('button', { name: 'Tylko kroki' }).click();
+  await stepsMode.click();
   await expect(preparation).toBeHidden();
   await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Coś jeszcze' })).toBeVisible();
 
-  await page.getByRole('button', { name: 'Tryb asystenta' }).click();
+  await assistantMode.click();
   await expect(preparation).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page }).analyze();

@@ -450,6 +450,43 @@
   margin-top: 0;
 }
 
+.recipe-cooking-flow {
+  display: grid;
+  gap: var(--space-16);
+  padding: var(--space-12);
+  border: 1px solid rgb(255 79 46 / 24%);
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    180deg,
+    var(--color-coral-soft),
+    var(--color-surface) 28%
+  );
+  box-shadow: var(--shadow-surface);
+}
+
+.assistant-choice {
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-4);
+}
+
+.assistant-choice[hidden] {
+  display: none;
+}
+
+.assistant-choice .recipe-section-head {
+  margin-bottom: 0;
+}
+
+.assistant-choice h2 {
+  margin: 0;
+  font-size: var(--font-size-20);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.recipe-article[data-view='unselected'] .recipe-mode-content,
 .recipe-article[data-view='steps'] .assistant-section {
   display: none;
 }
@@ -472,16 +509,6 @@
 .recipe-ingredients .recipe-section-head,
 .recipe-prep .recipe-section-head {
   margin-bottom: 0;
-}
-
-.start-helper {
-  gap: var(--space-8);
-  padding: var(--space-12);
-  background: var(--color-coral-soft);
-}
-
-.start-helper h2 {
-  color: var(--color-coral-strong);
 }
 
 .start-helper[hidden] {

@@ -45,7 +45,6 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
   <main class="recipe-page">
     <article
       class="recipe-article"
-      data-view="assistant"
       data-progress-template={messages.recipe.ingredientsProgress}
       data-main-start-same-day={messages.recipe.mainStartSameDay}
       data-main-start-previous-day={messages.recipe.mainStartPreviousDay}
@@ -235,54 +234,60 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
           </div>
         </section>
 
-        {
-          hasAssistantContent && (
-            <div
-              class="assistant-toggle recipe-segmented"
-              role="group"
-              aria-label={messages.recipe.assistantLabel}
-              hidden
-            >
-              <button
-                type="button"
-                class="recipe-segmented__option is-active"
-                data-view-target="assistant"
-                aria-pressed="true"
+        <div class="recipe-cooking-flow">
+          {
+            hasAssistantContent && (
+              <section class="assistant-choice" data-assistant-choice hidden>
+              <div class="recipe-section-head recipe-section-head--stacked">
+                <h2>{messages.recipe.assistantChoiceHeading}</h2>
+                <p>{messages.recipe.assistantChoiceHint}</p>
+              </div>
+              <div
+                class="assistant-toggle recipe-segmented"
+                role="group"
+                aria-label={messages.recipe.assistantLabel}
               >
-                {messages.recipe.assistantMode}
-              </button>
-              <button
-                type="button"
-                class="recipe-segmented__option"
-                data-view-target="steps"
-                aria-pressed="false"
-              >
-                {messages.recipe.stepsOnlyMode}
-              </button>
-            </div>
-          )
-        }
+                <button
+                  type="button"
+                  class="recipe-segmented__option"
+                  data-view-target="assistant"
+                  aria-pressed="false"
+                >
+                  {messages.recipe.assistantMode}
+                </button>
+                <button
+                  type="button"
+                  class="recipe-segmented__option"
+                  data-view-target="steps"
+                  aria-pressed="false"
+                >
+                  {messages.recipe.stepsOnlyMode}
+                </button>
+              </div>
+              </section>
+            )
+          }
 
-        {
-          hasAssistantContent && (
-            <section
-              class="start-helper assistant-section"
-              aria-labelledby="start-helper-heading"
-              hidden
-            >
+          {
+            hasAssistantContent && (
+              <section
+                class="start-helper assistant-section recipe-mode-content"
+                aria-labelledby="start-helper-heading"
+                hidden
+              >
               <h2 id="start-helper-heading">{messages.recipe.startHelperHeading}</h2>
               <label class="start-helper__field" for="serve-time">
                 <span>{messages.recipe.serveTimeLabel}</span>
                 <input class="start-helper__input" id="serve-time" type="time" />
               </label>
               <p class="start-helper__result" data-main-start hidden></p>
-            </section>
-          )
-        }
+              </section>
+            )
+          }
 
-        {
-          recipe.advance && (
-            <section class="recipe-advance assistant-section" aria-labelledby="advance-heading">
+          {
+            recipe.advance && (
+              <section class="recipe-advance assistant-section recipe-mode-content" aria-labelledby="advance-heading">
               <div class="recipe-section-head recipe-section-head--stacked">
                 <h2 id="advance-heading">{messages.recipe.advanceHeading}</h2>
                 <p>{messages.recipe.advanceHint}</p>
@@ -309,13 +314,13 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                   </li>
                 ))}
               </ol>
-            </section>
-          )
-        }
+              </section>
+            )
+          }
 
-        {
-          recipe.preparation && (
-            <section class="recipe-prep assistant-section" aria-labelledby="prep-heading">
+          {
+            recipe.preparation && (
+              <section class="recipe-prep assistant-section recipe-mode-content" aria-labelledby="prep-heading">
               <div class="recipe-section-head recipe-section-head--stacked">
                 <h2 id="prep-heading">{messages.recipe.preparationHeading}</h2>
                 <p>{messages.recipe.preparationHint}</p>
@@ -328,11 +333,11 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                   </li>
                 ))}
               </ul>
-            </section>
-          )
-        }
+              </section>
+            )
+          }
 
-        <section class="recipe-steps" aria-labelledby="steps-heading">
+          <section class="recipe-steps recipe-mode-content" aria-labelledby="steps-heading">
           <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
           <ol class="step-list">
             {
@@ -362,11 +367,11 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
               ))
             }
           </ol>
-        </section>
+          </section>
 
-        {
-          recipe.tips && (
-            <section class="recipe-tips" aria-labelledby="tips-heading">
+          {
+            recipe.tips && (
+              <section class="recipe-tips recipe-mode-content" aria-labelledby="tips-heading">
               <h2 id="tips-heading">{messages.recipe.tipsHeading}</h2>
               <ul class="tips-list">
                 {recipe.tips.map((tip) => (
@@ -376,11 +381,12 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                   </li>
                 ))}
               </ul>
-            </section>
-          )
-        }
+              </section>
+            )
+          }
+        </div>
 
-        <p class="prototype-note">{messages.recipe.prototypeNote}</p>
+        <p class="prototype-note recipe-mode-content">{messages.recipe.prototypeNote}</p>
       </div>
     </article>
   </main>
@@ -547,9 +553,11 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
     }
   }
 
-  const assistantToggle = article?.querySelector<HTMLElement>('.assistant-toggle');
-  if (article && assistantToggle) {
-    assistantToggle.hidden = false;
+  const assistantChoice = article?.querySelector<HTMLElement>('[data-assistant-choice]');
+  const assistantToggle = assistantChoice?.querySelector<HTMLElement>('.assistant-toggle');
+  if (article && assistantChoice && assistantToggle) {
+    article.dataset.view = 'unselected';
+    assistantChoice.hidden = false;
     const options = Array.from(
       assistantToggle.querySelectorAll<HTMLButtonElement>('[data-view-target]'),
     );

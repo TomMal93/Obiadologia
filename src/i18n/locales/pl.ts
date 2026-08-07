@@ -204,6 +204,8 @@ export const pl = {
     metricUnits: 'Gramy / ml',
     householdUnits: 'Miary domowe',
     assistantLabel: 'Sposób prowadzenia przez przepis',
+    assistantChoiceHeading: 'Jak chcesz gotować?',
+    assistantChoiceHint: 'Wybierz tryb, aby zobaczyć dalszą część przepisu.',
     assistantMode: 'Tryb asystenta',
     stepsOnlyMode: 'Tylko kroki',
     advanceHeading: 'Wcześniej',
