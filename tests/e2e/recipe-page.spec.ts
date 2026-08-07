@@ -199,14 +199,35 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(5);
+  const choiceHeadingLeft = await page.getByRole('heading', {
+    name: 'Jak chcesz gotować?',
+  }).evaluate((element) => element.getBoundingClientRect().left);
+  const preparationHeadingLeft = await preparation.getByRole('heading', {
+    name: 'Przygotowanie',
+  }).evaluate((element) => element.getBoundingClientRect().left);
+  expect(choiceHeadingLeft).toBeCloseTo(preparationHeadingLeft, 0);
   await expect(startHelper.locator('.start-helper__hint')).toHaveCount(0);
   await expect(startHelper.locator('.start-helper__field')).toHaveCSS('padding', '0px');
   await expect(startHelper.locator('.start-helper__field')).toHaveCSS(
     'background-color',
     'rgba(0, 0, 0, 0)',
   );
-  const cardStyles = await Promise.all(
-    [startHelper, preparation, steps].map((section) =>
+  const serveTimeRow = await startHelper.locator('.start-helper__field').evaluate((element) => {
+    const label = element.querySelector('span');
+    const input = element.querySelector('input');
+    if (!(label instanceof HTMLElement) || !(input instanceof HTMLElement)) {
+      throw new Error('Serve-time controls were not found');
+    }
+    const labelBounds = label.getBoundingClientRect();
+    const inputBounds = input.getBoundingClientRect();
+    return {
+      labelCenter: labelBounds.top + labelBounds.height / 2,
+      inputCenter: inputBounds.top + inputBounds.height / 2,
+    };
+  });
+  expect(serveTimeRow.labelCenter).toBeCloseTo(serveTimeRow.inputCenter, 0);
+  const neutralCardStyles = await Promise.all(
+    [preparation, steps].map((section) =>
       section.evaluate((element) => {
         const styles = getComputedStyle(element);
         return {
@@ -220,8 +241,24 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
       }),
     ),
   );
-  expect(cardStyles[1]).toEqual(cardStyles[0]);
-  expect(cardStyles[2]).toEqual(cardStyles[0]);
+  expect(neutralCardStyles[1]).toEqual(neutralCardStyles[0]);
+  const accentCardStyles = await Promise.all(
+    [startHelper, tips].map((section) =>
+      section.evaluate((element) => {
+        const styles = getComputedStyle(element);
+        return {
+          borderRadius: styles.borderRadius,
+          padding: styles.padding,
+          rowGap: styles.rowGap,
+          backgroundColor: styles.backgroundColor,
+          headingColor: getComputedStyle(element.querySelector('h2')!).color,
+        };
+      }),
+    ),
+  );
+  expect(accentCardStyles[1]).toEqual(accentCardStyles[0]);
+  await expect(startHelper).toHaveCSS('border-width', '1px');
+  await expect(startHelper).toHaveCSS('border-color', 'rgba(255, 79, 46, 0.24)');
 
   await page.locator('#serve-time').fill('18:00');
   await expect(

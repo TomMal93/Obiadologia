@@ -467,7 +467,7 @@
 .assistant-choice {
   display: grid;
   gap: var(--space-8);
-  padding: var(--space-4);
+  padding-top: var(--space-8);
 }
 
 .assistant-choice[hidden] {
@@ -476,6 +476,7 @@
 
 .assistant-choice .recipe-section-head {
   margin-bottom: 0;
+  padding-inline: calc(var(--space-16) + 1px);
 }
 
 .assistant-choice h2 {
@@ -511,6 +512,16 @@
   margin-bottom: 0;
 }
 
+.start-helper {
+  border-color: rgb(255 79 46 / 24%);
+  border-radius: var(--radius-card);
+  background: var(--color-coral-soft);
+}
+
+.start-helper h2 {
+  color: var(--color-coral-strong);
+}
+
 .start-helper[hidden] {
   display: none;
 }
@@ -520,14 +531,21 @@
   min-height: 56px;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-4);
   font-weight: 600;
 }
 
+.start-helper__field > span {
+  font-size: clamp(var(--font-size-14), 4vw, var(--font-size-16));
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
 .start-helper__input {
-  min-width: 116px;
+  width: clamp(44px, calc(68.5vw - 175px), 92px);
+  min-width: 44px;
   min-height: 44px;
-  padding: var(--space-8);
+  padding: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-field);
   color: var(--color-text);
