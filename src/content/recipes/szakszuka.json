@@ -54,19 +54,22 @@
       "category": "spices",
       "name": "kmin rzymski mielony",
       "amount": 5,
-      "unit": "ml"
+      "unit": "g",
+      "gramsPerCup": 100
     },
     {
       "category": "spices",
       "name": "papryka słodka mielona",
       "amount": 10,
-      "unit": "ml"
+      "unit": "g",
+      "gramsPerCup": 115
     },
     {
       "category": "spices",
       "name": "papryka ostra albo chili, opcjonalnie",
       "amount": 3,
-      "unit": "ml"
+      "unit": "g",
+      "gramsPerCup": 100
     },
     {
       "category": "dairy",
@@ -90,13 +93,15 @@
       "category": "spices",
       "name": "sól",
       "amount": 5,
-      "unit": "ml"
+      "unit": "g",
+      "gramsPerCup": 300
     },
     {
       "category": "spices",
       "name": "pieprz",
       "amount": 2,
-      "unit": "ml"
+      "unit": "g",
+      "gramsPerCup": 100
     }
   ],
   "preparation": [

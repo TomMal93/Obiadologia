@@ -57,10 +57,12 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
     const headingBounds = heading.getBoundingClientRect();
     const toggleBounds = unitToggle.getBoundingClientRect();
     const progressBounds = progress.getBoundingClientRect();
+    const sectionBounds = section.getBoundingClientRect();
     return {
-      headingCenter: headingBounds.top + headingBounds.height / 2,
-      toggleCenter: toggleBounds.top + toggleBounds.height / 2,
-      headingRight: headingBounds.right,
+      headingBottom: headingBounds.bottom,
+      sectionLeft: sectionBounds.left,
+      sectionRight: sectionBounds.right,
+      toggleTop: toggleBounds.top,
       toggleLeft: toggleBounds.left,
       toggleBottom: toggleBounds.bottom,
       toggleRight: toggleBounds.right,
@@ -69,13 +71,11 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
       progressRight: progressBounds.right,
     };
   });
-  expect(ingredientHeadGeometry.toggleCenter).toBeCloseTo(
-    ingredientHeadGeometry.headingCenter,
-    0,
+  expect(ingredientHeadGeometry.toggleTop).toBeGreaterThan(
+    ingredientHeadGeometry.headingBottom,
   );
-  expect(ingredientHeadGeometry.toggleLeft).toBeGreaterThan(
-    ingredientHeadGeometry.headingRight,
-  );
+  expect(ingredientHeadGeometry.toggleLeft).toBeCloseTo(ingredientHeadGeometry.sectionLeft, 0);
+  expect(ingredientHeadGeometry.toggleRight).toBeCloseTo(ingredientHeadGeometry.sectionRight, 0);
   expect(ingredientHeadGeometry.progressTop).toBeGreaterThanOrEqual(
     ingredientHeadGeometry.toggleBottom,
   );
@@ -83,7 +83,7 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
     ingredientHeadGeometry.toggleRight,
     0,
   );
-  expect(ingredientHeadGeometry.toggleHeight).toBe(44);
+  expect(ingredientHeadGeometry.toggleHeight).toBe(52);
   await expect(
     ingredients.getByRole('button', { name: /Odhacz składnik: młode ziemniaki/ }),
   ).toBeVisible();
@@ -156,8 +156,25 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   await page.goto('/recipes/kotlet-schabowy-z-ziemniakami');
 
   const preparation = page.getByRole('region', { name: 'Przygotowanie' });
+  const startHelper = page.getByRole('region', { name: 'Kiedy zacząć' });
+  const steps = page.getByRole('region', { name: 'Kroki' });
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(4);
+  const cardStyles = await Promise.all(
+    [startHelper, preparation, steps].map((section) =>
+      section.evaluate((element) => {
+        const styles = getComputedStyle(element);
+        return {
+          backgroundColor: styles.backgroundColor,
+          border: styles.border,
+          borderRadius: styles.borderRadius,
+          padding: styles.padding,
+        };
+      }),
+    ),
+  );
+  expect(cardStyles[1]).toEqual(cardStyles[0]);
+  expect(cardStyles[2]).toEqual(cardStyles[0]);
 
   await page.locator('#serve-time').fill('18:00');
   await expect(
@@ -197,4 +214,20 @@ test('recipe page stays centered and has no horizontal overflow', async ({ page 
     expect(geometry.shellWidth).toBeLessThanOrEqual(480);
     expect(geometry.shellCenter).toBeCloseTo(width / 2, 0);
   }
+});
+
+test('shakshuka restores gram amounts after switching unit modes', async ({ page }) => {
+  await page.goto('/recipes/szakszuka');
+
+  const ingredients = page.getByRole('region', { name: 'Składniki' });
+  const cumin = ingredients.locator('.ingredient').filter({ hasText: 'kmin rzymski mielony' });
+  const metricMeasure = cumin.locator('.ingredient__measure-metric');
+  const householdMeasure = cumin.locator('.ingredient__measure-household');
+
+  await expect(metricMeasure).toHaveText('5 g');
+  await ingredients.getByRole('button', { name: 'Miary domowe' }).click();
+  await expect(householdMeasure).toHaveText('2½ łyżeczki');
+  await ingredients.getByRole('button', { name: 'Gramy / ml' }).click();
+  await expect(metricMeasure).toHaveText('5 g');
+  await expect(metricMeasure).toBeVisible();
 });

@@ -255,33 +255,29 @@
 
 .recipe-ingredients__head {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: var(--space-8);
 }
 
 .recipe-ingredients__head > h2 {
-  display: flex;
-  min-height: 44px;
-  align-items: center;
+  min-height: auto;
 }
 
 .recipe-ingredients__tools {
   display: grid;
+  width: 100%;
   justify-items: end;
-  gap: var(--space-4);
+  gap: var(--space-8);
 }
 
 .unit-toggle {
-  min-width: 0;
-  gap: 0;
-  padding: 0;
+  width: 100%;
   box-shadow: inset 0 0 0 1px var(--color-border);
 }
 
 .unit-toggle .recipe-segmented__option {
   min-width: 0;
-  flex: 0 1 auto;
-  padding-inline: var(--space-4);
   white-space: nowrap;
 }
 
@@ -426,13 +422,20 @@
   display: none;
 }
 
-.start-helper {
+.start-helper,
+.recipe-prep,
+.recipe-steps {
   display: grid;
   gap: var(--space-12);
   padding: var(--space-16);
-  border-radius: var(--radius-card);
-  color: var(--color-surface);
-  background: var(--brand-gradient);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-field);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.recipe-prep .recipe-section-head {
+  margin-bottom: 0;
 }
 
 .start-helper[hidden] {
@@ -447,15 +450,15 @@
   gap: var(--space-8);
   padding: var(--space-8) var(--space-12);
   border-radius: var(--radius-field);
-  font-weight: 700;
-  background: var(--color-coral-strong);
+  font-weight: 600;
+  background: var(--color-bg-shell);
 }
 
 .start-helper__input {
   min-width: 116px;
   min-height: 44px;
   padding: var(--space-8);
-  border: 0;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-field);
   color: var(--color-text);
   font: inherit;
@@ -470,11 +473,13 @@
 }
 
 .start-helper__hint {
-  color: var(--color-surface);
+  color: var(--color-text-muted);
   font-size: var(--font-size-14);
 }
 
 .start-helper__result {
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-border);
   font-weight: 600;
 }
 
@@ -522,11 +527,6 @@
 .advance-step__start {
   color: var(--color-coral-strong);
   font-weight: 700;
-}
-
-.recipe-steps {
-  display: grid;
-  gap: var(--space-12);
 }
 
 .step-list {
