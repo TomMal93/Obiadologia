@@ -99,7 +99,10 @@ describe('DiscoveryExperience overlay', () => {
     const result = within(dialog).getByRole('link', { name: /Testowe danie z kurczakiem/ });
     expect(result).toBeInTheDocument();
     expect(within(result).queryByLabelText('Tagi')).not.toBeInTheDocument();
-    expect(within(result).getByText(/20 min/)).toHaveClass('recipe-meta');
+    expect(result).toHaveClass('recipe-card--placeholder');
+    expect(within(result).getByText('zdjęcie potrawy')).toBeInTheDocument();
+    expect(within(result).getByText('20')).toHaveClass('recipe-time-value');
+    expect(within(result).getByText('min')).toHaveClass('recipe-time-unit');
     expect(within(result).getByText('Dane przeznaczone wyłącznie do testów.'))
       .toHaveClass('visually-hidden');
   });

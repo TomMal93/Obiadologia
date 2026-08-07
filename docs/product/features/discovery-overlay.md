@@ -78,14 +78,19 @@ Oba tryby korzystają z jednego modelu `Recipe` i wspólnego komponentu karty.
 
 Sekcja wyników używa nagłówka „Propozycje”, pokazuje po prawej odmienioną
 liczbę dopasowań i oddziela nagłówek linią od listy. Oba tryby korzystają z
-tego samego minimalistycznego układu poziomych kart bez dodatkowej strzałki
-nawigacyjnej; rolę przejścia do przepisu komunikuje interaktywność całej karty.
-Nazwy przepisów używają neutralnego koloru tekstu. Kolor nagłówka odpowiada
+tego samego komponentu kart bez dodatkowej strzałki nawigacyjnej; rolę przejścia
+do przepisu komunikuje interaktywność całej karty. Kolor nagłówka odpowiada
 aktywnemu trybowi; w Mapie jest to ten sam niebieski token co tekst aktywnego
-segmentu „Mapa” w przełączniku. Zdjęcie zaczyna się przy lewej krawędzi karty,
-wypełnia jej lewą część i stopniowo zanika w kierunku tytułu. Subtelny akcent
-aktywnej ścieżki na tle nie konkuruje z czasem przygotowania umieszczonym po
-prawej stronie.
+segmentu „Mapa” w przełączniku.
+
+W Wyszukiwarce karta ma formę niskiego, panoramicznego bannera. Zdjęcie wypełnia
+całą kartę i jest przyciemnione gradientem zapewniającym czytelność białego
+tytułu przy dolnej lewej krawędzi. Czas znajduje się przy dolnej prawej krawędzi:
+liczba jest wyróżniona, a skrót „min” tworzy osobny wiersz. Brak zdjęcia zachowuje
+identyczną geometrię i pokazuje ciemny placeholder z neutralną ikoną oraz tekstem
+„zdjęcie potrawy”. Mapa zachowuje poziomy wariant ze zdjęciem zaczynającym się
+przy lewej krawędzi i stopniowo zanikającym w kierunku tytułu; subtelny akcent
+aktywnej ścieżki na tle nie konkuruje z czasem umieszczonym po prawej stronie.
 
 Każda karta zawiera:
 

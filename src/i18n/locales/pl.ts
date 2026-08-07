@@ -48,6 +48,7 @@ export const pl = {
   experience: {
     recipeCard: {
       preparationTimeLabel: 'Czas przygotowania:',
+      imagePlaceholder: 'zdjęcie potrawy',
     },
     categories: {
       heading: 'Kategorie',

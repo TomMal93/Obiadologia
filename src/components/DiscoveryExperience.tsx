@@ -121,14 +121,14 @@ function RecipeItems({
   recipes,
   common,
   messages,
-  discovery = false,
+  discoveryMode,
   featuredLabel,
   featuredReason,
 }: {
   recipes: Recipe[];
   common: AppMessages['common'];
   messages: AppMessages['experience']['recipeCard'];
-  discovery?: boolean;
+  discoveryMode?: DiscoveryMode;
   featuredLabel?: string;
   featuredReason?: FeaturedReason;
 }) {
@@ -139,13 +139,22 @@ function RecipeItems({
         return (
           <li key={recipe.id}>
             <a
-              className={`recipe-card${featured ? ' recipe-card--featured' : ''}`}
+              className={`recipe-card${discoveryMode === 'search' && !recipe.image ? ' recipe-card--placeholder' : ''}${featured ? ' recipe-card--featured' : ''}`}
               href={`/recipes/${recipe.slug}`}
             >
               {featured && <span className="recipe-featured-label">{featuredLabel}</span>}
               <span className="recipe-media">
                 {recipe.image ? (
                   <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
+                ) : discoveryMode === 'search' ? (
+                  <span className="recipe-placeholder" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" focusable="false">
+                      <rect x="6" y="7" width="36" height="34" rx="4" />
+                      <circle cx="17" cy="18" r="3" />
+                      <path d="m8 37 11-11 7 7 7-8 8 9" />
+                    </svg>
+                    <span>{messages.imagePlaceholder}</span>
+                  </span>
                 ) : (
                   <span className="recipe-placeholder" aria-hidden="true">O</span>
                 )}
@@ -155,7 +164,7 @@ function RecipeItems({
                 <span className="recipe-description visually-hidden">
                   {recipe.description}
                 </span>
-                {!discovery && (
+                {!discoveryMode && (
                   <span className="recipe-facts">
                     <span className="recipe-meta">
                       ◷ <span className="visually-hidden">{messages.preparationTimeLabel}</span>{' '}
@@ -169,10 +178,17 @@ function RecipeItems({
                   </span>
                 )}
               </span>
-              {discovery && (
-                <span className="recipe-meta recipe-meta--discovery">
-                  <span className="visually-hidden">{messages.preparationTimeLabel}</span>
-                  {recipe.preparationMinutes} {common.minuteAbbreviation}
+              {discoveryMode && (
+                <span
+                  className="recipe-meta recipe-meta--discovery"
+                  aria-label={`${messages.preparationTimeLabel} ${recipe.preparationMinutes} ${common.minuteAbbreviation}`}
+                >
+                  <span className="recipe-time-value" aria-hidden="true">
+                    {recipe.preparationMinutes}
+                  </span>
+                  <span className="recipe-time-unit" aria-hidden="true">
+                    {common.minuteAbbreviation}
+                  </span>
                 </span>
               )}
               {featured && featuredReason && (
@@ -288,7 +304,7 @@ function RecipeList({
         recipes={recipes}
         common={common}
         messages={messages}
-        discovery
+        discoveryMode={mode}
         featuredLabel={featuredLabel}
         featuredReason={featuredReason}
       />

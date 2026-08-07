@@ -3,7 +3,10 @@
   "slug": "szakszuka",
   "title": "Szakszuka",
   "description": "Jajka zapieczone w gęstym, aromatycznym sosie z pomidorów, papryki i cebuli z nutą kuminu i słodkiej papryki. Danie z jednej patelni na leniwe śniadanie lub szybką kolację, najlepsze z chrupiącym pieczywem.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/szakszuka.jpg",
+    "alt": "Szakszuka z jajkami, pomidorami i papryką na patelni"
+  },
   "preparationMinutes": 30,
   "difficulty": "easy",
   "servings": 4,

@@ -422,10 +422,12 @@
    pogrubienie i aria-pressed — nie sam kolor. */
 .mode-switch {
   display: grid;
+  width: min(82%, 300px);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4);
+  margin-inline: auto;
   margin-bottom: var(--space-32);
-  padding: var(--space-4);
+  padding: 2px;
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   box-shadow: inset 0 0 0 1px var(--color-border);
@@ -446,13 +448,13 @@
 
 .mode-switch button {
   display: flex;
-  min-height: 48px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   border: 0;
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
-  font-size: clamp(15px, 4.4vw, 20px);
+  font-size: var(--font-size-16);
   cursor: pointer;
   background: transparent;
 }
@@ -1016,6 +1018,174 @@
   font-weight: 800;
   letter-spacing: 0.01em;
   background: color-mix(in srgb, var(--result-accent) 7%, var(--color-surface));
+}
+
+/* Wyszukiwarka używa panoramicznej karty z makiety listy. Zdjęcie jest tłem,
+   natomiast tytuł i czas pozostają osobnymi elementami semantycznymi linku. */
+.discovery-results--search .recipe-card {
+  display: grid;
+  grid-template-areas: "content meta";
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 96px;
+  aspect-ratio: 3.75 / 1;
+  align-items: end;
+  border: 0;
+  border-radius: var(--radius-card);
+  isolation: isolate;
+  background: #25211f;
+  box-shadow: none;
+}
+
+.discovery-results--search .recipe-card::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(to top, rgb(0 0 0 / 78%), rgb(0 0 0 / 12%) 76%),
+    linear-gradient(to right, rgb(0 0 0 / 18%), transparent 64%);
+  content: '';
+  pointer-events: none;
+}
+
+.discovery-results--search .recipe-card:not(.recipe-card--placeholder)::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  -webkit-backdrop-filter: grayscale(28%);
+  backdrop-filter: grayscale(28%);
+  background: linear-gradient(
+    to right,
+    rgb(92 92 92 / 16%),
+    transparent 30%,
+    transparent 70%,
+    rgb(92 92 92 / 16%)
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000,
+    transparent 34%,
+    transparent 66%,
+    #000
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000,
+    transparent 34%,
+    transparent 66%,
+    #000
+  );
+  content: '';
+  pointer-events: none;
+}
+
+.discovery-results--search .recipe-card--placeholder {
+  border: 1px dashed rgb(255 255 255 / 26%);
+  background: #25211f;
+}
+
+.discovery-results--search .recipe-card--placeholder::after {
+  background: linear-gradient(to top, rgb(0 0 0 / 38%), transparent 68%);
+}
+
+.discovery-results--search .recipe-media {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: inherit;
+  opacity: 1;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.discovery-results--search .recipe-media > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+.discovery-results--search .recipe-placeholder {
+  display: flex;
+  gap: var(--space-8);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255 255 255 / 55%);
+  font-size: var(--font-size-16);
+  font-weight: 500;
+  background: transparent;
+}
+
+.discovery-results--search .recipe-placeholder svg {
+  width: 32px;
+  height: 32px;
+  overflow: visible;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.discovery-results--search .recipe-content {
+  z-index: 2;
+  grid-area: content;
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--space-8) 0 var(--space-16);
+  align-self: center;
+  transform: translateY(clamp(9px, 3vw, 12px));
+}
+
+.discovery-results--search .recipe-content strong {
+  color: rgb(255 255 255 / 88%);
+  font-size: clamp(18px, 5.4vw, 24px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-shadow: 0 1px 10px rgb(0 0 0 / 72%);
+  text-wrap: pretty;
+}
+
+.discovery-results--search .recipe-meta {
+  display: flex;
+  z-index: 2;
+  grid-area: meta;
+  width: clamp(56px, 17vw, 72px);
+  min-height: 0;
+  gap: 0;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 var(--space-12) 0 0;
+  border: 0;
+  border-radius: 0;
+  align-items: center;
+  align-self: center;
+  color: rgb(255 255 255 / 88%);
+  line-height: 1;
+  background: transparent;
+}
+
+.discovery-results--search .recipe-time-value {
+  font-size: clamp(26px, 8.5vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-shadow: 0 1px 10px rgb(0 0 0 / 72%);
+}
+
+.discovery-results--search .recipe-time-unit {
+  margin-top: 2px;
+  font-size: var(--font-size-16);
+  font-weight: 400;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 72%);
 }
 
 .preference-map {
