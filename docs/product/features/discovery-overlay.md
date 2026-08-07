@@ -83,14 +83,12 @@ do przepisu komunikuje interaktywność całej karty. Kolor nagłówka odpowiada
 aktywnemu trybowi; w Mapie jest to ten sam niebieski token co tekst aktywnego
 segmentu „Mapa” w przełączniku.
 
-W Wyszukiwarce karta ma formę niskiego, panoramicznego bannera. Zdjęcie wypełnia
-całą kartę i jest przyciemnione gradientem zapewniającym czytelność białego
-tytułu przy dolnej lewej krawędzi. Czas znajduje się przy dolnej prawej krawędzi:
-liczba jest wyróżniona, a skrót „min” tworzy osobny wiersz. Brak zdjęcia zachowuje
-identyczną geometrię i pokazuje ciemny placeholder z neutralną ikoną oraz tekstem
-„zdjęcie potrawy”. Mapa zachowuje poziomy wariant ze zdjęciem zaczynającym się
-przy lewej krawędzi i stopniowo zanikającym w kierunku tytułu; subtelny akcent
-aktywnej ścieżki na tle nie konkuruje z czasem umieszczonym po prawej stronie.
+W obu trybach podstawowa karta ma formę niskiego, panoramicznego bannera. Zdjęcie
+wypełnia całą kartę i jest przyciemnione gradientem zapewniającym czytelność
+białego tytułu. Czas znajduje się po prawej stronie: liczba jest wyróżniona,
+a skrót „min” tworzy osobny wiersz. Brak zdjęcia zachowuje identyczną geometrię
+i pokazuje ciemny placeholder z neutralną ikoną oraz tekstem „zdjęcie potrawy”.
+Kolor nagłówka i wyróżnienie pierwszego wyniku nadal identyfikują aktywny tryb.
 
 Każda karta zawiera:
 
@@ -106,8 +104,8 @@ wyszukiwarki.
 Cała karta jest linkiem do `/recipes/:slug` — strony przepisu opisanej w [recipe-page.md](./recipe-page.md).
 
 W trybie Mapy pierwszy wynik rankingu jest wyróżniony jako „Najbliżej Twojego
-apetytu”: ma większy format i używa aktualnego akcentu Mapy na obramowaniu oraz
-subtelnym tle. Karta wyjaśnia dopasowanie dwoma
+apetytu”: zachowuje panoramiczne zdjęcie w tle, ma większy format i używa
+aktualnego akcentu Mapy na obramowaniu oraz etykiecie wyróżnienia. Karta wyjaśnia dopasowanie dwoma
 krótkimi cechami wynikającymi z `mapPosition` przepisu, osobno dla tempa i
 charakteru (np. „lekkie”, „szybkie”). Pozostałe wyniki zachowują wspólny,
 spokojny format listy. Etykieta wyróżnienia i uzasadnienie sprawiają, że

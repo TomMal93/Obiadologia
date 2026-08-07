@@ -1020,14 +1020,17 @@
   background: color-mix(in srgb, var(--result-accent) 7%, var(--color-surface));
 }
 
-/* Wyszukiwarka używa panoramicznej karty z makiety listy. Zdjęcie jest tłem,
+/* Oba tryby discovery używają panoramicznej karty. Zdjęcie jest tłem,
    natomiast tytuł i czas pozostają osobnymi elementami semantycznymi linku. */
-.discovery-results--search .recipe-card {
+:is(.discovery-results--search, .discovery-results--map) .recipe-card {
   display: grid;
+  width: 100%;
+  min-width: 0;
+  height: clamp(96px, 26vw, 112px);
   grid-template-areas: "content meta";
   grid-template-columns: minmax(0, 1fr) auto;
   min-height: 96px;
-  aspect-ratio: 3.75 / 1;
+  aspect-ratio: auto;
   align-items: end;
   border: 0;
   border-radius: var(--radius-card);
@@ -1036,7 +1039,7 @@
   box-shadow: none;
 }
 
-.discovery-results--search .recipe-card::after {
+:is(.discovery-results--search, .discovery-results--map) .recipe-card::after {
   position: absolute;
   z-index: 1;
   inset: 0;
@@ -1048,7 +1051,7 @@
   pointer-events: none;
 }
 
-.discovery-results--search .recipe-card:not(.recipe-card--placeholder)::before {
+:is(.discovery-results--search, .discovery-results--map) .recipe-card:not(.recipe-card--placeholder)::before {
   position: absolute;
   z-index: 1;
   inset: 0;
@@ -1080,16 +1083,16 @@
   pointer-events: none;
 }
 
-.discovery-results--search .recipe-card--placeholder {
+:is(.discovery-results--search, .discovery-results--map) .recipe-card--placeholder {
   border: 1px dashed rgb(255 255 255 / 26%);
   background: #25211f;
 }
 
-.discovery-results--search .recipe-card--placeholder::after {
+:is(.discovery-results--search, .discovery-results--map) .recipe-card--placeholder::after {
   background: linear-gradient(to top, rgb(0 0 0 / 38%), transparent 68%);
 }
 
-.discovery-results--search .recipe-media {
+:is(.discovery-results--search, .discovery-results--map) .recipe-media {
   position: absolute;
   z-index: 0;
   inset: 0;
@@ -1098,11 +1101,12 @@
   min-height: 0;
   border-radius: inherit;
   opacity: 1;
+  background: transparent;
   -webkit-mask-image: none;
   mask-image: none;
 }
 
-.discovery-results--search .recipe-media > img {
+:is(.discovery-results--search, .discovery-results--map) .recipe-media > img {
   position: absolute;
   inset: 0;
   display: block;
@@ -1113,7 +1117,7 @@
   object-position: center;
 }
 
-.discovery-results--search .recipe-placeholder {
+:is(.discovery-results--search, .discovery-results--map) .recipe-placeholder {
   display: flex;
   gap: var(--space-8);
   flex-direction: column;
@@ -1125,7 +1129,7 @@
   background: transparent;
 }
 
-.discovery-results--search .recipe-placeholder svg {
+:is(.discovery-results--search, .discovery-results--map) .recipe-placeholder svg {
   width: 32px;
   height: 32px;
   overflow: visible;
@@ -1136,7 +1140,7 @@
   stroke-width: 3;
 }
 
-.discovery-results--search .recipe-content {
+:is(.discovery-results--search, .discovery-results--map) .recipe-content {
   z-index: 2;
   grid-area: content;
   min-width: 0;
@@ -1146,7 +1150,7 @@
   transform: translateY(clamp(9px, 3vw, 12px));
 }
 
-.discovery-results--search .recipe-content strong {
+:is(.discovery-results--search, .discovery-results--map) .recipe-content strong {
   color: rgb(255 255 255 / 88%);
   font-size: clamp(18px, 5.4vw, 24px);
   line-height: 1.08;
@@ -1155,7 +1159,7 @@
   text-wrap: pretty;
 }
 
-.discovery-results--search .recipe-meta {
+:is(.discovery-results--search, .discovery-results--map) .recipe-meta {
   display: flex;
   z-index: 2;
   grid-area: meta;
@@ -1174,18 +1178,80 @@
   background: transparent;
 }
 
-.discovery-results--search .recipe-time-value {
+:is(.discovery-results--search, .discovery-results--map) .recipe-time-value {
   font-size: clamp(26px, 8.5vw, 38px);
   font-weight: 800;
   letter-spacing: -0.04em;
   text-shadow: 0 1px 10px rgb(0 0 0 / 72%);
 }
 
-.discovery-results--search .recipe-time-unit {
+:is(.discovery-results--search, .discovery-results--map) .recipe-time-unit {
   margin-top: 2px;
   font-size: var(--font-size-16);
   font-weight: 400;
   text-shadow: 0 1px 8px rgb(0 0 0 / 72%);
+}
+
+/* Pierwszy wynik Mapy zachowuje pełne wyjaśnienie dopasowania, ale korzysta
+   z tej samej warstwy zdjęcia, typografii tytułu i prezentacji czasu co lista. */
+.discovery-results--map .recipe-card--featured {
+  grid-template-areas:
+    "label label"
+    "content meta"
+    "reason reason";
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(72px, 1fr) auto;
+  height: auto;
+  min-height: 164px;
+  aspect-ratio: auto;
+  border: 2px solid color-mix(in srgb, var(--featured-accent) 62%, white);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--featured-accent) 18%, transparent);
+}
+
+:is(.discovery-results--search, .discovery-results--map) .recipe-list > li {
+  min-width: 0;
+}
+
+.discovery-results--map .recipe-card--featured .recipe-featured-label {
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  margin: var(--space-12) var(--space-16) 0;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-pill);
+  color: rgb(255 255 255 / 92%);
+  font-size: var(--font-size-14);
+  line-height: 1.2;
+  background: color-mix(in srgb, var(--featured-accent) 82%, transparent);
+  text-shadow: 0 1px 6px rgb(0 0 0 / 48%);
+}
+
+.discovery-results--map .recipe-card--featured .recipe-content,
+.discovery-results--map .recipe-card--featured .recipe-meta {
+  position: relative;
+  z-index: 2;
+}
+
+.discovery-results--map .recipe-card--featured .recipe-match-reason {
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+  row-gap: 2px;
+  padding: var(--space-4) var(--space-16) var(--space-12);
+  white-space: normal;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 64%);
+}
+
+.discovery-results--map .recipe-card--featured .recipe-match-reason__label {
+  color: rgb(255 255 255 / 68%);
+}
+
+.discovery-results--map .recipe-card--featured .recipe-match-reason__traits > span {
+  color: rgb(255 255 255 / 90%);
+}
+
+.discovery-results--map .recipe-card--featured .recipe-match-reason__traits > span + span::before {
+  color: rgb(255 255 255 / 58%);
 }
 
 .preference-map {

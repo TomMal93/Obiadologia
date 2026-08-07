@@ -139,14 +139,14 @@ function RecipeItems({
         return (
           <li key={recipe.id}>
             <a
-              className={`recipe-card${discoveryMode === 'search' && !recipe.image ? ' recipe-card--placeholder' : ''}${featured ? ' recipe-card--featured' : ''}`}
+              className={`recipe-card${discoveryMode && !recipe.image ? ' recipe-card--placeholder' : ''}${featured ? ' recipe-card--featured' : ''}`}
               href={`/recipes/${recipe.slug}`}
             >
               {featured && <span className="recipe-featured-label">{featuredLabel}</span>}
               <span className="recipe-media">
                 {recipe.image ? (
                   <img src={recipe.image.src} alt={recipe.image.alt} loading="lazy" />
-                ) : discoveryMode === 'search' ? (
+                ) : discoveryMode ? (
                   <span className="recipe-placeholder" aria-hidden="true">
                     <svg viewBox="0 0 48 48" focusable="false">
                       <rect x="6" y="7" width="36" height="34" rx="4" />

@@ -171,6 +171,8 @@ describe('DiscoveryExperience overlay', () => {
     expect(within(dialog).getByText('4 dopasowania')).toBeInTheDocument();
     const featuredCard = within(dialog).getByText('Najbliżej Twojego apetytu').closest('a');
     expect(featuredCard).toHaveClass('recipe-card--featured');
+    expect(featuredCard).toHaveClass('recipe-card--placeholder');
+    expect(within(featuredCard as HTMLAnchorElement).getByText('zdjęcie potrawy')).toBeInTheDocument();
     expect(within(featuredCard as HTMLAnchorElement).getByText('Dlaczego pasuje:')).toBeInTheDocument();
     expect(within(featuredCard as HTMLAnchorElement).getByText('lekkie')).toBeInTheDocument();
     expect(within(featuredCard as HTMLAnchorElement).getByText('szybkie')).toBeInTheDocument();
