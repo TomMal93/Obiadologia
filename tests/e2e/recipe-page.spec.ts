@@ -257,3 +257,55 @@ test('shakshuka restores gram amounts after switching unit modes', async ({ page
   await expect(metricMeasure).toHaveText('5 g');
   await expect(metricMeasure).toBeVisible();
 });
+
+test('natural household measures scale with shakshuka servings', async ({ page }) => {
+  await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
+
+  const ingredients = page.getByRole('region', { name: 'Składniki' });
+  const servings = page.locator('[data-servings-output]');
+  const decreaseServings = page.getByRole('button', { name: 'Zmniejsz liczbę porcji' });
+  const rowFor = (name: string) => ingredients.locator('.ingredient').filter({ hasText: name });
+
+  await expect(servings).toHaveText('2');
+  await ingredients.getByRole('button', { name: 'Miary domowe' }).click();
+  const chorizoMetric = rowFor('chorizo').locator('.ingredient__measure-metric');
+  const chorizoHousehold = rowFor('chorizo').locator('.ingredient__measure-household');
+  await expect(chorizoMetric).toBeHidden();
+  await expect(chorizoHousehold).toBeVisible();
+  await expect(chorizoHousehold).toHaveText('10 plastrów');
+  await expect(rowFor('cukinia').locator('.ingredient__measure-household')).toHaveText(
+    '1 sztuka',
+  );
+  await expect(rowFor('szpinak').locator('.ingredient__measure-household')).toHaveText(
+    '4 garści',
+  );
+  await expect(rowFor('passata').locator('.ingredient__measure-household')).toHaveText(
+    '1 szklanka',
+  );
+  await expect(rowFor('chleb żytni').locator('.ingredient__measure-household')).toHaveText(
+    '4 kromki',
+  );
+
+  await decreaseServings.click();
+  await expect(servings).toHaveText('1');
+  await expect(rowFor('chorizo').locator('.ingredient__measure-household')).toHaveText(
+    '5 plastrów',
+  );
+  await expect(rowFor('cukinia').locator('.ingredient__measure-household')).toHaveText(
+    '½ sztuki',
+  );
+  await expect(rowFor('szpinak').locator('.ingredient__measure-household')).toHaveText(
+    '2 garści',
+  );
+  await expect(rowFor('passata').locator('.ingredient__measure-household')).toHaveText(
+    '½ szklanki',
+  );
+  await expect(rowFor('chleb żytni').locator('.ingredient__measure-household')).toHaveText(
+    '2 kromki',
+  );
+
+  await ingredients.getByRole('button', { name: 'Gramy / ml' }).click();
+  await expect(chorizoHousehold).toBeHidden();
+  await expect(chorizoMetric).toBeVisible();
+  await expect(chorizoMetric).toHaveText('40 g');
+});

@@ -53,14 +53,20 @@ Każdy składnik musi mieć kategorię zakupową, dodatnią ilość i jednostkę
 `pantry` i `spices`; ich znaczenie definiuje
 [data-model.md](../engineering/data-model.md).
 `gramsPerCup` jest opcjonalne i oznacza masę jednej szklanki 250 ml; uzupełnij
-je tylko wtedy, gdy masa składnika ma być przeliczana na miary domowe. Wszystkie
-ilości podaj dla bazowej liczby porcji wskazanej wyżej.
+je tylko wtedy, gdy masa składnika sypkiego ma być przeliczana na objętościowe
+miary domowe. Dla produktu mającego naturalną miarę możesz podać opcjonalne
+`household` w postaci `{ "unit": "slice", "metricAmount": 8 }`, co oznacza,
+że jeden plaster odpowiada 8 jednostkom bazowym (tu: 8 g). Dozwolone wartości
+`unit` to `cup`, `tablespoon`, `teaspoon`, `pinch`, `piece`, `slice`,
+`bread_slice` i `handful`. `household` stosuj tylko przy bazowej jednostce `g`
+albo `ml`; `szt` już jest miarą naturalną. Wszystkie ilości podaj dla bazowej
+liczby porcji wskazanej wyżej.
 
-| Kategoria zakupowa | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) |
-|---|---|---:|---|---:|
-| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
-| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
-| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] |
+| Kategoria zakupowa | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) | `household` (opcjonalne) |
+|---|---|---:|---|---:|---|
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [np. `{ "unit": "slice", "metricAmount": 8 }` lub pomiń] |
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] |
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] |
 
 ## Wcześniej — opcjonalne
 
@@ -135,6 +141,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Czas jest dodatnią liczbą całkowitą.
 - [ ] Trudność ma jedną z dozwolonych wartości, a bazowa liczba porcji mieści się w zakresie `1–12`.
 - [ ] Każdy składnik ma kategorię zakupową, dodatnią ilość i dozwoloną jednostkę.
+- [ ] Opcjonalny przelicznik `household` ma dozwoloną jednostkę, dodatnie `metricAmount` i występuje wyłącznie przy bazowej jednostce `g` albo `ml`.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
 - [ ] Każda grupa dopasowania ma co najmniej jedną wartość.

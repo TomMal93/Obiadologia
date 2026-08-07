@@ -187,6 +187,8 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                       data-base-amount={ingredient.amount}
                       data-unit={ingredient.unit}
                       data-grams-per-cup={ingredient.gramsPerCup}
+                      data-household-unit={ingredient.household?.unit}
+                      data-household-metric-amount={ingredient.household?.metricAmount}
                     >
                       <button
                         type="button"
@@ -382,7 +384,9 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
   import {
     formatHouseholdMeasure,
     formatMetricMeasure,
+    householdUnits,
     ingredientUnits,
+    type HouseholdUnit,
     type IngredientMeasure,
     type IngredientUnit,
   } from '@/domain/ingredient-measure';
@@ -442,6 +446,9 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
   const isIngredientUnit = (value: string | undefined): value is IngredientUnit =>
     ingredientUnits.some((unit) => unit === value);
 
+  const isHouseholdUnit = (value: string | undefined): value is HouseholdUnit =>
+    householdUnits.some((unit) => unit === value);
+
   if (
     Number.isInteger(baseServings)
     && baseServings > 0
@@ -463,6 +470,8 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         const amount = Number(row.dataset.baseAmount);
         const unit = row.dataset.unit;
         const gramsPerCup = Number(row.dataset.gramsPerCup);
+        const householdUnit = row.dataset.householdUnit;
+        const householdMetricAmount = Number(row.dataset.householdMetricAmount);
         if (!Number.isFinite(amount) || !isIngredientUnit(unit)) continue;
 
         const ingredient: IngredientMeasure = {
@@ -470,6 +479,13 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
           amount: (amount * servings) / baseServings,
           unit,
           ...(Number.isFinite(gramsPerCup) ? { gramsPerCup } : {}),
+          ...(
+            isHouseholdUnit(householdUnit)
+            && Number.isFinite(householdMetricAmount)
+            && householdMetricAmount > 0
+              ? { household: { unit: householdUnit, metricAmount: householdMetricAmount } }
+              : {}
+          ),
         };
         const metric = row.querySelector<HTMLElement>('.ingredient__measure-metric');
         const household = row.querySelector<HTMLElement>('.ingredient__measure-household');

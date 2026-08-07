@@ -2,7 +2,7 @@
   "id": "recipe_011",
   "slug": "szakszuka-z-chorizo-i-cukinia",
   "title": "Szakszuka z chorizo i cukinią",
-  "description": "Syciąca szakszuka z podsmażonym chorizo, cukinią, szpinakiem i jajkami w aromatycznym sosie pomidorowym. Dobra zarówno na ciepłe śniadanie, jak i szybką kolację.",
+  "description": "Aromatyczna szakszuka z rumianym chorizo, delikatną cukinią i szpinakiem w ziołowym sosie pomidorowym. Jajka z miękkim żółtkiem dopełniają całość, tworząc sycące śniadanie albo kolację z jednej patelni.",
   "image": {
     "src": "/images/recipes/szakszuka-z-chorizo-i-cukinia.jpg",
     "alt": "Szakszuka z czterema jajkami, chorizo, półplastrami cukinii i szpinakiem na żeliwnej patelni"
@@ -14,84 +14,120 @@
     {
       "category": "meat",
       "name": "chorizo",
-      "amount": 40,
-      "unit": "g"
+      "amount": 80,
+      "unit": "g",
+      "household": {
+        "unit": "slice",
+        "metricAmount": 8
+      }
     },
     {
       "category": "dairy",
       "name": "jajka",
-      "amount": 4,
+      "amount": 8,
       "unit": "szt"
     },
     {
       "category": "produce",
       "name": "cukinia",
-      "amount": 150,
-      "unit": "g"
+      "amount": 300,
+      "unit": "g",
+      "household": {
+        "unit": "piece",
+        "metricAmount": 300
+      }
     },
     {
       "category": "produce",
       "name": "szpinak",
-      "amount": 50,
-      "unit": "g"
+      "amount": 100,
+      "unit": "g",
+      "household": {
+        "unit": "handful",
+        "metricAmount": 25
+      }
     },
     {
       "category": "produce",
       "name": "cebula",
-      "amount": 1,
+      "amount": 2,
       "unit": "szt"
     },
     {
       "category": "produce",
       "name": "ząbek czosnku",
-      "amount": 1,
+      "amount": 2,
       "unit": "szt"
     },
     {
       "category": "produce",
       "name": "szczypiorek, opcjonalnie",
-      "amount": 10,
-      "unit": "g"
+      "amount": 20,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 5
+      }
     },
     {
       "category": "pantry",
       "name": "passata pomidorowa",
-      "amount": 120,
-      "unit": "g"
+      "amount": 240,
+      "unit": "g",
+      "household": {
+        "unit": "cup",
+        "metricAmount": 240
+      }
     },
     {
       "category": "grains",
       "name": "chleb żytni na zakwasie do podania",
-      "amount": 60,
-      "unit": "g"
+      "amount": 120,
+      "unit": "g",
+      "household": {
+        "unit": "bread_slice",
+        "metricAmount": 30
+      }
     },
     {
       "category": "spices",
       "name": "oregano suszone",
-      "amount": 1,
+      "amount": 2,
       "unit": "g",
-      "gramsPerCup": 35
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3.33
+      }
     },
     {
       "category": "spices",
       "name": "bazylia suszona",
-      "amount": 1,
+      "amount": 2,
       "unit": "g",
-      "gramsPerCup": 35
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 1
+      }
     },
     {
       "category": "spices",
       "name": "sól",
-      "amount": 1,
+      "amount": 2,
       "unit": "g",
-      "gramsPerCup": 300
+      "household": {
+        "unit": "pinch",
+        "metricAmount": 1
+      }
     },
     {
       "category": "spices",
       "name": "pieprz czarny mielony",
-      "amount": 1,
+      "amount": 2,
       "unit": "g",
-      "gramsPerCup": 100
+      "household": {
+        "unit": "pinch",
+        "metricAmount": 1
+      }
     }
   ],
   "preparation": [
@@ -107,7 +143,7 @@
     "Dodaj dobrze osuszoną cukinię. Smaż 5–7 minut bez przykrycia, co jakiś czas mieszając, aż zmięknie i lekko się przyrumieni.",
     "Dodaj szpinak i smaż około minuty, tylko do zwiędnięcia. Wlej passatę, wymieszaj i duś pod przykryciem przez 5–7 minut na małym ogniu.",
     "Wsyp oregano i bazylię, dopraw pieprzem oraz w razie potrzeby solą. Wymieszaj i gotuj jeszcze 3 minuty, aby smaki się połączyły.",
-    "W sosie zrób cztery zagłębienia i wbij do nich jajka. Przykryj patelnię i gotuj na małym ogniu przez 5–7 minut, aż białka się zetną, a żółtka pozostaną takie, jak lubisz.",
+    "W sosie zrób po jednym zagłębieniu na każde jajko i wbij je pojedynczo. Przykryj patelnię i gotuj na małym ogniu przez 5–7 minut, aż białka się zetną, a żółtka pozostaną takie, jak lubisz.",
     "Gotową szakszukę opcjonalnie posyp posiekanym szczypiorkiem i podawaj od razu z chlebem żytnim."
   ],
   "tips": [

@@ -6,11 +6,30 @@
 export const ingredientUnits = ['g', 'ml', 'szt'] as const;
 export type IngredientUnit = (typeof ingredientUnits)[number];
 
+export const householdUnits = [
+  'cup',
+  'tablespoon',
+  'teaspoon',
+  'pinch',
+  'piece',
+  'slice',
+  'bread_slice',
+  'handful',
+] as const;
+export type HouseholdUnit = (typeof householdUnits)[number];
+
+export interface HouseholdMeasureConversion {
+  unit: HouseholdUnit;
+  /** Ilość bazowej jednostki metrycznej odpowiadająca jednej mierze domowej. */
+  metricAmount: number;
+}
+
 export interface IngredientMeasure {
   name: string;
   amount: number;
   unit: IngredientUnit;
   gramsPerCup?: number;
+  household?: HouseholdMeasureConversion;
 }
 
 const CUP_ML = 250;
@@ -45,6 +64,41 @@ const pieceForms: UnitForms = {
   few: 'sztuki',
   many: 'sztuk',
   fraction: 'sztuki',
+};
+const sliceForms: UnitForms = {
+  one: 'plaster',
+  few: 'plastry',
+  many: 'plastrów',
+  fraction: 'plastra',
+};
+const breadSliceForms: UnitForms = {
+  one: 'kromka',
+  few: 'kromki',
+  many: 'kromek',
+  fraction: 'kromki',
+};
+const handfulForms: UnitForms = {
+  one: 'garść',
+  few: 'garści',
+  many: 'garści',
+  fraction: 'garści',
+};
+const pinchForms: UnitForms = {
+  one: 'szczypta',
+  few: 'szczypty',
+  many: 'szczypt',
+  fraction: 'szczypty',
+};
+
+const householdUnitForms: Record<HouseholdUnit, UnitForms> = {
+  cup: cupForms,
+  tablespoon: tablespoonForms,
+  teaspoon: teaspoonForms,
+  pinch: pinchForms,
+  piece: pieceForms,
+  slice: sliceForms,
+  bread_slice: breadSliceForms,
+  handful: handfulForms,
 };
 
 const PINCH = 'szczypta';
@@ -117,6 +171,13 @@ export function formatMetricMeasure(ingredient: IngredientMeasure): string {
 }
 
 export function formatHouseholdMeasure(ingredient: IngredientMeasure): string {
+  if (ingredient.household) {
+    return formatQuantity(
+      ingredient.amount / ingredient.household.metricAmount,
+      householdUnitForms[ingredient.household.unit],
+    );
+  }
+
   switch (ingredient.unit) {
     case 'szt':
       return formatQuantity(ingredient.amount, pieceForms);

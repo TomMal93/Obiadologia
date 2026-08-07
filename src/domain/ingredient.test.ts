@@ -27,6 +27,18 @@ describe('ingredient schema', () => {
     });
   });
 
+  it('accepts a natural household conversion for a metric amount', () => {
+    expect(ingredientSchema.parse({
+      category: 'meat',
+      name: 'chorizo',
+      amount: 80,
+      unit: 'g',
+      household: { unit: 'slice', metricAmount: 8 },
+    })).toMatchObject({
+      household: { unit: 'slice', metricAmount: 8 },
+    });
+  });
+
   it('rejects a non-positive amount and an unknown unit', () => {
     expect(() =>
       ingredientSchema.parse({ category: 'spices', name: 'sól', amount: 0, unit: 'g' }),
@@ -38,6 +50,20 @@ describe('ingredient schema', () => {
       ingredientSchema.parse({ category: 'frozen', name: 'groszek', amount: 200, unit: 'g' }),
     ).toThrow();
     expect(() => ingredientSchema.parse({ name: 'sól', amount: 5, unit: 'g' })).toThrow();
+    expect(() => ingredientSchema.parse({
+      category: 'produce',
+      name: 'cebula',
+      amount: 2,
+      unit: 'szt',
+      household: { unit: 'piece', metricAmount: 1 },
+    })).toThrow();
+    expect(() => ingredientSchema.parse({
+      category: 'meat',
+      name: 'chorizo',
+      amount: 80,
+      unit: 'g',
+      household: { unit: 'slice', metricAmount: 0 },
+    })).toThrow();
   });
 });
 
@@ -78,6 +104,34 @@ describe('household measure per unit', () => {
     expect(formatHouseholdMeasure(make({ amount: 130, unit: 'g', gramsPerCup: 130 }))).toBe(
       '1 szklanka',
     );
+  });
+
+  it('converts metric amounts to natural household units', () => {
+    expect(formatHouseholdMeasure(make({
+      amount: 80,
+      unit: 'g',
+      household: { unit: 'slice', metricAmount: 8 },
+    }))).toBe('10 plastrów');
+    expect(formatHouseholdMeasure(make({
+      amount: 150,
+      unit: 'g',
+      household: { unit: 'piece', metricAmount: 300 },
+    }))).toBe('½ sztuki');
+    expect(formatHouseholdMeasure(make({
+      amount: 100,
+      unit: 'g',
+      household: { unit: 'handful', metricAmount: 25 },
+    }))).toBe('4 garści');
+    expect(formatHouseholdMeasure(make({
+      amount: 120,
+      unit: 'g',
+      household: { unit: 'bread_slice', metricAmount: 30 },
+    }))).toBe('4 kromki');
+    expect(formatHouseholdMeasure(make({
+      amount: 2,
+      unit: 'g',
+      household: { unit: 'pinch', metricAmount: 1 },
+    }))).toBe('2 szczypty');
   });
 
   it('leaves mass in grams when no density is available', () => {

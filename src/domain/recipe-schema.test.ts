@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { formatHouseholdMeasure } from './ingredient';
 import { parseRecipes, recipeSchema } from './recipe-schema';
 import { testRecipes } from '@/test/fixtures/recipes';
 
@@ -34,6 +35,26 @@ describe('Recipe schema', () => {
       'szakszuka',
       'jajecznica',
       'szakszuka-z-chorizo-i-cukinia',
+    ]);
+  });
+
+  it('provides natural household measures for the chorizo shakshuka', () => {
+    const recipe = catalog.find(({ slug }) => slug === 'szakszuka-z-chorizo-i-cukinia');
+
+    expect(recipe?.ingredients.map(formatHouseholdMeasure)).toEqual([
+      '10 plastrów',
+      '8 sztuk',
+      '1 sztuka',
+      '4 garści',
+      '2 sztuki',
+      '2 sztuki',
+      '4 łyżki',
+      '1 szklanka',
+      '4 kromki',
+      '0,6 łyżeczki',
+      '2 łyżeczki',
+      '2 szczypty',
+      '2 szczypty',
     ]);
   });
 
