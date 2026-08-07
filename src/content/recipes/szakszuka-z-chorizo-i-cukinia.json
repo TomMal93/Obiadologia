@@ -1,0 +1,140 @@
+{
+  "id": "recipe_011",
+  "slug": "szakszuka-z-chorizo-i-cukinia",
+  "title": "Szakszuka z chorizo i cukinią",
+  "description": "Syciąca szakszuka z podsmażonym chorizo, cukinią, szpinakiem i jajkami w aromatycznym sosie pomidorowym. Dobra zarówno na ciepłe śniadanie, jak i szybką kolację.",
+  "image": {
+    "src": "/images/recipes/szakszuka-z-chorizo-i-cukinia.jpg",
+    "alt": "Szakszuka z czterema jajkami, chorizo, półplastrami cukinii i szpinakiem na żeliwnej patelni"
+  },
+  "preparationMinutes": 35,
+  "difficulty": "easy",
+  "servings": 2,
+  "ingredients": [
+    {
+      "category": "meat",
+      "name": "chorizo",
+      "amount": 40,
+      "unit": "g"
+    },
+    {
+      "category": "dairy",
+      "name": "jajka",
+      "amount": 4,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "cukinia",
+      "amount": 150,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "szpinak",
+      "amount": 50,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "ząbek czosnku",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "szczypiorek, opcjonalnie",
+      "amount": 10,
+      "unit": "g"
+    },
+    {
+      "category": "pantry",
+      "name": "passata pomidorowa",
+      "amount": 120,
+      "unit": "g"
+    },
+    {
+      "category": "grains",
+      "name": "chleb żytni na zakwasie do podania",
+      "amount": 60,
+      "unit": "g"
+    },
+    {
+      "category": "spices",
+      "name": "oregano suszone",
+      "amount": 1,
+      "unit": "g",
+      "gramsPerCup": 35
+    },
+    {
+      "category": "spices",
+      "name": "bazylia suszona",
+      "amount": 1,
+      "unit": "g",
+      "gramsPerCup": 35
+    },
+    {
+      "category": "spices",
+      "name": "sól",
+      "amount": 1,
+      "unit": "g",
+      "gramsPerCup": 300
+    },
+    {
+      "category": "spices",
+      "name": "pieprz czarny mielony",
+      "amount": 1,
+      "unit": "g",
+      "gramsPerCup": 100
+    }
+  ],
+  "preparation": [
+    "Aby zaoszczędzić czas rano, wieczorem pokrój cukinię w półplastry, lekko posól, przełóż do przykrytego pojemnika i wstaw do lodówki, aby puściła nadmiar soku.",
+    "Wieczorem możesz też pokroić chorizo w półplastry albo kostkę i przechować je w zamkniętym pojemniku w lodówce.",
+    "Odcedź cukinię z zebranego soku i dokładnie osusz. Jeśli nie była przygotowana wieczorem, pokrój ją teraz, lekko posól, odstaw na 10 minut, a następnie odcedź i osusz.",
+    "Jeśli chorizo nie było przygotowane wieczorem, pokrój je teraz w półplastry albo kostkę. Cebulę pokrój w drobną kostkę, czosnek posiekaj, a szpinak opłucz i osusz.",
+    "Przygotuj szeroką patelnię z pokrywką."
+  ],
+  "steps": [
+    "Połóż chorizo na zimnej patelni, ustaw średni ogień i smaż 2–3 minuty, aż zacznie się rumienić i wytopi tłuszcz.",
+    "Dodaj cebulę i smaż 2–3 minuty, aż się zeszkli. Dodaj czosnek i mieszaj jeszcze około 30 sekund, uważając, aby go nie przypalić.",
+    "Dodaj dobrze osuszoną cukinię. Smaż 5–7 minut bez przykrycia, co jakiś czas mieszając, aż zmięknie i lekko się przyrumieni.",
+    "Dodaj szpinak i smaż około minuty, tylko do zwiędnięcia. Wlej passatę, wymieszaj i duś pod przykryciem przez 5–7 minut na małym ogniu.",
+    "Wsyp oregano i bazylię, dopraw pieprzem oraz w razie potrzeby solą. Wymieszaj i gotuj jeszcze 3 minuty, aby smaki się połączyły.",
+    "W sosie zrób cztery zagłębienia i wbij do nich jajka. Przykryj patelnię i gotuj na małym ogniu przez 5–7 minut, aż białka się zetną, a żółtka pozostaną takie, jak lubisz.",
+    "Gotową szakszukę opcjonalnie posyp posiekanym szczypiorkiem i podawaj od razu z chlebem żytnim."
+  ],
+  "tips": [
+    "Bazę możesz przygotować do momentu dodania jajek i odstawić, aby smaki lepiej się przegryzły. Jeśli czeka dłużej, szybko ją ostudź, schowaj pod przykryciem do lodówki, a przed wbiciem jajek ponownie dobrze podgrzej.",
+    "Pomidorowo-warzywna baza z chorizo dobrze smakuje również bez jajek — możesz podać ją jako szybkie leczo z pieczywem.",
+    "Z solą postępuj ostrożnie: cukinia i chorizo są już słone. Ostatecznie dopraw danie dopiero po dodaniu passaty."
+  ],
+  "tags": [
+    "śniadanie",
+    "jajka",
+    "jedna patelnia"
+  ],
+  "mealTimes": [
+    "breakfast",
+    "dinner"
+  ],
+  "tempos": [
+    "now",
+    "today"
+  ],
+  "occasions": [
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.35,
+    "lightness": 0.45
+  },
+  "editorialPriority": 55,
+  "status": "published"
+}

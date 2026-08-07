@@ -19,7 +19,7 @@ describe('Recipe schema', () => {
   });
 
   it('validates the published application catalog', () => {
-    expect(catalog).toHaveLength(10);
+    expect(catalog).toHaveLength(11);
     expect(catalog[0]?.slug).toBe('kotlet-schabowy-z-ziemniakami');
     expect(catalog[1]?.slug).toBe('podudzia-kurczaka-z-ziemniakami');
     expect(catalog.map((recipe) => recipe.slug)).toEqual([
@@ -33,6 +33,7 @@ describe('Recipe schema', () => {
       'leczo-z-kielbasa-i-papryka',
       'szakszuka',
       'jajecznica',
+      'szakszuka-z-chorizo-i-cukinia',
     ]);
   });
 

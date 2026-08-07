@@ -130,10 +130,14 @@
   text-wrap: balance;
 }
 
+.recipe-summary {
+  background: var(--color-coral-soft);
+}
+
 .recipe-meta {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: var(--color-coral-soft);
+  background: transparent;
 }
 
 .recipe-meta__item {
@@ -224,11 +228,10 @@
 }
 
 .recipe-lead {
-  margin-top: var(--space-8);
-  padding: var(--space-16);
-  border-radius: var(--radius-field) var(--radius-panel);
+  padding: var(--space-12) var(--gutter) var(--space-16);
+  border-top: 1px solid var(--color-border);
   color: var(--color-text);
-  background: var(--color-bg-shell);
+  background: transparent;
 }
 
 .recipe-ingredients {

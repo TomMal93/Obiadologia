@@ -96,47 +96,48 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         </div>
       </header>
 
-      <div class="recipe-meta" aria-label={`${messages.recipe.difficultyLabel}, ${messages.recipe.servingsLabel}, ${messages.recipe.timeLabel}`}>
-        <div class="recipe-meta__item">
-          <span class="recipe-meta__label">{messages.recipe.difficultyLabel}</span>
-          <strong>{messages.recipe.difficulty[recipe.difficulty]}</strong>
-        </div>
-        <div class="recipe-meta__item recipe-meta__item--servings">
-          <span class="recipe-meta__label">{messages.recipe.servingsLabel}</span>
-          <div class="servings-control">
-            <button
-              type="button"
-              class="servings-control__button"
-              data-servings-delta="-1"
-              aria-label={messages.recipe.decreaseServingsLabel}
-              hidden
-            >
-              <span class="servings-control__button-mark" aria-hidden="true">−</span>
-            </button>
-            <strong data-servings-output aria-live="polite">{recipe.servings}</strong>
-            <button
-              type="button"
-              class="servings-control__button"
-              data-servings-delta="1"
-              aria-label={messages.recipe.increaseServingsLabel}
-              hidden
-            >
-              <span class="servings-control__button-mark" aria-hidden="true">+</span>
-            </button>
+      <div class="recipe-summary">
+        <div class="recipe-meta" aria-label={`${messages.recipe.difficultyLabel}, ${messages.recipe.servingsLabel}, ${messages.recipe.timeLabel}`}>
+          <div class="recipe-meta__item">
+            <span class="recipe-meta__label">{messages.recipe.difficultyLabel}</span>
+            <strong>{messages.recipe.difficulty[recipe.difficulty]}</strong>
+          </div>
+          <div class="recipe-meta__item recipe-meta__item--servings">
+            <span class="recipe-meta__label">{messages.recipe.servingsLabel}</span>
+            <div class="servings-control">
+              <button
+                type="button"
+                class="servings-control__button"
+                data-servings-delta="-1"
+                aria-label={messages.recipe.decreaseServingsLabel}
+                hidden
+              >
+                <span class="servings-control__button-mark" aria-hidden="true">−</span>
+              </button>
+              <strong data-servings-output aria-live="polite">{recipe.servings}</strong>
+              <button
+                type="button"
+                class="servings-control__button"
+                data-servings-delta="1"
+                aria-label={messages.recipe.increaseServingsLabel}
+                hidden
+              >
+                <span class="servings-control__button-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+          </div>
+          <div class="recipe-meta__item">
+            <span class="recipe-meta__label">{messages.recipe.timeLabel}</span>
+            <strong>
+              <span class="visually-hidden">{messages.recipe.preparationTimeLabel} </span>
+              {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
+            </strong>
           </div>
         </div>
-        <div class="recipe-meta__item">
-          <span class="recipe-meta__label">{messages.recipe.timeLabel}</span>
-          <strong>
-            <span class="visually-hidden">{messages.recipe.preparationTimeLabel} </span>
-            {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
-          </strong>
-        </div>
+        <p class="recipe-lead">{recipe.description}</p>
       </div>
 
       <div class="recipe-body">
-        <p class="recipe-lead">{recipe.description}</p>
-
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
           <div class="recipe-section-head recipe-ingredients__head">
             <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
