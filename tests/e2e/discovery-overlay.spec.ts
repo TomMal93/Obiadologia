@@ -14,9 +14,9 @@ test('search session switches modes and explicit close resets on browser Forward
   await expect(search).not.toBeFocused();
   await expect(dialog.getByRole('heading', { name: 'Propozycje' })).toHaveCount(0);
 
-  await search.fill('schab');
+  await search.fill('chorizo');
   await expect(
-    dialog.getByRole('link', { name: /Kotlet schabowy z ziemniakami/ }),
+    dialog.getByRole('link', { name: /Szakszuka z chorizo i cukinią/ }),
   ).toBeVisible();
 
   await dialog.getByRole('button', { name: /Mapa/ }).click();
@@ -29,7 +29,7 @@ test('search session switches modes and explicit close resets on browser Forward
   ).toBeVisible();
 
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
-  await expect(search).toHaveValue('schab');
+  await expect(search).toHaveValue('chorizo');
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
   await expect(opener).toBeFocused();

@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('category selection opens the published pork cutlet recipe', async ({ page }) => {
+test('category selection opens the published chorizo shakshuka recipe', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Co dziś jemy?' })).toBeVisible();
@@ -20,19 +20,19 @@ test('category selection opens the published pork cutlet recipe', async ({ page 
   ).toBeVisible();
   await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
 
-  await page.getByRole('button', { name: /Obiad/ }).click();
+  await page.getByRole('button', { name: /Śniadanie/ }).click();
   const results = page.getByRole('region', { name: 'Wyniki kategorii' });
   await expect(results.getByRole('link')).toHaveCount(1);
-  const card = results.getByRole('link', { name: /Kotlet schabowy z ziemniakami/ });
+  const card = results.getByRole('link', { name: /Szakszuka z chorizo i cukinią/ });
   await expect(card).toBeVisible();
   const selectedFrameGeometry = await readFrameGeometry();
   expect(selectedFrameGeometry.documentTop).toBeCloseTo(initialFrameGeometry.documentTop, 0);
   expect(selectedFrameGeometry.height).toBeCloseTo(initialFrameGeometry.height, 0);
 
   await card.click();
-  await expect(page).toHaveURL(/\/recipes\/kotlet-schabowy-z-ziemniakami$/);
+  await expect(page).toHaveURL(/\/recipes\/szakszuka-z-chorizo-i-cukinia$/);
   await expect(
-    page.getByRole('heading', { name: 'Kotlet schabowy z ziemniakami' }),
+    page.getByRole('heading', { name: 'Szakszuka z chorizo i cukinią' }),
   ).toBeVisible();
 });
 
