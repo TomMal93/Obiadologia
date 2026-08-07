@@ -16,7 +16,7 @@ Interaktywny projekt [recipe-page.html](../../assets/ui/recipe-page.html) jest r
 Z projektu obowiązują w MVP:
 
 - pełnoszerokie zdjęcie hero lub placeholder z nakładką poprawiającą czytelność tekstu;
-- akcja powrotu w lewym górnym rogu hero oraz tagi i tytuł na jego dolnej krawędzi;
+- akcja powrotu w lewym górnym rogu hero oraz tytuł i tagi na jego dolnej krawędzi;
 - jasny, koralowy pasek metadanych bezpośrednio pod hero;
 - jedna przewijana kolumna treści: opis, Składniki, przełącznik trybu gotowania, etapy wspierające i Kroki;
 - opcjonalna sekcja porad „Coś jeszcze” po krokach;
@@ -52,7 +52,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 - Trasa `/recipes/:slug` jest prerenderowana dla każdego przepisu o statusie `published`; slug spoza katalogu nie generuje strony.
 - Strona przepisu nie powiela wspólnego nagłówka. Pierwszym elementem jest hero z akcją powrotu, dzięki czemu zdjęcie i tytuł rozpoczynają stronę zgodnie z projektem.
-- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tagami i tytułem (`h1`); pasek trudności, porcji i czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”); kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
+- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tytułem (`h1`) i tagami; pasek trudności, porcji i czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”); kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
 - Pasek bezpośrednio pod hero ma trzy komórki: przetłumaczony poziom `difficulty`, bazową liczbę `servings` z akcjami zmniejszenia i zwiększenia oraz czas z `preparationMinutes`. Liczbę porcji można ustawić w zakresie `1–12`.
 - Zmiana liczby porcji skaluje ilość każdego składnika względem bazowej wartości według reguły z [data-model.md](../../engineering/data-model.md). Obie prezentacje miar — metryczna i domowa — korzystają z przeliczonej ilości. Stan jest lokalny i resetuje się po opuszczeniu strony.
 - Regulacja porcji jest wzbogaceniem progresywnym: bez skryptu strona pokazuje bazową liczbę porcji i bazowe ilości, a akcje zmiany pozostają ukryte.
@@ -66,9 +66,9 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 - Tryb asystenta zaczyna się panelem „Kiedy zacząć”. Po podaniu pory podania pokazuje rozpoczęcie głównego gotowania (`pora − preparationMinutes`), a przy każdej czynności „Wcześniej” godzinę jej rozpoczęcia (`pora − leadTimeMinutes`); start przypadający poprzedniego dnia jest jednoznacznie oznaczony. Pomocnik jest wzbogaceniem progresywnym — bez skryptu pozostaje ukryty, a sekcja i tak pokazuje wymagane wyprzedzenie.
 - Gdy przepis ma choć jedną z sekcji `advance`/`preparation`, strona udostępnia przełącznik „Tryb asystenta / Tylko kroki”: „Tryb asystenta” pokazuje etapy wspierające, „Tylko kroki” zwija je do samej listy kroków. Przełącznik jest wzbogaceniem progresywnym — bez skryptu pozostaje ukryty, a strona pokazuje pełną treść. Przepis bez tych pól nie pokazuje przełącznika i wygląda jak sama lista kroków.
 - Gdy przepis ma pole `tips`, strona pokazuje po krokach sekcję „Coś jeszcze” z poradami w kolejności zapisanej w danych. Brak pola nie pozostawia pustej sekcji. Porady są zwykłą treścią HTML i pozostają dostępne bez JavaScriptu.
-- Strona pokazuje wszystkie tagi w kolejności zapisanej w `tags`, na dolnej nakładce hero nad tytułem, jako drobne etykiety pisane wielkimi literami (bez punktorów i bez tła pigułki); reguła „od jednego do trzech tagów” dotyczy karty wyniku, nie strony przepisu ([data-model.md](../../engineering/data-model.md)).
+- Strona pokazuje wszystkie tagi w kolejności zapisanej w `tags`, na dolnej nakładce hero pod tytułem, jako drobne etykiety pisane wielkimi literami, rozdzielone kropką (bez punktorów listy i bez tła pigułki); reguła „od jednego do trzech tagów” dotyczy karty wyniku, nie strony przepisu ([data-model.md](../../engineering/data-model.md)).
 - Brak zdjęcia (`image: null`) pokazuje wspólny, dekoracyjny placeholder bez zmiany układu strony; placeholder nie powiela dostępnej nazwy przepisu ([data-model.md](../../engineering/data-model.md)).
-- Widoczna akcja „Wróć” w hero cofa do poprzedniego wpisu historii przeglądarki, dzięki czemu przywraca widok, z którego otwarto przepis — w tym zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md). Gdy przepis otwarto bezpośrednio i nie ma poprzedniego wpisu, link prowadzi awaryjnie do `/`. Dostępna nazwa wyjaśnia powrót do poprzedniego widoku.
+- Widoczna akcja „Powrót” z ikoną chevronu w hero cofa do poprzedniego wpisu historii przeglądarki, dzięki czemu przywraca widok, z którego otwarto przepis — w tym zawieszoną sesję discovery zgodnie z [discovery-overlay.md](./discovery-overlay.md). Gdy przepis otwarto bezpośrednio i nie ma poprzedniego wpisu, link prowadzi awaryjnie do `/`. Dostępna nazwa wyjaśnia powrót do poprzedniego widoku.
 - Do czasu rozstrzygnięcia źródła danych (`OPEN-003`) strona jawnie oznacza dane jako prototypowe i wskazuje, że pełna treść redakcyjna powstanie później.
 
 ## Prezentacja
@@ -77,7 +77,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 
 - Hero zajmuje pełną szerokość kontenera mobilnego, ma stałą wysokość w rytmie projektu i `object-fit: cover`; awaria lub brak obrazu nie zmienia jego geometrii.
 - Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia.
-- Akcja „Wróć” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
+- Akcja „Powrót” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
 - Akcje zmiany porcji są okrągłe, mają minimalny obszar aktywny `44 × 44px`, dostępne nazwy i stan `disabled` na granicach zakresu.
 - Przełącznik jednostek zajmuje osobny wiersz pod nagłówkiem „Składniki” i pełną szerokość kolumny treści, dzięki czemu oba segmenty zachowują wygodny obszar dotyku i czytelne odstępy w całym zakresie mobilnym.
 - Pomocnik „Kiedy zacząć” używa tej samej jasnej koralowej powierzchni i ciemnego koralowego nagłówka co panel „Coś jeszcze”, ale zachowuje subtelne obramowanie, zwarty rytm odstępów i minimalistyczne pole czasu. Sekcje „Przygotowanie” i „Kroki” pozostają na wspólnej neutralnej, jasnej powierzchni z takim samym obramowaniem i promieniem, lecz luźniejszym paddingiem.
@@ -96,7 +96,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | 1 | Kliknięcie karty wyniku na dowolnej drodze otwiera `/recipes/:slug` z tytułem przepisu w `h1`. |
 | 2 | Strona pokazuje opis, trudność, bazową liczbę porcji, czas przygotowania, wszystkie tagi, pełną listę składników przepisu z grammaturą oraz numerowane kroki przygotowania. |
 | 3 | Przy `image: null` widoczny jest dekoracyjny placeholder, a układ strony nie zmienia wymiarów. |
-| 4 | Akcja „Wróć” w hero przywraca poprzedni widok z historii, w tym zawieszoną sesję discovery; przy bezpośrednim otwarciu przepisu prowadzi awaryjnie do `/`. |
+| 4 | Akcja „Powrót” w hero przywraca poprzedni widok z historii, w tym zawieszoną sesję discovery; przy bezpośrednim otwarciu przepisu prowadzi awaryjnie do `/`. |
 | 5 | Tytuł dokumentu i meta description są unikalne dla przepisu. |
 | 6 | Strona przechodzi automatyczną kontrolę `axe-core`, działa klawiaturą i nie tworzy poziomego przewijania w zakresie `320–480px`. |
 | 7 | Dane prototypowe są jawnie oznaczone jako prototypowe. |

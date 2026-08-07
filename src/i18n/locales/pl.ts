@@ -184,8 +184,8 @@ export const pl = {
     servingsLabel: 'Porcje',
     decreaseServingsLabel: 'Zmniejsz liczbę porcji',
     increaseServingsLabel: 'Zwiększ liczbę porcji',
-    backLabel: 'Wróć do poprzedniego widoku',
-    backShort: '← Wróć',
+    backLabel: 'Powrót do poprzedniego widoku',
+    backShort: 'Powrót',
     ingredientsHeading: 'Składniki',
     ingredientCategories: {
       produce: 'Warzywa i owoce',

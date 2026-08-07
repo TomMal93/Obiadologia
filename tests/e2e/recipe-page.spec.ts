@@ -27,8 +27,17 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
     (labels) => labels.map((label) => label.getBoundingClientRect().top),
   );
   expect(new Set(metaLabelTops.map(Math.round)).size).toBe(1);
+  const metaHeight = await page.locator('.recipe-meta').evaluate(
+    (element) => element.getBoundingClientRect().height,
+  );
+  expect(metaHeight).toBeLessThanOrEqual(72);
 
   const tags = page.getByRole('list', { name: 'Tagi' });
+  const heroContentOrder = await page.locator('.recipe-hero__caption > *').evaluateAll(
+    (elements) => elements.map((element) => element.tagName),
+  );
+  expect(heroContentOrder).toEqual(['H1', 'UL']);
+  await expect(tags.locator('.recipe-tags__separator')).toHaveCount(2);
   for (const tag of ['obiad', 'domowe', 'klasyka']) {
     await expect(tags.getByRole('listitem').filter({ hasText: tag })).toBeVisible();
   }
@@ -131,7 +140,7 @@ test('published pork cutlet recipe presents its complete model data', async ({ p
     ),
   ).toBe(true);
 
-  await page.getByRole('link', { name: 'Wróć do poprzedniego widoku' }).click();
+  await page.getByRole('link', { name: 'Powrót do poprzedniego widoku' }).click();
   await expect(page).toHaveURL('/');
 });
 
@@ -145,7 +154,7 @@ test('recipe back action restores the previous discovery view', async ({ page })
   await dialog.getByRole('link', { name: /Kotlet schabowy z ziemniakami/ }).click();
   await expect(page).toHaveURL(/\/recipes\/kotlet-schabowy-z-ziemniakami$/);
 
-  await page.getByRole('link', { name: 'Wróć do poprzedniego widoku' }).click();
+  await page.getByRole('link', { name: 'Powrót do poprzedniego widoku' }).click();
 
   await expect(page).toHaveURL('/');
   await expect(page.getByRole('dialog')).toBeVisible();

@@ -76,13 +76,23 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
           aria-label={messages.recipe.backLabel}
           data-recipe-back
         >
-          {messages.recipe.backShort}
+          <span class="recipe-back__surface">
+            <svg class="recipe-back__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            {messages.recipe.backShort}
+          </span>
         </a>
         <div class="recipe-hero__caption">
-          <ul class="recipe-tags" aria-label={messages.common.tagsLabel}>
-            {recipe.tags.map((tag) => <li>{tag}</li>)}
-          </ul>
           <h1>{recipe.title}</h1>
+          <ul class="recipe-tags" aria-label={messages.common.tagsLabel}>
+            {recipe.tags.map((tag, index) => (
+              <li>
+                {index > 0 && <span class="recipe-tags__separator" aria-hidden="true"></span>}
+                {tag}
+              </li>
+            ))}
+          </ul>
         </div>
       </header>
 
