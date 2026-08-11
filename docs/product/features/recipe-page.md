@@ -11,7 +11,7 @@ Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [dat
 
 ## Referencja projektu
 
-Interaktywny projekt [recipe-page.html](../../assets/ui/recipe-page.html) jest referencją kompozycji, hierarchii wizualnej i stanów interakcji strony przepisu. Niniejsza specyfikacja pozostaje źródłem prawdy dla zachowania, a [data-model.md](../../engineering/data-model.md) dla dostępnych danych. Element projektu wymagający pola spoza modelu nie może być uzupełniany fikcyjną wartością.
+Interaktywny projekt [recipe-page.html](../../assets/ui/recipe-page.html) jest referencją kompozycji, hierarchii wizualnej i stanów interakcji strony przepisu. Niniejsza specyfikacja pozostaje źródłem prawdy dla zachowania, a [data-model.md](../../engineering/data-model.md) dla dostępnych danych. Element projektu wymagający pola spoza modelu nie może być uzupełniany fikcyjną wartością. Projekt nie pokazuje już planowania godzin — wycofanie panelu „Kiedy zacząć” objęło także ten plik, aby referencja nie zapraszała z powrotem do usuniętego mechanizmu.
 
 Z projektu obowiązują w MVP:
 
@@ -31,8 +31,6 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 | wartości odżywcze | pominięte | brak danych w modelu i poza zakresem MVP |
 | „Podobne przepisy” | pominięte | brak uzgodnionego kontraktu podobieństwa |
 | przełącznik jednostek nad składnikami | pominięty | forma miary jest wyborem redakcyjnym pojedynczego składnika (`measure`), więc lista jest mieszana i nie ma czego przełączać |
-| panel „Kiedy zacząć” z porą posiłku | pominięty | tryb asystenta prowadzi przez kolejność czynności, a nie przez zegar; planowanie godzin wycofano ze strony |
-| osobna sekcja czynności z wyprzedzeniem („Wcześniej”) | pominięta | wszystko przed gotowaniem mieści się w jednej sekcji „Zanim zaczniesz”; możliwość wcześniejszego wykonania jest częścią zdania czynności |
 
 ## W zakresie
 
