@@ -118,8 +118,8 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
 
   await page.getByRole('button', { name: 'Tylko kroki' }).click();
   const steps = page.getByRole('region', { name: 'Kroki' });
-  await expect(steps.getByRole('listitem')).toHaveCount(7);
-  const firstStep = steps.locator('[data-checkable-step]').first();
+  await expect(steps.getByRole('listitem')).toHaveCount(9);
+  const firstStep = steps.locator('.steps-only-section [data-checkable-step]').first();
   await firstStep.click();
   await expect(firstStep).toHaveAttribute('aria-pressed', 'true');
 
@@ -176,6 +176,14 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(5);
+  const assistantSteps = steps.locator('.step-list.assistant-section');
+  const standaloneSteps = steps.locator('.step-list.steps-only-section');
+  await expect(assistantSteps).toBeVisible();
+  await expect(standaloneSteps).toBeHidden();
+  await expect(assistantSteps.getByRole('listitem')).toHaveCount(7);
+  await expect(assistantSteps.getByRole('listitem').first()).toContainText(
+    'Połóż chorizo na zimnej patelni',
+  );
   const choiceHeadingLeft = await page.getByRole('heading', {
     name: 'Jak chcesz gotować?',
   }).evaluate((element) => element.getBoundingClientRect().left);
@@ -247,9 +255,19 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   await expect(preparation).toBeHidden();
   await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Coś jeszcze' })).toBeVisible();
+  // „Tylko kroki” ukrywa „Przygotowanie”, więc jego kroki muszą same nieść
+  // krojenie i osuszanie — to inny tekst niż lista trybu asystenta.
+  await expect(assistantSteps).toBeHidden();
+  await expect(standaloneSteps).toBeVisible();
+  await expect(standaloneSteps.getByRole('listitem')).toHaveCount(9);
+  await expect(standaloneSteps.getByRole('listitem').first()).toContainText(
+    'Cukinię pokrój w półplastry',
+  );
 
   await assistantMode.click();
   await expect(preparation).toBeVisible();
+  await expect(assistantSteps).toBeVisible();
+  await expect(standaloneSteps).toBeHidden();
 
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations).toEqual([]);

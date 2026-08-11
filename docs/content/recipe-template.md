@@ -98,11 +98,26 @@ czynności wykonywanych bezpośrednio przed właściwymi krokami.
 ## Kroki
 
 Każdy punkt powinien opisywać jedną wyraźną czynność. Kolejność poniżej jest
-kolejnością prezentowaną użytkownikowi.
+kolejnością prezentowaną użytkownikowi. Pisz te kroki tak, jakby sekcje
+„Wcześniej” i „Przygotowanie” były już wykonane — to wersja dla „Trybu
+asystenta”, który pokazuje je obok kroków.
 
 1. [pierwszy krok]
 2. [drugi krok]
 3. [kolejny krok]
+
+## Kroki samodzielne — wymagane przy „Wcześniej” albo „Przygotowaniu”
+
+Wypełnij tę sekcję dokładnie wtedy, gdy przepis ma sekcję „Wcześniej” albo
+„Przygotowanie”. W trybie „Tylko kroki” te sekcje są ukryte, więc poniższa
+wersja MUSI sama nieść wszystko, co powyżej zostało z nich założone: krojenie,
+namoczenie, odsączenie, przygotowanie sprzętu. Nie kopiuj listy powyżej —
+przepisz ją, wplatając brakujące czynności. Wersja samodzielna może mieć inną
+liczbę kroków. Przepis bez tych sekcji tej listy nie ma.
+
+1. [pierwszy krok wersji samodzielnej]
+2. [drugi krok wersji samodzielnej]
+3. [kolejny krok wersji samodzielnej]
 
 ## Coś jeszcze — opcjonalne
 
@@ -153,6 +168,8 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Opcjonalny przelicznik `household` ma dozwoloną jednostkę, dodatnie `metricAmount` i występuje wyłącznie przy bazowej jednostce `g` albo `ml`.
 - [ ] Opcjonalne `measure` ma wartość `metric`, `household` albo `both`, a formy z miarą domową mają przelicznik i dają czytelną ilość.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
+- [ ] Przepis z sekcją „Wcześniej” albo „Przygotowaniem” ma wypełnione kroki samodzielne, a przepis bez tych sekcji ich nie ma.
+- [ ] Kroki samodzielne są innym tekstem niż kroki podstawowe i nie gubią żadnej czynności z „Wcześniej” ani „Przygotowania”.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
 - [ ] Każda grupa dopasowania ma co najmniej jedną wartość.
 - [ ] Wartości Mapy mieszczą się w zakresie `0–1`.

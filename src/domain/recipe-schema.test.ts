@@ -53,6 +53,34 @@ describe('Recipe schema', () => {
     expect(() => recipeSchema.parse({ ...testRecipes[0], tips: [] })).toThrow();
   });
 
+  it('requires a standalone step version exactly for recipes with support stages', () => {
+    const withSupportStages = testRecipes[0];
+    const withoutSupportStages = testRecipes[1];
+
+    expect(recipeSchema.parse(withSupportStages).stepsOnly).toEqual([
+      'Przygotuj sprzęt i wykonaj krok testowy.',
+    ]);
+    expect(recipeSchema.parse(withoutSupportStages).stepsOnly).toBeUndefined();
+
+    expect(() => recipeSchema.parse({ ...withSupportStages, stepsOnly: undefined })).toThrow();
+    expect(() => recipeSchema.parse({ ...withSupportStages, stepsOnly: [] })).toThrow();
+    expect(() =>
+      recipeSchema.parse({ ...withoutSupportStages, stepsOnly: ['Krok samodzielny.'] }),
+    ).toThrow();
+  });
+
+  it('keeps the assistant and steps-only versions of the catalog recipe different', () => {
+    const recipe = catalog.find(({ slug }) => slug === 'szakszuka-z-chorizo-i-cukinia');
+
+    // Kroki asystenta zakładają wykonane „Przygotowanie”, więc wersja samodzielna
+    // musi wnosić czynności, których tam nie ma — inaczej tryb „Tylko kroki”
+    // gubiłby krojenie i osuszanie składników.
+    expect(recipe?.stepsOnly).toBeDefined();
+    expect(recipe?.stepsOnly).not.toEqual(recipe?.steps);
+    expect(recipe?.steps.join(' ')).not.toContain('pokrój');
+    expect(recipe?.stepsOnly?.join(' ')).toContain('pokrój');
+  });
+
   it('rejects an unknown difficulty and servings outside the supported range', () => {
     expect(() => recipeSchema.parse({ ...testRecipes[0], difficulty: 'expert' })).toThrow();
     expect(() => recipeSchema.parse({ ...testRecipes[0], servings: 0 })).toThrow();

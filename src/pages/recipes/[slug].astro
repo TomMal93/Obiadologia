@@ -25,6 +25,15 @@ interface Props {
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
 const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
+// Dwa tryby mają własne teksty kroków: asystent prowadzi przez kroki zakładające
+// wykonane etapy wspierające, a „Tylko kroki” pokazuje wersję samodzielną. Bez
+// etapów wspierających istnieje jedna, wspólna lista bez klasy trybu.
+const stepLists = recipe.stepsOnly
+  ? [
+      { steps: recipe.steps, modeClass: 'assistant-section' },
+      { steps: recipe.stepsOnly, modeClass: 'steps-only-section' },
+    ]
+  : [{ steps: recipe.steps, modeClass: null }];
 const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
   checked: 0,
   total: recipe.ingredients.length,
@@ -316,34 +325,37 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
 
           <section class="recipe-steps recipe-mode-content" aria-labelledby="steps-heading">
           <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
-          <ol class="step-list">
-            {
-              recipe.steps.map((step, index) => (
-                <li class="recipe-step">
-                  <button
-                    type="button"
-                    class="recipe-step__toggle"
-                    data-checkable-step
-                    aria-pressed="false"
-                    aria-label={formatMessage(messages.recipe.checkStepLabel, {
-                      number: index + 1,
-                    })}
-                    data-check-label={formatMessage(messages.recipe.checkStepLabel, {
-                      number: index + 1,
-                    })}
-                    data-uncheck-label={formatMessage(messages.recipe.uncheckStepLabel, {
-                      number: index + 1,
-                    })}
-                    hidden
-                  >
-                    <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
-                    <span class="recipe-step__text">{step}</span>
-                  </button>
-                  <span class="recipe-step__fallback">{step}</span>
-                </li>
-              ))
-            }
-          </ol>
+          {
+            stepLists.map(({ steps, modeClass }) => (
+              <ol class:list={['step-list', modeClass]}>
+                {steps.map((step, index) => (
+                  <li class="recipe-step">
+                    <button
+                      type="button"
+                      class="recipe-step__toggle"
+                      data-checkable-step
+                      data-step-number={index + 1}
+                      aria-pressed="false"
+                      aria-label={formatMessage(messages.recipe.checkStepLabel, {
+                        number: index + 1,
+                      })}
+                      data-check-label={formatMessage(messages.recipe.checkStepLabel, {
+                        number: index + 1,
+                      })}
+                      data-uncheck-label={formatMessage(messages.recipe.uncheckStepLabel, {
+                        number: index + 1,
+                      })}
+                      hidden
+                    >
+                      <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
+                      <span class="recipe-step__text">{step}</span>
+                    </button>
+                    <span class="recipe-step__fallback">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            ))
+          }
           </section>
 
           {
@@ -626,7 +638,9 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         'aria-label',
         (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
       );
-      if (badge) badge.textContent = !checked ? '✓' : String(stepToggles.indexOf(button) + 1);
+      // Numer bierzemy z kroku, a nie z pozycji w kolekcji przycisków — obie
+      // listy trybów żyją w DOM równocześnie i numerują się od nowa.
+      if (badge) badge.textContent = !checked ? '✓' : button.dataset.stepNumber ?? '';
     });
   }
 

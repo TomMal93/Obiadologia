@@ -544,8 +544,12 @@
   line-height: 1.2;
 }
 
+/* Samodzielna wersja kroków należy wyłącznie do trybu „Tylko kroki”. Zapis przez
+   `:not()` obejmuje też brak `data-view` (strona bez skryptu), więc bez JS widać
+   pełne prowadzenie: etapy wspierające i kroki asystenta, bez podwójnej listy. */
 .recipe-article[data-view='unselected'] .recipe-mode-content,
-.recipe-article[data-view='steps'] .assistant-section {
+.recipe-article[data-view='steps'] .assistant-section,
+.recipe-article:not([data-view='steps']) .steps-only-section {
   display: none;
 }
 
