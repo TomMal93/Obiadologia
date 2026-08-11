@@ -24,12 +24,23 @@ export interface HouseholdMeasureConversion {
   metricAmount: number;
 }
 
+/**
+ * Redakcyjny wybór formy miary pojedynczego składnika. Strona przepisu nie ma
+ * przełącznika jednostek — lista jest mieszana, a `both` łączy obie formy
+ * ukośnikiem.
+ */
+export const measureDisplays = ['metric', 'household', 'both'] as const;
+export type MeasureDisplay = (typeof measureDisplays)[number];
+
+export const defaultMeasureDisplay: MeasureDisplay = 'metric';
+
 export interface IngredientMeasure {
   name: string;
   amount: number;
   unit: IngredientUnit;
   gramsPerCup?: number;
   household?: HouseholdMeasureConversion;
+  measure?: MeasureDisplay;
 }
 
 const CUP_ML = 250;
@@ -170,6 +181,22 @@ export function formatMetricMeasure(ingredient: IngredientMeasure): string {
   }
 }
 
+/**
+ * Czy dla składnika da się wyliczyć formę domową różną od metrycznej. `szt`
+ * jest już miarą naturalną, a masa bez przelicznika zostaje w gramach.
+ */
+export function hasHouseholdMeasure(ingredient: IngredientMeasure): boolean {
+  if (ingredient.household) return true;
+  switch (ingredient.unit) {
+    case 'ml':
+      return true;
+    case 'g':
+      return ingredient.gramsPerCup !== undefined;
+    case 'szt':
+      return false;
+  }
+}
+
 export function formatHouseholdMeasure(ingredient: IngredientMeasure): string {
   if (ingredient.household) {
     return formatQuantity(
@@ -188,4 +215,19 @@ export function formatHouseholdMeasure(ingredient: IngredientMeasure): string {
         ? millilitresToHousehold((ingredient.amount / ingredient.gramsPerCup) * CUP_ML)
         : formatMetricMeasure(ingredient);
   }
+}
+
+/**
+ * Jedyna miara pokazywana przy składniku na stronie przepisu. Wybór formy jest
+ * redakcyjny (`measure`), a `both` łączy formę metryczną z domową ukośnikiem.
+ * Gdy obie formy są identyczne, ukośnik się nie pojawia.
+ */
+export function formatMeasure(ingredient: IngredientMeasure): string {
+  const display = ingredient.measure ?? defaultMeasureDisplay;
+  const metric = formatMetricMeasure(ingredient);
+  if (display === 'metric') return metric;
+
+  const household = formatHouseholdMeasure(ingredient);
+  if (display === 'household') return household;
+  return household === metric ? metric : `${metric} / ${household}`;
 }

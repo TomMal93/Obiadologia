@@ -296,21 +296,8 @@
   min-height: auto;
 }
 
-.recipe-ingredients__tools {
-  display: grid;
-  width: 100%;
-  justify-items: end;
-  gap: var(--space-8);
-}
-
-.unit-toggle {
-  width: 100%;
-  box-shadow: inset 0 0 0 1px var(--color-border);
-}
-
-.unit-toggle .recipe-segmented__option {
-  min-width: 0;
-  white-space: nowrap;
+.recipe-ingredients__head > .ingredient-progress {
+  justify-self: end;
 }
 
 .recipe-segmented[hidden] {
@@ -439,11 +426,6 @@
   font-size: var(--font-size-14);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-.ingredient-groups[data-units='metric'] .ingredient__measure-household,
-.ingredient-groups[data-units='household'] .ingredient__measure-metric {
-  display: none;
 }
 
 .assistant-toggle {

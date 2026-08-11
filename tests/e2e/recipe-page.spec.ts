@@ -52,62 +52,35 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     'Spiżarnia',
     'Przyprawy',
   ]);
+  await expect(ingredients.locator('.unit-toggle')).toHaveCount(0);
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
-    const unitToggle = section.querySelector('.unit-toggle');
     const progress = section.querySelector('.ingredient-progress');
-    if (
-      !(heading instanceof HTMLElement)
-      || !(unitToggle instanceof HTMLElement)
-      || !(progress instanceof HTMLElement)
-    ) {
+    if (!(heading instanceof HTMLElement) || !(progress instanceof HTMLElement)) {
       throw new Error('Ingredient section header was not found');
     }
     const headingBounds = heading.getBoundingClientRect();
-    const toggleBounds = unitToggle.getBoundingClientRect();
     const progressBounds = progress.getBoundingClientRect();
     const sectionBounds = section.getBoundingClientRect();
     const sectionStyles = getComputedStyle(section);
     return {
       headingBottom: headingBounds.bottom,
-      sectionLeft: sectionBounds.left,
       sectionRight: sectionBounds.right,
-      sectionBorderLeft: Number.parseFloat(sectionStyles.borderLeftWidth),
       sectionBorderRight: Number.parseFloat(sectionStyles.borderRightWidth),
-      sectionPaddingLeft: Number.parseFloat(sectionStyles.paddingLeft),
       sectionPaddingRight: Number.parseFloat(sectionStyles.paddingRight),
-      toggleTop: toggleBounds.top,
-      toggleLeft: toggleBounds.left,
-      toggleBottom: toggleBounds.bottom,
-      toggleRight: toggleBounds.right,
-      toggleHeight: toggleBounds.height,
       progressTop: progressBounds.top,
       progressRight: progressBounds.right,
     };
   });
-  expect(ingredientHeadGeometry.toggleTop).toBeGreaterThan(
+  expect(ingredientHeadGeometry.progressTop).toBeGreaterThanOrEqual(
     ingredientHeadGeometry.headingBottom,
   );
-  expect(ingredientHeadGeometry.toggleLeft).toBeCloseTo(
-    ingredientHeadGeometry.sectionLeft
-      + ingredientHeadGeometry.sectionBorderLeft
-      + ingredientHeadGeometry.sectionPaddingLeft,
-    0,
-  );
-  expect(ingredientHeadGeometry.toggleRight).toBeCloseTo(
+  expect(ingredientHeadGeometry.progressRight).toBeCloseTo(
     ingredientHeadGeometry.sectionRight
       - ingredientHeadGeometry.sectionBorderRight
       - ingredientHeadGeometry.sectionPaddingRight,
     0,
   );
-  expect(ingredientHeadGeometry.progressTop).toBeGreaterThanOrEqual(
-    ingredientHeadGeometry.toggleBottom,
-  );
-  expect(ingredientHeadGeometry.progressRight).toBeCloseTo(
-    ingredientHeadGeometry.toggleRight,
-    0,
-  );
-  expect(ingredientHeadGeometry.toggleHeight).toBe(52);
   await expect(
     ingredients.getByRole('button', { name: /Odhacz składnik: chorizo/ }),
   ).toBeVisible();
@@ -120,17 +93,14 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
 
   const chorizo = ingredients.locator('.ingredient').filter({ hasText: 'chorizo' });
   const zucchini = ingredients.locator('.ingredient').filter({ hasText: 'cukinia' });
-  await expect(chorizo.locator('.ingredient__measure-metric')).toHaveText('80 g');
-  await expect(zucchini.locator('.ingredient__measure-metric')).toHaveText('300 g');
+  await expect(chorizo.locator('[data-ingredient-measure]')).toHaveText('80 g / 10 plastrów');
+  await expect(zucchini.locator('[data-ingredient-measure]')).toHaveText('300 g / 1 sztuka');
   await increaseServings.click();
   await expect(servings).toHaveText('3');
-  await expect(chorizo.locator('.ingredient__measure-metric')).toHaveText('120 g');
+  await expect(chorizo.locator('[data-ingredient-measure]')).toHaveText('120 g / 15 plastrów');
   await decreaseServings.click();
   await expect(servings).toHaveText('2');
-  await expect(chorizo.locator('.ingredient__measure-metric')).toHaveText('80 g');
-
-  await page.getByRole('button', { name: 'Miary domowe' }).click();
-  await expect(chorizo.locator('.ingredient__measure-household')).toHaveText('10 plastrów');
+  await expect(chorizo.locator('[data-ingredient-measure]')).toHaveText('80 g / 10 plastrów');
 
   const chorizoToggle = ingredients.locator('[data-checkable-ingredient]').filter({
     hasText: 'chorizo',
@@ -301,54 +271,39 @@ test('recipe page stays centered and has no horizontal overflow', async ({ page 
   }
 });
 
-test('natural household measures scale with shakshuka servings', async ({ page }) => {
+test('mixed ingredient measures scale with shakshuka servings', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
   const servings = page.locator('[data-servings-output]');
   const decreaseServings = page.getByRole('button', { name: 'Zmniejsz liczbę porcji' });
-  const rowFor = (name: string) => ingredients.locator('.ingredient').filter({ hasText: name });
+  const measureFor = (name: string) =>
+    ingredients.locator('.ingredient').filter({ hasText: name }).locator(
+      '[data-ingredient-measure]',
+    );
 
   await expect(servings).toHaveText('2');
-  await ingredients.getByRole('button', { name: 'Miary domowe' }).click();
-  const chorizoMetric = rowFor('chorizo').locator('.ingredient__measure-metric');
-  const chorizoHousehold = rowFor('chorizo').locator('.ingredient__measure-household');
-  await expect(chorizoMetric).toBeHidden();
-  await expect(chorizoHousehold).toBeVisible();
-  await expect(chorizoHousehold).toHaveText('10 plastrów');
-  await expect(rowFor('cukinia').locator('.ingredient__measure-household')).toHaveText(
-    '1 sztuka',
-  );
-  await expect(rowFor('szpinak').locator('.ingredient__measure-household')).toHaveText(
-    '4 garści',
-  );
-  await expect(rowFor('passata').locator('.ingredient__measure-household')).toHaveText(
-    '1 szklanka',
-  );
-  await expect(rowFor('chleb żytni').locator('.ingredient__measure-household')).toHaveText(
-    '4 kromki',
-  );
+  await expect(ingredients.getByRole('group')).toHaveCount(0);
+  // Mieszana lista: forma metryczna, sama domowa i obie rozdzielone ukośnikiem.
+  await expect(measureFor('chorizo')).toHaveText('80 g / 10 plastrów');
+  await expect(measureFor('cukinia')).toHaveText('300 g / 1 sztuka');
+  await expect(measureFor('szpinak')).toHaveText('100 g / 4 garści');
+  await expect(measureFor('passata')).toHaveText('240 g / 1 szklanka');
+  await expect(measureFor('chleb żytni')).toHaveText('4 kromki');
+  await expect(measureFor('szczypiorek')).toHaveText('4 łyżki');
+  await expect(measureFor('sól')).toHaveText('2 szczypty');
+  await expect(measureFor('jajka')).toHaveText('8 sztuk');
+  await expect(measureFor('oregano')).toHaveText('2 g');
 
   await decreaseServings.click();
   await expect(servings).toHaveText('1');
-  await expect(rowFor('chorizo').locator('.ingredient__measure-household')).toHaveText(
-    '5 plastrów',
-  );
-  await expect(rowFor('cukinia').locator('.ingredient__measure-household')).toHaveText(
-    '½ sztuki',
-  );
-  await expect(rowFor('szpinak').locator('.ingredient__measure-household')).toHaveText(
-    '2 garści',
-  );
-  await expect(rowFor('passata').locator('.ingredient__measure-household')).toHaveText(
-    '½ szklanki',
-  );
-  await expect(rowFor('chleb żytni').locator('.ingredient__measure-household')).toHaveText(
-    '2 kromki',
-  );
-
-  await ingredients.getByRole('button', { name: 'Gramy / ml' }).click();
-  await expect(chorizoHousehold).toBeHidden();
-  await expect(chorizoMetric).toBeVisible();
-  await expect(chorizoMetric).toHaveText('40 g');
+  await expect(measureFor('chorizo')).toHaveText('40 g / 5 plastrów');
+  await expect(measureFor('cukinia')).toHaveText('150 g / ½ sztuki');
+  await expect(measureFor('szpinak')).toHaveText('50 g / 2 garści');
+  await expect(measureFor('passata')).toHaveText('120 g / ½ szklanki');
+  await expect(measureFor('chleb żytni')).toHaveText('2 kromki');
+  await expect(measureFor('szczypiorek')).toHaveText('2 łyżki');
+  await expect(measureFor('sól')).toHaveText('1 szczypta');
+  await expect(measureFor('jajka')).toHaveText('4 sztuki');
+  await expect(measureFor('oregano')).toHaveText('1 g');
 });

@@ -62,11 +62,20 @@ miary domowe. Dla produktu mającego naturalną miarę możesz podać opcjonalne
 albo `ml`; `szt` już jest miarą naturalną. Wszystkie ilości podaj dla bazowej
 liczby porcji wskazanej wyżej.
 
-| Kategoria zakupowa | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) | `household` (opcjonalne) |
-|---|---|---:|---|---:|---|
-| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [np. `{ "unit": "slice", "metricAmount": 8 }` lub pomiń] |
-| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] |
-| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] |
+Strona przepisu nie ma przełącznika jednostek — o formie miary decydujesz przy
+każdym składniku osobno w opcjonalnym `measure`: `metric` (sama forma
+metryczna), `household` (sama forma domowa) albo `both` (obie, pokazywane jako
+`80 g / 10 plastrów`). Pominięcie pola daje formę metryczną. `household` i
+`both` wybieraj tylko tam, gdzie forma domowa naprawdę pomaga i wychodzi
+okrągła: pisz `4 kromki` albo `2 szczypty`, ale zostaw gramy, gdy przelicznik
+dałby wynik w rodzaju `0,6 łyżeczki`. Obie formy wymagają przelicznika
+(`household`, `gramsPerCup` albo jednostka `ml`).
+
+| Kategoria zakupowa | Nazwa składnika | Ilość | Jednostka (`g` / `ml` / `szt`) | `gramsPerCup` (opcjonalne) | `household` (opcjonalne) | `measure` (opcjonalne) |
+|---|---|---:|---|---:|---|---|
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [np. `{ "unit": "slice", "metricAmount": 8 }` lub pomiń] | [`metric` / `household` / `both` lub pomiń] |
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] | [wartość lub pomiń] |
+| [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] | [wartość lub pomiń] |
 
 ## Wcześniej — opcjonalne
 
@@ -142,6 +151,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Trudność ma jedną z dozwolonych wartości, a bazowa liczba porcji mieści się w zakresie `1–12`.
 - [ ] Każdy składnik ma kategorię zakupową, dodatnią ilość i dozwoloną jednostkę.
 - [ ] Opcjonalny przelicznik `household` ma dozwoloną jednostkę, dodatnie `metricAmount` i występuje wyłącznie przy bazowej jednostce `g` albo `ml`.
+- [ ] Opcjonalne `measure` ma wartość `metric`, `household` albo `both`, a formy z miarą domową mają przelicznik i dają czytelną ilość.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
 - [ ] Każda grupa dopasowania ma co najmniej jedną wartość.

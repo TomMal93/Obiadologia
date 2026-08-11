@@ -1,7 +1,7 @@
 ---
 import { getPublishedRecipes } from '@/data/recipes';
 import type { Recipe } from '@/domain/recipe';
-import { formatHouseholdMeasure, formatMetricMeasure } from '@/domain/ingredient';
+import { formatMeasure } from '@/domain/ingredient';
 import { ingredientCategories } from '@/domain/ingredient-category';
 import { formatLeadTime } from '@/domain/recipe-schedule';
 import { defaultLocale } from '@/i18n/config';
@@ -146,42 +146,17 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
           <div class="recipe-section-head recipe-ingredients__head">
             <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
-            <div class="recipe-ingredients__tools">
-              <div
-                class="unit-toggle recipe-segmented"
-                role="group"
-                aria-label={messages.recipe.unitsLabel}
-                hidden
-              >
-                <button
-                  type="button"
-                  class="recipe-segmented__option is-active"
-                  data-units-target="metric"
-                  aria-pressed="true"
-                >
-                  {messages.recipe.metricUnits}
-                </button>
-                <button
-                  type="button"
-                  class="recipe-segmented__option"
-                  data-units-target="household"
-                  aria-pressed="false"
-                >
-                  {messages.recipe.householdUnits}
-                </button>
-              </div>
-              <p
-                class="ingredient-progress"
-                data-ingredient-progress
-                aria-live="polite"
-                hidden
-              >
-                {ingredientProgress}
-              </p>
-            </div>
+            <p
+              class="ingredient-progress"
+              data-ingredient-progress
+              aria-live="polite"
+              hidden
+            >
+              {ingredientProgress}
+            </p>
           </div>
 
-          <div class="ingredient-groups" data-units="metric">
+          <div class="ingredient-groups">
             {ingredientGroups.map(({ category, ingredients }) => (
               <section class="ingredient-group">
                 <h3>{messages.recipe.ingredientCategories[category]}</h3>
@@ -194,6 +169,7 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                       data-grams-per-cup={ingredient.gramsPerCup}
                       data-household-unit={ingredient.household?.unit}
                       data-household-metric-amount={ingredient.household?.metricAmount}
+                      data-measure={ingredient.measure}
                     >
                       <button
                         type="button"
@@ -213,18 +189,13 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                       >
                         <span class="ingredient__box" aria-hidden="true"></span>
                         <span class="ingredient__name">{ingredient.name}</span>
-                        <span class="ingredient__measure">
-                          <span class="ingredient__measure-metric">
-                            {formatMetricMeasure(ingredient)}
-                          </span>
-                          <span class="ingredient__measure-household">
-                            {formatHouseholdMeasure(ingredient)}
-                          </span>
+                        <span class="ingredient__measure" data-ingredient-measure>
+                          {formatMeasure(ingredient)}
                         </span>
                       </button>
                       <span class="ingredient__fallback">
                         <span>{ingredient.name}</span>
-                        <span class="ingredient__measure">{formatMetricMeasure(ingredient)}</span>
+                        <span class="ingredient__measure">{formatMeasure(ingredient)}</span>
                       </span>
                     </li>
                   ))}
@@ -394,21 +365,19 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
 
 <script>
   import {
-    formatHouseholdMeasure,
-    formatMetricMeasure,
+    formatMeasure,
     householdUnits,
     ingredientUnits,
+    measureDisplays,
     type HouseholdUnit,
     type IngredientMeasure,
     type IngredientUnit,
+    type MeasureDisplay,
   } from '@/domain/ingredient-measure';
   import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
 
   const article = document.querySelector<HTMLElement>('.recipe-article');
   const backLink = document.querySelector<HTMLAnchorElement>('[data-recipe-back]');
-  const unitToggle = article?.querySelector<HTMLElement>('.unit-toggle');
-  const ingredientGroups = article?.querySelector<HTMLElement>('.ingredient-groups');
-
   backLink?.addEventListener('click', (event) => {
     if (
       event.button !== 0
@@ -426,26 +395,6 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
     window.history.back();
   });
 
-  if (unitToggle && ingredientGroups) {
-    unitToggle.hidden = false;
-    const options = Array.from(
-      unitToggle.querySelectorAll<HTMLButtonElement>('[data-units-target]'),
-    );
-
-    for (const option of options) {
-      option.addEventListener('click', () => {
-        const target = option.dataset.unitsTarget;
-        if (!target) return;
-        ingredientGroups.dataset.units = target;
-        for (const other of options) {
-          const active = other === option;
-          other.classList.toggle('is-active', active);
-          other.setAttribute('aria-pressed', String(active));
-        }
-      });
-    }
-  }
-
   const baseServings = Number(article?.dataset.baseServings);
   const servingsOutput = article?.querySelector<HTMLElement>('[data-servings-output]');
   const servingsButtons = Array.from(
@@ -460,6 +409,9 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
 
   const isHouseholdUnit = (value: string | undefined): value is HouseholdUnit =>
     householdUnits.some((unit) => unit === value);
+
+  const isMeasureDisplay = (value: string | undefined): value is MeasureDisplay =>
+    measureDisplays.some((display) => display === value);
 
   if (
     Number.isInteger(baseServings)
@@ -484,6 +436,7 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         const gramsPerCup = Number(row.dataset.gramsPerCup);
         const householdUnit = row.dataset.householdUnit;
         const householdMetricAmount = Number(row.dataset.householdMetricAmount);
+        const measure = row.dataset.measure;
         if (!Number.isFinite(amount) || !isIngredientUnit(unit)) continue;
 
         const ingredient: IngredientMeasure = {
@@ -498,11 +451,10 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
               ? { household: { unit: householdUnit, metricAmount: householdMetricAmount } }
               : {}
           ),
+          ...(isMeasureDisplay(measure) ? { measure } : {}),
         };
-        const metric = row.querySelector<HTMLElement>('.ingredient__measure-metric');
-        const household = row.querySelector<HTMLElement>('.ingredient__measure-household');
-        if (metric) metric.textContent = formatMetricMeasure(ingredient);
-        if (household) household.textContent = formatHouseholdMeasure(ingredient);
+        const output = row.querySelector<HTMLElement>('[data-ingredient-measure]');
+        if (output) output.textContent = formatMeasure(ingredient);
       }
     };
 
