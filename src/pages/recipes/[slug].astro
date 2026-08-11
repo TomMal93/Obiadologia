@@ -247,6 +247,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
             recipe.preparation && (
               <section class="recipe-prep assistant-section recipe-mode-content" aria-labelledby="prep-heading">
               <div class="recipe-section-head recipe-section-head--stacked">
+                <p class="recipe-stage-label">{messages.recipe.preparationStageLabel}</p>
                 <h2 id="prep-heading">{messages.recipe.preparationHeading}</h2>
                 <p>{messages.recipe.preparationHint}</p>
               </div>
@@ -294,7 +295,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
           }
 
           <section class="recipe-steps recipe-mode-content" aria-labelledby="steps-heading">
-          <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
+          <div class="recipe-section-head recipe-section-head--stacked">
+            <p class="recipe-stage-label">{messages.recipe.stepsStageLabel}</p>
+            <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
+            <p data-steps-interaction-hint hidden>{messages.recipe.stepsInteractionHint}</p>
+          </div>
           <ol class:list={['step-list', recipe.stepsOnly && 'assistant-section']}>
             {recipe.steps.map((step, index) => (
               <>
@@ -323,9 +328,20 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                         })}
                       >
                         <span class="recipe-step__badge" aria-hidden="true">½</span>
-                        <span class="recipe-step__text">
-                          <span class="recipe-step__kind">{messages.recipe.preparationStepLabel}</span>
-                          {item.stepText}
+                        <span class="recipe-step__content">
+                          <span class="recipe-step__kind recipe-step__kind--pending">
+                            {messages.recipe.preparationStepLabel}
+                          </span>
+                          <span class="recipe-step__kind recipe-step__kind--complete">
+                            {messages.recipe.preparationStepCompleteLabel}
+                          </span>
+                          <span class="recipe-step__text">{item.stepText}</span>
+                          <span class="recipe-step__action recipe-step__action--pending">
+                            {messages.recipe.preparationActionHint}
+                          </span>
+                          <span class="recipe-step__action recipe-step__action--complete">
+                            {messages.recipe.preparationActionComplete}
+                          </span>
                         </span>
                       </button>
                     </li>
@@ -349,7 +365,20 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       hidden
                     >
                       <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
-                      <span class="recipe-step__text">{step}</span>
+                      <span class="recipe-step__content">
+                        <span class="recipe-step__text">{step}</span>
+                        <span class="recipe-step__action recipe-step__action--pending">
+                          {messages.recipe.stepActionPending}
+                        </span>
+                        <span class="recipe-step__complete-title">
+                          {formatMessage(messages.recipe.stepCompleteLabel, {
+                            number: index + 1,
+                          })}
+                        </span>
+                        <span class="recipe-step__action recipe-step__action--complete">
+                          {messages.recipe.stepActionComplete}
+                        </span>
+                      </span>
                     </button>
                     <span class="recipe-step__fallback">{step}</span>
                   </li>
@@ -379,7 +408,20 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       hidden
                     >
                       <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
-                      <span class="recipe-step__text">{step}</span>
+                      <span class="recipe-step__content">
+                        <span class="recipe-step__text">{step}</span>
+                        <span class="recipe-step__action recipe-step__action--pending">
+                          {messages.recipe.stepActionPending}
+                        </span>
+                        <span class="recipe-step__complete-title">
+                          {formatMessage(messages.recipe.stepCompleteLabel, {
+                            number: index + 1,
+                          })}
+                        </span>
+                        <span class="recipe-step__action recipe-step__action--complete">
+                          {messages.recipe.stepActionComplete}
+                        </span>
+                      </span>
                     </button>
                     <span class="recipe-step__fallback">{step}</span>
                   </li>
@@ -613,7 +655,9 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     }
     for (const halfStep of preparationHalfSteps) {
       if (halfStep.dataset.preparationHalfStep === preparationId) {
-        halfStep.hidden = checked;
+        halfStep.hidden = false;
+        const badge = halfStep.querySelector<HTMLElement>('.recipe-step__badge');
+        if (badge) badge.textContent = checked ? '✓' : '½';
       }
     }
   };
@@ -630,23 +674,18 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     renderPreparation(preparationId);
     button.addEventListener('click', () => {
       const checked = !completedPreparation.has(preparationId);
-      const halfStep = button.closest<HTMLElement>('[data-preparation-half-step]');
-      let nextItem = halfStep?.nextElementSibling;
-      while (nextItem?.classList.contains('recipe-step--preparation')) {
-        nextItem = nextItem.nextElementSibling;
-      }
-      const nextStep = nextItem?.querySelector<HTMLButtonElement>('[data-checkable-step]');
 
       if (checked) completedPreparation.add(preparationId);
       else completedPreparation.delete(preparationId);
       renderPreparation(preparationId);
-      if (checked && halfStep) nextStep?.focus();
     });
   }
 
   const stepToggles = Array.from(
     article?.querySelectorAll<HTMLButtonElement>('[data-checkable-step]') ?? [],
   );
+  const stepsInteractionHint = article?.querySelector<HTMLElement>('[data-steps-interaction-hint]');
+  if (stepsInteractionHint && stepToggles.length > 0) stepsInteractionHint.hidden = false;
   for (const button of stepToggles) {
     button.hidden = false;
     button.parentElement?.querySelector<HTMLElement>('.recipe-step__fallback')
