@@ -309,6 +309,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                     <li
                       class="recipe-step recipe-step--preparation"
                       data-preparation-half-step={item.id}
+                      data-before-step={item.beforeStep}
                       hidden
                     >
                       <button
@@ -329,18 +330,12 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       >
                         <span class="recipe-step__badge" aria-hidden="true">½</span>
                         <span class="recipe-step__content">
-                          <span class="recipe-step__kind recipe-step__kind--pending">
-                            {messages.recipe.preparationStepLabel}
-                          </span>
                           <span class="recipe-step__kind recipe-step__kind--complete">
                             {messages.recipe.preparationStepCompleteLabel}
                           </span>
                           <span class="recipe-step__text">{item.stepText}</span>
                           <span class="recipe-step__action recipe-step__action--pending">
                             {messages.recipe.preparationActionHint}
-                          </span>
-                          <span class="recipe-step__action recipe-step__action--complete">
-                            {messages.recipe.preparationActionComplete}
                           </span>
                         </span>
                       </button>
@@ -351,6 +346,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       type="button"
                       class="recipe-step__toggle"
                       data-checkable-step
+                      data-assistant-cooking-step
                       data-step-number={index + 1}
                       aria-pressed="false"
                       aria-label={formatMessage(messages.recipe.checkStepLabel, {
@@ -374,9 +370,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                           {formatMessage(messages.recipe.stepCompleteLabel, {
                             number: index + 1,
                           })}
-                        </span>
-                        <span class="recipe-step__action recipe-step__action--complete">
-                          {messages.recipe.stepActionComplete}
                         </span>
                       </span>
                     </button>
@@ -417,9 +410,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                           {formatMessage(messages.recipe.stepCompleteLabel, {
                             number: index + 1,
                           })}
-                        </span>
-                        <span class="recipe-step__action recipe-step__action--complete">
-                          {messages.recipe.stepActionComplete}
                         </span>
                       </span>
                     </button>
@@ -693,6 +683,19 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     button.addEventListener('click', () => {
       const checked = button.getAttribute('aria-pressed') === 'true';
       const badge = button.querySelector<HTMLElement>('.recipe-step__badge');
+
+      if (!checked && button.hasAttribute('data-assistant-cooking-step')) {
+        const stepNumber = Number(button.dataset.stepNumber);
+        for (const halfStep of preparationHalfSteps) {
+          const beforeStep = Number(halfStep.dataset.beforeStep);
+          const preparationId = halfStep.dataset.preparationHalfStep;
+          if (!preparationId || beforeStep > stepNumber) continue;
+
+          completedPreparation.add(preparationId);
+          renderPreparation(preparationId);
+        }
+      }
+
       button.setAttribute('aria-pressed', String(!checked));
       button.classList.toggle('is-checked', !checked);
       button.setAttribute(

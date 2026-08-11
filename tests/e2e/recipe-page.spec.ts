@@ -128,9 +128,8 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStep.locator('.recipe-step__text')).toBeVisible();
   await expect(firstStep.locator('.recipe-step__text')).toHaveCSS('font-size', '14px');
   await expect(firstStep.locator('.recipe-step__complete-title')).toHaveText('Krok 1 wykonany');
-  await expect(firstStep.locator('.recipe-step__action--complete')).toHaveText(
-    'Dotknij, aby przywrócić',
-  );
+  await expect(firstStep).toHaveAttribute('aria-label', 'Cofnij wykonanie kroku 1');
+  await expect(firstStep.locator('.recipe-step__action--complete')).toHaveCount(0);
 
   const tips = page.getByRole('region', { name: 'Coś jeszcze' });
   await expect(tips.getByRole('listitem')).toHaveCount(3);
@@ -197,6 +196,7 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(standaloneSteps).toBeHidden();
   await expect(assistantSteps.getByRole('listitem')).toHaveCount(12);
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
+  await expect(assistantSteps.getByText('Do zrobienia', { exact: true })).toHaveCount(0);
   await expect(
     assistantSteps.locator('.recipe-step:not(.recipe-step--preparation)').first(),
   ).toContainText(
@@ -226,18 +226,65 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(chorizoHalfStep.locator('.recipe-step__text')).toBeVisible();
   await expect(chorizoHalfStep.locator('.recipe-step__text')).toHaveCSS('font-size', '14px');
   await expect(chorizoHalfStep.locator('.recipe-step__kind--complete')).toHaveText('Gotowe');
-  await expect(chorizoHalfStep.locator('.recipe-step__action--complete')).toHaveText(
-    'Dotknij, aby przywrócić',
+  await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute(
+    'aria-label',
+    /Cofnij wykonanie przygotowania/,
   );
+  await expect(chorizoHalfStep.locator('.recipe-step__action--complete')).toHaveCount(0);
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await chorizoPreparation.click();
   await expect(chorizoHalfStep).toBeVisible();
   await expect(chorizoHalfStep).toContainText('Dotknij, gdy gotowe');
+  const preparationAction = chorizoHalfStep.locator('.recipe-step__action--pending');
+  await expect(preparationAction).toHaveCSS('font-size', '12px');
+  await expect(preparationAction).toHaveCSS('font-weight', '400');
+  await expect(preparationAction).toHaveCSS('text-align', 'center');
+  await expect(preparationAction).toHaveCSS('color', 'rgb(168, 45, 24)');
+  const [preparationActionBox, preparationCardBox] = await Promise.all([
+    preparationAction.boundingBox(),
+    chorizoHalfStep.getByRole('button').boundingBox(),
+  ]);
+  expect(preparationActionBox).not.toBeNull();
+  expect(preparationCardBox).not.toBeNull();
+  expect(preparationActionBox!.x + preparationActionBox!.width / 2).toBeCloseTo(
+    preparationCardBox!.x + preparationCardBox!.width / 2,
+    0,
+  );
 
   await chorizoHalfStep.getByRole('button').click();
   await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'true');
   await expect(chorizoHalfStep).toBeVisible();
   await expect(chorizoHalfStep.getByRole('button')).toBeFocused();
+
+  const firstCookingStep = assistantSteps.locator(
+    '[data-assistant-cooking-step][data-step-number="1"]',
+  );
+  const preparationBeforeFirstStep = assistantSteps.locator(
+    '[data-preparation-half-step][data-before-step="1"] [data-preparation-toggle]',
+  );
+  await firstCookingStep.click();
+  await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'true');
+  await expect(preparationBeforeFirstStep).toHaveCount(3);
+  for (const preparationButton of await preparationBeforeFirstStep.all()) {
+    await expect(preparationButton).toHaveAttribute('aria-pressed', 'true');
+  }
+  await expect(
+    assistantSteps.locator(
+      '[data-preparation-half-step][data-before-step="2"] [data-preparation-toggle]',
+    ),
+  ).toHaveAttribute('aria-pressed', 'false');
+  await expect(
+    assistantSteps.locator(
+      '[data-preparation-half-step][data-before-step="4"] [data-preparation-toggle]',
+    ),
+  ).toHaveAttribute('aria-pressed', 'false');
+
+  await firstCookingStep.click();
+  await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'false');
+  for (const preparationButton of await preparationBeforeFirstStep.all()) {
+    await expect(preparationButton).toHaveAttribute('aria-pressed', 'true');
+  }
+
   const choiceHeadingLeft = await page.getByRole('heading', {
     name: 'Jak chcesz gotować?',
   }).evaluate((element) => element.getBoundingClientRect().left);
