@@ -1,12 +1,21 @@
 import { z } from 'zod';
 import { ingredientCategories } from './ingredient-category';
-import { householdUnits, ingredientUnits } from './ingredient-measure';
-
-export {
-  formatHouseholdMeasure,
-  formatMetricMeasure,
+import {
+  hasHouseholdMeasure,
   householdUnits,
   ingredientUnits,
+  measureDisplays,
+} from './ingredient-measure';
+
+export {
+  defaultMeasureDisplay,
+  formatHouseholdMeasure,
+  formatMeasure,
+  formatMetricMeasure,
+  hasHouseholdMeasure,
+  householdUnits,
+  ingredientUnits,
+  measureDisplays,
   millilitresToHousehold,
 } from './ingredient-measure';
 export type {
@@ -14,6 +23,7 @@ export type {
   HouseholdUnit,
   IngredientMeasure,
   IngredientUnit,
+  MeasureDisplay,
 } from './ingredient-measure';
 
 const householdMeasureSchema = z
@@ -39,6 +49,9 @@ export const ingredientSchema = z
     // Naturalna miara (np. plaster lub garść) wyliczana z bazowej ilości
     // metrycznej; `metricAmount` to ilość g/ml odpowiadająca jednej mierze.
     household: householdMeasureSchema.optional(),
+    // Redakcyjny wybór formy miary na stronie przepisu; bez wskazania składnik
+    // pozostaje w formie metrycznej.
+    measure: z.enum(measureDisplays).optional(),
   })
   .strict()
   .superRefine((ingredient, context) => {
@@ -47,6 +60,19 @@ export const ingredientSchema = z
         code: 'custom',
         path: ['household'],
         message: 'Naturalny przelicznik domowy dotyczy wyłącznie ilości w g albo ml.',
+      });
+    }
+
+    if (
+      ingredient.measure
+      && ingredient.measure !== 'metric'
+      && !hasHouseholdMeasure(ingredient)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['measure'],
+        message:
+          'Forma domowa wymaga przelicznika: pola `household`, `gramsPerCup` albo jednostki ml.',
       });
     }
   });

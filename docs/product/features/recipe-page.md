@@ -20,7 +20,7 @@ Z projektu obowiązują w MVP:
 - jasny, koralowy pasek metadanych bezpośrednio pod hero;
 - jedna przewijana kolumna treści: opis, Składniki, przełącznik trybu gotowania, etapy wspierające i Kroki;
 - opcjonalna sekcja porad „Coś jeszcze” po krokach;
-- segmentowe przełączniki jednostek oraz trybu gotowania;
+- segmentowy przełącznik trybu gotowania;
 - możliwość lokalnego odhaczania składników i wykonanych kroków;
 - koral jako akcent strony, jasne powierzchnie, zwarte nagłówki i numerowane znaczniki kroków.
 
@@ -30,6 +30,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 |---|---|---|
 | wartości odżywcze | pominięte | brak danych w modelu i poza zakresem MVP |
 | „Podobne przepisy” | pominięte | brak uzgodnionego kontraktu podobieństwa |
+| przełącznik jednostek nad składnikami | pominięty | forma miary jest wyborem redakcyjnym pojedynczego składnika (`measure`), więc lista jest mieszana i nie ma czego przełączać |
 
 ## W zakresie
 
@@ -54,11 +55,11 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 - Strona przepisu nie powiela wspólnego nagłówka. Pierwszym elementem jest hero z akcją powrotu, dzięki czemu zdjęcie i tytuł rozpoczynają stronę zgodnie z projektem.
 - Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tytułem (`h1`) i tagami; pasek trudności, porcji i czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalne etapy wspierające gotowanie („Wcześniej” i „Przygotowanie”); kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
 - Pasek bezpośrednio pod hero ma trzy komórki: przetłumaczony poziom `difficulty`, bazową liczbę `servings` z akcjami zmniejszenia i zwiększenia oraz czas z `preparationMinutes`. Liczbę porcji można ustawić w zakresie `1–12`.
-- Zmiana liczby porcji skaluje ilość każdego składnika względem bazowej wartości według reguły z [data-model.md](../../engineering/data-model.md). Obie prezentacje miar — metryczna i domowa — korzystają z przeliczonej ilości. Stan jest lokalny i resetuje się po opuszczeniu strony.
+- Zmiana liczby porcji skaluje ilość każdego składnika względem bazowej wartości według reguły z [data-model.md](../../engineering/data-model.md). Każda pokazana forma miary — metryczna, domowa i obie połączone ukośnikiem — korzysta z przeliczonej ilości. Stan jest lokalny i resetuje się po opuszczeniu strony.
 - Regulacja porcji jest wzbogaceniem progresywnym: bez skryptu strona pokazuje bazową liczbę porcji i bazowe ilości, a akcje zmiany pozostają ukryte.
-- Składniki są podzielone według grup zakupowych z pola `category` ([data-model.md](../../engineering/data-model.md)). Puste grupy są pomijane. Każdy składnik pokazuje nazwę i ilość, a przełącznik nad grupami zmienia formę miary między metryczną (`gramy / ml`) a domową (`szklanki / łyżki / naturalne sztuki, plastry, kromki i garści`). Domowa forma jest zawsze wyliczana z ilości metrycznej: najpierw przez jawny przelicznik naturalnej miary `household`, następnie przez objętość lub `gramsPerCup`; masa bez bezpiecznego przelicznika pozostaje w gramach. Szczegóły i pierwszeństwo przeliczników definiuje [data-model.md](../../engineering/data-model.md).
-- Przełącznik jest wzbogaceniem progresywnym: bez skryptu strona pokazuje sprawną listę w formie metrycznej, a sam przełącznik pozostaje ukryty.
-- Każdy składnik można odhaczyć niezależnie. Stan jest lokalny dla otwartej strony, nie zmienia danych przepisu i nie jest zapisywany między wizytami. Odhaczenie pokazuje znacznik oraz zmianę tekstu, a nad listą widoczny jest postęp „{wybrane}/{wszystkie} odhaczonych”. Bez skryptu składniki pozostają zwykłą, kompletną listą, a kontrolki odhaczania i postęp są ukryte.
+- Składniki są podzielone według grup zakupowych z pola `category` ([data-model.md](../../engineering/data-model.md)). Puste grupy są pomijane. Każdy składnik pokazuje nazwę i jedną miarę.
+- Strona nie ma przełącznika jednostek. Forma miary jest wyborem redakcyjnym pojedynczego składnika (`measure`): metryczna (`gramy / ml / sztuki`), domowa (`szklanki / łyżki / naturalne sztuki, plastry, kromki i garści`) albo obie rozdzielone ukośnikiem w kolejności `metryczna / domowa`, np. „80 g / 10 plastrów”. Lista jest więc celowo mieszana, a składnik bez wskazania pozostaje w formie metrycznej. Domowa forma jest zawsze wyliczana z ilości metrycznej: najpierw przez jawny przelicznik naturalnej miary `household`, następnie przez objętość lub `gramsPerCup`. Szczegóły, pierwszeństwo przeliczników i warunki dopuszczalności `measure` definiuje [data-model.md](../../engineering/data-model.md).
+- Każdy składnik można odhaczyć niezależnie. Stan jest lokalny dla otwartej strony, nie zmienia danych przepisu i nie jest zapisywany między wizytami. Odhaczenie pokazuje znacznik oraz zmianę tekstu, a licznik w wierszu nagłówka „Składniki” podaje postęp „{wybrane}/{wszystkie} zebrane”. Po zebraniu wszystkiego licznik zmienia się w znacznik kompletu. Bez skryptu składniki pozostają zwykłą, kompletną listą, a kontrolki odhaczania i licznik są ukryte.
 - Strona pokazuje kroki przygotowania z pola `steps` jako uporządkowaną, numerowaną listę (`ol`) w kolejności zapisanej w danych ([data-model.md](../../engineering/data-model.md)).
 - Każdy krok można lokalnie oznaczyć jako wykonany. Numer zmienia się wtedy w znacznik, a tekst otrzymuje drugi, niekolorystyczny sygnał ukończenia. Oznaczenie nie zwija kroku, nie przechodzi automatycznie dalej i nie jest zapisywane między wizytami. Bez skryptu pozostaje semantyczna lista `ol` bez kontrolek ukończenia.
 - Gdy przepis ma pole `advance`, strona pokazuje sekcję „Wcześniej” z czynnościami wykonywanymi z wyprzedzeniem; każda pozycja podaje wymagane wyprzedzenie po ludzku (np. „na 2 godz przed podaniem”) wyliczone z `leadTimeMinutes` ([data-model.md](../../engineering/data-model.md)).
@@ -80,7 +81,8 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 - Akcja „Powrót” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
 - Akcje zmiany porcji są okrągłe, mają minimalny obszar aktywny `44 × 44px`, dostępne nazwy i stan `disabled` na granicach zakresu.
 - Opis rozpoczyna właściwą kolumnę treści jako panel „O daniu” w tej samej neutralnej ramce i z takim samym nagłówkiem jak sekcja „Przygotowanie”. Nie jest częścią koralowego paska metadanych.
-- Sekcja „Składniki” korzysta z tej samej neutralnej ramki co panel „O daniu” i sekcja „Przygotowanie”. Przełącznik jednostek zajmuje w niej osobny wiersz pod nagłówkiem i pełną szerokość kolumny treści, dzięki czemu oba segmenty zachowują wygodny obszar dotyku i czytelne odstępy w całym zakresie mobilnym.
+- Sekcja „Składniki” korzysta z tej samej neutralnej ramki co panel „O daniu” i sekcja „Przygotowanie”. Miara stoi przy prawej krawędzi wiersza składnika i pozostaje nierozdzielona; przy dłuższej nazwie łamie się nazwa, a nie miara.
+- Licznik zebranych składników jest pigułką w wierszu nagłówka „Składniki”, dosuniętą do prawej krawędzi sekcji. Niesie pierścień postępu, który domyka się razem z odhaczaniem, a tło pigułki nasyca się koralem proporcjonalnie do postępu. Komplet zamienia pigułkę w pełny koralowy znacznik ze znakiem ✓. Cały ruch niesie `transition`, więc `prefers-reduced-motion` wycisza go wspólną regułą globalną, nie zmieniając stanów.
 - Wybór sposobu gotowania i ujawniona po nim treść, aż do sekcji „Coś jeszcze” włącznie, tworzą jeden nadrzędny panel. Panel odróżnia się od neutralnych ramek większym promieniem, delikatnym koralowym tłem i subtelnym cieniem; poszczególne etapy zachowują wewnętrzne powierzchnie.
 - Pomocnik „Kiedy zacząć” używa tej samej jasnej koralowej powierzchni, promienia, paddingu, rytmu odstępów i koloru nagłówka co panel „Coś jeszcze”, uzupełnionych delikatnym koralowym obramowaniem wspólnym z nadrzędnym panelem wyboru trybu. Pole czasu w pomocniku pozostaje minimalistyczne. Sekcje „Przygotowanie” i „Kroki” korzystają ze wspólnej neutralnej, jasnej ramki.
 - Strona przepisu jest długim dokumentem przewijanym w normalnym przepływie. Nie podlega regule „jedna sekcja = jeden ekran”; nie może mieć wewnętrznego przewijania całego artykułu ani ściskać treści do wysokości viewportu.
@@ -102,11 +104,11 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | 5 | Tytuł dokumentu i meta description są unikalne dla przepisu. |
 | 6 | Strona przechodzi automatyczną kontrolę `axe-core`, działa klawiaturą i nie tworzy poziomego przewijania w zakresie `320–480px`. |
 | 7 | Dane prototypowe są jawnie oznaczone jako prototypowe. |
-| 8 | Przełącznik jednostek zmienia formę miary składników między metryczną a domową i z powrotem; bez skryptu widoczna jest lista w formie metrycznej. |
+| 8 | Lista składników nie ma przełącznika jednostek, a każdy składnik pokazuje formę wskazaną w `measure`: metryczną, domową albo obie rozdzielone ukośnikiem; składnik bez wskazania pozostaje metryczny. Bez skryptu widoczne są te same miary. |
 | 9 | Przepis z polem `advance`/`preparation` pokazuje sekcje „Wcześniej”/„Przygotowanie” przed krokami; przepis bez tych pól ich nie pokazuje i nie udostępnia przełącznika trybu. |
 | 10 | Przed wyborem trybu żadna dalsza część przepisu nie jest widoczna i żadna opcja nie jest aktywna. Po wybraniu „Tryb asystenta” pomocnik „Kiedy zacząć” wylicza początek głównego gotowania i godzinę rozpoczęcia każdej czynności z wyprzedzeniem; „Tylko kroki” pokazuje kroki bez etapów wspierających. Bez skryptu wybór i pomocnik pozostają ukryte, a treść jest pełna. |
-| 11 | Składniki i kroki można niezależnie odhaczać; stan ukończenia jest widoczny nie tylko kolorem, nie zmienia danych i resetuje się po opuszczeniu strony. Bez skryptu obie listy pozostają kompletne i czytelne. |
+| 11 | Składniki i kroki można niezależnie odhaczać; stan ukończenia jest widoczny nie tylko kolorem, nie zmienia danych i resetuje się po opuszczeniu strony. Licznik w wierszu nagłówka „Składniki” podaje aktualny postęp, domyka pierścień i po zebraniu wszystkiego pokazuje komplet. Bez skryptu obie listy pozostają kompletne i czytelne. |
 | 12 | Hero, nakładka tytułu, trzykomórkowy pasek metadanych i kolejność treści odpowiadają `recipe-page.html`; elementy bez pól w modelu są pominięte bez pustych komórek i fikcyjnych danych. |
 | 13 | Przepis z polem `tips` pokazuje po krokach sekcję „Coś jeszcze” ze wszystkimi poradami; bez pola sekcja nie jest renderowana. |
-| 14 | Zmniejszenie lub zwiększenie liczby porcji w zakresie `1–12` proporcjonalnie przelicza metryczne i domowe ilości wszystkich składników; bez skryptu widoczne są bazowe porcje i ilości bez aktywnych kontrolek. |
+| 14 | Zmniejszenie lub zwiększenie liczby porcji w zakresie `1–12` proporcjonalnie przelicza każdą pokazaną formę miary, po obu stronach ukośnika włącznie; bez skryptu widoczne są bazowe porcje i ilości bez aktywnych kontrolek. |
 | 15 | Składniki są podzielone na obecne w przepisie grupy zakupowe; grupowanie nie zmienia wspólnego postępu odhaczania ani przeliczania miar. |

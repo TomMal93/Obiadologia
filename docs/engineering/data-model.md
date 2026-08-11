@@ -59,7 +59,8 @@ IngredientUnit = g | ml | szt
 IngredientCategory = produce | meat | dairy | grains | pantry | spices
 HouseholdUnit = cup | tablespoon | teaspoon | pinch | piece | slice | bread_slice | handful
 HouseholdConversion = { unit: HouseholdUnit, metricAmount: number > 0 }
-Ingredient = { category: IngredientCategory, name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0, household?: HouseholdConversion }
+MeasureDisplay = metric | household | both
+Ingredient = { category: IngredientCategory, name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0, household?: HouseholdConversion, measure?: MeasureDisplay }
 AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 ```
 
@@ -74,7 +75,9 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 - `category` przypisuje składnik do kontrolowanej grupy zakupowej: warzywa i owoce (`produce`), mięso i wędliny (`meat`), nabiał i jajka (`dairy`), pieczywo i produkty zbożowe (`grains`), produkty spiżarniane (`pantry`) albo przyprawy (`spices`). Strona przepisu prezentuje wyłącznie grupy obecne w danym przepisie, zawsze w tej kolejności.
 - `gramsPerCup` (gramy na szklankę 250 ml) jest opcjonalną gęstością składnika sypkiego; pozwala przeliczyć masę na miarę domową. Bez niej masa (`g`) pozostaje w gramach, bo dla wielu produktów miara domowa nie ma sensu.
 - `household` opisuje naturalną miarę produktu ważonego lub odmierzanego objętościowo, np. plaster, kromkę albo garść. `metricAmount` oznacza ilość bazowej jednostki `g`/`ml` przypadającą na jedną taką miarę. Ilość domowa jest zawsze wyliczana jako `amount / metricAmount`, więc skaluje się razem z porcjami i nie stanowi drugiego niezależnego źródła ilości.
-- Jeżeli składnik ma `household`, ta naturalna miara ma pierwszeństwo w trybie domowym. Dla pozostałych składników obowiązuje dotychczasowe przeliczenie `ml` oraz `gramsPerCup`; masa bez żadnego bezpiecznego przelicznika pozostaje w gramach. `household` nie jest dozwolone dla `unit: szt`, które już jest naturalną miarą.
+- Jeżeli składnik ma `household`, ta naturalna miara ma pierwszeństwo przy wyliczaniu formy domowej. Dla pozostałych składników obowiązuje dotychczasowe przeliczenie `ml` oraz `gramsPerCup`; masa bez żadnego bezpiecznego przelicznika pozostaje w gramach. `household` nie jest dozwolone dla `unit: szt`, które już jest naturalną miarą.
+- `measure` to redakcyjny wybór formy miary pokazywanej przy składniku: `metric` (sama forma metryczna), `household` (sama forma domowa) albo `both` (obie, rozdzielone ukośnikiem, w kolejności `metryczna / domowa`). Pominięcie pola oznacza `metric`. Lista składników jest więc celowo mieszana — o formie decyduje pojedynczy składnik, a nie ustawienie całej strony.
+- `measure` inne niż `metric` wymaga przelicznika, z którego da się wyliczyć formę domową: pola `household`, `gramsPerCup` albo jednostki `ml`. Dla `unit: szt` i dla masy bez przelicznika obie formy byłyby identyczne, więc taki wybór jest błędem danych.
 - Ilości w `ingredients` odpowiadają liczbie `servings`. Zmiana liczby porcji na stronie skaluje każdą ilość przez iloraz `wybrane porcje / servings`; nie zmienia danych przepisu ani nie jest zapisywana między wizytami.
 
 ## Przykład
@@ -157,6 +160,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 - Każdy przepis MUSI mieć komplet danych potrzebny co najmniej jednej ścieżce oraz kartę możliwą do wyrenderowania bez dodatkowych wyjątków.
 - Nieznana wartość słownika jest błędem danych, a nie nową kategorią tworzoną automatycznie.
 - Opcjonalne `household` MUSI mieć znaną wartość `HouseholdUnit` i dodatnie `metricAmount`; może wystąpić tylko przy bazowej jednostce `g` albo `ml`.
+- Opcjonalne `measure` MUSI mieć wartość `metric`, `household` albo `both`; formy `household` i `both` są dozwolone wyłącznie przy dostępnym przeliczniku formy domowej.
 - `image` może mieć wartość `null`; brak obrazu nie może blokować wyniku, a UI używa wtedy wspólnego placeholdera.
 - `advance` i `preparation` są opcjonalne; gdy występują, każdy element jest niepusty, a `leadTimeMinutes` to dodatnia liczba całkowita. Pusta tablica jest błędem danych — brak etapu wyrażamy pominięciem pola, nie pustą listą.
 - `tips` jest opcjonalne; gdy występuje, każda porada jest niepusta. Pusta tablica jest błędem danych — brak porad wyrażamy pominięciem pola.
@@ -169,6 +173,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 | walidacja przykładu | dane spełniają wszystkie wymagane typy i zakresy |
 | obraz przepisu | poprawny `ImageReference` jest akceptowany, `null` uruchamia placeholder, a niepełny `ImageReference` jest odrzucany |
 | naturalne miary domowe | `household` przelicza skalowaną ilość metryczną na kontrolowaną miarę; nieznana miara, niedodatnie `metricAmount` i użycie przy `szt` są odrzucane |
+| forma miary składnika | `measure` decyduje o pokazanej formie (metryczna, domowa albo obie z ukośnikiem); brak pola daje formę metryczną, a forma domowa bez przelicznika jest odrzucana |
 | spójność ścieżek | ten sam przepis może być użyty w Kategoriach, Szukaj i Mapie |
 | filtr kategorii | co najmniej jeden wybór pokazuje wyniki zawierające wszystkie aktualnie wybrane wartości; każda zmiana odświeża wyniki, a usunięcie ostatniego wyboru je ukrywa |
 | wyszukiwanie na żywo | zmiana treści pola automatycznie przelicza wyniki |

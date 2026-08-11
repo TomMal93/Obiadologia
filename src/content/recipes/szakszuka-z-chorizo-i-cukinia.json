@@ -19,7 +19,8 @@
       "household": {
         "unit": "slice",
         "metricAmount": 8
-      }
+      },
+      "measure": "both"
     },
     {
       "category": "dairy",
@@ -35,7 +36,8 @@
       "household": {
         "unit": "piece",
         "metricAmount": 300
-      }
+      },
+      "measure": "both"
     },
     {
       "category": "produce",
@@ -45,7 +47,8 @@
       "household": {
         "unit": "handful",
         "metricAmount": 25
-      }
+      },
+      "measure": "both"
     },
     {
       "category": "produce",
@@ -67,7 +70,8 @@
       "household": {
         "unit": "tablespoon",
         "metricAmount": 5
-      }
+      },
+      "measure": "household"
     },
     {
       "category": "pantry",
@@ -77,7 +81,8 @@
       "household": {
         "unit": "cup",
         "metricAmount": 240
-      }
+      },
+      "measure": "both"
     },
     {
       "category": "grains",
@@ -87,7 +92,8 @@
       "household": {
         "unit": "bread_slice",
         "metricAmount": 30
-      }
+      },
+      "measure": "household"
     },
     {
       "category": "spices",
@@ -107,7 +113,8 @@
       "household": {
         "unit": "teaspoon",
         "metricAmount": 1
-      }
+      },
+      "measure": "household"
     },
     {
       "category": "spices",
@@ -117,7 +124,8 @@
       "household": {
         "unit": "pinch",
         "metricAmount": 1
-      }
+      },
+      "measure": "household"
     },
     {
       "category": "spices",
@@ -127,7 +135,8 @@
       "household": {
         "unit": "pinch",
         "metricAmount": 1
-      }
+      },
+      "measure": "household"
     }
   ],
   "preparation": [

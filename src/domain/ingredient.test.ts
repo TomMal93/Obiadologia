@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   formatHouseholdMeasure,
+  formatMeasure,
   formatMetricMeasure,
   ingredientSchema,
   millilitresToHousehold,
@@ -37,6 +38,55 @@ describe('ingredient schema', () => {
     })).toMatchObject({
       household: { unit: 'slice', metricAmount: 8 },
     });
+  });
+
+  it('accepts an editorial measure form backed by a conversion', () => {
+    expect(ingredientSchema.parse({
+      category: 'meat',
+      name: 'chorizo',
+      amount: 80,
+      unit: 'g',
+      household: { unit: 'slice', metricAmount: 8 },
+      measure: 'both',
+    })).toMatchObject({ measure: 'both' });
+    expect(ingredientSchema.parse({
+      category: 'pantry',
+      name: 'bulion',
+      amount: 250,
+      unit: 'ml',
+      measure: 'household',
+    })).toMatchObject({ measure: 'household' });
+    expect(ingredientSchema.parse({
+      category: 'produce',
+      name: 'cebula',
+      amount: 2,
+      unit: 'szt',
+      measure: 'metric',
+    })).toMatchObject({ measure: 'metric' });
+  });
+
+  it('rejects a household measure form without a usable conversion', () => {
+    expect(() => ingredientSchema.parse({
+      category: 'produce',
+      name: 'cebula',
+      amount: 2,
+      unit: 'szt',
+      measure: 'household',
+    })).toThrow();
+    expect(() => ingredientSchema.parse({
+      category: 'meat',
+      name: 'wołowina',
+      amount: 400,
+      unit: 'g',
+      measure: 'both',
+    })).toThrow();
+    expect(() => ingredientSchema.parse({
+      category: 'spices',
+      name: 'sól',
+      amount: 5,
+      unit: 'g',
+      measure: 'domowa',
+    })).toThrow();
   });
 
   it('rejects a non-positive amount and an unknown unit', () => {
@@ -136,5 +186,58 @@ describe('household measure per unit', () => {
 
   it('leaves mass in grams when no density is available', () => {
     expect(formatHouseholdMeasure(make({ amount: 400, unit: 'g' }))).toBe('400 g');
+  });
+});
+
+describe('measure shown on the recipe page', () => {
+  it('keeps the metric form when the ingredient has no editorial choice', () => {
+    expect(formatMeasure(make({ amount: 400, unit: 'g' }))).toBe('400 g');
+    expect(formatMeasure(make({
+      amount: 80,
+      unit: 'g',
+      household: { unit: 'slice', metricAmount: 8 },
+    }))).toBe('80 g');
+    expect(formatMeasure(make({ amount: 2, unit: 'szt' }))).toBe('2 sztuki');
+  });
+
+  it('shows only the household form when the ingredient asks for it', () => {
+    expect(formatMeasure(make({
+      amount: 120,
+      unit: 'g',
+      household: { unit: 'bread_slice', metricAmount: 30 },
+      measure: 'household',
+    }))).toBe('4 kromki');
+    expect(formatMeasure(make({ amount: 2, unit: 'g', household: { unit: 'pinch', metricAmount: 1 }, measure: 'household' }))).toBe(
+      '2 szczypty',
+    );
+  });
+
+  it('joins both forms with a slash', () => {
+    expect(formatMeasure(make({
+      amount: 80,
+      unit: 'g',
+      household: { unit: 'slice', metricAmount: 8 },
+      measure: 'both',
+    }))).toBe('80 g / 10 plastrów');
+    expect(formatMeasure(make({
+      amount: 240,
+      unit: 'g',
+      household: { unit: 'cup', metricAmount: 240 },
+      measure: 'both',
+    }))).toBe('240 g / 1 szklanka');
+    expect(formatMeasure(make({ amount: 200, unit: 'ml', measure: 'both' }))).toBe(
+      '200 ml / ¾ szklanki',
+    );
+  });
+
+  // Schemat odrzuca takie dane na etapie builda, ale skrypt strony odtwarza
+  // miarę z atrybutów `data-*`, więc formater nie może pokazać „400 g / 400 g”.
+  it('never repeats an identical form on both sides of the slash', () => {
+    expect(formatMeasure({ name: 'wołowina', amount: 400, unit: 'g', measure: 'both' })).toBe(
+      '400 g',
+    );
+    expect(formatMeasure({ name: 'cebula', amount: 2, unit: 'szt', measure: 'both' })).toBe(
+      '2 sztuki',
+    );
   });
 });
