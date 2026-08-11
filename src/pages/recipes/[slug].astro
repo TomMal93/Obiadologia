@@ -24,15 +24,6 @@ interface Props {
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
 const hasAssistantContent = Boolean(recipe.preparation);
-// Dwa tryby mają własne teksty kroków: asystent prowadzi przez kroki zakładające
-// wykonane etapy wspierające, a „Tylko kroki” pokazuje wersję samodzielną. Bez
-// etapów wspierających istnieje jedna, wspólna lista bez klasy trybu.
-const stepLists = recipe.stepsOnly
-  ? [
-      { steps: recipe.steps, modeClass: 'assistant-section' },
-      { steps: recipe.stepsOnly, modeClass: 'steps-only-section' },
-    ]
-  : [{ steps: recipe.steps, modeClass: null }];
 const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
   checked: 0,
   total: recipe.ingredients.length,
@@ -267,9 +258,31 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                     </h3>
                     <ul class="prep-list">
                       {items.map((item) => (
-                        <li>
-                          <span class="prep-list__mark" aria-hidden="true">✓</span>
-                          <span>{item.text}</span>
+                        <li class="prep-list__item">
+                          <button
+                            type="button"
+                            class="prep-list__toggle"
+                            data-preparation-toggle
+                            data-preparation-id={item.id}
+                            aria-pressed="false"
+                            aria-label={formatMessage(messages.recipe.checkPreparationLabel, {
+                              name: item.text,
+                            })}
+                            data-check-label={formatMessage(messages.recipe.checkPreparationLabel, {
+                              name: item.text,
+                            })}
+                            data-uncheck-label={formatMessage(messages.recipe.uncheckPreparationLabel, {
+                              name: item.text,
+                            })}
+                            hidden
+                          >
+                            <span class="prep-list__box" aria-hidden="true"></span>
+                            <span class="prep-list__text">{item.text}</span>
+                          </button>
+                          <span class="prep-list__fallback">
+                            <span class="prep-list__mark" aria-hidden="true">✓</span>
+                            <span>{item.text}</span>
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -282,10 +295,71 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
 
           <section class="recipe-steps recipe-mode-content" aria-labelledby="steps-heading">
           <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
+          <ol class:list={['step-list', recipe.stepsOnly && 'assistant-section']}>
+            {recipe.steps.map((step, index) => (
+              <>
+                {recipe.preparation
+                  ?.filter((item) => item.beforeStep === index + 1)
+                  .map((item) => (
+                    <li
+                      class="recipe-step recipe-step--preparation"
+                      data-preparation-half-step={item.id}
+                      hidden
+                    >
+                      <button
+                        type="button"
+                        class="recipe-step__toggle recipe-step__toggle--preparation"
+                        data-preparation-toggle
+                        data-preparation-id={item.id}
+                        aria-pressed="false"
+                        aria-label={formatMessage(messages.recipe.checkPreparationLabel, {
+                          name: item.stepText,
+                        })}
+                        data-check-label={formatMessage(messages.recipe.checkPreparationLabel, {
+                          name: item.stepText,
+                        })}
+                        data-uncheck-label={formatMessage(messages.recipe.uncheckPreparationLabel, {
+                          name: item.stepText,
+                        })}
+                      >
+                        <span class="recipe-step__badge" aria-hidden="true">½</span>
+                        <span class="recipe-step__text">
+                          <span class="recipe-step__kind">{messages.recipe.preparationStepLabel}</span>
+                          {item.stepText}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                  <li class="recipe-step">
+                    <button
+                      type="button"
+                      class="recipe-step__toggle"
+                      data-checkable-step
+                      data-step-number={index + 1}
+                      aria-pressed="false"
+                      aria-label={formatMessage(messages.recipe.checkStepLabel, {
+                        number: index + 1,
+                      })}
+                      data-check-label={formatMessage(messages.recipe.checkStepLabel, {
+                        number: index + 1,
+                      })}
+                      data-uncheck-label={formatMessage(messages.recipe.uncheckStepLabel, {
+                        number: index + 1,
+                      })}
+                      hidden
+                    >
+                      <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
+                      <span class="recipe-step__text">{step}</span>
+                    </button>
+                    <span class="recipe-step__fallback">{step}</span>
+                  </li>
+              </>
+            ))}
+          </ol>
           {
-            stepLists.map(({ steps, modeClass }) => (
-              <ol class:list={['step-list', modeClass]}>
-                {steps.map((step, index) => (
+            recipe.stepsOnly && (
+              <ol class="step-list steps-only-section">
+                {recipe.stepsOnly.map((step, index) => (
                   <li class="recipe-step">
                     <button
                       type="button"
@@ -311,7 +385,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   </li>
                 ))}
               </ol>
-            ))
+            )
           }
           </section>
 
@@ -516,6 +590,58 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         }
       });
     }
+  }
+
+  const preparationToggles = Array.from(
+    article?.querySelectorAll<HTMLButtonElement>('[data-preparation-toggle]') ?? [],
+  );
+  const preparationHalfSteps = Array.from(
+    article?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
+  );
+  const completedPreparation = new Set<string>();
+
+  const renderPreparation = (preparationId: string) => {
+    const checked = completedPreparation.has(preparationId);
+    for (const button of preparationToggles) {
+      if (button.dataset.preparationId !== preparationId) continue;
+      button.setAttribute('aria-pressed', String(checked));
+      button.classList.toggle('is-checked', checked);
+      button.setAttribute(
+        'aria-label',
+        (checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
+      );
+    }
+    for (const halfStep of preparationHalfSteps) {
+      if (halfStep.dataset.preparationHalfStep === preparationId) {
+        halfStep.hidden = checked;
+      }
+    }
+  };
+
+  for (const button of preparationToggles) {
+    button.hidden = false;
+    if (button.classList.contains('prep-list__toggle')) {
+      button.parentElement?.querySelector<HTMLElement>('.prep-list__fallback')
+        ?.setAttribute('hidden', '');
+    }
+
+    const preparationId = button.dataset.preparationId;
+    if (!preparationId) continue;
+    renderPreparation(preparationId);
+    button.addEventListener('click', () => {
+      const checked = !completedPreparation.has(preparationId);
+      const halfStep = button.closest<HTMLElement>('[data-preparation-half-step]');
+      let nextItem = halfStep?.nextElementSibling;
+      while (nextItem?.classList.contains('recipe-step--preparation')) {
+        nextItem = nextItem.nextElementSibling;
+      }
+      const nextStep = nextItem?.querySelector<HTMLButtonElement>('[data-checkable-step]');
+
+      if (checked) completedPreparation.add(preparationId);
+      else completedPreparation.delete(preparationId);
+      renderPreparation(preparationId);
+      if (checked && halfStep) nextStep?.focus();
+    });
   }
 
   const stepToggles = Array.from(

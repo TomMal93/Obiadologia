@@ -82,12 +82,14 @@ dałby wynik w rodzaju `0,6 łyżeczki`. Obie formy wymagają przelicznika
 Dodaj jedną wspólną listę czynności wspierających gotowanie. Każdej przypisz
 `timing`: `day_before`, gdy można ją bezpiecznie zakończyć nawet dzień wcześniej
 i przechować zgodnie z opisem, albo `just_in_time`, gdy należy ją wykonać tuż
-przed właściwym gotowaniem lub w jego trakcie.
+przed właściwym gotowaniem lub w jego trakcie. Nadaj jej unikalne `id`, zapisz
+bezpośrednią instrukcję półkroku w `stepText` i wskaż w `beforeStep` numer kroku
+`steps`, przed którym ma się pojawić, jeśli użytkownik nie odhaczy jej w panelu.
 
-| Czynność | `timing` |
-|---|---|
-| [co można przygotować i przechować wcześniej] | `day_before` |
-| [co zrobić na świeżo przed gotowaniem lub w trakcie] | `just_in_time` |
+| `id` | Tekst w panelu (`text`) | Tekst półkroku (`stepText`) | `timing` | `beforeStep` |
+|---|---|---|---|---:|
+| [unikalny-identyfikator] | [co można przygotować i przechować wcześniej] | [co zrobić teraz, jeśli nie odhaczono] | `day_before` | [numer kroku] |
+| [unikalny-identyfikator] | [co zrobić na świeżo] | [bezpośrednia instrukcja] | `just_in_time` | [numer kroku] |
 
 ## Kroki
 
@@ -162,7 +164,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Opcjonalny przelicznik `household` ma dozwoloną jednostkę, dodatnie `metricAmount` i występuje wyłącznie przy bazowej jednostce `g` albo `ml`.
 - [ ] Opcjonalne `measure` ma wartość `metric`, `household` albo `both`, a formy z miarą domową mają przelicznik i dają czytelną ilość.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
-- [ ] Każda czynność w „Zanim zaczniesz” ma właściwe `timing`: `day_before` albo `just_in_time`.
+- [ ] Każda czynność w „Zanim zaczniesz” ma unikalne `id`, właściwe `timing`, zwięzłe `stepText` oraz `beforeStep` wskazujące najlepszy moment przed istniejącym krokiem.
 - [ ] Przepis z sekcją „Zanim zaczniesz” ma wypełnione kroki samodzielne, a przepis bez tej sekcji ich nie ma.
 - [ ] Kroki samodzielne są innym tekstem niż kroki podstawowe i nie gubią żadnej czynności z „Zanim zaczniesz”.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.

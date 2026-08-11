@@ -62,10 +62,10 @@ HouseholdConversion = { unit: HouseholdUnit, metricAmount: number > 0 }
 MeasureDisplay = metric | household | both
 Ingredient = { category: IngredientCategory, name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0, household?: HouseholdConversion, measure?: MeasureDisplay }
 PreparationTiming = day_before | just_in_time
-PreparationStep = { text: string, timing: PreparationTiming }
+PreparationStep = { id: string, text: string, stepText: string, timing: PreparationTiming, beforeStep: integer > 0 }
 ```
 
-- `preparation` jest jedynym źródłem czynności wspierających gotowanie. `timing: day_before` oznacza czynność, którą można bezpiecznie zakończyć nawet dzień wcześniej i przechować zgodnie z opisem; `timing: just_in_time` oznacza czynność wykonywaną tuż przed właściwym gotowaniem albo w jego trakcie. Brak pola oznacza przepis bez sekcji „Zanim zaczniesz”. Pole obecne MUSI mieć co najmniej jeden element.
+- `preparation` jest jedynym źródłem czynności wspierających gotowanie. `timing: day_before` oznacza czynność, którą można bezpiecznie zakończyć nawet dzień wcześniej i przechować zgodnie z opisem; `timing: just_in_time` oznacza czynność wykonywaną tuż przed właściwym gotowaniem albo w jego trakcie. `id` jednoznacznie łączy kontrolkę w „Zanim zaczniesz” z półkrokiem, `text` opisuje możliwość przygotowania w panelu, `stepText` jest bezpośrednią instrukcją używaną jako półkrok, a `beforeStep` wskazuje numer kroku `steps`, przed którym ma się pojawić. Brak pola oznacza przepis bez sekcji „Zanim zaczniesz”. Pole obecne MUSI mieć co najmniej jeden element.
 - `steps` i `stepsOnly` to dwie wersje tych samych kroków, a nie ta sama treść pokazana dwa razy. `steps` prowadzi przez gotowanie przy założeniu, że czynności z `preparation` zostały wykonane, więc może pomijać krojenie, namoczenie lub przygotowanie sprzętu. `stepsOnly` jest wersją samodzielną dla trybu „Tylko kroki”, w którym „Zanim zaczniesz” jest ukryte, więc MUSI nieść wszystko, co `steps` z tej sekcji założyło — także wtedy, gdy wymaga to innej liczby kroków.
 - `stepsOnly` istnieje dokładnie wtedy, gdy istnieje `preparation`. Brak pola przy przygotowaniach jest błędem danych, bo tryb „Tylko kroki” gubiłby wtedy część pracy. Pole przy przepisie bez przygotowań jest błędem danych, bo taki przepis nie ma przełącznika trybu, a druga lista rozjechałaby się z `steps` bez możliwości zauważenia tego w UI.
 - `tips` jest opcjonalną listą krótkich porad uzupełniających właściwe kroki. Brak pola oznacza brak sekcji „Coś jeszcze”; pusta tablica jest błędem danych.
@@ -103,9 +103,9 @@ PreparationStep = { text: string, timing: PreparationTiming }
     { "category": "pantry", "name": "oliwa", "amount": 30, "unit": "ml" }
   ],
   "preparation": [
-    { "text": "Kurczaka natrzyj oliwą, solą i przyprawami i zamarynuj w lodówce.", "timing": "day_before" },
-    { "text": "Sałatę i pomidory umyj oraz osusz.", "timing": "just_in_time" },
-    { "text": "Przygotuj deskę, nóż i szczypce do grilla.", "timing": "just_in_time" }
+    { "id": "zamarynuj-kurczaka", "text": "Kurczaka natrzyj oliwą, solą i przyprawami i zamarynuj w lodówce.", "stepText": "Natrzyj kurczaka oliwą, solą i przyprawami.", "timing": "day_before", "beforeStep": 1 },
+    { "id": "przygotuj-salate", "text": "Sałatę i pomidory umyj oraz osusz.", "stepText": "Sałatę i pomidory umyj oraz osusz.", "timing": "just_in_time", "beforeStep": 2 },
+    { "id": "przygotuj-sprzet", "text": "Przygotuj deskę, nóż i szczypce do grilla.", "stepText": "Przygotuj deskę, nóż i szczypce do grilla.", "timing": "just_in_time", "beforeStep": 1 }
   ],
   "steps": [
     "Grilluj kurczaka po 6–7 minut z każdej strony.",
@@ -168,7 +168,7 @@ PreparationStep = { text: string, timing: PreparationTiming }
 - Opcjonalne `household` MUSI mieć znaną wartość `HouseholdUnit` i dodatnie `metricAmount`; może wystąpić tylko przy bazowej jednostce `g` albo `ml`.
 - Opcjonalne `measure` MUSI mieć wartość `metric`, `household` albo `both`; formy `household` i `both` są dozwolone wyłącznie przy dostępnym przeliczniku formy domowej.
 - `image` może mieć wartość `null`; brak obrazu nie może blokować wyniku, a UI używa wtedy wspólnego placeholdera.
-- `preparation` jest opcjonalne; gdy występuje, każdy element ma niepusty `text` i znane `timing` (`day_before` albo `just_in_time`). Pusta tablica jest błędem danych — brak sekcji wyrażamy pominięciem pola.
+- `preparation` jest opcjonalne; gdy występuje, każdy element ma unikalny identyfikator, niepuste `text` i `stepText`, znane `timing` (`day_before` albo `just_in_time`) oraz `beforeStep` wskazujące istniejący element `steps`. Pusta tablica jest błędem danych — brak sekcji wyrażamy pominięciem pola.
 - `stepsOnly` jest opcjonalne, ale związane z przygotowaniami: MUSI wystąpić, gdy istnieje `preparation`, i NIE MOŻE wystąpić w przeciwnym przypadku. Gdy występuje, każdy krok jest niepusty; pusta tablica jest błędem danych.
 - `tips` jest opcjonalne; gdy występuje, każda porada jest niepusta. Pusta tablica jest błędem danych — brak porad wyrażamy pominięciem pola.
 - Jeżeli `image` istnieje, `src` i opisujący danie `alt` MUSZĄ być niepustymi wartościami. Placeholder dla `image: null` jest dekoracyjny i nie powiela dostępnej nazwy przepisu.
@@ -181,7 +181,7 @@ PreparationStep = { text: string, timing: PreparationTiming }
 | obraz przepisu | poprawny `ImageReference` jest akceptowany, `null` uruchamia placeholder, a niepełny `ImageReference` jest odrzucany |
 | naturalne miary domowe | `household` przelicza skalowaną ilość metryczną na kontrolowaną miarę; nieznana miara, niedodatnie `metricAmount` i użycie przy `szt` są odrzucane |
 | forma miary składnika | `measure` decyduje o pokazanej formie (metryczna, domowa albo obie z ukośnikiem); brak pola daje formę metryczną, a forma domowa bez przelicznika jest odrzucana |
-| przygotowanie do gotowania | `preparation` przyjmuje wyłącznie niepuste czynności przypisane do `day_before` albo `just_in_time` |
+| przygotowanie do gotowania | `preparation` przyjmuje wyłącznie czynności z unikalnym `id`, tekstami panelu i półkroku, grupą `day_before` albo `just_in_time` oraz `beforeStep` wskazującym istniejący krok |
 | samodzielna wersja kroków | `stepsOnly` jest wymagane przy `preparation`, odrzucane bez niego i odrzucane jako pusta tablica |
 | spójność ścieżek | ten sam przepis może być użyty w Kategoriach, Szukaj i Mapie |
 | filtr kategorii | co najmniej jeden wybór pokazuje wyniki zawierające wszystkie aktualnie wybrane wartości; każda zmiana odświeża wyniki, a usunięcie ostatniego wyboru je ukrywa |

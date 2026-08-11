@@ -12,8 +12,20 @@ export const testRecipes = [
     servings: 2,
     ingredients: [{ category: 'meat', name: 'kurczak', amount: 200, unit: 'g' }],
     preparation: [
-      { text: 'Przygotuj wcześniej.', timing: 'day_before' },
-      { text: 'Przygotuj sprzęt.', timing: 'just_in_time' },
+      {
+        id: 'wczesniejsze-przygotowanie',
+        text: 'Przygotuj wcześniej.',
+        stepText: 'Przygotuj teraz.',
+        timing: 'day_before',
+        beforeStep: 1,
+      },
+      {
+        id: 'przygotowanie-sprzetu',
+        text: 'Przygotuj sprzęt.',
+        stepText: 'Przygotuj sprzęt.',
+        timing: 'just_in_time',
+        beforeStep: 1,
+      },
     ],
     steps: ['Wykonaj krok testowy.'],
     stepsOnly: ['Przygotuj sprzęt i wykonaj krok testowy.'],

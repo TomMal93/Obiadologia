@@ -141,24 +141,39 @@
   ],
   "preparation": [
     {
+      "id": "przygotuj-cukinie",
       "text": "Pokrój cukinię w półplastry, lekko posól i odstaw na 10 minut. Następnie odcedź ją, dokładnie osusz, przełóż do przykrytego pojemnika i wstaw do lodówki.",
-      "timing": "day_before"
+      "stepText": "Pokrój cukinię w półplastry, lekko posól i odstaw na 10 minut. Następnie odcedź ją i dokładnie osusz.",
+      "timing": "day_before",
+      "beforeStep": 1
     },
     {
+      "id": "pokroj-chorizo",
       "text": "Pokrój chorizo w półplastry albo kostkę i przechowaj je w zamkniętym pojemniku w lodówce.",
-      "timing": "day_before"
+      "stepText": "Pokrój chorizo w półplastry albo kostkę.",
+      "timing": "day_before",
+      "beforeStep": 1
     },
     {
-      "text": "Jeśli cukinia była przygotowana wcześniej, wyjmij ją z lodówki i w razie potrzeby osusz. Jeśli robisz to teraz, pokrój ją, lekko posól, odstaw na 10 minut, a następnie odcedź i osusz.",
-      "timing": "just_in_time"
-    },
-    {
-      "text": "Jeśli chorizo nie było przygotowane wcześniej, pokrój je teraz. Cebulę pokrój w drobną kostkę, czosnek posiekaj, a szpinak opłucz i osusz.",
-      "timing": "just_in_time"
-    },
-    {
+      "id": "przygotuj-patelnie",
       "text": "Przygotuj szeroką patelnię z pokrywką.",
-      "timing": "just_in_time"
+      "stepText": "Przygotuj szeroką patelnię z pokrywką.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    },
+    {
+      "id": "pokroj-cebule-i-czosnek",
+      "text": "Cebulę pokrój w drobną kostkę, a czosnek posiekaj.",
+      "stepText": "Cebulę pokrój w drobną kostkę, a czosnek posiekaj.",
+      "timing": "just_in_time",
+      "beforeStep": 2
+    },
+    {
+      "id": "przygotuj-szpinak",
+      "text": "Szpinak opłucz i dokładnie osusz.",
+      "stepText": "Szpinak opłucz i dokładnie osusz.",
+      "timing": "just_in_time",
+      "beforeStep": 4
     }
   ],
   "steps": [

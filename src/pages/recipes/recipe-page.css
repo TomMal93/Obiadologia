@@ -574,13 +574,31 @@
   gap: var(--space-12);
 }
 
-.prep-list > li {
+.prep-list__toggle,
+.prep-list__fallback {
   display: grid;
+  width: 100%;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   gap: var(--space-12);
+  color: var(--color-text);
+  text-align: left;
 }
 
+.prep-list__toggle {
+  min-height: 44px;
+  padding: var(--space-4);
+  border: 0;
+  border-radius: var(--space-8);
+  background: transparent;
+  cursor: pointer;
+}
+
+.prep-list__toggle:hover {
+  background: var(--color-coral-soft);
+}
+
+.prep-list__box,
 .prep-list__mark {
   display: grid;
   width: 24px;
@@ -591,6 +609,35 @@
   font-size: var(--font-size-14);
   font-weight: 800;
   background: var(--color-coral-soft);
+}
+
+.prep-list__box::before {
+  content: '';
+}
+
+.prep-list__box {
+  border: 2px solid var(--color-coral);
+  border-radius: calc(var(--radius-field) / 2);
+  background: var(--color-surface);
+}
+
+.prep-list__toggle.is-checked .prep-list__box {
+  color: var(--color-surface);
+  background: var(--color-coral);
+}
+
+.prep-list__toggle.is-checked .prep-list__box::before {
+  content: '✓';
+}
+
+.prep-list__text,
+.prep-list__fallback > span:last-child {
+  line-height: 1.5;
+}
+
+.prep-list__toggle.is-checked .prep-list__text {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
 }
 
 .prep-groups {
@@ -614,15 +661,11 @@
   gap: var(--space-12);
 }
 
-.prep-list > li > span:last-child {
-  line-height: 1.5;
-}
-
 .step-list {
   counter-reset: recipe-step;
 }
 
-.recipe-step {
+.recipe-step:not(.recipe-step--preparation) {
   counter-increment: recipe-step;
 }
 
@@ -655,6 +698,36 @@
 
 .recipe-step__text {
   line-height: 1.5;
+}
+
+.recipe-step--preparation {
+  padding-left: var(--space-8);
+  border-left: 2px dashed var(--color-border);
+}
+
+.recipe-step--preparation[hidden] {
+  display: none;
+}
+
+.recipe-step__toggle--preparation {
+  padding: var(--space-8);
+  border-radius: var(--radius-field);
+  background: var(--color-coral-soft);
+}
+
+.recipe-step__toggle--preparation .recipe-step__badge {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--color-coral);
+  background: var(--color-surface);
+}
+
+.recipe-step__kind {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--color-coral-strong);
+  font-size: var(--font-size-14);
+  font-weight: 800;
 }
 
 .recipe-step__toggle.is-checked .recipe-step__badge {
@@ -750,8 +823,10 @@
 }
 
 .ingredient__fallback[hidden],
+.prep-list__fallback[hidden],
 .recipe-step__fallback[hidden],
 .ingredient__toggle[hidden],
+.prep-list__toggle[hidden],
 .recipe-step__toggle[hidden],
 .ingredient-progress[hidden] {
   display: none !important;

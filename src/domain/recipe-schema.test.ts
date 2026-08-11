@@ -71,6 +71,8 @@ describe('Recipe schema', () => {
 
   it('accepts only the controlled preparation timing groups', () => {
     const [first] = testRecipes;
+    const preparation = first.preparation?.[0];
+    if (!preparation) throw new Error('Test recipe preparation is missing');
 
     expect(recipeSchema.parse(first).preparation?.map(({ timing }) => timing)).toEqual([
       'day_before',
@@ -79,7 +81,26 @@ describe('Recipe schema', () => {
     expect(() =>
       recipeSchema.parse({
         ...first,
-        preparation: [{ text: 'Przygotuj.', timing: 'later' }],
+        preparation: [{ ...preparation, timing: 'later' }],
+      }),
+    ).toThrow();
+  });
+
+  it('requires unique preparation ids and an existing target step', () => {
+    const [first] = testRecipes;
+    const preparation = first.preparation?.[0];
+    if (!preparation) throw new Error('Test recipe preparation is missing');
+
+    expect(() =>
+      recipeSchema.parse({
+        ...first,
+        preparation: [preparation, { ...preparation }],
+      }),
+    ).toThrow();
+    expect(() =>
+      recipeSchema.parse({
+        ...first,
+        preparation: [{ ...preparation, beforeStep: first.steps.length + 1 }],
       }),
     ).toThrow();
   });

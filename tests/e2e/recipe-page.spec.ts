@@ -183,12 +183,46 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   ).toHaveCount(3);
   const assistantSteps = steps.locator('.step-list.assistant-section');
   const standaloneSteps = steps.locator('.step-list.steps-only-section');
+  const halfSteps = assistantSteps.locator('[data-preparation-half-step]');
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();
-  await expect(assistantSteps.getByRole('listitem')).toHaveCount(7);
-  await expect(assistantSteps.getByRole('listitem').first()).toContainText(
+  await expect(assistantSteps.getByRole('listitem')).toHaveCount(12);
+  await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
+  await expect(
+    assistantSteps.locator('.recipe-step:not(.recipe-step--preparation)').first(),
+  ).toContainText(
     'Połóż chorizo na zimnej patelni',
   );
+  const halfStepTargets = await halfSteps.evaluateAll((items) =>
+    items.map((item) => {
+      let next = item.nextElementSibling;
+      while (next?.classList.contains('recipe-step--preparation')) {
+        next = next.nextElementSibling;
+      }
+      return next?.querySelector<HTMLElement>('[data-step-number]')?.dataset.stepNumber;
+    }),
+  );
+  expect(halfStepTargets).toEqual(['1', '1', '1', '2', '4']);
+
+  const chorizoPreparation = preparation.getByRole('button', { name: /Pokrój chorizo/ });
+  const chorizoHalfStep = assistantSteps.locator(
+    '[data-preparation-half-step="pokroj-chorizo"]',
+  );
+  await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'false');
+  await expect(chorizoHalfStep).toBeVisible();
+  await chorizoPreparation.click();
+  await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'true');
+  await expect(chorizoHalfStep).toBeHidden();
+  await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(4);
+  await chorizoPreparation.click();
+  await expect(chorizoHalfStep).toBeVisible();
+
+  await chorizoHalfStep.getByRole('button').click();
+  await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'true');
+  await expect(chorizoHalfStep).toBeHidden();
+  await expect(
+    assistantSteps.locator('.recipe-step:not(.recipe-step--preparation)').first().getByRole('button'),
+  ).toBeFocused();
   const choiceHeadingLeft = await page.getByRole('heading', {
     name: 'Jak chcesz gotować?',
   }).evaluate((element) => element.getBoundingClientRect().left);
@@ -229,6 +263,7 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(preparation).toBeVisible();
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();
+  await expect(chorizoHalfStep).toBeHidden();
 
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations).toEqual([]);

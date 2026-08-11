@@ -23,8 +23,11 @@ const imageReferenceSchema = z
 /** Czynność wspierająca gotowanie, przypisana do jednej z dwóch grup czasowych. */
 export const preparationStepSchema = z
   .object({
+    id: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     text: z.string().trim().min(1),
+    stepText: z.string().trim().min(1),
     timing: z.enum(preparationTimings),
+    beforeStep: z.number().int().positive(),
   })
   .strict();
 
@@ -91,6 +94,26 @@ export const recipeSchema = z
         message:
           'Przepis bez sekcji „Zanim zaczniesz” nie ma trybu „Tylko kroki”, więc `stepsOnly` jest zbędne.',
       });
+    }
+
+    const preparationIds = new Set<string>();
+    for (const [index, item] of (recipe.preparation ?? []).entries()) {
+      if (preparationIds.has(item.id)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['preparation', index, 'id'],
+          message: `Powtórzony identyfikator przygotowania: ${item.id}`,
+        });
+      }
+      preparationIds.add(item.id);
+
+      if (item.beforeStep > recipe.steps.length) {
+        context.addIssue({
+          code: 'custom',
+          path: ['preparation', index, 'beforeStep'],
+          message: '`beforeStep` musi wskazywać istniejący krok właściwego gotowania.',
+        });
+      }
     }
   });
 
