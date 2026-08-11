@@ -23,6 +23,10 @@ Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zg
 
 W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Stałe są odstępy między dolną krawędzią notatki a ramką panelu oraz między dolną ramką panelu a końcem sekcji. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Centralną ikonę drzewka otacza okrągły pierścień o średnicy dawnej poświaty: od godziny 12, zgodnie z ruchem wskazówek zegara, biegną kolejno jednolite wycinki Szukaj (koral), Mapa (niebieski) i Kategorie (zieleń), połączone wyłącznie wąskimi przejściami na stykach. Kolor zaczyna się od krycia `0.8`, utrzymuje je przez większość promienia, po czym dopiero blisko obrzeża zanika do pełnej przezroczystości na zewnętrznej krawędzi. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
+Każdy kafel drogi ma delikatne, półprzezroczyste obramowanie w kolorze swojej
+ścieżki, wizualnie lżejsze od zewnętrznego obramowania panoramicznych kart
+przepisów.
+
 Ikona menu we wspólnym nagłówku otwiera mobilne menu nawigacyjne (hamburger). Menu jest wysuwanym panelem z przyciemnionym tłem i zawiera cztery pozycje: „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”. „Strona główna” prowadzi do `/`, „Kategorie” do sekcji kategorii (`/#kategorie`), a „Szukaj” i „Mapa” otwierają właściwy tryb wspólnego overlaya — na stronie głównej bezpośrednio, a z pozostałych stron przez powrót na `/` i otwarcie trybu po wejściu. Menu jest obsługiwalne klawiaturą i czytnikiem ekranu: przycisk niesie stan `aria-expanded`, otwarcie przenosi fokus do panelu, `Escape` oraz klik w tło zamykają menu i przywracają fokus na przycisk, a tło jest zablokowane na czas otwarcia. Zamknięte menu pozostaje poza kolejnością tabulacji i drzewem dostępności.
 
 ## Trzy drogi
@@ -166,7 +170,8 @@ zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
   krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg.
 - Panel jest dosuwany do dolnej kotwicy pierwszej sekcji.
 - Kafel każdej drogi znajduje się bezpośrednio pod tytułem i kolorową kreską,
-  ma górny margines `6px`, a osobna strzałka nie jest renderowana.
+  ma górny margines `6px`, delikatne półprzezroczyste obramowanie w kolorze drogi,
+  a osobna strzałka nie jest renderowana.
 - Centralną ikonę drzewka otacza pierścień o średnicy dawnej poświaty. Kolor ma
   krycie `0.8` w centrum i przez większość promienia, a dopiero blisko obrzeża
   zanika do pełnej przezroczystości. Pierścień tworzą trzy

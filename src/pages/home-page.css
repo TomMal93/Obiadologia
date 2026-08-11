@@ -432,6 +432,7 @@
      długości opisów nad nimi. */
   min-height: clamp(104px, 27vw, 136px);
   padding: clamp(8px, 2vh, 14px) clamp(4px, 1.5vw, 10px);
+  border: 1px solid color-mix(in srgb, var(--col-accent) 45%, transparent);
   border-radius: var(--radius-card);
   color: inherit;
   text-decoration: none;
@@ -445,7 +446,6 @@
 }
 
 button.path-tile {
-  border: 0;
   cursor: pointer;
 }
 
