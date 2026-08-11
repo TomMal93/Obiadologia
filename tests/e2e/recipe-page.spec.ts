@@ -43,7 +43,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   }
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
-  await expect(ingredients.getByText('0/13 odhaczonych')).toBeVisible();
+  await expect(ingredients.getByText('0/13 zebrane')).toBeVisible();
   await expect(ingredients.getByRole('heading', { level: 3 })).toHaveText([
     'Warzywa i owoce',
     'Mięso i wędliny',
@@ -64,16 +64,23 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     const sectionBounds = section.getBoundingClientRect();
     const sectionStyles = getComputedStyle(section);
     return {
-      headingBottom: headingBounds.bottom,
+      headingCenter: headingBounds.top + headingBounds.height / 2,
+      headingRight: headingBounds.right,
       sectionRight: sectionBounds.right,
       sectionBorderRight: Number.parseFloat(sectionStyles.borderRightWidth),
       sectionPaddingRight: Number.parseFloat(sectionStyles.paddingRight),
-      progressTop: progressBounds.top,
+      progressCenter: progressBounds.top + progressBounds.height / 2,
+      progressLeft: progressBounds.left,
       progressRight: progressBounds.right,
     };
   });
-  expect(ingredientHeadGeometry.progressTop).toBeGreaterThanOrEqual(
-    ingredientHeadGeometry.headingBottom,
+  // Licznik stoi w wierszu nagłówka, po jego prawej, przy krawędzi sekcji.
+  expect(ingredientHeadGeometry.progressCenter).toBeCloseTo(
+    ingredientHeadGeometry.headingCenter,
+    0,
+  );
+  expect(ingredientHeadGeometry.progressLeft).toBeGreaterThanOrEqual(
+    ingredientHeadGeometry.headingRight,
   );
   expect(ingredientHeadGeometry.progressRight).toBeCloseTo(
     ingredientHeadGeometry.sectionRight
@@ -107,7 +114,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   });
   await chorizoToggle.click();
   await expect(chorizoToggle).toHaveAttribute('aria-pressed', 'true');
-  await expect(ingredients.getByText('1/13 odhaczonych')).toBeVisible();
+  await expect(ingredients.getByText('1/13 zebrane')).toBeVisible();
 
   await page.getByRole('button', { name: 'Tylko kroki' }).click();
   const steps = page.getByRole('region', { name: 'Kroki' });
@@ -269,6 +276,41 @@ test('recipe page stays centered and has no horizontal overflow', async ({ page 
     expect(geometry.shellWidth).toBeLessThanOrEqual(480);
     expect(geometry.shellCenter).toBeCloseTo(width / 2, 0);
   }
+});
+
+test('ingredient counter fills its ring and lands on a complete state', async ({ page }) => {
+  await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
+
+  const ingredients = page.getByRole('region', { name: 'Składniki' });
+  const progress = ingredients.locator('[data-ingredient-progress]');
+  const progressText = progress.locator('[data-ingredient-progress-text]');
+  const arc = progress.locator('.ingredient-progress__arc');
+  const toggles = ingredients.locator('[data-checkable-ingredient]');
+  // Nieprzebyta część pierścienia; wartość wyliczona ma postać `calc(0.92px)`.
+  const ringRemainder = () =>
+    arc.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).strokeDashoffset.replace(/[^\d.]+/g, ' ').trim()),
+    );
+
+  await expect(progressText).toHaveText('0/13 zebrane');
+  expect(await ringRemainder()).toBeCloseTo(1, 2);
+
+  await toggles.first().click();
+  await expect(progressText).toHaveText('1/13 zebrane');
+  // Pierścień dojeżdża płynnie, więc czekamy na koniec przejścia.
+  await expect.poll(ringRemainder).toBeCloseTo(12 / 13, 2);
+
+  const total = await toggles.count();
+  for (let index = 1; index < total; index += 1) {
+    await toggles.nth(index).click();
+  }
+  await expect(progressText).toHaveText('Komplet');
+  await expect(progress).toHaveClass(/is-complete/);
+  await expect(progress.locator('.ingredient-progress__mark')).toHaveCSS('opacity', '1');
+
+  await toggles.first().click();
+  await expect(progressText).toHaveText('12/13 zebrane');
+  await expect(progress).not.toHaveClass(/is-complete/);
 });
 
 test('mixed ingredient measures scale with shakshuka servings', async ({ page }) => {

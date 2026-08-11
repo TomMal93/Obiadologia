@@ -46,6 +46,7 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
     <article
       class="recipe-article"
       data-progress-template={messages.recipe.ingredientsProgress}
+      data-progress-complete={messages.recipe.ingredientsProgressComplete}
       data-main-start-same-day={messages.recipe.mainStartSameDay}
       data-main-start-previous-day={messages.recipe.mainStartPreviousDay}
       data-start-previous-day={messages.recipe.startPreviousDay}
@@ -146,13 +147,18 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
           <div class="recipe-section-head recipe-ingredients__head">
             <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
-            <p
-              class="ingredient-progress"
-              data-ingredient-progress
-              aria-live="polite"
-              hidden
-            >
-              {ingredientProgress}
+            <p class="ingredient-progress" data-ingredient-progress aria-live="polite" hidden>
+              <span class="ingredient-progress__dial" aria-hidden="true">
+                <svg class="ingredient-progress__ring" viewBox="0 0 24 24">
+                  <circle class="ingredient-progress__track" cx="12" cy="12" r="10"></circle>
+                  <circle class="ingredient-progress__arc" cx="12" cy="12" r="10" pathLength="1"
+                  ></circle>
+                </svg>
+                <span class="ingredient-progress__mark">✓</span>
+              </span>
+              <span class="ingredient-progress__text" data-ingredient-progress-text>
+                {ingredientProgress}
+              </span>
             </p>
           </div>
 
@@ -475,17 +481,31 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
     article?.querySelectorAll<HTMLButtonElement>('[data-checkable-ingredient]') ?? [],
   );
 
-  if (progress && ingredientToggles.length > 0 && article?.dataset.progressTemplate) {
+  const progressText = progress?.querySelector<HTMLElement>('[data-ingredient-progress-text]');
+
+  if (
+    progress
+    && progressText
+    && ingredientToggles.length > 0
+    && article?.dataset.progressTemplate
+  ) {
     progress.hidden = false;
     const progressTemplate = article.dataset.progressTemplate;
+    const progressComplete = article.dataset.progressComplete;
+    const total = ingredientToggles.length;
 
     const updateProgress = () => {
       const checked = ingredientToggles.filter(
         (button) => button.getAttribute('aria-pressed') === 'true',
       ).length;
-      progress.textContent = progressTemplate
-        .replace('{checked}', String(checked))
-        .replace('{total}', String(ingredientToggles.length));
+      const complete = checked === total;
+      progress.style.setProperty('--ingredient-progress', String(checked / total));
+      progress.classList.toggle('is-complete', complete);
+      progressText.textContent = complete && progressComplete
+        ? progressComplete
+        : progressTemplate
+          .replace('{checked}', String(checked))
+          .replace('{total}', String(total));
     };
 
     for (const button of ingredientToggles) {
@@ -503,6 +523,8 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         updateProgress();
       });
     }
+
+    updateProgress();
   }
 
   const assistantChoice = article?.querySelector<HTMLElement>('[data-assistant-choice]');
