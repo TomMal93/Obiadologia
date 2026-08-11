@@ -154,11 +154,10 @@ test('recipe back action restores the previous discovery view', async ({ page })
   await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('chorizo');
 });
 
-test('recipe preparation enables assistant mode and start-time calculation', async ({ page }) => {
+test('recipe preparation groups day-before and just-in-time tasks in assistant mode', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
-  const preparation = page.getByRole('region', { name: 'Przygotowanie' });
-  const startHelper = page.getByRole('region', { name: 'Kiedy zacząć' });
+  const preparation = page.getByRole('region', { name: 'Zanim zaczniesz' });
   const steps = page.getByRole('region', { name: 'Kroki' });
   const tips = page.getByRole('region', { name: 'Coś jeszcze' });
   const assistantMode = page.getByRole('button', { name: 'Tryb asystenta' });
@@ -167,15 +166,21 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   await expect(assistantMode).toHaveAttribute('aria-pressed', 'false');
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeHidden();
-  await expect(startHelper).toBeHidden();
   await expect(steps).toBeHidden();
   await expect(tips).toBeHidden();
+  await expect(page.getByText('Kiedy zacząć')).toHaveCount(0);
 
   await assistantMode.click();
   await expect(assistantMode).toHaveAttribute('aria-pressed', 'true');
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(5);
+  await expect(
+    preparation.getByRole('region', { name: 'Nawet dzień wcześniej' }).getByRole('listitem'),
+  ).toHaveCount(2);
+  await expect(
+    preparation.getByRole('region', { name: 'Tuż przed lub w trakcie' }).getByRole('listitem'),
+  ).toHaveCount(3);
   const assistantSteps = steps.locator('.step-list.assistant-section');
   const standaloneSteps = steps.locator('.step-list.steps-only-section');
   await expect(assistantSteps).toBeVisible();
@@ -188,29 +193,9 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
     name: 'Jak chcesz gotować?',
   }).evaluate((element) => element.getBoundingClientRect().left);
   const preparationHeadingLeft = await preparation.getByRole('heading', {
-    name: 'Przygotowanie',
+    name: 'Zanim zaczniesz',
   }).evaluate((element) => element.getBoundingClientRect().left);
   expect(choiceHeadingLeft).toBeCloseTo(preparationHeadingLeft, 0);
-  await expect(startHelper.locator('.start-helper__hint')).toHaveCount(0);
-  await expect(startHelper.locator('.start-helper__field')).toHaveCSS('padding', '0px');
-  await expect(startHelper.locator('.start-helper__field')).toHaveCSS(
-    'background-color',
-    'rgba(0, 0, 0, 0)',
-  );
-  const serveTimeRow = await startHelper.locator('.start-helper__field').evaluate((element) => {
-    const label = element.querySelector('span');
-    const input = element.querySelector('input');
-    if (!(label instanceof HTMLElement) || !(input instanceof HTMLElement)) {
-      throw new Error('Serve-time controls were not found');
-    }
-    const labelBounds = label.getBoundingClientRect();
-    const inputBounds = input.getBoundingClientRect();
-    return {
-      labelCenter: labelBounds.top + labelBounds.height / 2,
-      inputCenter: inputBounds.top + inputBounds.height / 2,
-    };
-  });
-  expect(serveTimeRow.labelCenter).toBeCloseTo(serveTimeRow.inputCenter, 0);
   const neutralCardStyles = await Promise.all(
     [preparation, steps].map((section) =>
       section.evaluate((element) => {
@@ -227,35 +212,11 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
     ),
   );
   expect(neutralCardStyles[1]).toEqual(neutralCardStyles[0]);
-  const accentCardStyles = await Promise.all(
-    [startHelper, tips].map((section) =>
-      section.evaluate((element) => {
-        const styles = getComputedStyle(element);
-        return {
-          borderRadius: styles.borderRadius,
-          padding: styles.padding,
-          rowGap: styles.rowGap,
-          backgroundColor: styles.backgroundColor,
-          headingColor: getComputedStyle(element.querySelector('h2')!).color,
-        };
-      }),
-    ),
-  );
-  expect(accentCardStyles[1]).toEqual(accentCardStyles[0]);
-  await expect(startHelper).toHaveCSS('border-width', '1px');
-  await expect(startHelper).toHaveCSS('border-color', 'rgba(255, 79, 46, 0.24)');
-
-  await page.locator('#serve-time').fill('18:00');
-  await expect(
-    page.getByText('Zacznij główne gotowanie o 17:25 — całość zajmuje około 35 min.'),
-  ).toBeVisible();
-  await expect(startHelper.locator('.start-helper__result')).toHaveCSS('font-size', '14px');
-
   await stepsMode.click();
   await expect(preparation).toBeHidden();
   await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Coś jeszcze' })).toBeVisible();
-  // „Tylko kroki” ukrywa „Przygotowanie”, więc jego kroki muszą same nieść
+  // „Tylko kroki” ukrywa „Zanim zaczniesz”, więc jego kroki muszą same nieść
   // krojenie i osuszanie — to inny tekst niż lista trybu asystenta.
   await expect(assistantSteps).toBeHidden();
   await expect(standaloneSteps).toBeVisible();

@@ -1,9 +1,8 @@
 ---
 import { getPublishedRecipes } from '@/data/recipes';
-import type { Recipe } from '@/domain/recipe';
+import { preparationTimings, type Recipe } from '@/domain/recipe';
 import { formatMeasure } from '@/domain/ingredient';
 import { ingredientCategories } from '@/domain/ingredient-category';
-import { formatLeadTime } from '@/domain/recipe-schedule';
 import { defaultLocale } from '@/i18n/config';
 import { formatMessage } from '@/i18n/format';
 import { getMessages } from '@/i18n/messages';
@@ -24,7 +23,7 @@ interface Props {
 
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
-const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
+const hasAssistantContent = Boolean(recipe.preparation);
 // Dwa tryby mają własne teksty kroków: asystent prowadzi przez kroki zakładające
 // wykonane etapy wspierające, a „Tylko kroki” pokazuje wersję samodzielną. Bez
 // etapów wspierających istnieje jedna, wspólna lista bez klasy trybu.
@@ -44,6 +43,10 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
   );
   return ingredients.length > 0 ? [{ category, ingredients }] : [];
 });
+const preparationGroups = preparationTimings.flatMap((timing) => {
+  const items = recipe.preparation?.filter((item) => item.timing === timing) ?? [];
+  return items.length > 0 ? [{ timing, items }] : [];
+});
 ---
 
 <BaseLayout
@@ -56,11 +59,6 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
       class="recipe-article"
       data-progress-template={messages.recipe.ingredientsProgress}
       data-progress-complete={messages.recipe.ingredientsProgressComplete}
-      data-main-start-same-day={messages.recipe.mainStartSameDay}
-      data-main-start-previous-day={messages.recipe.mainStartPreviousDay}
-      data-start-previous-day={messages.recipe.startPreviousDay}
-      data-start-same-day={messages.recipe.startSameDay}
-      data-preparation-minutes={recipe.preparationMinutes}
       data-base-servings={recipe.servings}
     >
       <header class="recipe-hero">
@@ -255,70 +253,29 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
           }
 
           {
-            hasAssistantContent && (
-              <section
-                class="start-helper assistant-section recipe-mode-content"
-                aria-labelledby="start-helper-heading"
-                hidden
-              >
-              <h2 id="start-helper-heading">{messages.recipe.startHelperHeading}</h2>
-              <label class="start-helper__field" for="serve-time">
-                <span>{messages.recipe.serveTimeLabel}</span>
-                <input class="start-helper__input" id="serve-time" type="time" />
-              </label>
-              <p class="start-helper__result" data-main-start hidden></p>
-              </section>
-            )
-          }
-
-          {
-            recipe.advance && (
-              <section class="recipe-advance assistant-section recipe-mode-content" aria-labelledby="advance-heading">
-              <div class="recipe-section-head recipe-section-head--stacked">
-                <h2 id="advance-heading">{messages.recipe.advanceHeading}</h2>
-                <p>{messages.recipe.advanceHint}</p>
-              </div>
-              <ol class="advance-list">
-                {recipe.advance.map((step) => (
-                  <li class="advance-step">
-                    <span class="advance-step__mark" aria-hidden="true">✓</span>
-                    <div>
-                      <p class="advance-step__text">{step.text}</p>
-                      <p class="advance-step__timing">
-                        <span>
-                          {formatMessage(messages.recipe.advanceTiming, {
-                            time: formatLeadTime(step.leadTimeMinutes),
-                          })}
-                        </span>
-                        <span
-                          class="advance-step__start"
-                          data-lead-minutes={step.leadTimeMinutes}
-                          hidden
-                        />
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              </section>
-            )
-          }
-
-          {
             recipe.preparation && (
               <section class="recipe-prep assistant-section recipe-mode-content" aria-labelledby="prep-heading">
               <div class="recipe-section-head recipe-section-head--stacked">
                 <h2 id="prep-heading">{messages.recipe.preparationHeading}</h2>
                 <p>{messages.recipe.preparationHint}</p>
               </div>
-              <ul class="prep-list">
-                {recipe.preparation.map((item) => (
-                  <li>
-                    <span class="prep-list__mark" aria-hidden="true">✓</span>
-                    <span>{item}</span>
-                  </li>
+              <div class="prep-groups">
+                {preparationGroups.map(({ timing, items }) => (
+                  <section class="prep-group" aria-labelledby={`prep-${timing}-heading`}>
+                    <h3 id={`prep-${timing}-heading`}>
+                      {messages.recipe.preparationTiming[timing]}
+                    </h3>
+                    <ul class="prep-list">
+                      {items.map((item) => (
+                        <li>
+                          <span class="prep-list__mark" aria-hidden="true">✓</span>
+                          <span>{item.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
                 ))}
-              </ul>
+              </div>
               </section>
             )
           }
@@ -392,7 +349,6 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
     type IngredientUnit,
     type MeasureDisplay,
   } from '@/domain/ingredient-measure';
-  import { formatClock, parseClock, scheduleAdvanceSteps } from '@/domain/recipe-schedule';
 
   const article = document.querySelector<HTMLElement>('.recipe-article');
   const backLink = document.querySelector<HTMLAnchorElement>('[data-recipe-back]');
@@ -560,66 +516,6 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
         }
       });
     }
-  }
-
-  const startHelper = article?.querySelector<HTMLElement>('.start-helper');
-  const serveInput = article?.querySelector<HTMLInputElement>('#serve-time');
-  const mainStart = article?.querySelector<HTMLElement>('[data-main-start]');
-  const startSlots = Array.from(
-    article?.querySelectorAll<HTMLElement>('.advance-step__start') ?? [],
-  );
-
-  if (article && startHelper && serveInput && mainStart) {
-    startHelper.hidden = false;
-    const preparationMinutes = Number(article.dataset.preparationMinutes);
-    const mainSameDayTemplate = article.dataset.mainStartSameDay;
-    const mainPreviousDayTemplate = article.dataset.mainStartPreviousDay;
-    const stepSameDayTemplate = article.dataset.startSameDay;
-    const stepPreviousDayTemplate = article.dataset.startPreviousDay;
-
-    const renderSchedule = () => {
-      const serveMinutes = parseClock(serveInput.value);
-      if (
-        serveMinutes === null
-        || !Number.isFinite(preparationMinutes)
-        || !mainSameDayTemplate
-        || !mainPreviousDayTemplate
-      ) {
-        mainStart.hidden = true;
-        for (const slot of startSlots) slot.hidden = true;
-        return;
-      }
-
-      const rawMainStart = serveMinutes - preparationMinutes;
-      const mainTemplate = rawMainStart < 0 ? mainPreviousDayTemplate : mainSameDayTemplate;
-      mainStart.textContent = mainTemplate
-        .replace('{time}', formatClock(rawMainStart))
-        .replace('{minutes}', String(preparationMinutes));
-      mainStart.hidden = false;
-
-      for (const slot of startSlots) {
-        const leadMinutes = Number(slot.dataset.leadMinutes);
-        if (
-          !Number.isFinite(leadMinutes)
-          || !stepSameDayTemplate
-          || !stepPreviousDayTemplate
-        ) {
-          slot.hidden = true;
-          continue;
-        }
-        const [scheduled] = scheduleAdvanceSteps(
-          [{ text: '', leadTimeMinutes: leadMinutes }],
-          serveMinutes,
-        );
-        const template = scheduled.dayOffset < 0
-          ? stepPreviousDayTemplate
-          : stepSameDayTemplate;
-        slot.textContent = template.replace('{time}', formatClock(scheduled.startMinutes));
-        slot.hidden = false;
-      }
-    };
-
-    serveInput.addEventListener('input', renderSchedule);
   }
 
   const stepToggles = Array.from(

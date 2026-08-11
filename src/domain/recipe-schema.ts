@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import { ingredientSchema } from '@/domain/ingredient';
-import { difficulties, mealTimes, occasions, tempos } from '@/domain/recipe';
+import {
+  difficulties,
+  mealTimes,
+  occasions,
+  preparationTimings,
+  tempos,
+} from '@/domain/recipe';
 
 // Schematy zod mieszkają osobno od typów i reguł Kategorii (`recipe.ts`),
 // bo walidacja danych odbywa się w całości na etapie builda (`src/data`).
@@ -14,21 +20,15 @@ const imageReferenceSchema = z
   })
   .strict();
 
-/**
- * Krok wykonywany z wyprzedzeniem czasowym („zrób wcześniej”): namoczenie,
- * marynowanie, schłodzenie ciasta. `leadTimeMinutes` to liczba minut przed
- * podaniem, o którą trzeba go zacząć. Wartość jest strukturalna (a nie „noc”
- * czy „2h”), aby na stronie dało się z niej policzyć godzinę startu przy
- * zadanej porze serwowania.
- */
-export const advanceStepSchema = z
+/** Czynność wspierająca gotowanie, przypisana do jednej z dwóch grup czasowych. */
+export const preparationStepSchema = z
   .object({
     text: z.string().trim().min(1),
-    leadTimeMinutes: z.number().int().positive(),
+    timing: z.enum(preparationTimings),
   })
   .strict();
 
-export type AdvanceStep = z.infer<typeof advanceStepSchema>;
+export type PreparationStep = z.infer<typeof preparationStepSchema>;
 
 export const recipeSchema = z
   .object({
@@ -41,14 +41,11 @@ export const recipeSchema = z
     difficulty: z.enum(difficulties),
     servings: z.number().int().positive().max(12),
     ingredients: z.array(ingredientSchema).min(1),
-    // Czynności z wyprzedzeniem czasowym; opcjonalne — brak pola oznacza przepis
-    // bez etapu „zrób wcześniej”. Jeśli pole istnieje, MUSI mieć co najmniej jeden krok.
-    advance: z.array(advanceStepSchema).min(1).optional(),
-    // Przygotowanie wstępne (mise en place, skompletowanie sprzętu); opcjonalne,
-    // zwykły tekst — struktura czasu nie jest tu potrzebna.
-    preparation: z.array(z.string().trim().min(1)).min(1).optional(),
-    // Kroki właściwego gotowania pisane tak, jakby etapy wspierające („Wcześniej”,
-    // „Przygotowanie”) były już wykonane. To wersja dla „Trybu asystenta” i dla
+    // Jedna lista czynności wspierających, rozdzielanych w UI na możliwe do
+    // wykonania dzień wcześniej i wykonywane tuż przed gotowaniem lub w trakcie.
+    preparation: z.array(preparationStepSchema).min(1).optional(),
+    // Kroki właściwego gotowania pisane tak, jakby „Zanim zaczniesz” było już
+    // wykonane. To wersja dla „Trybu asystenta” i dla
     // przepisu bez etapów wspierających, a także treść pokazywana bez skryptu.
     steps: z.array(z.string().trim().min(1)).min(1),
     // Samodzielna wersja kroków dla trybu „Tylko kroki”, w którym etapy wspierające
@@ -73,17 +70,17 @@ export const recipeSchema = z
   })
   .strict()
   .superRefine((recipe, context) => {
-    // `stepsOnly` istnieje dokładnie wtedy, gdy przepis ma etapy wspierające.
+    // `stepsOnly` istnieje dokładnie wtedy, gdy przepis ma przygotowanie wspierające.
     // Bez nich tryb „Tylko kroki” nie powstaje, a druga lista byłaby martwą
     // treścią, która po cichu rozjedzie się z `steps`.
-    const hasSupportStages = Boolean(recipe.advance || recipe.preparation);
+    const hasSupportStages = Boolean(recipe.preparation);
 
     if (hasSupportStages && !recipe.stepsOnly) {
       context.addIssue({
         code: 'custom',
         path: ['stepsOnly'],
         message:
-          'Przepis z sekcją „Wcześniej” albo „Przygotowanie” wymaga samodzielnej wersji kroków w `stepsOnly`.',
+          'Przepis z sekcją „Zanim zaczniesz” wymaga samodzielnej wersji kroków w `stepsOnly`.',
       });
     }
 
@@ -92,7 +89,7 @@ export const recipeSchema = z
         code: 'custom',
         path: ['stepsOnly'],
         message:
-          'Przepis bez sekcji „Wcześniej” i „Przygotowanie” nie ma trybu „Tylko kroki”, więc `stepsOnly` jest zbędne.',
+          'Przepis bez sekcji „Zanim zaczniesz” nie ma trybu „Tylko kroki”, więc `stepsOnly` jest zbędne.',
       });
     }
   });

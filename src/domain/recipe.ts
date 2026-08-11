@@ -3,17 +3,19 @@ import type { Recipe } from '@/domain/recipe-schema';
 // Typy i reguły Kategorii importowane przez wyspę React — ten moduł nie może
 // mieć zależności wykonywalnych od zod; schematy i walidacja mieszkają
 // w `recipe-schema.ts` i działają wyłącznie na etapie builda.
-export type { AdvanceStep, Recipe } from '@/domain/recipe-schema';
+export type { PreparationStep, Recipe } from '@/domain/recipe-schema';
 
 export const mealTimes = ['breakfast', 'lunch', 'dinner'] as const;
 export const tempos = ['now', 'today', 'two_days'] as const;
 export const occasions = ['kids', 'guests', 'grill'] as const;
 export const difficulties = ['easy', 'medium', 'hard'] as const;
+export const preparationTimings = ['day_before', 'just_in_time'] as const;
 
 export type MealTime = (typeof mealTimes)[number];
 export type Tempo = (typeof tempos)[number];
 export type Occasion = (typeof occasions)[number];
 export type Difficulty = (typeof difficulties)[number];
+export type PreparationTiming = (typeof preparationTimings)[number];
 
 export interface CategorySelection {
   mealTime?: MealTime;

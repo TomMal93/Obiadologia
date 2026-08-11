@@ -69,10 +69,25 @@ describe('Recipe schema', () => {
     ).toThrow();
   });
 
+  it('accepts only the controlled preparation timing groups', () => {
+    const [first] = testRecipes;
+
+    expect(recipeSchema.parse(first).preparation?.map(({ timing }) => timing)).toEqual([
+      'day_before',
+      'just_in_time',
+    ]);
+    expect(() =>
+      recipeSchema.parse({
+        ...first,
+        preparation: [{ text: 'Przygotuj.', timing: 'later' }],
+      }),
+    ).toThrow();
+  });
+
   it('keeps the assistant and steps-only versions of the catalog recipe different', () => {
     const recipe = catalog.find(({ slug }) => slug === 'szakszuka-z-chorizo-i-cukinia');
 
-    // Kroki asystenta zakładają wykonane „Przygotowanie”, więc wersja samodzielna
+    // Kroki asystenta zakładają wykonane „Zanim zaczniesz”, więc wersja samodzielna
     // musi wnosić czynności, których tam nie ma — inaczej tryb „Tylko kroki”
     // gubiłby krojenie i osuszanie składników.
     expect(recipe?.stepsOnly).toBeDefined();

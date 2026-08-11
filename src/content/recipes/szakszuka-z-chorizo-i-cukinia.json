@@ -140,11 +140,26 @@
     }
   ],
   "preparation": [
-    "Aby zaoszczędzić czas rano, wieczorem pokrój cukinię w półplastry, lekko posól, przełóż do przykrytego pojemnika i wstaw do lodówki, aby puściła nadmiar soku.",
-    "Wieczorem możesz też pokroić chorizo w półplastry albo kostkę i przechować je w zamkniętym pojemniku w lodówce.",
-    "Odcedź cukinię z zebranego soku i dokładnie osusz. Jeśli nie była przygotowana wieczorem, pokrój ją teraz, lekko posól, odstaw na 10 minut, a następnie odcedź i osusz.",
-    "Jeśli chorizo nie było przygotowane wieczorem, pokrój je teraz w półplastry albo kostkę. Cebulę pokrój w drobną kostkę, czosnek posiekaj, a szpinak opłucz i osusz.",
-    "Przygotuj szeroką patelnię z pokrywką."
+    {
+      "text": "Pokrój cukinię w półplastry, lekko posól i odstaw na 10 minut. Następnie odcedź ją, dokładnie osusz, przełóż do przykrytego pojemnika i wstaw do lodówki.",
+      "timing": "day_before"
+    },
+    {
+      "text": "Pokrój chorizo w półplastry albo kostkę i przechowaj je w zamkniętym pojemniku w lodówce.",
+      "timing": "day_before"
+    },
+    {
+      "text": "Jeśli cukinia była przygotowana wcześniej, wyjmij ją z lodówki i w razie potrzeby osusz. Jeśli robisz to teraz, pokrój ją, lekko posól, odstaw na 10 minut, a następnie odcedź i osusz.",
+      "timing": "just_in_time"
+    },
+    {
+      "text": "Jeśli chorizo nie było przygotowane wcześniej, pokrój je teraz. Cebulę pokrój w drobną kostkę, czosnek posiekaj, a szpinak opłucz i osusz.",
+      "timing": "just_in_time"
+    },
+    {
+      "text": "Przygotuj szeroką patelnię z pokrywką.",
+      "timing": "just_in_time"
+    }
   ],
   "steps": [
     "Połóż chorizo na zimnej patelni, ustaw średni ogień i smaż 2–3 minuty, aż zacznie się rumienić i wytopi tłuszcz.",
