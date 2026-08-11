@@ -47,7 +47,14 @@ export const recipeSchema = z
     // Przygotowanie wstępne (mise en place, skompletowanie sprzętu); opcjonalne,
     // zwykły tekst — struktura czasu nie jest tu potrzebna.
     preparation: z.array(z.string().trim().min(1)).min(1).optional(),
+    // Kroki właściwego gotowania pisane tak, jakby etapy wspierające („Wcześniej”,
+    // „Przygotowanie”) były już wykonane. To wersja dla „Trybu asystenta” i dla
+    // przepisu bez etapów wspierających, a także treść pokazywana bez skryptu.
     steps: z.array(z.string().trim().min(1)).min(1),
+    // Samodzielna wersja kroków dla trybu „Tylko kroki”, w którym etapy wspierające
+    // są ukryte. Musi zawierać wszystko, co w `steps` zostało z nich założone
+    // (krojenie, namoczenie, sprzęt), więc jest osobnym tekstem, a nie kopią.
+    stepsOnly: z.array(z.string().trim().min(1)).min(1).optional(),
     // Opcjonalne, krótkie porady redakcyjne prezentowane po krokach.
     // Brak pola oznacza przepis bez sekcji „Coś jeszcze”.
     tips: z.array(z.string().trim().min(1)).min(1).optional(),
@@ -64,7 +71,31 @@ export const recipeSchema = z
     editorialPriority: z.number(),
     status: z.enum(['draft', 'published', 'archived']),
   })
-  .strict();
+  .strict()
+  .superRefine((recipe, context) => {
+    // `stepsOnly` istnieje dokładnie wtedy, gdy przepis ma etapy wspierające.
+    // Bez nich tryb „Tylko kroki” nie powstaje, a druga lista byłaby martwą
+    // treścią, która po cichu rozjedzie się z `steps`.
+    const hasSupportStages = Boolean(recipe.advance || recipe.preparation);
+
+    if (hasSupportStages && !recipe.stepsOnly) {
+      context.addIssue({
+        code: 'custom',
+        path: ['stepsOnly'],
+        message:
+          'Przepis z sekcją „Wcześniej” albo „Przygotowanie” wymaga samodzielnej wersji kroków w `stepsOnly`.',
+      });
+    }
+
+    if (!hasSupportStages && recipe.stepsOnly) {
+      context.addIssue({
+        code: 'custom',
+        path: ['stepsOnly'],
+        message:
+          'Przepis bez sekcji „Wcześniej” i „Przygotowanie” nie ma trybu „Tylko kroki”, więc `stepsOnly` jest zbędne.',
+      });
+    }
+  });
 
 export type Recipe = z.infer<typeof recipeSchema>;
 
