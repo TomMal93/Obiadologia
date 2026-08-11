@@ -97,6 +97,12 @@
   tekst nagłówka trzyma kontrast nad dowolną treścią pod spodem, a białe karty
   pozycji są nieprzezroczyste. Bez wsparcia `backdrop-filter` panel wraca do
   pełnej powierzchni — prześwit jest wykończeniem, nie warunkiem czytelności.
+
+  Promień rozmycia jest ograniczony do 24px celowo: panel zajmuje całą szerokość
+  widoku, więc przy krawędziach nie ma czego domieszać spoza niego i Chromium
+  zostawia tam coraz ostrzejszy backdrop. Powyżej ~24px wraca przez to czytelny
+  tekst strony pod menu przy lewej i prawej krawędzi — mocniejszą mgłę dobija
+  gęstszy tint i `saturate`, a nie większy promień.
 */
 .site-menu {
   position: fixed;
@@ -111,9 +117,9 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 0 var(--gutter) max(var(--space-24), env(safe-area-inset-bottom));
-  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
-  backdrop-filter: blur(14px) saturate(1.5);
-  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  background: color-mix(in srgb, var(--color-surface) 74%, transparent);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
   box-shadow: var(--shadow-surface);
   opacity: 0;
   visibility: hidden;
