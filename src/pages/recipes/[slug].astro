@@ -3,7 +3,6 @@ import { getPublishedRecipes } from '@/data/recipes';
 import type { Recipe } from '@/domain/recipe';
 import { formatMeasure } from '@/domain/ingredient';
 import { ingredientCategories } from '@/domain/ingredient-category';
-import { formatLeadTime } from '@/domain/recipe-schedule';
 import { defaultLocale } from '@/i18n/config';
 import { formatMessage } from '@/i18n/format';
 import { getMessages } from '@/i18n/messages';
@@ -24,10 +23,10 @@ interface Props {
 
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
-const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
+const hasAssistantContent = Boolean(recipe.preparation);
 // Dwa tryby mają własne teksty kroków: asystent prowadzi przez kroki zakładające
-// wykonane etapy wspierające, a „Tylko kroki” pokazuje wersję samodzielną. Bez
-// etapów wspierających istnieje jedna, wspólna lista bez klasy trybu.
+// wykonaną sekcję „Zanim zaczniesz”, a „Tylko kroki” pokazuje wersję samodzielną.
+// Bez tej sekcji istnieje jedna, wspólna lista bez klasy trybu.
 const stepLists = recipe.stepsOnly
   ? [
       { steps: recipe.steps, modeClass: 'assistant-section' },
@@ -245,32 +244,6 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                   {messages.recipe.stepsOnlyMode}
                 </button>
               </div>
-              </section>
-            )
-          }
-
-          {
-            recipe.advance && (
-              <section class="recipe-advance assistant-section recipe-mode-content" aria-labelledby="advance-heading">
-              <div class="recipe-section-head recipe-section-head--stacked">
-                <h2 id="advance-heading">{messages.recipe.advanceHeading}</h2>
-                <p>{messages.recipe.advanceHint}</p>
-              </div>
-              <ol class="advance-list">
-                {recipe.advance.map((step) => (
-                  <li class="advance-step">
-                    <span class="advance-step__mark" aria-hidden="true">✓</span>
-                    <div>
-                      <p class="advance-step__text">{step.text}</p>
-                      <p class="advance-step__timing">
-                        {formatMessage(messages.recipe.advanceTiming, {
-                          time: formatLeadTime(step.leadTimeMinutes),
-                        })}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
               </section>
             )
           }

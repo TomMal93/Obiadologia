@@ -14,22 +14,6 @@ const imageReferenceSchema = z
   })
   .strict();
 
-/**
- * Krok wykonywany z wyprzedzeniem czasowym („zrób wcześniej”): namoczenie,
- * marynowanie, schłodzenie ciasta. `leadTimeMinutes` to liczba minut przed
- * podaniem, o którą trzeba go zacząć. Wartość jest strukturalna (a nie „noc”
- * czy „2h”), aby na stronie dało się z niej policzyć godzinę startu przy
- * zadanej porze serwowania.
- */
-export const advanceStepSchema = z
-  .object({
-    text: z.string().trim().min(1),
-    leadTimeMinutes: z.number().int().positive(),
-  })
-  .strict();
-
-export type AdvanceStep = z.infer<typeof advanceStepSchema>;
-
 export const recipeSchema = z
   .object({
     id: z.string().trim().min(1),
@@ -41,19 +25,18 @@ export const recipeSchema = z
     difficulty: z.enum(difficulties),
     servings: z.number().int().positive().max(12),
     ingredients: z.array(ingredientSchema).min(1),
-    // Czynności z wyprzedzeniem czasowym; opcjonalne — brak pola oznacza przepis
-    // bez etapu „zrób wcześniej”. Jeśli pole istnieje, MUSI mieć co najmniej jeden krok.
-    advance: z.array(advanceStepSchema).min(1).optional(),
-    // Przygotowanie wstępne (mise en place, skompletowanie sprzętu); opcjonalne,
-    // zwykły tekst — struktura czasu nie jest tu potrzebna.
+    // Czynności wykonywane przed właściwym gotowaniem — sekcja „Zanim zaczniesz”:
+    // mise en place, sprzęt, a także to, co da się zrobić z wyprzedzeniem. Możliwość
+    // wcześniejszego wykonania jest częścią zdania („możesz to zrobić wieczorem”),
+    // a nie osobnym polem czasu: strona niczego z niej nie wylicza.
     preparation: z.array(z.string().trim().min(1)).min(1).optional(),
-    // Kroki właściwego gotowania pisane tak, jakby etapy wspierające („Wcześniej”,
-    // „Przygotowanie”) były już wykonane. To wersja dla „Trybu asystenta” i dla
-    // przepisu bez etapów wspierających, a także treść pokazywana bez skryptu.
+    // Kroki właściwego gotowania pisane tak, jakby sekcja „Zanim zaczniesz” była
+    // już wykonana. To wersja dla „Trybu asystenta” i dla przepisu bez tej sekcji,
+    // a także treść pokazywana bez skryptu.
     steps: z.array(z.string().trim().min(1)).min(1),
-    // Samodzielna wersja kroków dla trybu „Tylko kroki”, w którym etapy wspierające
-    // są ukryte. Musi zawierać wszystko, co w `steps` zostało z nich założone
-    // (krojenie, namoczenie, sprzęt), więc jest osobnym tekstem, a nie kopią.
+    // Samodzielna wersja kroków dla trybu „Tylko kroki”, w którym sekcja
+    // „Zanim zaczniesz” jest ukryta. Musi zawierać wszystko, co w `steps` zostało
+    // z niej założone (krojenie, sprzęt), więc jest osobnym tekstem, a nie kopią.
     stepsOnly: z.array(z.string().trim().min(1)).min(1).optional(),
     // Opcjonalne, krótkie porady redakcyjne prezentowane po krokach.
     // Brak pola oznacza przepis bez sekcji „Coś jeszcze”.
@@ -73,26 +56,24 @@ export const recipeSchema = z
   })
   .strict()
   .superRefine((recipe, context) => {
-    // `stepsOnly` istnieje dokładnie wtedy, gdy przepis ma etapy wspierające.
-    // Bez nich tryb „Tylko kroki” nie powstaje, a druga lista byłaby martwą
+    // `stepsOnly` istnieje dokładnie wtedy, gdy przepis ma sekcję „Zanim zaczniesz”.
+    // Bez niej tryb „Tylko kroki” nie powstaje, a druga lista byłaby martwą
     // treścią, która po cichu rozjedzie się z `steps`.
-    const hasSupportStages = Boolean(recipe.advance || recipe.preparation);
-
-    if (hasSupportStages && !recipe.stepsOnly) {
+    if (recipe.preparation && !recipe.stepsOnly) {
       context.addIssue({
         code: 'custom',
         path: ['stepsOnly'],
         message:
-          'Przepis z sekcją „Wcześniej” albo „Przygotowanie” wymaga samodzielnej wersji kroków w `stepsOnly`.',
+          'Przepis z sekcją „Zanim zaczniesz” wymaga samodzielnej wersji kroków w `stepsOnly`.',
       });
     }
 
-    if (!hasSupportStages && recipe.stepsOnly) {
+    if (!recipe.preparation && recipe.stepsOnly) {
       context.addIssue({
         code: 'custom',
         path: ['stepsOnly'],
         message:
-          'Przepis bez sekcji „Wcześniej” i „Przygotowanie” nie ma trybu „Tylko kroki”, więc `stepsOnly` jest zbędne.',
+          'Przepis bez sekcji „Zanim zaczniesz” nie ma trybu „Tylko kroki”, więc `stepsOnly` jest zbędne.',
       });
     }
   });

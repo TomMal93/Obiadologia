@@ -402,7 +402,6 @@
 }
 
 .ingredient-list,
-.advance-list,
 .prep-list,
 .step-list {
   display: grid;
@@ -571,13 +570,11 @@
   margin-bottom: 0;
 }
 
-.advance-list,
 .prep-list,
 .step-list {
   gap: var(--space-12);
 }
 
-.advance-step,
 .prep-list > li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -585,7 +582,6 @@
   gap: var(--space-12);
 }
 
-.advance-step__mark,
 .prep-list__mark {
   display: grid;
   width: 24px;
@@ -596,17 +592,6 @@
   font-size: var(--font-size-14);
   font-weight: 800;
   background: var(--color-coral-soft);
-}
-
-.advance-step__text,
-.advance-step__timing {
-  margin: 0;
-  line-height: 1.5;
-}
-
-.advance-step__timing {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-14);
 }
 
 .step-list {

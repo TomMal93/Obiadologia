@@ -34,10 +34,9 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `difficulty` | Difficulty | kontrolowany poziom trudności |
 | `servings` | integer | bazowa liczba porcji od `1` do `12` |
 | `ingredients` | Ingredient[] | składniki z ilością metryczną dla bazowej liczby porcji i opcjonalnym przelicznikiem naturalnej miary domowej; `name` zasila wyszukiwanie |
-| `advance` | AdvanceStep[] \| — | opcjonalne czynności z wyprzedzeniem czasowym (namoczenie, marynowanie); jeśli pole istnieje, ma co najmniej jeden krok |
-| `preparation` | string[] \| — | opcjonalne przygotowanie wstępne (mise en place, sprzęt); jeśli pole istnieje, ma co najmniej jeden krok |
-| `steps` | string[] | co najmniej jeden krok właściwego gotowania, pisany tak, jakby etapy wspierające były już wykonane; kolejność określa numerację na stronie przepisu |
-| `stepsOnly` | string[] \| — | samodzielna wersja kroków dla trybu „Tylko kroki”; wymagana dokładnie wtedy, gdy istnieje `advance` albo `preparation` |
+| `preparation` | string[] \| — | opcjonalne czynności przed gotowaniem — sekcja „Zanim zaczniesz” (mise en place, sprzęt, to co da się zrobić wcześniej); jeśli pole istnieje, ma co najmniej jeden krok |
+| `steps` | string[] | co najmniej jeden krok właściwego gotowania, pisany tak, jakby sekcja „Zanim zaczniesz” była już wykonana; kolejność określa numerację na stronie przepisu |
+| `stepsOnly` | string[] \| — | samodzielna wersja kroków dla trybu „Tylko kroki”; wymagana dokładnie wtedy, gdy istnieje `preparation` |
 | `tips` | string[] \| — | opcjonalne porady redakcyjne pokazywane po krokach; jeśli pole istnieje, ma co najmniej jedną poradę |
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
@@ -62,15 +61,13 @@ HouseholdUnit = cup | tablespoon | teaspoon | pinch | piece | slice | bread_slic
 HouseholdConversion = { unit: HouseholdUnit, metricAmount: number > 0 }
 MeasureDisplay = metric | household | both
 Ingredient = { category: IngredientCategory, name: string, amount: number > 0, unit: IngredientUnit, gramsPerCup?: number > 0, household?: HouseholdConversion, measure?: MeasureDisplay }
-AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 ```
 
-- `advance` i `preparation` są opcjonalne i niezależne. Ich brak oznacza przepis bez etapów wspierających — strona przepisu pokazuje wtedy same kroki (zob. [recipe-page.md](../product/features/recipe-page.md)). Pole obecne MUSI mieć co najmniej jeden element.
-- `steps` i `stepsOnly` to dwie wersje tych samych kroków, a nie ta sama treść pokazana dwa razy. `steps` prowadzi przez gotowanie przy założeniu, że etapy wspierające zostały wykonane, więc może pomijać czynności opisane w `advance` i `preparation` (krojenie, namoczenie, sprzęt). `stepsOnly` jest wersją samodzielną dla trybu „Tylko kroki”, w którym te sekcje są ukryte, więc MUSI nieść wszystko, co `steps` z nich założyło — także wtedy, gdy wymaga to innej liczby kroków.
-- `stepsOnly` istnieje dokładnie wtedy, gdy istnieje `advance` albo `preparation`. Brak pola przy etapach wspierających jest błędem danych, bo tryb „Tylko kroki” gubiłby wtedy część przygotowania. Pole przy przepisie bez etapów wspierających jest błędem danych, bo taki przepis nie ma przełącznika trybu, a druga lista rozjechałaby się z `steps` bez możliwości zauważenia tego w UI.
+- `preparation` jest opcjonalne. Jego brak oznacza przepis bez sekcji „Zanim zaczniesz” — strona przepisu pokazuje wtedy same kroki (zob. [recipe-page.md](../product/features/recipe-page.md)). Pole obecne MUSI mieć co najmniej jeden element.
+- `preparation` obejmuje wszystko, co dzieje się przed właściwym gotowaniem, bez dzielenia na „dzień wcześniej” i „tuż przed”. Możliwość wcześniejszego wykonania jest częścią zdania czynności („możesz to zrobić już wieczorem”), a nie osobnym polem — model nie przechowuje wyprzedzenia czasowego i strona niczego z niego nie wylicza. Ostrzeżenie „to trzeba zacząć dzień wcześniej” niesie `tempos` na poziomie odkrywania, zanim użytkownik wybierze przepis.
+- `steps` i `stepsOnly` to dwie wersje tych samych kroków, a nie ta sama treść pokazana dwa razy. `steps` prowadzi przez gotowanie przy założeniu, że sekcja „Zanim zaczniesz” została wykonana, więc może pomijać opisane w niej czynności (krojenie, odsączenie, sprzęt). `stepsOnly` jest wersją samodzielną dla trybu „Tylko kroki”, w którym ta sekcja jest ukryta, więc MUSI nieść wszystko, co `steps` z niej założyło — także wtedy, gdy wymaga to innej liczby kroków.
+- `stepsOnly` istnieje dokładnie wtedy, gdy istnieje `preparation`. Brak pola przy tej sekcji jest błędem danych, bo tryb „Tylko kroki” gubiłby wtedy część przygotowania. Pole przy przepisie bez tej sekcji jest błędem danych, bo taki przepis nie ma przełącznika trybu, a druga lista rozjechałaby się z `steps` bez możliwości zauważenia tego w UI.
 - `tips` jest opcjonalną listą krótkich porad uzupełniających właściwe kroki. Brak pola oznacza brak sekcji „Coś jeszcze”; pusta tablica jest błędem danych.
-- `AdvanceStep.leadTimeMinutes` to liczba minut przed podaniem, o którą trzeba zacząć dany krok. Wartość jest strukturalna (a nie „noc” czy „2h”), aby prezentacja wyprzedzenia była jednolita i porównywalna między przepisami. Wartość „na noc” zapisujemy jako pełne minuty (np. `720`). Strona przepisu nie planuje z niej godzin — pokazuje samo wyprzedzenie ([recipe-page.md](../product/features/recipe-page.md)).
-
 - `pace: 0` oznacza „szybko”, a `pace: 1` — „bez pośpiechu”.
 - `lightness: 0` oznacza „konkretnie”, a `lightness: 1` — „lekko”.
 - Punkt `(0.5, 0.5)` jest neutralnym środkiem mapy.
@@ -103,10 +100,8 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
     { "category": "produce", "name": "sałata", "amount": 1, "unit": "szt" },
     { "category": "pantry", "name": "oliwa", "amount": 30, "unit": "ml" }
   ],
-  "advance": [
-    { "text": "Kurczaka natrzyj oliwą, solą i przyprawami, odstaw do zamarynowania.", "leadTimeMinutes": 120 }
-  ],
   "preparation": [
+    "Kurczaka natrzyj oliwą, solą i przyprawami i odstaw do zamarynowania na co najmniej 2 godziny — możesz to zrobić już wieczorem wcześniej.",
     "Sałatę i pomidory umyj oraz osusz.",
     "Przygotuj deskę, nóż i szczypce do grilla."
   ],
@@ -171,8 +166,8 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 - Opcjonalne `household` MUSI mieć znaną wartość `HouseholdUnit` i dodatnie `metricAmount`; może wystąpić tylko przy bazowej jednostce `g` albo `ml`.
 - Opcjonalne `measure` MUSI mieć wartość `metric`, `household` albo `both`; formy `household` i `both` są dozwolone wyłącznie przy dostępnym przeliczniku formy domowej.
 - `image` może mieć wartość `null`; brak obrazu nie może blokować wyniku, a UI używa wtedy wspólnego placeholdera.
-- `advance` i `preparation` są opcjonalne; gdy występują, każdy element jest niepusty, a `leadTimeMinutes` to dodatnia liczba całkowita. Pusta tablica jest błędem danych — brak etapu wyrażamy pominięciem pola, nie pustą listą.
-- `stepsOnly` jest opcjonalne, ale związane z etapami wspierającymi: MUSI wystąpić, gdy istnieje `advance` albo `preparation`, i NIE MOŻE wystąpić w przeciwnym przypadku. Gdy występuje, każdy krok jest niepusty; pusta tablica jest błędem danych.
+- `preparation` jest opcjonalne; gdy występuje, każdy element jest niepusty. Pusta tablica jest błędem danych — brak sekcji wyrażamy pominięciem pola, nie pustą listą.
+- `stepsOnly` jest opcjonalne, ale związane z sekcją „Zanim zaczniesz”: MUSI wystąpić, gdy istnieje `preparation`, i NIE MOŻE wystąpić w przeciwnym przypadku. Gdy występuje, każdy krok jest niepusty; pusta tablica jest błędem danych.
 - `tips` jest opcjonalne; gdy występuje, każda porada jest niepusta. Pusta tablica jest błędem danych — brak porad wyrażamy pominięciem pola.
 - Jeżeli `image` istnieje, `src` i opisujący danie `alt` MUSZĄ być niepustymi wartościami. Placeholder dla `image: null` jest dekoracyjny i nie powiela dostępnej nazwy przepisu.
 
@@ -184,7 +179,7 @@ AdvanceStep = { text: string, leadTimeMinutes: integer > 0 }
 | obraz przepisu | poprawny `ImageReference` jest akceptowany, `null` uruchamia placeholder, a niepełny `ImageReference` jest odrzucany |
 | naturalne miary domowe | `household` przelicza skalowaną ilość metryczną na kontrolowaną miarę; nieznana miara, niedodatnie `metricAmount` i użycie przy `szt` są odrzucane |
 | forma miary składnika | `measure` decyduje o pokazanej formie (metryczna, domowa albo obie z ukośnikiem); brak pola daje formę metryczną, a forma domowa bez przelicznika jest odrzucana |
-| samodzielna wersja kroków | `stepsOnly` jest wymagane przy `advance` albo `preparation`, odrzucane bez nich i odrzucane jako pusta tablica |
+| samodzielna wersja kroków | `stepsOnly` jest wymagane przy `preparation`, odrzucane bez niego i odrzucane jako pusta tablica |
 | spójność ścieżek | ten sam przepis może być użyty w Kategoriach, Szukaj i Mapie |
 | filtr kategorii | co najmniej jeden wybór pokazuje wyniki zawierające wszystkie aktualnie wybrane wartości; każda zmiana odświeża wyniki, a usunięcie ostatniego wyboru je ukrywa |
 | wyszukiwanie na żywo | zmiana treści pola automatycznie przelicza wyniki |

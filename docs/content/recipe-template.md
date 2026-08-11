@@ -77,43 +77,40 @@ dałby wynik w rodzaju `0,6 łyżeczki`. Obie formy wymagają przelicznika
 | [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] | [wartość lub pomiń] |
 | [kategoria] | [składnik] | [ilość] | [jednostka] | [wartość lub pomiń] | [wartość lub pomiń] | [wartość lub pomiń] |
 
-## Wcześniej — opcjonalne
+## Zanim zaczniesz — opcjonalne
 
-Dodaj tę sekcję tylko wtedy, gdy przepis wymaga czynności rozpoczętej przed
-głównym gotowaniem. Wyprzedzenie podaj w minutach przed planowaną porą podania,
-np. `120` dla dwóch godzin albo `720` dla przygotowania na noc.
+Dodaj tę sekcję dla wszystkiego, co dzieje się przed właściwym gotowaniem: mise
+en place, przygotowania sprzętu, krojenia, odsączenia. Nie dziel jej na „dzień
+wcześniej” i „tuż przed” — to jedna lista w kolejności wykonywania.
 
-| Czynność | Wyprzedzenie w minutach |
-|---|---:|
-| [co należy zrobić wcześniej] | [liczba minut] |
+Jeżeli czynność da się wykonać z wyprzedzeniem, napisz to na końcu jej zdania:
+„…, możesz to zrobić już wieczorem wcześniej”. Nie podawaj minut ani godzin —
+strona niczego z nich nie wylicza. Czynność, która wymaga długiego oczekiwania
+(namoczenie na noc), opisz tak samo, a wyprzedzenie zasygnalizuj przy
+dopasowaniu tempem `two_days`.
 
-## Przygotowanie — opcjonalne
-
-Dodaj tę sekcję tylko dla mise en place, przygotowania sprzętu lub innych
-czynności wykonywanych bezpośrednio przed właściwymi krokami.
-
-1. [czynność przygotowawcza]
-2. [czynność przygotowawcza]
+1. [czynność przed gotowaniem]
+2. [czynność przed gotowaniem, ewentualnie z informacją, że da się ją wykonać wcześniej]
 
 ## Kroki
 
 Każdy punkt powinien opisywać jedną wyraźną czynność. Kolejność poniżej jest
-kolejnością prezentowaną użytkownikowi. Pisz te kroki tak, jakby sekcje
-„Wcześniej” i „Przygotowanie” były już wykonane — to wersja dla „Trybu
-asystenta”, który pokazuje je obok kroków.
+kolejnością prezentowaną użytkownikowi. Pisz te kroki tak, jakby sekcja
+„Zanim zaczniesz” była już wykonana — to wersja dla „Trybu asystenta”, który
+pokazuje ją obok kroków.
 
 1. [pierwszy krok]
 2. [drugi krok]
 3. [kolejny krok]
 
-## Kroki samodzielne — wymagane przy „Wcześniej” albo „Przygotowaniu”
+## Kroki samodzielne — wymagane przy „Zanim zaczniesz”
 
-Wypełnij tę sekcję dokładnie wtedy, gdy przepis ma sekcję „Wcześniej” albo
-„Przygotowanie”. W trybie „Tylko kroki” te sekcje są ukryte, więc poniższa
-wersja MUSI sama nieść wszystko, co powyżej zostało z nich założone: krojenie,
-namoczenie, odsączenie, przygotowanie sprzętu. Nie kopiuj listy powyżej —
-przepisz ją, wplatając brakujące czynności. Wersja samodzielna może mieć inną
-liczbę kroków. Przepis bez tych sekcji tej listy nie ma.
+Wypełnij tę sekcję dokładnie wtedy, gdy przepis ma sekcję „Zanim zaczniesz”.
+W trybie „Tylko kroki” jest ona ukryta, więc poniższa wersja MUSI sama nieść
+wszystko, co powyżej zostało z niej założone: krojenie, odsączenie,
+przygotowanie sprzętu. Nie kopiuj listy powyżej — przepisz ją, wplatając
+brakujące czynności. Wersja samodzielna może mieć inną liczbę kroków. Przepis
+bez tej sekcji tej listy nie ma.
 
 1. [pierwszy krok wersji samodzielnej]
 2. [drugi krok wersji samodzielnej]
@@ -168,8 +165,9 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Opcjonalny przelicznik `household` ma dozwoloną jednostkę, dodatnie `metricAmount` i występuje wyłącznie przy bazowej jednostce `g` albo `ml`.
 - [ ] Opcjonalne `measure` ma wartość `metric`, `household` albo `both`, a formy z miarą domową mają przelicznik i dają czytelną ilość.
 - [ ] Przepis ma co najmniej jeden tag i jeden krok.
-- [ ] Przepis z sekcją „Wcześniej” albo „Przygotowaniem” ma wypełnione kroki samodzielne, a przepis bez tych sekcji ich nie ma.
-- [ ] Kroki samodzielne są innym tekstem niż kroki podstawowe i nie gubią żadnej czynności z „Wcześniej” ani „Przygotowania”.
+- [ ] Przepis z sekcją „Zanim zaczniesz” ma wypełnione kroki samodzielne, a przepis bez tej sekcji ich nie ma.
+- [ ] Kroki samodzielne są innym tekstem niż kroki podstawowe i nie gubią żadnej czynności z „Zanim zaczniesz”.
+- [ ] Sekcja „Zanim zaczniesz” nie zawiera minut ani godzin, a możliwość wcześniejszego wykonania jest wpisana w zdanie czynności.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
 - [ ] Każda grupa dopasowania ma co najmniej jedną wartość.
 - [ ] Wartości Mapy mieszczą się w zakresie `0–1`.

@@ -157,7 +157,7 @@ test('recipe back action restores the previous discovery view', async ({ page })
 test('recipe preparation enables assistant mode', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
-  const preparation = page.getByRole('region', { name: 'Przygotowanie' });
+  const preparation = page.getByRole('region', { name: 'Zanim zaczniesz' });
   const steps = page.getByRole('region', { name: 'Kroki' });
   const tips = page.getByRole('region', { name: 'Coś jeszcze' });
   const assistantMode = page.getByRole('button', { name: 'Tryb asystenta' });
@@ -186,7 +186,7 @@ test('recipe preparation enables assistant mode', async ({ page }) => {
     name: 'Jak chcesz gotować?',
   }).evaluate((element) => element.getBoundingClientRect().left);
   const preparationHeadingLeft = await preparation.getByRole('heading', {
-    name: 'Przygotowanie',
+    name: 'Zanim zaczniesz',
   }).evaluate((element) => element.getBoundingClientRect().left);
   expect(choiceHeadingLeft).toBeCloseTo(preparationHeadingLeft, 0);
   const neutralCardStyles = await Promise.all(
@@ -210,7 +210,7 @@ test('recipe preparation enables assistant mode', async ({ page }) => {
   await expect(preparation).toBeHidden();
   await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Coś jeszcze' })).toBeVisible();
-  // „Tylko kroki” ukrywa „Przygotowanie”, więc jego kroki muszą same nieść
+  // „Tylko kroki” ukrywa „Zanim zaczniesz”, więc jego kroki muszą same nieść
   // krojenie i osuszanie — to inny tekst niż lista trybu asystenta.
   await expect(assistantSteps).toBeHidden();
   await expect(standaloneSteps).toBeVisible();

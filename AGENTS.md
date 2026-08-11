@@ -27,7 +27,6 @@ Dokumentacja opisuje docelowe kontrakty, a nie stan implementacji. Zanim zacznie
 | schemat `Ingredient` i jego walidacja buildowa | `src/domain/ingredient.ts` |
 | kontrolowany podział składników na grupy zakupowe | `src/domain/ingredient-category.ts` |
 | kliencki model ilości składnika, formatowanie i przeliczanie miar | `src/domain/ingredient-measure.ts` |
-| formatowanie wyprzedzenia etapów „Wcześniej” | `src/domain/recipe-schedule.ts` |
 | kontrakt i lokalny adapter `RecipeSearch`, normalizacja oraz ranking Mapy | `src/domain/recipe-search.ts` |
 | definicja kolekcji `recipes` (loader `glob` + schemat `recipeSchema`, walidacja buildowa) | `src/content.config.ts` |
 | pliki katalogu przepisów zgodnych z `Recipe` — jeden plik JSON na przepis | `src/content/recipes/*.json` |
@@ -67,7 +66,7 @@ Status „wersja wstępna” oznacza pierwszą wersję (init) spełniającą kon
 | Szczegółowe wyszukiwanie Kategorii | ekran zastępczy | przycisk w panelu prowadzi do statycznej informacji o funkcji w przygotowaniu; filtry pozostają poza MVP |
 | Wybór ścieżki (3 karty) | wersja wstępna | pełna kompozycja z makiety; Kategorie prowadzą do sekcji, a Mapa i Szukaj otwierają odpowiedni tryb wspólnego overlaya |
 | Discovery overlay (Wyszukiwarka i Mapa) | wersja wstępna | wspólna powłoka, lokalna sesja historii, wyszukiwanie z sugestiami, interaktywna Mapa oraz wspólne karty wyników; dane pozostają prototypowe |
-| Strona przepisu `/recipes/:slug` | wersja wstępna | implementacja prezentuje pola modelu `Recipe` (zdjęcie/placeholder, opis, trudność, czas, porcje, tagi, składniki z mieszaną formą miary: metryczną, domową albo obiema po ukośniku, zgodnie z polem `measure` składnika — bez przełącznika jednostek); zmiana liczby porcji skaluje ilości; opcjonalne etapy „Wcześniej” (samo wymagane wyprzedzenie, bez planowania godzin) i „Przygotowanie” z przełącznikiem „Tryb asystenta / Tylko kroki”, oba jako wzbogacenie progresywne; każdy tryb ma własny tekst kroków — `steps` zakłada wykonane etapy wspierające, a wymagane przy nich `stepsOnly` jest wersją samodzielną; opcjonalne `tips` tworzy panel „Coś jeszcze”; opublikowane rekordy otrzymują prerenderowane trasy |
+| Strona przepisu `/recipes/:slug` | wersja wstępna | implementacja prezentuje pola modelu `Recipe` (zdjęcie/placeholder, opis, trudność, czas, porcje, tagi, składniki z mieszaną formą miary: metryczną, domową albo obiema po ukośniku, zgodnie z polem `measure` składnika — bez przełącznika jednostek); zmiana liczby porcji skaluje ilości; opcjonalna sekcja „Zanim zaczniesz” (pole `preparation`, bez minut i planowania godzin) z przełącznikiem „Tryb asystenta / Tylko kroki”, jako wzbogacenie progresywne; każdy tryb ma własny tekst kroków — `steps` zakłada wykonaną sekcję „Zanim zaczniesz”, a wymagane przy niej `stepsOnly` jest wersją samodzielną; opcjonalne `tips` tworzy panel „Coś jeszcze”; opublikowane rekordy otrzymują prerenderowane trasy |
 
 Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo zmieniasz stan ścieżki. Nie prowadź tu dziennika prac.
 

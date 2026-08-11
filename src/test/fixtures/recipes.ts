@@ -11,7 +11,6 @@ export const testRecipes = [
     difficulty: 'easy',
     servings: 2,
     ingredients: [{ category: 'meat', name: 'kurczak', amount: 200, unit: 'g' }],
-    advance: [{ text: 'Przygotuj wcześniej.', leadTimeMinutes: 60 }],
     preparation: ['Przygotuj sprzęt.'],
     steps: ['Wykonaj krok testowy.'],
     stepsOnly: ['Przygotuj sprzęt i wykonaj krok testowy.'],
