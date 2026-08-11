@@ -72,7 +72,7 @@ describe('Recipe schema', () => {
   it('keeps the assistant and steps-only versions of the catalog recipe different', () => {
     const recipe = catalog.find(({ slug }) => slug === 'szakszuka-z-chorizo-i-cukinia');
 
-    // Kroki asystenta zakładają wykonane „Przygotowanie”, więc wersja samodzielna
+    // Kroki trybu „Rozłóż w czasie” zakładają wykonane „Przygotowanie”, więc wersja samodzielna
     // musi wnosić czynności, których tam nie ma — inaczej tryb „Tylko kroki”
     // gubiłby krojenie i osuszanie składników.
     expect(recipe?.stepsOnly).toBeDefined();

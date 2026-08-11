@@ -99,8 +99,8 @@ czynności wykonywanych bezpośrednio przed właściwymi krokami.
 
 Każdy punkt powinien opisywać jedną wyraźną czynność. Kolejność poniżej jest
 kolejnością prezentowaną użytkownikowi. Pisz te kroki tak, jakby sekcje
-„Wcześniej” i „Przygotowanie” były już wykonane — to wersja dla „Trybu
-asystenta”, który pokazuje je obok kroków.
+„Wcześniej” i „Przygotowanie” były już wykonane — to wersja dla trybu
+„Rozłóż w czasie”, który pokazuje je obok kroków.
 
 1. [pierwszy krok]
 2. [drugi krok]

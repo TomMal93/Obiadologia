@@ -25,7 +25,7 @@ interface Props {
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
 const hasAssistantContent = Boolean(recipe.advance || recipe.preparation);
-// Dwa tryby mają własne teksty kroków: asystent prowadzi przez kroki zakładające
+// Dwa tryby mają własne teksty kroków: tryb „Rozłóż w czasie” prowadzi przez kroki zakładające
 // wykonane etapy wspierające, a „Tylko kroki” pokazuje wersję samodzielną. Bez
 // etapów wspierających istnieje jedna, wspólna lista bez klasy trybu.
 const stepLists = recipe.stepsOnly
@@ -239,7 +239,7 @@ const ingredientGroups = ingredientCategories.flatMap((category) => {
                   data-view-target="assistant"
                   aria-pressed="false"
                 >
-                  {messages.recipe.assistantMode}
+                  {messages.recipe.spreadInTimeMode}
                 </button>
                 <button
                   type="button"

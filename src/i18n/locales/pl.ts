@@ -204,7 +204,7 @@ export const pl = {
     assistantLabel: 'Sposób prowadzenia przez przepis',
     assistantChoiceHeading: 'Jak chcesz gotować?',
     assistantChoiceHint: 'Wybierz tryb, aby zobaczyć dalszą część przepisu.',
-    assistantMode: 'Tryb asystenta',
+    spreadInTimeMode: 'Rozłóż w czasie',
     stepsOnlyMode: 'Tylko kroki',
     advanceHeading: 'Wcześniej',
     advanceHint: 'Czynności, które trzeba zacząć z wyprzedzeniem.',

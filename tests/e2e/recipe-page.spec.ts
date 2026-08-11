@@ -154,25 +154,25 @@ test('recipe back action restores the previous discovery view', async ({ page })
   await expect(page.getByRole('searchbox', { name: 'Szukaj przepisu' })).toHaveValue('chorizo');
 });
 
-test('recipe preparation enables assistant mode and start-time calculation', async ({ page }) => {
+test('recipe preparation enables spread-in-time mode and start-time calculation', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
   const preparation = page.getByRole('region', { name: 'Przygotowanie' });
   const startHelper = page.getByRole('region', { name: 'Kiedy zacząć' });
   const steps = page.getByRole('region', { name: 'Kroki' });
   const tips = page.getByRole('region', { name: 'Coś jeszcze' });
-  const assistantMode = page.getByRole('button', { name: 'Tryb asystenta' });
+  const spreadInTimeMode = page.getByRole('button', { name: 'Rozłóż w czasie' });
   const stepsMode = page.getByRole('button', { name: 'Tylko kroki' });
   await expect(page.getByText('Wybierz tryb, aby zobaczyć dalszą część przepisu.')).toBeVisible();
-  await expect(assistantMode).toHaveAttribute('aria-pressed', 'false');
+  await expect(spreadInTimeMode).toHaveAttribute('aria-pressed', 'false');
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeHidden();
   await expect(startHelper).toBeHidden();
   await expect(steps).toBeHidden();
   await expect(tips).toBeHidden();
 
-  await assistantMode.click();
-  await expect(assistantMode).toHaveAttribute('aria-pressed', 'true');
+  await spreadInTimeMode.click();
+  await expect(spreadInTimeMode).toHaveAttribute('aria-pressed', 'true');
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(5);
@@ -256,7 +256,7 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
   await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Coś jeszcze' })).toBeVisible();
   // „Tylko kroki” ukrywa „Przygotowanie”, więc jego kroki muszą same nieść
-  // krojenie i osuszanie — to inny tekst niż lista trybu asystenta.
+  // krojenie i osuszanie — to inny tekst niż lista trybu „Rozłóż w czasie”.
   await expect(assistantSteps).toBeHidden();
   await expect(standaloneSteps).toBeVisible();
   await expect(standaloneSteps.getByRole('listitem')).toHaveCount(9);
@@ -264,7 +264,7 @@ test('recipe preparation enables assistant mode and start-time calculation', asy
     'Cukinię pokrój w półplastry',
   );
 
-  await assistantMode.click();
+  await spreadInTimeMode.click();
   await expect(preparation).toBeVisible();
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();

@@ -48,7 +48,7 @@ export const recipeSchema = z
     // zwykły tekst — struktura czasu nie jest tu potrzebna.
     preparation: z.array(z.string().trim().min(1)).min(1).optional(),
     // Kroki właściwego gotowania pisane tak, jakby etapy wspierające („Wcześniej”,
-    // „Przygotowanie”) były już wykonane. To wersja dla „Trybu asystenta” i dla
+    // „Przygotowanie”) były już wykonane. To wersja dla trybu „Rozłóż w czasie” i dla
     // przepisu bez etapów wspierających, a także treść pokazywana bez skryptu.
     steps: z.array(z.string().trim().min(1)).min(1),
     // Samodzielna wersja kroków dla trybu „Tylko kroki”, w którym etapy wspierające
