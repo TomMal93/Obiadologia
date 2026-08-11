@@ -91,10 +91,12 @@
   wyśrodkowana powłoka mobilna (max-width 480px), powierzchnia `--color-surface`
   i cień. Domyka je przycisk X, Escape albo wybór pozycji — bez osobnego tła.
 
-  Powierzchnia schodzi z bieli w kremowe `--color-bg` przy dolnej krawędzi, a pod
-  spodem leży dekoracyjna poświata w trzech kolorach dróg — echo wielobarwnej
-  poświaty znaku marki. Poświata domyka wolną przestrzeń pod listą i nie niesie
-  żadnego znaczenia: pozycje pozostają czytelne również bez niej.
+  Powierzchnia jest przymglonym prześwitem: strona pod menu pozostaje widoczna,
+  ale rozmyta i przykryta warstwą `--color-surface`, więc panel czyta się jako
+  osobna płaszczyzna, a nie jako dziura w widoku. Tint jest na tyle gęsty, że
+  tekst nagłówka trzyma kontrast nad dowolną treścią pod spodem, a białe karty
+  pozycji są nieprzezroczyste. Bez wsparcia `backdrop-filter` panel wraca do
+  pełnej powierzchni — prześwit jest wykończeniem, nie warunkiem czytelności.
 */
 .site-menu {
   position: fixed;
@@ -109,27 +111,19 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 0 var(--gutter) max(var(--space-24), env(safe-area-inset-bottom));
-  background:
-    radial-gradient(
-      86% 30% at 12% 100%,
-      color-mix(in srgb, var(--color-search) 30%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      86% 28% at 88% 102%,
-      color-mix(in srgb, var(--color-map) 26%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      74% 26% at 50% 103%,
-      color-mix(in srgb, var(--color-categories) 32%, transparent),
-      transparent 70%
-    ),
-    linear-gradient(180deg, var(--color-surface) 46%, var(--color-bg));
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
   box-shadow: var(--shadow-surface);
   opacity: 0;
   visibility: hidden;
   transition: opacity 200ms ease, visibility 0s linear 200ms;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-menu {
+    background: var(--color-surface);
+  }
 }
 
 .site-menu.is-open {
