@@ -217,6 +217,8 @@
 }
 
 .category-results-frame {
+  --recipe-card-accent: var(--color-categories);
+
   display: flex;
   min-height: 0;
   padding-block: var(--space-12);
@@ -807,6 +809,7 @@
    akcentu tekstu; Mapa dzieli token z aktywnym segmentem przełącznika. */
 .discovery-results {
   --result-accent: color-mix(in srgb, var(--color-search) 30%, var(--color-search-strong));
+  --recipe-card-accent: var(--color-search);
 
   margin-top: var(--space-16);
   padding: 0 var(--space-16) var(--space-16);
@@ -815,6 +818,7 @@
 
 .discovery-results--map {
   --result-accent: var(--color-map-strong);
+  --recipe-card-accent: var(--color-map);
   --featured-accent: var(--color-map);
 }
 
@@ -1022,7 +1026,8 @@
 
 /* Kategorie na stronie głównej oraz oba tryby discovery używają jednego
    panoramicznego wariantu karty. Zdjęcie jest tłem, natomiast tytuł i czas
-   pozostają osobnymi elementami semantycznymi linku. */
+   pozostają osobnymi elementami semantycznymi linku. Akcent obramowania wynika
+   z drogi, w której karta jest prezentowana. */
 .recipe-list--panoramic .recipe-card {
   position: relative;
   display: grid;
@@ -1034,7 +1039,7 @@
   min-height: 96px;
   aspect-ratio: auto;
   align-items: end;
-  border: 0;
+  border: 2px solid color-mix(in srgb, var(--recipe-card-accent) 68%, transparent);
   border-radius: var(--radius-card);
   isolation: isolate;
   background: #25211f;
@@ -1086,7 +1091,6 @@
 }
 
 .recipe-list--panoramic .recipe-card--placeholder {
-  border: 1px dashed rgb(255 255 255 / 26%);
   background: #25211f;
 }
 
@@ -1157,6 +1161,8 @@
   font-size: clamp(18px, 5.4vw, 24px);
   line-height: 1.08;
   letter-spacing: -0.025em;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--recipe-card-accent) 52%, transparent);
+  paint-order: stroke fill;
   text-shadow: 0 1px 10px rgb(0 0 0 / 72%);
   text-wrap: pretty;
 }
@@ -1184,6 +1190,8 @@
   font-size: clamp(26px, 8.5vw, 38px);
   font-weight: 800;
   letter-spacing: -0.04em;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--recipe-card-accent) 52%, transparent);
+  paint-order: stroke fill;
   text-shadow: 0 1px 10px rgb(0 0 0 / 72%);
 }
 
@@ -1191,6 +1199,8 @@
   margin-top: 2px;
   font-size: var(--font-size-16);
   font-weight: 400;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--recipe-card-accent) 52%, transparent);
+  paint-order: stroke fill;
   text-shadow: 0 1px 8px rgb(0 0 0 / 72%);
 }
 
@@ -1206,7 +1216,7 @@
   height: auto;
   min-height: 164px;
   aspect-ratio: auto;
-  border: 2px solid color-mix(in srgb, var(--featured-accent) 62%, white);
+  border-color: color-mix(in srgb, var(--recipe-card-accent) 68%, transparent);
   box-shadow: 0 10px 24px color-mix(in srgb, var(--featured-accent) 18%, transparent);
 }
 

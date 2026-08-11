@@ -89,6 +89,9 @@ białego tytułu. Czas znajduje się po prawej stronie: liczba jest wyróżniona
 a skrót „min” tworzy osobny wiersz. Brak zdjęcia zachowuje identyczną geometrię
 i pokazuje ciemny placeholder z neutralną ikoną oraz tekstem „zdjęcie potrawy”.
 Kolor nagłówka i wyróżnienie pierwszego wyniku nadal identyfikują aktywny tryb.
+Ramka karty oraz obrys liter tytułu i czasu identyfikują drogę zgodnie ze wspólnym
+wzorcem opisanym w [ui-system.md](../../design/ui-system.md): koral oznacza
+Wyszukiwarkę, a niebieski Mapę.
 
 Każda karta zawiera:
 

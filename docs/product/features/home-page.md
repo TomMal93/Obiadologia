@@ -32,6 +32,10 @@ Wprowadzenie do panelu:
 - pigułka „Apetyt nie zawsze mówi pełnym zdaniem”,
 - nagłówek „Rzuć pierwszą myśl na stół”.
 
+Akcent komunikatu głównego, obramowanie panelu oraz pigułka przechodzą wspólnie
+przez kolory trzech dróg. Jest to wyłącznie powolna zmiana koloru, bez ruchu i
+zmiany geometrii, dlatego pozostaje aktywna także przy `prefers-reduced-motion`.
+
 ### Mapa
 
 Tekst:
@@ -132,11 +136,15 @@ zmienia się wyłącznie jej wnętrze:
 Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md)
 i z tego samego panoramicznego wariantu prezentacyjnego co lista w discovery
 overlayu: zdjęcie wypełnia kartę, a tytuł i czas są nałożone przy dolnej
-krawędzi. Brak zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
+krawędzi. Zgodnie ze wspólnym wzorcem z [ui-system.md](../../design/ui-system.md)
+ramka karty oraz obrys liter tytułu i czasu używają zielonego koloru Kategorii. Brak
+zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
 
 ## Kryteria akceptacji
 
 - Wszystkie trzy drogi są widoczne jako równorzędne.
+- Akcent komunikatu głównego, obramowanie panelu i pigułka zmieniają kolor w tym
+  samym rytmie także przy aktywnym `prefers-reduced-motion`.
 - Ikona menu w nagłówku otwiera i zamyka mobilne menu nawigacyjne z pozycjami „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”.
 - Pozycje „Szukaj” i „Mapa” w menu otwierają właściwy tryb wspólnego overlaya, także wtedy, gdy wybór następuje z innej strony niż główna.
 - Po otwarciu overlaya z menu (Szukaj lub Mapa) jego zamknięcie — przyciskiem, klawiszem `Escape` albo „Wstecz” — zawsze pozostawia użytkownika na stronie głównej, niezależnie od strony, z której nastąpił wybór.

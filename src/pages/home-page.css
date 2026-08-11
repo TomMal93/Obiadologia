@@ -191,14 +191,6 @@
   color: var(--brand-pulse);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .intro-screen {
-    animation: none;
-    --brand-pulse: var(--color-coral);
-    --brand-pulse-soft: var(--color-coral-soft);
-  }
-}
-
 .path-panel {
   --tree-map: color-mix(in srgb, var(--color-map-soft) 70%, var(--color-map));
   --tree-search: color-mix(in srgb, var(--color-search-soft) 70%, var(--color-search));

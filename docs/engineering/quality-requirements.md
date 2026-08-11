@@ -28,7 +28,9 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 - Dialog zarządza fokusem, `Escape`, powrotem fokusu oraz blokadą tła.
 - Zmiany wyników i błędy asynchroniczne są ogłaszane przez odpowiedni live region bez nadmiernych komunikatów.
 - Kontrast tekstu, kontrolek i fokusu musi być sprawdzany automatycznie i ręcznie.
-- Animacje respektują `prefers-reduced-motion`.
+- Animacje ruchu, przesunięcia i skalowania respektują `prefers-reduced-motion`.
+  Dekoracyjna, powolna zmiana samego koloru może pozostać aktywna, jeżeli nie
+  powoduje ruchu, migotania ani zmiany geometrii interfejsu.
 
 ## Responsywność i kompatybilność
 

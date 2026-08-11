@@ -160,6 +160,8 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
   tytułem i czasem nałożonymi przy dolnej krawędzi; szczegóły wariantu dla
   overlaya definiuje [discovery-overlay.md](../product/features/discovery-overlay.md),
   a jego użycie na stronie głównej — [home-page.md](../product/features/home-page.md).
+  Zewnętrzna ramka karty oraz obrys liter tytułu i czasu używają koloru drogi:
+  Wyszukiwarka — koralowego, Mapa — niebieskiego, Kategorie — zielonego.
 - Karta ma jeden wyraźny obszar interakcji; nie wolno zagnieżdżać w nim konkurujących elementów interaktywnych bez wyraźnej potrzeby.
 - Zachowanie nawigacyjne i bieżący zakres trasy przepisu definiuje [mvp-scope.md](../product/mvp-scope.md).
 - Zdjęcie używa `object-fit: cover`, stałych proporcji i tekstu alternatywnego opisującego danie.
