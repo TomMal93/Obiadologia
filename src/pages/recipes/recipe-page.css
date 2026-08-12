@@ -811,6 +811,7 @@
 }
 
 .recipe-step__toggle--preparation {
+  align-items: center;
   padding: var(--space-12);
   border: 0;
   border-bottom: 1px dashed rgb(255 79 46 / 38%);
@@ -844,10 +845,6 @@
 }
 
 .recipe-step__kind--complete {
-  display: none;
-}
-
-.recipe-step__toggle.is-checked .recipe-step__kind--pending {
   display: none;
 }
 

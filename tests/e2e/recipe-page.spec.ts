@@ -222,7 +222,6 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     ),
   );
   expect(halfStepTargets).toEqual(['1', '1', '1', '2', '4']);
-  await expect(halfSteps.first().getByText('Przed krokiem 1')).toBeVisible();
 
   const chorizoPreparation = preparation.getByRole('button', { name: /Pokrój chorizo/ });
   const chorizoHalfStep = assistantSteps.locator(
