@@ -376,15 +376,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
                   <span class="recipe-step__content">
                     <span class="recipe-step__text">{step}</span>
-                    <span class="recipe-step__action recipe-step__action--pending">
-                      {messages.recipe.stepActionPending}
-                    </span>
-                    <span class="recipe-step__complete-title">
-                      {formatMessage(messages.recipe.stepCompleteLabel, {
-                        number: index + 1,
-                      })}
-                    </span>
-                      </span>
+                  </span>
+                  <span
+                    class="recipe-step__action recipe-step__action--pending"
+                    aria-hidden="true"
+                  >✓</span>
                 </button>
                 <span class="recipe-step__fallback">{step}</span>
               </li>
@@ -397,7 +393,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   <li class="recipe-step">
                     <button
                       type="button"
-                      class="recipe-step__toggle"
+                      class="recipe-step__toggle recipe-step__toggle--cooking"
                       data-checkable-step
                       data-step-number={index + 1}
                       aria-pressed="false"
@@ -415,15 +411,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
                       <span class="recipe-step__content">
                         <span class="recipe-step__text">{step}</span>
-                        <span class="recipe-step__action recipe-step__action--pending">
-                          {messages.recipe.stepActionPending}
-                        </span>
-                        <span class="recipe-step__complete-title">
-                          {formatMessage(messages.recipe.stepCompleteLabel, {
-                            number: index + 1,
-                          })}
-                        </span>
                       </span>
+                      <span
+                        class="recipe-step__action recipe-step__action--pending"
+                        aria-hidden="true"
+                      >✓</span>
                     </button>
                     <span class="recipe-step__fallback">{step}</span>
                   </li>
@@ -716,8 +708,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       ?.setAttribute('hidden', '');
     button.addEventListener('click', () => {
       const checked = button.getAttribute('aria-pressed') === 'true';
-      const badge = button.querySelector<HTMLElement>('.recipe-step__badge');
-
       if (button.hasAttribute('data-assistant-cooking-step')) {
         const stepNumber = Number(button.dataset.stepNumber);
         for (const halfStep of preparationHalfSteps) {
@@ -737,9 +727,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         'aria-label',
         (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
       );
-      // Numer bierzemy z kroku, a nie z pozycji w kolekcji przycisków — obie
-      // listy trybów żyją w DOM równocześnie i numerują się od nowa.
-      if (badge) badge.textContent = !checked ? '✓' : button.dataset.stepNumber ?? '';
     });
   }
 

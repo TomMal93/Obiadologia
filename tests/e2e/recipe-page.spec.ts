@@ -121,13 +121,37 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(steps.getByText('Dotknij kroku, aby oznaczyć go jako wykonany.')).toBeVisible();
   await expect(steps.getByRole('listitem')).toHaveCount(9);
   const firstStep = steps.locator('.steps-only-section [data-checkable-step]').first();
-  await expect(firstStep.getByText('Zrobione', { exact: true })).toBeVisible();
+  const firstStepAction = firstStep.locator('.recipe-step__action--pending');
+  await expect(firstStepAction).toBeVisible();
+  await expect(firstStepAction).toHaveText('✓');
+  await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');
+  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 241, 236)');
+  await expect(firstStepAction).toHaveCSS('border-radius', '999px');
+  const [firstStepActionBox, firstStepBox] = await Promise.all([
+    firstStepAction.boundingBox(),
+    firstStep.boundingBox(),
+  ]);
+  expect(firstStepActionBox).not.toBeNull();
+  expect(firstStepBox).not.toBeNull();
+  expect(firstStepActionBox!.x + firstStepActionBox!.width / 2).toBeCloseTo(
+    firstStepBox!.x + firstStepBox!.width / 2,
+    0,
+  );
+  const firstStepHeight = firstStepBox!.height;
   await expect(firstStep).toHaveCSS('border-top-style', 'solid');
   await firstStep.click();
   await expect(firstStep).toHaveAttribute('aria-pressed', 'true');
   await expect(firstStep.locator('.recipe-step__text')).toBeVisible();
-  await expect(firstStep.locator('.recipe-step__text')).toHaveCSS('font-size', '14px');
-  await expect(firstStep.locator('.recipe-step__complete-title')).toHaveText('Krok 1 wykonany');
+  await expect(firstStep.locator('.recipe-step__text')).toHaveCSS(
+    'text-decoration-line',
+    'line-through',
+  );
+  await expect(firstStep.locator('.recipe-step__badge')).toHaveText('1');
+  await expect(firstStepAction).toBeVisible();
+  await expect(firstStepAction).toHaveCSS('color', 'rgb(255, 255, 255)');
+  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 79, 46)');
+  await expect(firstStep.locator('.recipe-step__complete-title')).toHaveCount(0);
+  expect((await firstStep.boundingBox())!.height).toBeCloseTo(firstStepHeight, 0);
   await expect(firstStep).toHaveAttribute('aria-label', 'Cofnij wykonanie kroku 1');
   await expect(firstStep.locator('.recipe-step__action--complete')).toHaveCount(0);
 
@@ -207,6 +231,12 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();
   await expect(assistantSteps.getByRole('listitem')).toHaveCount(7);
+  const assistantStepGroups = assistantSteps.locator(':scope > .recipe-step-group');
+  await expect(assistantStepGroups).toHaveCount(7);
+  for (const group of await assistantStepGroups.all()) {
+    await expect(group).toHaveCSS('border-color', 'rgba(255, 79, 46, 0.42)');
+    await expect(group).toHaveCSS('box-shadow', 'rgb(255, 79, 46) 3px 0px 0px 0px inset');
+  }
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await expect(assistantSteps.getByText('Do zrobienia', { exact: true })).toHaveCount(0);
   await expect(
@@ -244,7 +274,7 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await chorizoPreparation.click();
   await expect(chorizoHalfStep).toBeVisible();
-  await expect(chorizoHalfStep.getByText('Zrobione', { exact: true })).toHaveCount(0);
+  await expect(chorizoHalfStep.locator('.recipe-step__action--pending')).toHaveCount(0);
   await expect(chorizoHalfStep.locator('.recipe-step__badge')).toHaveText('');
 
   await chorizoHalfStep.getByRole('button').click();
@@ -314,6 +344,10 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps).toBeHidden();
   await expect(standaloneSteps).toBeVisible();
   await expect(standaloneSteps.getByRole('listitem')).toHaveCount(9);
+  await expect(standaloneSteps.locator('.recipe-step__toggle').first()).toHaveCSS(
+    'border-color',
+    'rgba(255, 79, 46, 0.42)',
+  );
   await expect(standaloneSteps.getByRole('listitem').first()).toContainText(
     'Cukinię pokrój w półplastry',
   );

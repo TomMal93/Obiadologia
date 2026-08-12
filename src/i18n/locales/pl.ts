@@ -221,8 +221,6 @@ export const pl = {
     stepsStageLabel: 'Gotowanie',
     stepsHeading: 'Kroki',
     stepsInteractionHint: 'Dotknij kroku, aby oznaczyć go jako wykonany.',
-    stepActionPending: 'Zrobione',
-    stepCompleteLabel: 'Krok {number} wykonany',
     tipsHeading: 'Coś jeszcze',
     checkStepLabel: 'Oznacz krok {number} jako wykonany',
     uncheckStepLabel: 'Cofnij wykonanie kroku {number}',
