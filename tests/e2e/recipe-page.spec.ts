@@ -123,10 +123,18 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   const firstStep = steps.locator('.steps-only-section [data-checkable-step]').first();
   const firstStepAction = firstStep.locator('.recipe-step__action--pending');
   await expect(firstStepAction).toBeVisible();
-  await expect(firstStepAction).toHaveText('✓');
-  await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');
-  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 241, 236)');
+  await expect(firstStepAction.locator('.recipe-step__action-label')).toHaveText(
+    'Oznacz jako zrobione',
+  );
+  await expect(firstStepAction.locator('.recipe-step__action-check')).toHaveCSS('opacity', '0');
+  await expect(firstStepAction.locator('.recipe-step__action-circle')).toHaveCSS(
+    'border-top-style',
+    'solid',
+  );
+  await expect(firstStepAction).toHaveCSS('color', 'rgb(110, 104, 99)');
+  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(firstStepAction).toHaveCSS('border-radius', '999px');
+  await expect(firstStepAction).toHaveCSS('border-top-style', 'solid');
   const [firstStepActionBox, firstStepBox] = await Promise.all([
     firstStepAction.boundingBox(),
     firstStep.boundingBox(),
@@ -150,6 +158,24 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStepAction).toBeVisible();
   await expect(firstStepAction).toHaveCSS('color', 'rgb(255, 255, 255)');
   await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 79, 46)');
+  await expect(firstStepAction).toHaveCSS('border-top-style', 'solid');
+  await expect(firstStepAction.locator('.recipe-step__action-label')).toBeHidden();
+  await expect(firstStepAction.locator('.recipe-step__action-circle')).toBeHidden();
+  await expect(firstStepAction.locator('.recipe-step__action-check')).toHaveCSS('opacity', '1');
+  const [checkedActionBox, checkedMarkBox] = await Promise.all([
+    firstStepAction.boundingBox(),
+    firstStepAction.locator('.recipe-step__action-check').boundingBox(),
+  ]);
+  expect(checkedActionBox).not.toBeNull();
+  expect(checkedMarkBox).not.toBeNull();
+  expect(checkedMarkBox!.x + checkedMarkBox!.width / 2).toBeCloseTo(
+    checkedActionBox!.x + checkedActionBox!.width / 2,
+    0,
+  );
+  expect(checkedMarkBox!.y + checkedMarkBox!.height / 2).toBeCloseTo(
+    checkedActionBox!.y + checkedActionBox!.height / 2,
+    0,
+  );
   await expect(firstStep.locator('.recipe-step__complete-title')).toHaveCount(0);
   expect((await firstStep.boundingBox())!.height).toBeCloseTo(firstStepHeight, 0);
   await expect(firstStep).toHaveAttribute('aria-label', 'Cofnij wykonanie kroku 1');

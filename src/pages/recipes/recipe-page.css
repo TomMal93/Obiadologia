@@ -775,21 +775,52 @@
 }
 
 .recipe-step__action {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  min-height: 36px;
+  display: inline-grid;
+  min-height: 44px;
+  grid-template-columns: 24px auto;
   grid-column: 1 / -1;
-  place-items: center;
+  align-items: center;
   justify-self: center;
-  padding: 0;
-  border: 2px solid var(--color-coral);
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
-  color: var(--color-coral-strong);
-  font-size: var(--font-size-16);
-  font-weight: 800;
-  line-height: 1;
-  background: var(--color-coral-soft);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+  font-weight: 700;
+  line-height: 1.2;
+  background: var(--color-surface);
+  transition:
+    color 240ms ease,
+    background-color 240ms ease,
+    border-color 240ms ease,
+    transform 240ms ease;
+}
+
+.recipe-step__action-circle,
+.recipe-step__action-check {
+  grid-area: 1 / 1;
+  place-self: center;
+}
+
+.recipe-step__action-circle {
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid rgb(168 45 24 / 58%);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+
+.recipe-step__action-check {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: var(--color-surface);
+  font-size: var(--font-size-14);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 200ms ease, transform 240ms ease;
 }
 
 .recipe-step--preparation {
@@ -896,8 +927,27 @@
 
 .recipe-step__toggle--cooking.is-checked .recipe-step__action--pending {
   display: grid;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  grid-template-columns: 1fr;
+  padding: 0;
+  border-color: var(--color-coral);
   color: var(--color-surface);
   background: var(--color-coral);
+}
+
+.recipe-step__toggle--cooking.is-checked .recipe-step__action-label {
+  display: none;
+}
+
+.recipe-step__toggle--cooking.is-checked .recipe-step__action-circle {
+  display: none;
+}
+
+.recipe-step__toggle--cooking.is-checked .recipe-step__action-check {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .step-progress {

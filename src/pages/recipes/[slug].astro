@@ -381,7 +381,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   <span
                     class="recipe-step__action recipe-step__action--pending"
                     aria-hidden="true"
-                  >✓</span>
+                  >
+                    <span class="recipe-step__action-circle" aria-hidden="true"></span>
+                    <span class="recipe-step__action-label">{messages.recipe.finishStepAction}</span>
+                    <span class="recipe-step__action-check">✓</span>
+                  </span>
                 </button>
                 <span class="recipe-step__fallback">{step}</span>
                 <p class="step-progress" data-step-group-progress hidden>
@@ -422,7 +426,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       <span
                         class="recipe-step__action recipe-step__action--pending"
                         aria-hidden="true"
-                      >✓</span>
+                      >
+                        <span class="recipe-step__action-circle" aria-hidden="true"></span>
+                        <span class="recipe-step__action-label">{messages.recipe.finishStepAction}</span>
+                        <span class="recipe-step__action-check">✓</span>
+                      </span>
                     </button>
                     <span class="recipe-step__fallback">{step}</span>
                     <p class="step-progress" data-step-group-progress hidden>
