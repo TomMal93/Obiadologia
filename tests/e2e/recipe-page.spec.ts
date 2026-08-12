@@ -462,6 +462,29 @@ test('every main recipe section can be collapsed and expanded independently', as
   }
 
   const choice = page.getByRole('button', { name: 'Jak chcesz gotować?', exact: true });
+  const neutralFrameColors = await page.evaluate(() => {
+    const cookingFlow = document.querySelector('.recipe-cooking-flow');
+    const ingredientsFrame = document.querySelector('.recipe-ingredients');
+    if (!(cookingFlow instanceof HTMLElement) || !(ingredientsFrame instanceof HTMLElement)) {
+      throw new Error('Nie znaleziono ramek przepisu');
+    }
+    return {
+      cookingFlow: getComputedStyle(cookingFlow).borderColor,
+      ingredients: getComputedStyle(ingredientsFrame).borderColor,
+      cookingFlowBackground: getComputedStyle(cookingFlow).backgroundColor,
+      cookingFlowBackgroundImage: getComputedStyle(cookingFlow).backgroundImage,
+      cookingFlowGradientOpacity: getComputedStyle(cookingFlow, '::before').opacity,
+      cookingFlowGradientTransition: getComputedStyle(cookingFlow, '::before').transitionDuration,
+      ingredientsBackground: getComputedStyle(ingredientsFrame).backgroundColor,
+    };
+  });
+  expect(neutralFrameColors.cookingFlow).toBe(neutralFrameColors.ingredients);
+  expect(neutralFrameColors.cookingFlowBackground).toBe(
+    neutralFrameColors.ingredientsBackground,
+  );
+  expect(neutralFrameColors.cookingFlowBackgroundImage).toBe('none');
+  expect(neutralFrameColors.cookingFlowGradientOpacity).toBe('0');
+  expect(neutralFrameColors.cookingFlowGradientTransition).not.toBe('0s');
   const toggleRightInsets = await page.evaluate(() => {
     const getRightInset = (containerSelector: string, toggleName: string) => {
       const container = document.querySelector(containerSelector);
@@ -484,6 +507,13 @@ test('every main recipe section can be collapsed and expanded independently', as
   await expect(page.getByRole('button', { name: 'Tryb asystenta' })).toBeHidden();
   await choice.click();
   await page.getByRole('button', { name: 'Tryb asystenta' }).click();
+  await expect(page.locator('.recipe-cooking-flow')).not.toHaveCSS(
+    'border-color',
+    neutralFrameColors.ingredients,
+  );
+  await expect.poll(() => page.locator('.recipe-cooking-flow').evaluate(
+    (element) => getComputedStyle(element, '::before').opacity,
+  )).toBe('1');
 
   await choice.click();
   await expect(page.getByRole('region', { name: 'Zanim zaczniesz' })).toBeHidden();
