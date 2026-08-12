@@ -141,14 +141,42 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       <div class="recipe-body">
         <section class="recipe-lead" aria-labelledby="description-heading">
           <div class="recipe-section-head recipe-section-head--stacked">
-            <h2 id="description-heading">{messages.recipe.descriptionHeading}</h2>
+            <h2 id="description-heading">
+              <button
+                type="button"
+                class="recipe-section-toggle"
+                aria-expanded="true"
+                aria-controls="description-content"
+                data-section-toggle
+                hidden
+              >
+                <span>{messages.recipe.descriptionHeading}</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+              </button>
+              <span class="recipe-section-title-fallback">{messages.recipe.descriptionHeading}</span>
+            </h2>
           </div>
-          <p>{recipe.description}</p>
+          <div id="description-content" data-section-content>
+            <p>{recipe.description}</p>
+          </div>
         </section>
 
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
           <div class="recipe-section-head recipe-ingredients__head">
-            <h2 id="ingredients-heading">{messages.recipe.ingredientsHeading}</h2>
+            <h2 id="ingredients-heading">
+              <button
+                type="button"
+                class="recipe-section-toggle"
+                aria-expanded="true"
+                aria-controls="ingredients-content"
+                data-section-toggle
+                hidden
+              >
+                <span>{messages.recipe.ingredientsHeading}</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+              </button>
+              <span class="recipe-section-title-fallback">{messages.recipe.ingredientsHeading}</span>
+            </h2>
             <p class="ingredient-progress" data-ingredient-progress aria-live="polite" hidden>
               <span class="ingredient-progress__dial" aria-hidden="true">
                 <svg class="ingredient-progress__ring" viewBox="0 0 24 24">
@@ -164,7 +192,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
             </p>
           </div>
 
-          <div class="ingredient-groups">
+          <div class="ingredient-groups" id="ingredients-content" data-section-content>
             {ingredientGroups.map(({ category, ingredients }) => (
               <section class="ingredient-group">
                 <h3>{messages.recipe.ingredientCategories[category]}</h3>
@@ -216,65 +244,83 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         <div class="recipe-cooking-flow">
           {
             hasAssistantContent && (
-              <section class="assistant-choice" data-assistant-choice hidden>
+              <section class="assistant-choice" aria-labelledby="assistant-choice-heading" data-assistant-choice hidden>
               <div class="recipe-section-head recipe-section-head--stacked">
-                <h2>{messages.recipe.assistantChoiceHeading}</h2>
-                <p>{messages.recipe.assistantChoiceHint}</p>
-              </div>
-              <div
-                class="assistant-toggle recipe-segmented"
-                role="group"
-                aria-label={messages.recipe.assistantLabel}
-              >
-                <button
-                  type="button"
-                  class="recipe-segmented__option"
-                  data-view-target="assistant"
-                  aria-pressed="false"
-                >
-                  {messages.recipe.assistantMode}
-                </button>
-                <button
-                  type="button"
-                  class="recipe-segmented__option"
-                  data-view-target="steps"
-                  aria-pressed="false"
-                >
-                  {messages.recipe.stepsOnlyMode}
-                </button>
+                <h2 id="assistant-choice-heading">
+                  <button
+                type="button"
+                class="recipe-section-toggle"
+                aria-expanded="true"
+                aria-controls="cooking-flow-content"
+                data-section-toggle
+                hidden
+                  >
+                    <span>{messages.recipe.assistantChoiceHeading}</span>
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+                  </button>
+                  <span class="recipe-section-title-fallback">{messages.recipe.assistantChoiceHeading}</span>
+                </h2>
               </div>
               </section>
             )
           }
+
+          <div id="cooking-flow-content" class="recipe-cooking-flow__content recipe-section-content" data-section-content>
+            {
+              hasAssistantContent && (
+              <div class="assistant-choice__controls">
+                <p class="assistant-choice__hint">{messages.recipe.assistantChoiceHint}</p>
+                <div
+                  class="assistant-toggle recipe-segmented"
+                  role="group"
+                  aria-label={messages.recipe.assistantLabel}
+                >
+                  <button
+                    type="button"
+                    class="recipe-segmented__option"
+                    data-view-target="assistant"
+                    aria-pressed="false"
+                  >
+                    {messages.recipe.assistantMode}
+                  </button>
+                  <button
+                    type="button"
+                    class="recipe-segmented__option"
+                    data-view-target="steps"
+                    aria-pressed="false"
+                  >
+                    {messages.recipe.stepsOnlyMode}
+                  </button>
+                </div>
+              </div>
+              )
+            }
 
           {
             recipe.preparation && (
               <section class="recipe-prep assistant-section recipe-mode-content" aria-labelledby="prep-heading">
               <div class="recipe-section-head recipe-section-head--stacked">
                 <p class="recipe-stage-label">{messages.recipe.preparationStageLabel}</p>
-                <div class="recipe-prep__heading-row">
-                  <h2 id="prep-heading">{messages.recipe.preparationHeading}</h2>
+                <h2 id="prep-heading">
                   <button
                     type="button"
-                    class="recipe-prep__collapse"
-                    aria-expanded="false"
-                    aria-controls="prep-groups"
-                    data-preparation-collapse
-                    data-collapse-label={messages.recipe.collapsePreparation}
-                    data-expand-label={messages.recipe.expandPreparation}
+                    class="recipe-section-toggle"
+                    aria-expanded="true"
+                    aria-controls="preparation-content"
+                    data-section-toggle
                     hidden
                   >
-                    <span data-preparation-collapse-label>{messages.recipe.expandPreparation}</span>
-                    <svg viewBox="0 0 20 20" aria-hidden="true">
-                      <path d="m5 12 5-5 5 5" />
-                    </svg>
+                    <span>{messages.recipe.preparationHeading}</span>
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
                   </button>
-                </div>
-                <p>{messages.recipe.preparationHint}</p>
+                  <span class="recipe-section-title-fallback">{messages.recipe.preparationHeading}</span>
+                </h2>
               </div>
-              <div class="prep-groups" id="prep-groups" data-preparation-groups>
-                {preparationGroups.map(({ timing, items }) => (
-                  <section class="prep-group" aria-labelledby={`prep-${timing}-heading`}>
+              <div id="preparation-content" class="recipe-section-content" data-section-content>
+                <p class="recipe-prep__hint">{messages.recipe.preparationHint}</p>
+                <div class="prep-groups">
+                  {preparationGroups.map(({ timing, items }) => (
+                    <section class="prep-group" aria-labelledby={`prep-${timing}-heading`}>
                     <h3 id={`prep-${timing}-heading`}>
                       {messages.recipe.preparationTiming[timing]}
                     </h3>
@@ -308,8 +354,9 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                         </li>
                       ))}
                     </ul>
-                  </section>
-                ))}
+                    </section>
+                  ))}
+                </div>
               </div>
               </section>
             )
@@ -318,9 +365,23 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
           <section class="recipe-steps recipe-mode-content" aria-labelledby="steps-heading">
           <div class="recipe-section-head recipe-section-head--stacked">
             <p class="recipe-stage-label">{messages.recipe.stepsStageLabel}</p>
-            <h2 id="steps-heading">{messages.recipe.stepsHeading}</h2>
-            <p data-steps-interaction-hint hidden>{messages.recipe.stepsInteractionHint}</p>
+            <h2 id="steps-heading">
+              <button
+                type="button"
+                class="recipe-section-toggle"
+                aria-expanded="true"
+                aria-controls="steps-content"
+                data-section-toggle
+                hidden
+              >
+                <span>{messages.recipe.stepsHeading}</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+              </button>
+              <span class="recipe-section-title-fallback">{messages.recipe.stepsHeading}</span>
+            </h2>
           </div>
+          <div id="steps-content" class="recipe-section-content" data-section-content>
+          <p data-steps-interaction-hint hidden>{messages.recipe.stepsInteractionHint}</p>
           <ol class:list={['step-list', recipe.stepsOnly && 'assistant-section']}>
             {recipe.steps.map((step, index) => (
               <li class="recipe-step recipe-step-group">
@@ -444,13 +505,27 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
               </ol>
             )
           }
+          </div>
           </section>
 
           {
             recipe.tips && (
               <section class="recipe-tips recipe-mode-content" aria-labelledby="tips-heading">
-              <h2 id="tips-heading">{messages.recipe.tipsHeading}</h2>
-              <ul class="tips-list">
+              <h2 id="tips-heading">
+                <button
+                  type="button"
+                  class="recipe-section-toggle"
+                  aria-expanded="true"
+                  aria-controls="tips-content"
+                  data-section-toggle
+                  hidden
+                >
+                  <span>{messages.recipe.tipsHeading}</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+                </button>
+                <span class="recipe-section-title-fallback">{messages.recipe.tipsHeading}</span>
+              </h2>
+              <ul class="tips-list" id="tips-content" data-section-content>
                 {recipe.tips.map((tip) => (
                   <li>
                     <span class="tips-list__mark" aria-hidden="true">✦</span>
@@ -461,6 +536,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
               </section>
             )
           }
+          </div>
         </div>
 
         <p class="prototype-note recipe-mode-content">{messages.recipe.prototypeNote}</p>
@@ -499,6 +575,27 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     event.preventDefault();
     window.history.back();
   });
+
+  const sectionToggles = Array.from(
+    article?.querySelectorAll<HTMLButtonElement>('[data-section-toggle]') ?? [],
+  );
+  for (const toggle of sectionToggles) {
+    const contentId = toggle.getAttribute('aria-controls');
+    const content = contentId ? document.getElementById(contentId) : null;
+    const fallback = toggle.parentElement?.querySelector<HTMLElement>(
+      '.recipe-section-title-fallback',
+    );
+    if (!content || !article) continue;
+
+    toggle.hidden = false;
+    fallback?.setAttribute('hidden', '');
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      const nextExpanded = !expanded;
+      toggle.setAttribute('aria-expanded', String(nextExpanded));
+      content.hidden = !nextExpanded;
+    });
+  }
 
   const baseServings = Number(article?.dataset.baseServings);
   const servingsOutput = article?.querySelector<HTMLElement>('[data-servings-output]');
@@ -627,7 +724,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
   }
 
   const assistantChoice = article?.querySelector<HTMLElement>('[data-assistant-choice]');
-  const assistantToggle = assistantChoice?.querySelector<HTMLElement>('.assistant-toggle');
+  const assistantToggle = article?.querySelector<HTMLElement>('.assistant-toggle');
   if (article && assistantChoice && assistantToggle) {
     article.dataset.view = 'unselected';
     assistantChoice.hidden = false;
@@ -694,28 +791,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         .replace('{checked}', String(checked))
         .replace('{total}', String(controls.length));
   };
-
-  const preparationCollapse = article?.querySelector<HTMLButtonElement>(
-    '[data-preparation-collapse]',
-  );
-  const preparationGroups = article?.querySelector<HTMLElement>('[data-preparation-groups]');
-  if (preparationCollapse && preparationGroups) {
-    preparationGroups.hidden = true;
-    preparationCollapse.hidden = false;
-    preparationCollapse.addEventListener('click', () => {
-      const expanded = preparationCollapse.getAttribute('aria-expanded') === 'true';
-      preparationCollapse.setAttribute('aria-expanded', String(!expanded));
-      preparationGroups.hidden = expanded;
-      const label = preparationCollapse.querySelector<HTMLElement>(
-        '[data-preparation-collapse-label]',
-      );
-      if (label) {
-        label.textContent = expanded
-          ? (preparationCollapse.dataset.expandLabel ?? '')
-          : (preparationCollapse.dataset.collapseLabel ?? '');
-      }
-    });
-  }
 
   const renderPreparation = (preparationId: string, animate = false) => {
     const checked = completedPreparation.has(preparationId);

@@ -233,7 +233,7 @@
   line-height: 1.6;
 }
 
-.recipe-lead > p {
+.recipe-lead [data-section-content] > p {
   margin: 0;
 }
 
@@ -272,6 +272,56 @@
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.recipe-section-head h2,
+.recipe-tips h2 {
+  min-width: 0;
+}
+
+.recipe-section-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  margin: -10px 0;
+  padding: 10px 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.recipe-section-toggle svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  fill: none;
+  stroke: var(--color-coral-strong);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transition: transform 160ms ease;
+}
+
+.recipe-section-toggle[aria-expanded='false'] svg {
+  transform: rotate(180deg);
+}
+
+.recipe-section-toggle[hidden],
+[data-section-content][hidden],
+.recipe-section-title-fallback[hidden] {
+  display: none;
+}
+
+.recipe-section-content {
+  display: grid;
+  gap: var(--space-12);
 }
 
 /*
@@ -373,12 +423,23 @@
 }
 
 .recipe-ingredients__head {
+  position: relative;
   align-items: center;
   gap: var(--space-8);
 }
 
 .recipe-ingredients__head > h2 {
+  width: 100%;
   min-height: auto;
+}
+
+.recipe-ingredients__head .ingredient-progress {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 32px;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .recipe-segmented[hidden] {
@@ -538,7 +599,7 @@
 
 .assistant-choice .recipe-section-head {
   margin-bottom: 0;
-  padding-inline: calc(var(--space-16) + 1px);
+  padding-inline: var(--space-4);
 }
 
 .assistant-choice h2 {
@@ -547,6 +608,24 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
+}
+
+.assistant-choice__hint,
+.recipe-prep__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+  line-height: 1.5;
+}
+
+.assistant-choice__controls {
+  display: grid;
+  gap: var(--space-8);
+  padding-inline: calc(var(--space-16) + 1px);
+}
+
+.recipe-cooking-flow__content {
+  gap: var(--space-16);
 }
 
 /* Samodzielna wersja kroków należy wyłącznie do trybu „Tylko kroki”. Zapis przez
@@ -578,52 +657,22 @@
   margin-bottom: 0;
 }
 
-.recipe-prep__heading-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-12);
+.recipe-prep .recipe-section-head,
+.recipe-steps .recipe-section-head {
+  position: relative;
 }
 
-.recipe-prep__collapse {
-  display: inline-flex;
-  min-height: 44px;
-  flex: none;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-8);
-  border: 0;
-  border-radius: var(--radius-field);
-  color: var(--color-coral-strong);
-  font: inherit;
-  font-size: var(--font-size-14);
-  font-weight: 700;
-  background: transparent;
-  cursor: pointer;
+.recipe-prep .recipe-section-toggle svg,
+.recipe-steps .recipe-section-toggle svg {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
 }
 
-.recipe-prep__collapse:hover {
-  background: var(--color-coral-soft);
-}
-
-.recipe-prep__collapse svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-  transition: transform 160ms ease;
-}
-
-.recipe-prep__collapse[aria-expanded='false'] svg {
-  transform: rotate(180deg);
-}
-
-.recipe-prep__collapse[hidden],
-.prep-groups[hidden] {
-  display: none;
+.recipe-prep .recipe-section-toggle[aria-expanded='false'] svg,
+.recipe-steps .recipe-section-toggle[aria-expanded='false'] svg {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .step-list {

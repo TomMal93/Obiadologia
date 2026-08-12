@@ -209,8 +209,6 @@ export const pl = {
     preparationStageLabel: 'Przygotowanie',
     preparationHeading: 'Zanim zaczniesz',
     preparationHint: 'Warto zajrzeć do listy — przygotowanie tych rzeczy wcześniej może usprawnić późniejsze gotowanie.',
-    collapsePreparation: 'Zwiń listę',
-    expandPreparation: 'Rozwiń listę',
     preparationTiming: {
       day_before: 'Nawet dzień wcześniej',
       just_in_time: 'Tuż przed lub w trakcie',

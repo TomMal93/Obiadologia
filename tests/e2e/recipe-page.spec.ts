@@ -56,37 +56,43 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
     const progress = section.querySelector('.ingredient-progress');
-    if (!(heading instanceof HTMLElement) || !(progress instanceof HTMLElement)) {
+    const chevron = section.querySelector('.recipe-section-toggle svg');
+    if (
+      !(heading instanceof HTMLElement)
+      || !(progress instanceof HTMLElement)
+      || !(chevron instanceof SVGElement)
+    ) {
       throw new Error('Ingredient section header was not found');
     }
     const headingBounds = heading.getBoundingClientRect();
     const progressBounds = progress.getBoundingClientRect();
+    const chevronBounds = chevron.getBoundingClientRect();
     const sectionBounds = section.getBoundingClientRect();
     const sectionStyles = getComputedStyle(section);
     return {
       headingCenter: headingBounds.top + headingBounds.height / 2,
-      headingRight: headingBounds.right,
       sectionRight: sectionBounds.right,
       sectionBorderRight: Number.parseFloat(sectionStyles.borderRightWidth),
       sectionPaddingRight: Number.parseFloat(sectionStyles.paddingRight),
       progressCenter: progressBounds.top + progressBounds.height / 2,
-      progressLeft: progressBounds.left,
       progressRight: progressBounds.right,
+      chevronLeft: chevronBounds.left,
+      chevronRight: chevronBounds.right,
     };
   });
-  // Licznik stoi w wierszu nagłówka, po jego prawej, przy krawędzi sekcji.
+  // Strzałka stoi na prawej krawędzi jak w „O daniu”, a licznik pozostaje przed nią.
   expect(ingredientHeadGeometry.progressCenter).toBeCloseTo(
     ingredientHeadGeometry.headingCenter,
     0,
   );
-  expect(ingredientHeadGeometry.progressLeft).toBeGreaterThanOrEqual(
-    ingredientHeadGeometry.headingRight,
-  );
-  expect(ingredientHeadGeometry.progressRight).toBeCloseTo(
+  expect(ingredientHeadGeometry.chevronRight).toBeCloseTo(
     ingredientHeadGeometry.sectionRight
       - ingredientHeadGeometry.sectionBorderRight
       - ingredientHeadGeometry.sectionPaddingRight,
     0,
+  );
+  expect(ingredientHeadGeometry.progressRight).toBeLessThan(
+    ingredientHeadGeometry.chevronLeft,
   );
   await expect(
     ingredients.getByRole('button', { name: /Odhacz składnik: chorizo/ }),
@@ -236,14 +242,9 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(preparation).toContainText(
     'przygotowanie tych rzeczy wcześniej może usprawnić późniejsze gotowanie',
   );
-  const preparationCollapse = preparation.getByRole('button', { name: 'Rozwiń listę' });
-  await expect(preparationCollapse).toHaveAttribute('aria-expanded', 'false');
-  await expect(preparation.getByRole('listitem').first()).toBeHidden();
-  await preparationCollapse.click();
-  await expect(preparation.getByRole('button', { name: 'Zwiń listę' })).toHaveAttribute(
-    'aria-expanded',
-    'true',
-  );
+  await expect(
+    preparation.getByRole('button', { name: 'Zanim zaczniesz', exact: true }),
+  ).toHaveAttribute('aria-expanded', 'true');
   await expect(preparation.getByRole('listitem').first()).toBeVisible();
   await expect(
     preparation.getByRole('region', { name: 'Nawet dzień wcześniej' }).getByRole('listitem'),
@@ -429,6 +430,107 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(standaloneSteps).toBeHidden();
   await expect(chorizoHalfStep).toBeVisible();
   await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute('aria-pressed', 'false');
+
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations).toEqual([]);
+});
+
+test('every main recipe section can be collapsed and expanded independently', async ({ page }) => {
+  await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
+
+  const description = page.getByRole('region', { name: 'O daniu' });
+  const ingredients = page.getByRole('region', { name: 'Składniki' });
+
+  for (const { section, name, content } of [
+    {
+      section: description,
+      name: 'O daniu',
+      content: description.getByText(/Aromatyczna szakszuka z rumianym chorizo/),
+    },
+    {
+      section: ingredients,
+      name: 'Składniki',
+      content: ingredients.getByText('Warzywa i owoce'),
+    },
+  ]) {
+    const toggle = section.getByRole('button', { name, exact: true });
+    await toggle.click();
+    await expect(content).toBeHidden();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await toggle.click();
+    await expect(content).toBeVisible();
+  }
+
+  const choice = page.getByRole('button', { name: 'Jak chcesz gotować?', exact: true });
+  const toggleRightInsets = await page.evaluate(() => {
+    const getRightInset = (containerSelector: string, toggleName: string) => {
+      const container = document.querySelector(containerSelector);
+      const toggle = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-section-toggle]'))
+        .find((button) => button.textContent?.trim() === toggleName);
+      const icon = toggle?.querySelector('svg');
+      if (!(container instanceof HTMLElement) || !(icon instanceof SVGElement)) {
+        throw new Error(`Nie znaleziono geometrii sekcji: ${toggleName}`);
+      }
+      return container.getBoundingClientRect().right - icon.getBoundingClientRect().right;
+    };
+
+    return {
+      description: getRightInset('.recipe-lead', 'O daniu'),
+      cookingChoice: getRightInset('.recipe-cooking-flow', 'Jak chcesz gotować?'),
+    };
+  });
+  expect(toggleRightInsets.cookingChoice).toBeCloseTo(toggleRightInsets.description, 0);
+  await choice.click();
+  await expect(page.getByRole('button', { name: 'Tryb asystenta' })).toBeHidden();
+  await choice.click();
+  await page.getByRole('button', { name: 'Tryb asystenta' }).click();
+
+  await choice.click();
+  await expect(page.getByRole('region', { name: 'Zanim zaczniesz' })).toBeHidden();
+  await expect(page.getByRole('region', { name: 'Kroki' })).toBeHidden();
+  await expect(page.getByRole('region', { name: 'Coś jeszcze' })).toBeHidden();
+  await choice.click();
+
+  for (const name of ['Zanim zaczniesz', 'Kroki', 'Coś jeszcze']) {
+    const section = page.getByRole('region', { name });
+    const toggle = section.getByRole('button', { name, exact: true });
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    if (name === 'Zanim zaczniesz' || name === 'Kroki') {
+      const centers = await section.evaluate((element) => {
+        const head = element.querySelector('.recipe-section-head');
+        const icon = element.querySelector('.recipe-section-toggle svg');
+        if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
+          throw new Error('Nie znaleziono geometrii zwiniętego nagłówka');
+        }
+        const headBounds = head.getBoundingClientRect();
+        const iconBounds = icon.getBoundingClientRect();
+        return {
+          head: headBounds.top + headBounds.height / 2,
+          icon: iconBounds.top + iconBounds.height / 2,
+        };
+      });
+      expect(centers.icon).toBeCloseTo(centers.head, 0);
+    }
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    if (name === 'Zanim zaczniesz' || name === 'Kroki') {
+      const centers = await section.evaluate((element) => {
+        const head = element.querySelector('.recipe-section-head');
+        const icon = element.querySelector('.recipe-section-toggle svg');
+        if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
+          throw new Error('Nie znaleziono geometrii rozwiniętego nagłówka');
+        }
+        const headBounds = head.getBoundingClientRect();
+        const iconBounds = icon.getBoundingClientRect();
+        return {
+          head: headBounds.top + headBounds.height / 2,
+          icon: iconBounds.top + iconBounds.height / 2,
+        };
+      });
+      expect(centers.icon).toBeCloseTo(centers.head, 0);
+    }
+  }
 
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations).toEqual([]);
