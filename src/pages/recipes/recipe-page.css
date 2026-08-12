@@ -845,18 +845,6 @@
   background: var(--color-surface);
 }
 
-.recipe-step__kind {
-  display: block;
-  margin-bottom: var(--space-4);
-  color: var(--color-coral-strong);
-  font-size: var(--font-size-14);
-  font-weight: 800;
-}
-
-.recipe-step__kind--complete {
-  display: none;
-}
-
 .recipe-step__toggle.is-checked .recipe-step__badge {
   color: var(--color-surface);
   background: var(--color-coral);
@@ -875,6 +863,7 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
   line-height: 1.35;
+  text-decoration: line-through;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
@@ -885,10 +874,6 @@
 
 .recipe-step__toggle.is-checked .recipe-step__action--pending {
   display: none;
-}
-
-.recipe-step__toggle.is-checked .recipe-step__kind--complete {
-  display: block;
 }
 
 .recipe-step__toggle--cooking.is-checked {

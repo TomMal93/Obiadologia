@@ -265,7 +265,11 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
   await expect(chorizoHalfStep.locator('.recipe-step__text')).toBeVisible();
   await expect(chorizoHalfStep.locator('.recipe-step__text')).toHaveCSS('font-size', '14px');
-  await expect(chorizoHalfStep.locator('.recipe-step__kind--complete')).toHaveText('Gotowe');
+  await expect(chorizoHalfStep).not.toContainText('Gotowe');
+  await expect(chorizoHalfStep.locator('.recipe-step__text')).toHaveCSS(
+    'text-decoration-line',
+    'line-through',
+  );
   await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute(
     'aria-label',
     /Cofnij wykonanie przygotowania/,

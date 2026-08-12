@@ -217,7 +217,6 @@ export const pl = {
     },
     checkPreparationLabel: 'Oznacz przygotowanie jako wykonane: {name}',
     uncheckPreparationLabel: 'Cofnij wykonanie przygotowania: {name}',
-    preparationStepCompleteLabel: 'Gotowe',
     stepsStageLabel: 'Gotowanie',
     stepsHeading: 'Kroki',
     stepsInteractionHint: 'Dotknij kroku, aby oznaczyć go jako wykonany.',
