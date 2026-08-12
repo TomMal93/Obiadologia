@@ -121,7 +121,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(steps.getByText('Dotknij kroku, aby oznaczyć go jako wykonany.')).toBeVisible();
   await expect(steps.getByRole('listitem')).toHaveCount(9);
   const firstStep = steps.locator('.steps-only-section [data-checkable-step]').first();
-  await expect(firstStep).toContainText('Dotknij, aby odhaczyć');
+  await expect(firstStep.getByText('Zrobione', { exact: true })).toBeVisible();
   await expect(firstStep).toHaveCSS('border-top-style', 'solid');
   await firstStep.click();
   await expect(firstStep).toHaveAttribute('aria-pressed', 'true');
@@ -183,6 +183,18 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(stepsMode).toHaveAttribute('aria-pressed', 'false');
   await expect(preparation).toBeVisible();
   await expect(preparation.getByRole('listitem')).toHaveCount(5);
+  await expect(preparation).toContainText(
+    'przygotowanie tych rzeczy wcześniej może usprawnić późniejsze gotowanie',
+  );
+  const preparationCollapse = preparation.getByRole('button', { name: 'Rozwiń listę' });
+  await expect(preparationCollapse).toHaveAttribute('aria-expanded', 'false');
+  await expect(preparation.getByRole('listitem').first()).toBeHidden();
+  await preparationCollapse.click();
+  await expect(preparation.getByRole('button', { name: 'Zwiń listę' })).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  );
+  await expect(preparation.getByRole('listitem').first()).toBeVisible();
   await expect(
     preparation.getByRole('region', { name: 'Nawet dzień wcześniej' }).getByRole('listitem'),
   ).toHaveCount(2);
@@ -194,7 +206,7 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   const halfSteps = assistantSteps.locator('[data-preparation-half-step]');
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();
-  await expect(assistantSteps.getByRole('listitem')).toHaveCount(12);
+  await expect(assistantSteps.getByRole('listitem')).toHaveCount(7);
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await expect(assistantSteps.getByText('Do zrobienia', { exact: true })).toHaveCount(0);
   await expect(
@@ -203,15 +215,14 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     'Połóż chorizo na zimnej patelni',
   );
   const halfStepTargets = await halfSteps.evaluateAll((items) =>
-    items.map((item) => {
-      let next = item.nextElementSibling;
-      while (next?.classList.contains('recipe-step--preparation')) {
-        next = next.nextElementSibling;
-      }
-      return next?.querySelector<HTMLElement>('[data-step-number]')?.dataset.stepNumber;
-    }),
+    items.map(
+      (item) =>
+        item.parentElement?.querySelector<HTMLElement>('[data-assistant-cooking-step]')?.dataset
+          .stepNumber,
+    ),
   );
   expect(halfStepTargets).toEqual(['1', '1', '1', '2', '4']);
+  await expect(halfSteps.first().getByText('Przed krokiem 1')).toBeVisible();
 
   const chorizoPreparation = preparation.getByRole('button', { name: /Pokrój chorizo/ });
   const chorizoHalfStep = assistantSteps.locator(
@@ -234,26 +245,13 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await chorizoPreparation.click();
   await expect(chorizoHalfStep).toBeVisible();
-  await expect(chorizoHalfStep).toContainText('Dotknij, gdy gotowe');
-  const preparationAction = chorizoHalfStep.locator('.recipe-step__action--pending');
-  await expect(preparationAction).toHaveCSS('font-size', '12px');
-  await expect(preparationAction).toHaveCSS('font-weight', '400');
-  await expect(preparationAction).toHaveCSS('text-align', 'center');
-  await expect(preparationAction).toHaveCSS('color', 'rgb(168, 45, 24)');
-  const [preparationActionBox, preparationCardBox] = await Promise.all([
-    preparationAction.boundingBox(),
-    chorizoHalfStep.getByRole('button').boundingBox(),
-  ]);
-  expect(preparationActionBox).not.toBeNull();
-  expect(preparationCardBox).not.toBeNull();
-  expect(preparationActionBox!.x + preparationActionBox!.width / 2).toBeCloseTo(
-    preparationCardBox!.x + preparationCardBox!.width / 2,
-    0,
-  );
+  await expect(chorizoHalfStep.getByText('Zrobione', { exact: true })).toHaveCount(0);
+  await expect(chorizoHalfStep.locator('.recipe-step__badge')).toHaveText('');
 
   await chorizoHalfStep.getByRole('button').click();
   await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'true');
   await expect(chorizoHalfStep).toBeVisible();
+  await expect(chorizoHalfStep.locator('.recipe-step__badge')).toHaveText('✓');
   await expect(chorizoHalfStep.getByRole('button')).toBeFocused();
 
   const firstCookingStep = assistantSteps.locator(
@@ -282,7 +280,7 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await firstCookingStep.click();
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'false');
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
-    await expect(preparationButton).toHaveAttribute('aria-pressed', 'true');
+    await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
 
   const choiceHeadingLeft = await page.getByRole('heading', {
@@ -326,7 +324,7 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();
   await expect(chorizoHalfStep).toBeVisible();
-  await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
+  await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute('aria-pressed', 'false');
 
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations).toEqual([]);
