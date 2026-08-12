@@ -233,9 +233,12 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps.getByRole('listitem')).toHaveCount(7);
   const assistantStepGroups = assistantSteps.locator(':scope > .recipe-step-group');
   await expect(assistantStepGroups).toHaveCount(7);
+  await expect(assistantStepGroups.first().locator('[data-step-group-progress]')).toContainText(
+    '0/4 wykonane',
+  );
   for (const group of await assistantStepGroups.all()) {
     await expect(group).toHaveCSS('border-color', 'rgba(255, 79, 46, 0.42)');
-    await expect(group).toHaveCSS('box-shadow', 'rgb(255, 79, 46) 3px 0px 0px 0px inset');
+    await expect(group).toHaveCSS('box-shadow', 'none');
   }
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await expect(assistantSteps.getByText('Do zrobienia', { exact: true })).toHaveCount(0);
@@ -301,6 +304,9 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   });
   expect(animatedHalfSteps).toBe(3);
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'true');
+  await expect(firstCookingStep.locator('..').locator('[data-step-group-progress]')).toContainText(
+    'Komplet · 4 kroki',
+  );
   await expect(preparationBeforeFirstStep).toHaveCount(3);
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'true');
@@ -324,6 +330,9 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   });
   expect(animatedRestoredHalfSteps).toBe(3);
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'false');
+  await expect(firstCookingStep.locator('..').locator('[data-step-group-progress]')).toContainText(
+    '0/4 wykonane',
+  );
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
@@ -373,6 +382,13 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps).toBeHidden();
   await expect(standaloneSteps).toBeVisible();
   await expect(standaloneSteps.getByRole('listitem')).toHaveCount(9);
+  await expect(
+    standaloneSteps.locator('.recipe-step-group').first().locator('[data-step-group-progress]'),
+  ).toContainText('0/1 wykonane');
+  await standaloneSteps.locator('[data-checkable-step]').first().click();
+  await expect(
+    standaloneSteps.locator('.recipe-step-group').first().locator('[data-step-group-progress]'),
+  ).toContainText('Komplet · 1 krok');
   await expect(standaloneSteps.locator('.recipe-step__toggle').first()).toHaveCSS(
     'border-color',
     'rgba(255, 79, 46, 0.42)',

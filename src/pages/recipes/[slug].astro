@@ -50,6 +50,10 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       class="recipe-article"
       data-progress-template={messages.recipe.ingredientsProgress}
       data-progress-complete={messages.recipe.ingredientsProgressComplete}
+      data-step-progress-template={messages.recipe.stepProgress}
+      data-step-progress-complete={messages.recipe.stepProgressComplete}
+      data-step-progress-step-singular={messages.recipe.stepProgressStepSingular}
+      data-step-progress-step-plural={messages.recipe.stepProgressStepPlural}
       data-base-servings={recipe.servings}
     >
       <header class="recipe-hero">
@@ -380,6 +384,12 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   >✓</span>
                 </button>
                 <span class="recipe-step__fallback">{step}</span>
+                <p class="step-progress" data-step-group-progress hidden>
+                  <span class="step-progress__track" aria-hidden="true">
+                    <span class="step-progress__fill"></span>
+                  </span>
+                  <span data-step-group-progress-text></span>
+                </p>
               </li>
             ))}
           </ol>
@@ -387,7 +397,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
             recipe.stepsOnly && (
               <ol class="step-list steps-only-section">
                 {recipe.stepsOnly.map((step, index) => (
-                  <li class="recipe-step">
+                  <li class="recipe-step recipe-step-group">
                     <button
                       type="button"
                       class="recipe-step__toggle recipe-step__toggle--cooking"
@@ -415,6 +425,12 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       >✓</span>
                     </button>
                     <span class="recipe-step__fallback">{step}</span>
+                    <p class="step-progress" data-step-group-progress hidden>
+                      <span class="step-progress__track" aria-hidden="true">
+                        <span class="step-progress__fill"></span>
+                      </span>
+                      <span data-step-group-progress-text></span>
+                    </p>
                   </li>
                 ))}
               </ol>
@@ -633,6 +649,43 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
   );
   const completedPreparation = new Set<string>();
   const reducePreparationMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stepGroups = Array.from(
+    article?.querySelectorAll<HTMLElement>('.recipe-step-group') ?? [],
+  );
+  const updateStepGroupProgress = (group: HTMLElement) => {
+    const progress = group.querySelector<HTMLElement>('[data-step-group-progress]');
+    const progressText = progress?.querySelector<HTMLElement>('[data-step-group-progress-text]');
+    if (
+      !article
+      || !progress
+      || !progressText
+      || !article.dataset.stepProgressTemplate
+    ) return;
+
+    const controls = Array.from(
+      group.querySelectorAll<HTMLButtonElement>(
+        '[data-preparation-half-step] [data-preparation-toggle], [data-checkable-step]',
+      ),
+    );
+    const checked = controls.filter(
+      (button) => button.getAttribute('aria-pressed') === 'true',
+    ).length;
+    const complete = checked === controls.length;
+    progress.style.setProperty('--step-progress', String(checked / controls.length));
+    progress.classList.toggle('is-complete', complete);
+    progressText.textContent = complete && article.dataset.stepProgressComplete
+      ? article.dataset.stepProgressComplete
+        .replace('{total}', String(controls.length))
+        .replace(
+          '{stepLabel}',
+          controls.length === 1
+            ? (article.dataset.stepProgressStepSingular ?? '')
+            : (article.dataset.stepProgressStepPlural ?? ''),
+        )
+      : article.dataset.stepProgressTemplate
+        .replace('{checked}', String(checked))
+        .replace('{total}', String(controls.length));
+  };
 
   const preparationCollapse = article?.querySelector<HTMLButtonElement>(
     '[data-preparation-collapse]',
@@ -697,6 +750,10 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         { duration: 420, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
       );
     }
+    for (const halfStep of matchingHalfSteps) {
+      const group = halfStep.closest<HTMLElement>('.recipe-step-group');
+      if (group) updateStepGroupProgress(group);
+    }
   };
 
   for (const button of preparationToggles) {
@@ -748,7 +805,14 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         'aria-label',
         (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
       );
+      const group = button.closest<HTMLElement>('.recipe-step-group');
+      if (group) updateStepGroupProgress(group);
     });
+  }
+  for (const group of stepGroups) {
+    const progress = group.querySelector<HTMLElement>('[data-step-group-progress]');
+    if (progress) progress.hidden = false;
+    updateStepGroupProgress(group);
   }
 
   for (const image of Array.from(
