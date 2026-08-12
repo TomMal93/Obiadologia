@@ -324,44 +324,35 @@
   gap: var(--space-12);
 }
 
-/*
- * Licznik zebranych składników jest pigułką w wierszu nagłówka „Składniki”.
- * Pierścień pokazuje postęp bez czytania liczb, a komplet zamienia pigułkę
- * w koralowy znacznik. Ruch niesie wyłącznie `transition`, więc globalna
- * reguła `prefers-reduced-motion` wycisza go bez osobnego wyjątku.
- */
+/* Dyskretny licznik zachowuje neutralny język ramki sekcji, a koral zostawia
+   dla pierścienia postępu i łagodnego stanu kompletu. */
 .ingredient-progress {
   display: inline-flex;
   flex: none;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-8) var(--space-4) var(--space-4);
+  padding: 2px 6px 2px 2px;
+  border: 0;
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
-  /* Tło nasyca się koralem razem z postępem, komplet domyka je pełnym kolorem. */
-  background: color-mix(
-    in srgb,
-    var(--color-coral-soft) calc(var(--ingredient-progress, 0) * 100%),
-    var(--color-bg-shell)
-  );
+  background: transparent;
   margin: 0;
-  transition: color 240ms ease, background-color 240ms ease, box-shadow 240ms ease;
+  transition: color 240ms ease, background-color 240ms ease;
 }
 
 .ingredient-progress.is-complete {
-  color: var(--color-surface);
-  background: var(--color-coral);
-  box-shadow: 0 6px 16px rgb(255 79 46 / 28%);
+  color: var(--color-coral-strong);
+  background: var(--color-coral-soft);
 }
 
 .ingredient-progress__dial {
   display: grid;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   flex: none;
   place-items: center;
 }
@@ -379,7 +370,7 @@
 .ingredient-progress__track,
 .ingredient-progress__arc {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 2.25;
 }
 
 .ingredient-progress__track {
@@ -396,7 +387,7 @@
 }
 
 .ingredient-progress__mark {
-  color: var(--color-surface);
+  color: var(--color-coral-strong);
   font-size: var(--font-size-14);
   line-height: 1;
   opacity: 0;
@@ -496,8 +487,8 @@
   margin: 0;
   padding-inline: var(--space-8);
   color: var(--color-coral-strong);
-  font-size: var(--font-size-16);
-  font-weight: 800;
+  font-size: var(--font-size-14);
+  font-weight: 700;
 }
 
 .ingredient__toggle,

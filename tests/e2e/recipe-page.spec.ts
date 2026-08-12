@@ -52,6 +52,14 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     'Spiżarnia',
     'Przyprawy',
   ]);
+  await expect(ingredients.getByRole('heading', { level: 3 }).first()).toHaveCSS(
+    'font-size',
+    '14px',
+  );
+  await expect(ingredients.getByRole('heading', { level: 3 }).first()).toHaveCSS(
+    'font-weight',
+    '700',
+  );
   await expect(ingredients.locator('.unit-toggle')).toHaveCount(0);
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
@@ -604,6 +612,9 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
     );
 
   await expect(progressText).toHaveText('0/13 zebrane');
+  await expect(progress).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(progress).toHaveCSS('border-top-style', 'none');
+  await expect(progress).toHaveCSS('box-shadow', 'none');
   expect(await ringRemainder()).toBeCloseTo(1, 2);
 
   await toggles.first().click();
@@ -618,6 +629,7 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
   await expect(progressText).toHaveText('Komplet');
   await expect(progress).toHaveClass(/is-complete/);
   await expect(progress.locator('.ingredient-progress__mark')).toHaveCSS('opacity', '1');
+  await expect(progress).toHaveCSS('box-shadow', 'none');
 
   await toggles.first().click();
   await expect(progressText).toHaveText('12/13 zebrane');
