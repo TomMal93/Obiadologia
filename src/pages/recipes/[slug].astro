@@ -635,6 +635,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     article?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
   );
   const completedPreparation = new Set<string>();
+  const reducePreparationMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const preparationCollapse = article?.querySelector<HTMLButtonElement>(
     '[data-preparation-collapse]',
@@ -658,8 +659,21 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     });
   }
 
-  const renderPreparation = (preparationId: string) => {
+  const renderPreparation = (preparationId: string, animate = false) => {
     const checked = completedPreparation.has(preparationId);
+    const matchingHalfSteps = preparationHalfSteps.filter(
+      (halfStep) => halfStep.dataset.preparationHalfStep === preparationId,
+    );
+    const initialHeights = new Map<HTMLElement, number>();
+
+    if (animate && !reducePreparationMotion) {
+      for (const halfStep of matchingHalfSteps) {
+        const initialHeight = halfStep.getBoundingClientRect().height;
+        for (const animation of halfStep.getAnimations()) animation.cancel();
+        initialHeights.set(halfStep, initialHeight);
+      }
+    }
+
     for (const button of preparationToggles) {
       if (button.dataset.preparationId !== preparationId) continue;
       button.setAttribute('aria-pressed', String(checked));
@@ -669,12 +683,22 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         (checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
       );
     }
-    for (const halfStep of preparationHalfSteps) {
-      if (halfStep.dataset.preparationHalfStep === preparationId) {
-        halfStep.hidden = false;
-        const badge = halfStep.querySelector<HTMLElement>('.recipe-step__badge');
-        if (badge) badge.textContent = checked ? '✓' : '';
-      }
+    for (const halfStep of matchingHalfSteps) {
+      halfStep.hidden = false;
+      const badge = halfStep.querySelector<HTMLElement>('.recipe-step__badge');
+      if (badge) badge.textContent = checked ? '✓' : '';
+
+      const initialHeight = initialHeights.get(halfStep);
+      if (initialHeight === undefined) continue;
+      const finalHeight = halfStep.getBoundingClientRect().height;
+      if (Math.abs(finalHeight - initialHeight) < 1) continue;
+      halfStep.animate(
+        [
+          { height: `${initialHeight}px`, overflow: 'hidden' },
+          { height: `${finalHeight}px`, overflow: 'hidden' },
+        ],
+        { duration: 420, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+      );
     }
   };
 
@@ -693,7 +717,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
 
       if (checked) completedPreparation.add(preparationId);
       else completedPreparation.delete(preparationId);
-      renderPreparation(preparationId);
+      renderPreparation(preparationId, true);
     });
   }
 
@@ -713,11 +737,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         for (const halfStep of preparationHalfSteps) {
           const beforeStep = Number(halfStep.dataset.beforeStep);
           const preparationId = halfStep.dataset.preparationHalfStep;
-          if (!preparationId || beforeStep > stepNumber) continue;
+          if (!preparationId || beforeStep !== stepNumber) continue;
 
           if (checked) completedPreparation.delete(preparationId);
           else completedPreparation.add(preparationId);
-          renderPreparation(preparationId);
+          renderPreparation(preparationId, true);
         }
       }
 

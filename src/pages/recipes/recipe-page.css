@@ -813,6 +813,19 @@
   border-bottom: 1px dashed rgb(255 79 46 / 38%);
   border-radius: 0;
   background: var(--color-coral-soft);
+  transition:
+    padding 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms ease,
+    color 240ms ease;
+}
+
+.recipe-step__toggle--preparation .recipe-step__content,
+.recipe-step__toggle--preparation .recipe-step__text {
+  transition:
+    gap 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 240ms ease,
+    font-size 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    line-height 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .recipe-step__toggle--cooking {

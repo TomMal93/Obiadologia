@@ -289,7 +289,13 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   const preparationBeforeFirstStep = assistantSteps.locator(
     '[data-preparation-half-step][data-before-step="1"] [data-preparation-toggle]',
   );
-  await firstCookingStep.click();
+  const animatedHalfSteps = await firstCookingStep.evaluate((button) => {
+    (button as HTMLButtonElement).click();
+    return Array.from(
+      button.parentElement?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
+    ).filter((halfStep) => halfStep.getAnimations().length > 0).length;
+  });
+  expect(animatedHalfSteps).toBe(3);
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'true');
   await expect(preparationBeforeFirstStep).toHaveCount(3);
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
@@ -306,11 +312,30 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     ),
   ).toHaveAttribute('aria-pressed', 'false');
 
-  await firstCookingStep.click();
+  const animatedRestoredHalfSteps = await firstCookingStep.evaluate((button) => {
+    (button as HTMLButtonElement).click();
+    return Array.from(
+      button.parentElement?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
+    ).filter((halfStep) => halfStep.getAnimations().length > 0).length;
+  });
+  expect(animatedRestoredHalfSteps).toBe(3);
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'false');
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
+
+  const secondCookingStep = assistantSteps.locator(
+    '[data-assistant-cooking-step][data-step-number="2"]',
+  );
+  await secondCookingStep.click();
+  for (const preparationButton of await preparationBeforeFirstStep.all()) {
+    await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
+  }
+  await expect(
+    assistantSteps.locator(
+      '[data-preparation-half-step][data-before-step="2"] [data-preparation-toggle]',
+    ),
+  ).toHaveAttribute('aria-pressed', 'true');
 
   const choiceHeadingLeft = await page.getByRole('heading', {
     name: 'Jak chcesz gotować?',
