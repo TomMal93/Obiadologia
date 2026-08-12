@@ -382,7 +382,10 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
           </div>
           <div id="steps-content" class="recipe-section-content" data-section-content>
           <p data-steps-interaction-hint hidden>{messages.recipe.stepsInteractionHint}</p>
-          <ol class:list={['step-list', recipe.stepsOnly && 'assistant-section']}>
+          <ol
+            class:list={['step-list', recipe.stepsOnly && 'assistant-section']}
+            data-step-list="assistant"
+          >
             {recipe.steps.map((step, index) => (
               <li class="recipe-step recipe-step-group">
                 {recipe.preparation
@@ -458,9 +461,18 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
               </li>
             ))}
           </ol>
+          <p
+            class:list={['step-list-completion', recipe.stepsOnly && 'assistant-section']}
+            data-step-list-completion="assistant"
+            aria-live="polite"
+            hidden
+          >
+            {messages.recipe.stepsCompleteMessage}
+          </p>
           {
             recipe.stepsOnly && (
-              <ol class="step-list steps-only-section">
+              <>
+              <ol class="step-list steps-only-section" data-step-list="steps">
                 {recipe.stepsOnly.map((step, index) => (
                   <li class="recipe-step recipe-step-group">
                     <button
@@ -503,6 +515,15 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   </li>
                 ))}
               </ol>
+              <p
+                class="step-list-completion steps-only-section"
+                data-step-list-completion="steps"
+                aria-live="polite"
+                hidden
+              >
+                {messages.recipe.stepsCompleteMessage}
+              </p>
+              </>
             )
           }
           </div>
@@ -792,6 +813,29 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         .replace('{total}', String(controls.length));
   };
 
+  const stepLists = Array.from(
+    article?.querySelectorAll<HTMLOListElement>('[data-step-list]') ?? [],
+  );
+  const updateStepListCompletions = () => {
+    for (const list of stepLists) {
+      const mode = list.dataset.stepList;
+      const completion = mode
+        ? article?.querySelector<HTMLElement>(`[data-step-list-completion="${mode}"]`)
+        : null;
+      if (!completion) continue;
+
+      const controls = Array.from(
+        list.querySelectorAll<HTMLButtonElement>(
+          '[data-preparation-half-step] [data-preparation-toggle], [data-checkable-step]',
+        ),
+      );
+      completion.hidden = !(
+        controls.length > 0
+        && controls.every((button) => button.getAttribute('aria-pressed') === 'true')
+      );
+    }
+  };
+
   const renderPreparation = (preparationId: string, animate = false) => {
     const checked = completedPreparation.has(preparationId);
     const matchingHalfSteps = preparationHalfSteps.filter(
@@ -837,6 +881,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       const group = halfStep.closest<HTMLElement>('.recipe-step-group');
       if (group) updateStepGroupProgress(group);
     }
+    updateStepListCompletions();
   };
 
   for (const button of preparationToggles) {
@@ -890,6 +935,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       );
       const group = button.closest<HTMLElement>('.recipe-step-group');
       if (group) updateStepGroupProgress(group);
+      updateStepListCompletions();
     });
   }
   for (const group of stepGroups) {
@@ -897,6 +943,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     if (progress) progress.hidden = false;
     updateStepGroupProgress(group);
   }
+  updateStepListCompletions();
 
   for (const image of Array.from(
     article?.querySelectorAll<HTMLImageElement>('.recipe-hero__image') ?? [],

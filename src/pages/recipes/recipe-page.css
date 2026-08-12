@@ -1050,6 +1050,22 @@
   color: var(--color-coral-strong);
 }
 
+.step-list-completion {
+  margin: 0;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-field);
+  color: var(--color-coral-strong);
+  font-size: var(--font-size-16);
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+  background: var(--color-coral-soft);
+}
+
+.step-list-completion[hidden] {
+  display: none;
+}
+
 .recipe-step__fallback {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

@@ -222,6 +222,7 @@ export const pl = {
     stepProgressComplete: 'Komplet · {total} {stepLabel}',
     stepProgressStepSingular: 'krok',
     stepProgressStepPlural: 'kroki',
+    stepsCompleteMessage: 'Gratulacje, danie gotowe!',
     finishStepAction: 'Oznacz jako zrobione',
     tipsHeading: 'Coś jeszcze',
     checkStepLabel: 'Oznacz krok {number} jako wykonany',

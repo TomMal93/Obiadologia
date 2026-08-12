@@ -574,6 +574,42 @@ test('every main recipe section can be collapsed and expanded independently', as
   expect(accessibility.violations).toEqual([]);
 });
 
+test('completing every step shows the finished-dish message for the active mode', async ({ page }) => {
+  await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
+
+  await page.getByRole('button', { name: 'Tylko kroki' }).click();
+  const standaloneList = page.locator('[data-step-list="steps"]');
+  const standaloneCompletion = page.locator('[data-step-list-completion="steps"]');
+  await expect(standaloneCompletion).toBeHidden();
+
+  for (const step of await standaloneList.locator('[data-checkable-step]').all()) {
+    await step.click();
+  }
+  await expect(standaloneCompletion).toBeVisible();
+  await expect(standaloneCompletion).toHaveText('Gratulacje, danie gotowe!');
+  expect(
+    await standaloneCompletion.evaluate((element) =>
+      element.previousElementSibling?.matches('[data-step-list="steps"]'),
+    ),
+  ).toBe(true);
+
+  await standaloneList.locator('[data-checkable-step]').last().click();
+  await expect(standaloneCompletion).toBeHidden();
+
+  await page.getByRole('button', { name: 'Tryb asystenta' }).click();
+  const assistantList = page.locator('[data-step-list="assistant"]');
+  const assistantCompletion = page.locator('[data-step-list-completion="assistant"]');
+  await expect(assistantCompletion).toBeHidden();
+  for (const step of await assistantList.locator('[data-assistant-cooking-step]').all()) {
+    await step.click();
+  }
+  await expect(assistantCompletion).toBeVisible();
+  await expect(standaloneCompletion).toBeHidden();
+
+  await assistantList.locator('[data-assistant-cooking-step]').first().click();
+  await expect(assistantCompletion).toBeHidden();
+});
+
 test('recipe page stays centered and has no horizontal overflow', async ({ page }) => {
   for (const width of [320, 375, 390, 430, 480, 768]) {
     await page.setViewportSize({ width, height: 800 });
