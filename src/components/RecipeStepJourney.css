@@ -1,8 +1,11 @@
-/* Ścieżka kroków: oś z numerowanymi znacznikami po lewej i karty etapów po
-   prawej. Stan etapu niesie klasa `is-done` (wykonany), `is-current` (najbliższy
-   do zrobienia) i `is-open` (rozwinięty). Kolor nigdy nie jest jedynym nośnikiem
-   znaczenia: znacznik wykonanego etapu pokazuje ✓, a etykieta „Etap N” wraca do
-   zwiniętego wiersza, gdy numer ustąpił miejsca znacznikowi wykonania. */
+/* Ścieżka kroków: ciągła oś z numerowanymi znacznikami po lewej i karty etapów
+   przy niej. Zwinięte etapy stoją zwarcie obok osi, a karta rozwiniętego etapu
+   wsuwa się na oś — jej lewa krawędź siada dokładnie na linii, więc oś prowadzi
+   do karty i przez nią, zamiast urywać się obok. Stan etapu niesie klasa
+   `is-done` (wykonany), `is-current` (najbliższy do zrobienia) i `is-open`
+   (rozwinięty). Kolor nigdy nie jest jedynym nośnikiem znaczenia: znacznik
+   wykonanego etapu pokazuje ✓, a etykieta „Etap N” wraca do zwiniętego wiersza,
+   gdy numer ustąpił miejsca znacznikowi wykonania. */
 
 .step-journey {
   display: grid;
@@ -43,8 +46,10 @@
 }
 
 .step-list {
+  --step-list-gap: var(--space-8);
+
   display: grid;
-  gap: var(--space-8);
+  gap: var(--step-list-gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -52,32 +57,55 @@
 
 .step-item {
   --step-rail-width: var(--space-32);
+  --step-axis-width: 2px;
+  --step-axis-center: calc(var(--step-rail-width) / 2);
+  --step-card-gap: var(--space-8);
+  /* Wiersz nagłówka etapu ma wysokość obszaru dotyku, a znacznik stoi w jego
+     osi pionowej — dlatego środek każdego znacznika wypada zawsze na tej samej
+     wysokości, niezależnie od jego rozmiaru. */
+  --step-head-height: 44px;
+  --step-marker-size: var(--space-24);
+  --step-marker-offset: calc((var(--step-head-height) - var(--step-marker-size)) / 2);
+  /* O ile karta rozwiniętego etapu wsuwa się w stronę osi: tyle, aby jej lewa
+     krawędź stanęła dokładnie na linii. Ten sam wymiar wraca jako lewy
+     margines wewnętrzny karty, więc treść zostaje na swoim miejscu, a wcięcie
+     bierze na siebie sama karta. */
+  --step-card-anchor: calc(
+    var(--step-rail-width) + var(--step-card-gap)
+    - var(--step-axis-center) + var(--step-axis-width) / 2
+  );
 
   position: relative;
   display: grid;
   grid-template-columns: var(--step-rail-width) minmax(0, 1fr);
-  gap: var(--space-12);
+  gap: var(--step-card-gap);
   align-items: start;
 }
 
-/* Ciągła oś łączy znaczniki etapów. Pierwszy i ostatni etap urywają ją na
-   środku własnego znacznika, więc linia nie wystaje poza ścieżkę. */
+.step-item.is-open {
+  --step-marker-size: var(--step-rail-width);
+}
+
+/* Ciągła oś łączy znaczniki etapów: odcinek każdego etapu sięga w odstęp
+   listy, więc linia nie rozpada się na kreski między kartami. Pierwszy i
+   ostatni etap urywają ją na środku własnego znacznika, aby nie wystawała
+   poza ścieżkę. */
 .step-item::before {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(var(--step-rail-width) / 2 - 1px);
-  width: 2px;
+  top: calc(-1 * var(--step-list-gap));
+  bottom: calc(-1 * var(--step-list-gap));
+  left: calc(var(--step-axis-center) - var(--step-axis-width) / 2);
+  width: var(--step-axis-width);
   background: var(--color-coral-soft);
   content: '';
 }
 
 .step-item:first-child::before {
-  top: calc(var(--step-rail-width) / 2);
+  top: calc(var(--step-head-height) / 2);
 }
 
 .step-item:last-child::before {
-  bottom: calc(100% - var(--step-rail-width) / 2);
+  bottom: calc(100% - var(--step-head-height) / 2);
 }
 
 .step-item.is-done::before,
@@ -85,12 +113,18 @@
   background: var(--color-coral-strong);
 }
 
+/* Znacznik stoi na osi (jest wyśrodkowany w kolumnie osi) i rysuje się nad
+   kartą, więc przy rozwiniętym etapie wypada na jej lewej krawędzi — punkt
+   etapu zostaje na linii, a karta jest w niego wpięta. Zwinięte etapy mają
+   mniejszy znacznik, przez co układają się zwarcie przy osi. */
 .step-item__badge {
   position: relative;
   z-index: 1;
   display: grid;
-  width: var(--step-rail-width);
-  height: var(--step-rail-width);
+  width: var(--step-marker-size);
+  height: var(--step-marker-size);
+  justify-self: center;
+  margin-top: var(--step-marker-offset);
   place-items: center;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-pill);
@@ -99,7 +133,8 @@
   font-weight: 800;
   line-height: 1;
   background: var(--color-surface);
-  transition: color 240ms ease, border-color 240ms ease, background-color 240ms ease;
+  transition: width 240ms ease, height 240ms ease, margin-top 240ms ease,
+    color 240ms ease, border-color 240ms ease, background-color 240ms ease;
 }
 
 .step-item.is-current .step-item__badge {
@@ -124,8 +159,18 @@
   transition: border-color 240ms ease, background-color 240ms ease;
 }
 
+/* Karta rozwiniętego etapu jest wpięta w oś: ujemny margines wsuwa jej lewą
+   krawędź na linię, koralowe obramowanie przejmuje przebieg osi na wysokości
+   karty, a lewy margines wewnętrzny oddaje odzyskane miejsce z powrotem, więc
+   treść zostaje w tej samej kolumnie co w kartach zwiniętych. Mniejszy promień
+   po stronie osi domyka wrażenie osadzenia. */
 .step-item.is-open .step-item__card {
+  padding-left: var(--step-card-anchor);
+  margin-left: calc(-1 * var(--step-card-anchor));
   border-color: rgb(255 79 46 / 42%);
+  border-left: 3px solid var(--color-coral-strong);
+  border-start-start-radius: var(--space-4);
+  border-end-start-radius: var(--space-4);
   background: var(--color-coral-soft);
 }
 
