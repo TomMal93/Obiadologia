@@ -5,7 +5,13 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from 'react';
+import type {
+  CSSProperties,
+  KeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  PointerEvent,
+  ReactNode,
+} from 'react';
 import type { CategorySelection, MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 import { filterRecipesByCategories, hasCategorySelection } from '@/domain/recipe';
 import {
@@ -550,7 +556,7 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
     setSession(nextSession);
   }, []);
 
-  function requestClose() {
+  function requestClose({ returnFocus = true } = {}) {
     if (!session) return;
     markSessionEnded(session.id);
     // Zamknięcie nie może zależeć wyłącznie od history.back(): w osadzonych
@@ -561,8 +567,27 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
     // otwarcie"); gdy back() jest bezczynny, restoreFromHistory po prostu się
     // nie odpali, a overlay i tak jest już zamknięty.
     setSession(null);
-    openerRef.current?.focus();
+    if (returnFocus) openerRef.current?.focus();
     window.history.back();
+  }
+
+  // Logo i nazwa w nagłówku overlaya prowadzą na stronę główną. Overlay żyje
+  // wyłącznie na „/”, więc typowo wystarczy zamknięcie sesji (jedno cofnięcie
+  // historii, tak jak przy X i `Escape`) oraz powrót na górę strony — bez
+  // przeładowania. Fokus nie wraca wtedy do elementu otwierającego, bo ten
+  // potrafi leżeć w głębi strony i przewinąłby ją z powrotem. Kliknięcia
+  // zmodyfikowane i wejście spoza strony głównej zostawiamy przeglądarce.
+  function handleHomeClick(event: ReactMouseEvent<HTMLAnchorElement>) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    if (window.location.pathname !== new URL(event.currentTarget.href).pathname) {
+      if (session) markSessionEnded(session.id);
+      return;
+    }
+    event.preventDefault();
+    requestClose({ returnFocus: false });
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0 }));
   }
 
   function updateSnapshot(patch: Partial<DiscoverySnapshot>) {
@@ -795,16 +820,23 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
           onKeyDown={handleDialogKeyDown}
         >
           <div className="overlay-header">
-            <img
-              className="overlay-brand-mark"
-              src="/assets/obiadologia-logo.png"
-              width="48"
-              height="48"
-              alt=""
-              aria-hidden="true"
-            />
-            <strong>{common.brand}</strong>
-            <button type="button" className="overlay-close" aria-label={discoveryMessages.closeLabel} onClick={requestClose}>
+            <a
+              className="overlay-brand"
+              href="/"
+              aria-label={common.brandHomeLabel}
+              onClick={handleHomeClick}
+            >
+              <img
+                className="overlay-brand-mark"
+                src="/assets/obiadologia-logo.png"
+                width="48"
+                height="48"
+                alt=""
+                aria-hidden="true"
+              />
+              <strong>{common.brand}</strong>
+            </a>
+            <button type="button" className="overlay-close" aria-label={discoveryMessages.closeLabel} onClick={() => requestClose()}>
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M6 6 18 18M18 6 6 18" />
               </svg>

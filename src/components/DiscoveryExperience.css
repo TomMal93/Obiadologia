@@ -373,18 +373,34 @@
 }
 
 .overlay-header {
-  display: grid;
-  grid-template-columns: 48px 1fr 48px;
+  display: flex;
   gap: var(--space-12);
   align-items: center;
+  justify-content: space-between;
   height: calc(var(--header-block) + env(safe-area-inset-top));
   padding-top: env(safe-area-inset-top);
   margin-bottom: var(--space-24);
 }
 
-.overlay-header > strong {
+/* Brand jest linkiem na stronę główną w tym samym rozmiarze i położeniu co we
+   wspólnym nagłówku strony, więc nie niesie dekoracji linku. */
+.overlay-brand {
+  display: inline-flex;
+  gap: var(--space-12);
+  align-items: center;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.overlay-brand > strong {
   font-size: var(--font-size-20);
   font-weight: 800;
+}
+
+.overlay-brand:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
 }
 
 .overlay-brand-mark {

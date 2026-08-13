@@ -73,7 +73,8 @@ test('map supports pointer input and preserves an unmatched search query', async
   const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
   await search.fill('feta');
   await expect(dialog.getByText('Tego nie znaleźliśmy. Spróbujmy inaczej.')).toBeVisible();
-  await expect(dialog.getByRole('link')).toHaveCount(0);
+  // Bez wyników w overlayu zostaje wyłącznie link brandu prowadzący na „/”.
+  await expect(dialog.locator('.recipe-card')).toHaveCount(0);
   await dialog.getByRole('button', { name: /Mapa/ }).click();
   await expect(page.getByRole('button', { name: /Talerz na mapie: szybko 80% · lekko 80%/ })).toBeVisible();
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
@@ -82,3 +83,27 @@ test('map supports pointer input and preserves an unmatched search query', async
   const accessibility = await new AxeBuilder({ page }).include('.discovery-overlay').analyze();
   expect(accessibility.violations).toEqual([]);
 });
+
+// Logo i nazwa w nagłówku overlaya są drogą powrotną na stronę główną: sesja
+// kończy się jak przy X, a strona wraca na górę bez dodatkowego wpisu historii.
+for (const mode of ['Szukaj', 'Mapa']) {
+  test(`the overlay brand (${mode}) returns to the home page and ends the session`, async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
+    await page.getByRole('button', { name: mode }).click();
+
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole('link', { name: 'Obiadologia — strona główna' }).click();
+
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.locator('.home-hero')).toBeVisible();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+
+    // Sesja jest zakończona, więc „Dalej” otwiera świeży overlay zamiast wracać
+    // do poprzednich kryteriów.
+    await page.goForward();
+    await expect(page.getByRole('dialog')).toBeVisible();
+  });
+}
