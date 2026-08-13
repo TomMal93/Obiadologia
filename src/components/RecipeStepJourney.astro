@@ -56,13 +56,13 @@ const cards = steps.map((text, index) => {
               aria-controls={card.bodyId}
               hidden
             >
-              <span class="step-item__label">{card.label}</span>
+              <span class="visually-hidden">{card.label}</span>
               <span class="step-item__preview">{card.text}</span>
               <svg class="step-item__chevron" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="m5 12 5-5 5 5" />
               </svg>
             </button>
-            <span class="step-item__heading-fallback">{card.label}</span>
+            <span class="step-item__heading-fallback visually-hidden">{card.label}</span>
           </h3>
 
           <div class="step-item__body" id={card.bodyId} data-step-body>
@@ -108,7 +108,6 @@ const cards = steps.map((text, index) => {
             )}
 
             <div class="step-final">
-              <span class="step-final__badge" aria-hidden="true">{card.number}</span>
               <div class="step-final__content">
                 {card.preparation.length > 0 && (
                   <p class="step-final__label" data-step-final-label hidden>

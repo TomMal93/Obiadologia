@@ -165,10 +165,11 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStepAction).toHaveAttribute('aria-pressed', 'true');
   await expect(firstStep).toHaveClass(/is-done/);
   await expect(firstStep.locator('[data-step-badge]')).toHaveText('✓');
-  // Wykonany etap zwija się do jednoliniowej zapowiedzi z etykietą „Etap 1”,
-  // a ścieżka rozwija kolejny etap do zrobienia.
+  // Wykonany etap zwija się do samej jednoliniowej zapowiedzi treści — kafel nie
+  // powtarza numeru etykietą „Etap 1” — a ścieżka rozwija kolejny etap do zrobienia.
   await expect(firstStep.locator('[data-step-body]')).toBeHidden();
-  await expect(firstStep.locator('.step-item__label')).toHaveText('Etap 1');
+  await expect(firstStep.locator('.step-item__preview')).toBeVisible();
+  await expect(firstStep.locator('.step-item__label')).toHaveCount(0);
   await expect(secondStep.locator('[data-step-body]')).toBeVisible();
   await expect(standaloneJourney.locator('[data-steps-progress-text]')).toHaveText('Krok 2 z 9');
 
@@ -271,6 +272,8 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     '0/3 wykonane',
   );
   await expect(firstStepItem.getByText('Finalny krok')).toBeVisible();
+  // Finalny krok stoi bez znacznika z numerem — numer niesie wyłącznie oś.
+  await expect(firstStepItem.locator('.step-final__badge')).toHaveCount(0);
   await expect(firstStepItem.locator('.step-final__text')).toContainText(
     'Połóż chorizo na zimnej patelni',
   );
