@@ -574,6 +574,67 @@ test('every main recipe section can be collapsed and expanded independently', as
   expect(accessibility.violations).toEqual([]);
 });
 
+test('collapsing a section animates its height and respects reduced motion', async ({ page }) => {
+  await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
+
+  const ingredients = page.getByRole('region', { name: 'Składniki' });
+  const collapse = await ingredients.evaluate(async (section) => {
+    const toggle = section.querySelector<HTMLButtonElement>('[data-section-toggle]');
+    const content = section.querySelector<HTMLElement>('[data-section-content]');
+    if (!toggle || !content) throw new Error('Nie znaleziono kontrolki zwijania sekcji');
+
+    const open = section.getBoundingClientRect().height;
+    toggle.click();
+    const animations = content.getAnimations().length;
+    const frames: number[] = [];
+    await new Promise<void>((resolve) => {
+      const collect = () => {
+        frames.push(section.getBoundingClientRect().height);
+        if (frames.length > 40) resolve();
+        else requestAnimationFrame(collect);
+      };
+      requestAnimationFrame(collect);
+    });
+
+    const settled = frames[frames.length - 1];
+    const moving = frames.filter((height) => Math.round(height) !== Math.round(settled));
+    return {
+      open,
+      animations,
+      settled,
+      lastMoving: moving.length > 0 ? moving[moving.length - 1] : settled,
+      distinctHeights: new Set(frames.map((height) => Math.round(height))).size,
+    };
+  });
+
+  expect(collapse.animations).toBe(1);
+  expect(collapse.settled).toBeLessThan(collapse.open);
+  // Ruch prowadzi krawędź sekcji przez kolejne wysokości, a nie jednym skokiem.
+  expect(collapse.distinctHeights).toBeGreaterThan(5);
+  // Ostatnia klatka ruchu ma wysokość stanu docelowego, więc układ nie
+  // przeskakuje o odstęp siatki w chwili ukrycia treści.
+  expect(Math.abs(collapse.lastMoving - collapse.settled)).toBeLessThan(4);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  const instant = await ingredients.evaluate((section) => {
+    const toggle = section.querySelector<HTMLButtonElement>('[data-section-toggle]');
+    const content = section.querySelector<HTMLElement>('[data-section-content]');
+    if (!toggle || !content) throw new Error('Nie znaleziono kontrolki zwijania sekcji');
+
+    const open = section.getBoundingClientRect().height;
+    toggle.click();
+    return {
+      open,
+      animations: content.getAnimations().length,
+      collapsed: section.getBoundingClientRect().height,
+    };
+  });
+
+  expect(instant.animations).toBe(0);
+  expect(instant.collapsed).toBeLessThan(instant.open);
+});
+
 test('completing every step shows the finished-dish message for the active mode', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 

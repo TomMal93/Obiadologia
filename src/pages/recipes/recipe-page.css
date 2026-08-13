@@ -5,6 +5,11 @@
 }
 
 .recipe-article {
+  /* Wspólne tempo zwijania sekcji: strzałka nagłówka i krawędź zwijanej treści
+     poruszają się tym samym ruchem, więc gest czyta się jako jedna zmiana. */
+  --section-motion-duration: 240ms;
+  --section-motion-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
   min-height: 100vh;
   min-height: 100dvh;
 }
@@ -306,7 +311,7 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
-  transition: transform 160ms ease;
+  transition: transform var(--section-motion-duration) var(--section-motion-easing);
 }
 
 .recipe-section-toggle[aria-expanded='false'] svg {
@@ -322,6 +327,15 @@
 .recipe-section-content {
   display: grid;
   gap: var(--space-12);
+}
+
+/* Przez czas zwijania treść sekcji odsłania i chowa krawędź własnej ramki, więc
+   musi być przycięta do animowanej wysokości. Odstęp od nagłówka niesie w tym
+   czasie górny padding treści (skrypt zeruje `row-gap` rodzica), dzięki czemu
+   ostatnia klatka ruchu i stan docelowy mają tę samą geometrię — układ nie
+   przeskakuje o wysokość odstępu w chwili ukrycia treści. */
+[data-section-content].is-animating {
+  overflow: hidden;
 }
 
 /* Dyskretny licznik zachowuje neutralny język ramki sekcji, a koral zostawia
