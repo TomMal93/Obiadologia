@@ -118,6 +118,8 @@
   margin-bottom: var(--space-24);
 }
 
+/* Brand w nagłówku panelu jest linkiem na stronę główną — wygląda identycznie
+   jak brand wspólnego nagłówka, więc nie niesie dekoracji linku. */
 .site-menu-brand {
   display: inline-flex;
   align-items: center;
@@ -125,6 +127,13 @@
   color: var(--color-text);
   font-size: var(--font-size-20);
   font-weight: 800;
+  text-decoration: none;
+}
+
+.site-menu-brand:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
 }
 
 .site-menu-close {

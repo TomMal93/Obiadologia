@@ -16,7 +16,9 @@ test('hamburger opens the menu, moves focus in, and Escape restores it', async (
   await toggle(page).click();
   await expect(toggle(page)).toHaveAttribute('aria-expanded', 'true');
   await expect(toggle(page)).toHaveAttribute('aria-label', 'Zamknij menu');
-  await expect(menu(page).getByRole('link', { name: 'Strona główna' })).toBeFocused();
+  // Dokładne dopasowanie nazwy: brand panelu prowadzi na tę samą stronę główną,
+  // ale niesie własną etykietę „Obiadologia — strona główna”.
+  await expect(menu(page).getByRole('link', { name: 'Strona główna', exact: true })).toBeFocused();
 
   await page.keyboard.press('Escape');
   await expect(toggle(page)).toHaveAttribute('aria-expanded', 'false');
@@ -87,6 +89,33 @@ for (const start of ['/', '/categories']) {
     });
   }
 }
+
+// Logo i nazwa w nagłówku otwartego menu prowadzą na stronę główną: z innej
+// strony przez nawigację, a na samej stronie głównej przez domknięcie panelu
+// i powrót na górę, bez przeładowania.
+test('the menu brand navigates home from another page', async ({ page }) => {
+  await page.goto('/categories');
+  await toggle(page).click();
+  await menu(page).getByRole('link', { name: 'Obiadologia — strona główna' }).click();
+
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('.home-hero')).toBeVisible();
+  await expect(toggle(page)).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('the menu brand closes the menu and returns to the top of the home page', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#kategorie').scrollIntoViewIfNeeded();
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+
+  await toggle(page).click();
+  await menu(page).getByRole('link', { name: 'Obiadologia — strona główna' }).click();
+
+  await expect(page).toHaveURL(/\/$/);
+  await expect(toggle(page)).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle(page)).toBeFocused();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+});
 
 test('the close button closes the menu and restores focus to the toggle', async ({ page }) => {
   await page.goto('/');

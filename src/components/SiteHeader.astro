@@ -6,6 +6,8 @@
 // Otwarte menu jest pełnoekranowym panelem spójnym z Discovery overlay: ten sam
 // wyśrodkowany kontener mobilny, nagłówek z brand-markiem i okrągłym przyciskiem
 // zamknięcia oraz pozycje z akcentami trzech dróg (Kategorie/Szukaj/Mapa).
+// Brand panelu jest — jak brand nagłówka — linkiem na stronę główną, żeby otwarty
+// panel nie był ślepym zaułkiem względem zwykłej nawigacji.
 import type { AppMessages } from '@/i18n/messages';
 import './SiteHeader.css';
 
@@ -45,7 +47,12 @@ const menu = messages.menu;
 
 <nav id="site-menu" class="site-menu" aria-label={menu.label} data-site-menu>
   <div class="site-menu-header">
-    <span class="site-menu-brand">
+    <a
+      class="site-menu-brand"
+      href={homeHref}
+      aria-label={messages.brandHomeLabel}
+      data-site-menu-home
+    >
       <img
         class="site-brand-mark"
         src="/assets/obiadologia-logo.png"
@@ -55,7 +62,7 @@ const menu = messages.menu;
         aria-hidden="true"
       />
       <span>{messages.brand}</span>
-    </span>
+    </a>
     <button type="button" class="site-menu-close" aria-label={menu.closeLabel} data-site-menu-close>
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M6 6 18 18M18 6 6 18" />
@@ -118,6 +125,7 @@ const menu = messages.menu;
   const toggle = document.querySelector<HTMLButtonElement>('[data-site-menu-toggle]');
   const menu = document.querySelector<HTMLElement>('[data-site-menu]');
   const closeButton = document.querySelector<HTMLButtonElement>('[data-site-menu-close]');
+  const homeLink = document.querySelector<HTMLAnchorElement>('[data-site-menu-home]');
 
   if (toggle && menu && closeButton) {
     const openLabel = toggle.getAttribute('aria-label') ?? '';
@@ -126,9 +134,14 @@ const menu = messages.menu;
     const focusableLinks = () =>
       Array.from(menu.querySelectorAll<HTMLElement>('.site-menu-link'));
 
-    // Kolejność pętli fokusu w otwartym panelu: przycisk zamknięcia, potem linki.
+    // Kolejność pętli fokusu w otwartym panelu zgodna z kolejnością w DOM: brand
+    // („Strona główna” w nagłówku panelu), przycisk zamknięcia, potem pozycje.
     // Hamburger jest zasłonięty pełnoekranową powierzchnią, więc nie bierze udziału.
-    const focusStops = () => [closeButton, ...focusableLinks()];
+    const focusStops = () => [
+      ...(homeLink ? [homeLink as HTMLElement] : []),
+      closeButton as HTMLElement,
+      ...focusableLinks(),
+    ];
 
     const setOpen = (open: boolean) => {
       menu.classList.toggle('is-open', open);
@@ -154,10 +167,28 @@ const menu = messages.menu;
 
     closeButton.addEventListener('click', () => close());
 
-    // Wybór pozycji domyka menu; nawigacja (lub otwarcie overlaya na stronie
-    // głównej przez wyspę) dzieje się poza tym zamknięciem.
+    // Wybór pozycji lub brandu domyka menu; nawigacja (lub otwarcie overlaya na
+    // stronie głównej przez wyspę) dzieje się poza tym zamknięciem.
     menu.addEventListener('click', (event) => {
-      if ((event.target as Element).closest('.site-menu-link')) close(false);
+      const target = event.target as Element;
+      if (target.closest('.site-menu-link') || target.closest('[data-site-menu-home]')) {
+        close(false);
+      }
+    });
+
+    // Logo i nazwa w otwartym menu prowadzą na stronę główną. Gdy użytkownik już
+    // na niej jest, zamiast przeładowania wystarczy domknięcie panelu i powrót na
+    // górę strony — zmodyfikowane kliknięcia (nowa karta) zostają przy przeglądarce.
+    homeLink?.addEventListener('click', (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      if (new URL(homeLink.href).pathname !== window.location.pathname) return;
+      event.preventDefault();
+      window.scrollTo({ top: 0 });
+      // Fokus nie może zostać na linku ukrywanego panelu; wraca na widoczny
+      // przycisk menu, tak samo jak przy zamknięciu przyciskiem X i `Escape`.
+      toggle.focus();
     });
 
     document.addEventListener('keydown', (event) => {

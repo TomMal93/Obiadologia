@@ -27,7 +27,7 @@ Każdy kafel drogi ma delikatne, półprzezroczyste obramowanie w kolorze swojej
 ścieżki, wizualnie lżejsze od zewnętrznego obramowania panoramicznych kart
 przepisów.
 
-Ikona menu we wspólnym nagłówku otwiera mobilne menu nawigacyjne (hamburger). Menu jest wysuwanym panelem z przyciemnionym tłem i zawiera cztery pozycje: „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”. „Strona główna” prowadzi do `/`, „Kategorie” do sekcji kategorii (`/#kategorie`), a „Szukaj” i „Mapa” otwierają właściwy tryb wspólnego overlaya — na stronie głównej bezpośrednio, a z pozostałych stron przez powrót na `/` i otwarcie trybu po wejściu. Menu jest obsługiwalne klawiaturą i czytnikiem ekranu: przycisk niesie stan `aria-expanded`, otwarcie przenosi fokus do panelu, `Escape` oraz klik w tło zamykają menu i przywracają fokus na przycisk, a tło jest zablokowane na czas otwarcia. Zamknięte menu pozostaje poza kolejnością tabulacji i drzewem dostępności.
+Ikona menu we wspólnym nagłówku otwiera mobilne menu nawigacyjne (hamburger). Menu jest wysuwanym panelem z przyciemnionym tłem i zawiera cztery pozycje: „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”. „Strona główna” prowadzi do `/`, „Kategorie” do sekcji kategorii (`/#kategorie`), a „Szukaj” i „Mapa” otwierają właściwy tryb wspólnego overlaya — na stronie głównej bezpośrednio, a z pozostałych stron przez powrót na `/` i otwarcie trybu po wejściu. Logo i nazwa „Obiadologia” w nagłówku otwartego panelu prowadzą na stronę główną, tak samo jak brand wspólnego nagłówka strony: z innej strony przez przejście na `/`, a na samej stronie głównej przez domknięcie panelu i powrót na górę strony bez przeładowania. Menu jest obsługiwalne klawiaturą i czytnikiem ekranu: przycisk niesie stan `aria-expanded`, otwarcie przenosi fokus do panelu, brand i wszystkie pozycje pozostają w pętli fokusu, `Escape` oraz klik w tło zamykają menu i przywracają fokus na przycisk, a tło jest zablokowane na czas otwarcia. Zamknięte menu pozostaje poza kolejnością tabulacji i drzewem dostępności.
 
 ## Trzy drogi
 
@@ -152,6 +152,7 @@ zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
 - Ikona menu w nagłówku otwiera i zamyka mobilne menu nawigacyjne z pozycjami „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”.
 - Pozycje „Szukaj” i „Mapa” w menu otwierają właściwy tryb wspólnego overlaya, także wtedy, gdy wybór następuje z innej strony niż główna.
 - Po otwarciu overlaya z menu (Szukaj lub Mapa) jego zamknięcie — przyciskiem, klawiszem `Escape` albo „Wstecz” — zawsze pozostawia użytkownika na stronie głównej, niezależnie od strony, z której nastąpił wybór.
+- Logo i nazwa w nagłówku otwartego menu prowadzą na stronę główną: z innej strony przez nawigację na `/`, a na stronie głównej przez domknięcie panelu i powrót na górę strony.
 - Menu jest obsługiwalne klawiaturą: `aria-expanded` odzwierciedla stan, otwarcie przenosi fokus do panelu, a `Escape` oraz klik w tło zamykają je i przywracają fokus na przycisk.
 - Mapa i Szukaj otwierają właściwy tryb wspólnego overlaya.
 - Kategorie prowadzą do odpowiedniej sekcji.

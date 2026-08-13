@@ -41,7 +41,7 @@ Makiety określają hierarchię, treści i kierunek wizualny. Przykładowe zapyt
 Overlay:
 
 - jest pełnoekranowym dialogiem w granicach mobilnego kontenera aplikacji;
-- zawiera logo i nazwę „Obiadologia” w tym samym rozmiarze i położeniu co wspólny nagłówek strony;
+- zawiera logo i nazwę „Obiadologia” w tym samym rozmiarze i położeniu co wspólny nagłówek strony; są one linkiem na stronę główną i kończą sesję overlayu jak jawne zamknięcie, po czym pozostawiają użytkownika na górze strony głównej;
 - zawiera przycisk zamknięcia;
 - zawiera jeden przełącznik „Wyszukiwarka / Mapa”;
 - zawiera obszar właściwy dla aktywnego trybu;
@@ -61,6 +61,7 @@ Po otwarciu fokus przechodzi do logicznego pierwszego elementu aktywnego trybu. 
 - Wyszukiwarka i Mapa posiadają oddzielny stan w ramach jednej sesji overlayu.
 - Przełączenie trybu nie zamyka overlayu i zachowuje stan obu trybów wraz z ich ostatnimi wynikami.
 - Jawne zamknięcie przez przycisk, `Escape` albo akcję „Wstecz” kończy sesję oraz resetuje zapytanie, sugestie, wyniki i położenie Mapy.
+- Wybranie logo albo nazwy „Obiadologia” jest jawnym zamknięciem prowadzącym na stronę główną: zdejmuje wpis historii sesji tak samo jak przycisk zamknięcia i przewija stronę na górę. Fokus nie wraca wtedy do elementu otwierającego, bo ten może leżeć w głębi strony.
 - Ponowne otwarcie rozpoczyna nową sesję w trybie wskazanym przez akcję użytkownika.
 
 ### Historia przeglądarki i powrót z przepisu
@@ -304,6 +305,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 - Otwarcie tworzy jeden wpis historii; przełączanie trybu i zmiany kryteriów nie tworzą następnych.
 - Przycisk zamknięcia, `Escape` i akcja „Wstecz” zamykają overlay przez jedną zmianę historii, bez pozostawienia dodatkowego kroku „Wstecz”.
 - „Dalej” po jawnym zamknięciu otwiera nową, zresetowaną sesję w trybie pierwotnego otwarcia.
+- Logo i nazwa w nagłówku overlaya kończą sesję i pozostawiają użytkownika na górze strony głównej, bez dodatkowego kroku „Wstecz”.
 - Powrót z trasy przepisu przywraca zawieszoną sesję wraz z aktywnym trybem, kryteriami i wynikami.
 - Fokus pozostaje w dialogu i po zamknięciu wraca do elementu otwierającego.
 - Tło jest zablokowane, a własna zawartość overlayu pozostaje przewijalna.

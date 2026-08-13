@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { defaultLocale } from '@/i18n/config';
 import { getMessages } from '@/i18n/messages';
 import { testRecipes } from '@/test/fixtures/recipes';
@@ -77,6 +77,11 @@ describe('DiscoveryExperience categories', () => {
 });
 
 describe('DiscoveryExperience overlay', () => {
+  // Karty wyników rozpoznajemy po czasie przygotowania — link brandu w nagłówku
+  // overlaya prowadzi na stronę główną i nie jest wynikiem.
+  const resultCards = (scope: HTMLElement) =>
+    within(scope).queryAllByRole('link', { name: /Czas przygotowania/ });
+
   function addOpener(mode: 'search' | 'map') {
     const opener = document.createElement('button');
     opener.textContent = mode === 'search' ? 'Szukaj' : 'Mapa';
@@ -141,7 +146,7 @@ describe('DiscoveryExperience overlay', () => {
     const input = within(dialog).getByRole('searchbox', { name: 'Szukaj przepisu' });
     expect(input).not.toHaveValue('');
     expect(within(dialog).queryByRole('group', { name: 'A może w tę stronę?' })).not.toBeInTheDocument();
-    await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
+    await waitFor(() => expect(resultCards(dialog).length).toBeGreaterThan(0));
   });
 
   it('offers rescue tropes when a query returns no results', async () => {
@@ -159,7 +164,7 @@ describe('DiscoveryExperience overlay', () => {
     expect(rescueTiles.length).toBeGreaterThan(8);
     fireEvent.click(rescueTiles[0] as HTMLButtonElement);
 
-    await waitFor(() => expect(within(dialog).getAllByRole('link').length).toBeGreaterThan(0));
+    await waitFor(() => expect(resultCards(dialog).length).toBeGreaterThan(0));
   });
 
   it('preserves search state while the map reacts to keyboard input', async () => {
@@ -171,7 +176,9 @@ describe('DiscoveryExperience overlay', () => {
 
     fireEvent.click(within(dialog).getByRole('button', { name: /Mapa/ }));
     expect(within(dialog).getByRole('button', { name: /Talerz na mapie: tempo neutralne · charakter neutralny/ })).toBeInTheDocument();
-    expect(within(dialog).getAllByRole('link')).toHaveLength(4);
+    // Liczone są karty wyników; w nagłówku overlaya jest jeszcze link brandu na „/”.
+    const mapResults = within(dialog).getByRole('heading', { name: 'Propozycje' }).closest('section') as HTMLElement;
+    expect(within(mapResults).getAllByRole('link')).toHaveLength(4);
     expect(within(dialog).getByText('4 dopasowania')).toBeInTheDocument();
     const featuredCard = within(dialog).getByText('Najbliżej Twojego apetytu').closest('a');
     expect(featuredCard).toHaveClass('recipe-card--featured');
@@ -212,5 +219,21 @@ describe('DiscoveryExperience overlay', () => {
     fireEvent.keyDown(point, { key: 'ArrowLeft' });
     expect(within(dialog).getByText('Szybki strzał')).toBeInTheDocument();
     expect(within(dialog).queryByText('Złoty środek')).not.toBeInTheDocument();
+  });
+
+  it('leads home from the header brand: closes the session and returns to the top of the page', async () => {
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    renderExperience();
+    fireEvent.click(addOpener('map'));
+
+    const dialog = await screen.findByRole('dialog');
+    const home = within(dialog).getByRole('link', { name: 'Obiadologia — strona główna' });
+    expect(home).toHaveAttribute('href', '/');
+
+    fireEvent.click(home);
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(scrollTo).toHaveBeenCalledWith({ top: 0 }));
+    scrollTo.mockRestore();
   });
 });
