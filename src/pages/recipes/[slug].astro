@@ -774,7 +774,41 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     article?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
   );
   const completedPreparation = new Set<string>();
-  const reducePreparationMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const parseMotionDuration = (value: string | undefined) => {
+    const token = value?.trim() ?? '';
+    const amount = Number.parseFloat(token);
+    if (!Number.isFinite(amount) || amount <= 0) return 0;
+    return token.endsWith('ms') ? amount : amount * 1000;
+  };
+  const halfStepMotion = (() => {
+    const styles = preparationHalfSteps[0] ? getComputedStyle(preparationHalfSteps[0]) : null;
+    const duration = parseMotionDuration(styles?.getPropertyValue('--half-step-motion-duration'));
+    const easing = styles?.getPropertyValue('--half-step-motion-easing').trim();
+    return { duration: duration || 240, easing: easing || 'ease' };
+  })();
+
+  /* Docelowa wysokość półkroku musi uwzględniać cały układ stanu docelowego —
+     mniejszą czcionkę, węższe marginesy i przycięcie do jednej linii. Przejścia
+     CSS trwają, więc zmierzyć da się ją tylko na kopii, która wchodzi do układu
+     od razu w stanie docelowym i nie przerywa ruchu oryginału. */
+  const measureHalfStepHeight = (halfStep: HTMLElement, checked: boolean) => {
+    const probe = halfStep.cloneNode(true) as HTMLElement;
+    probe.classList.remove('is-animating');
+    probe.hidden = false;
+    probe.setAttribute('aria-hidden', 'true');
+    probe
+      .querySelector<HTMLElement>('.recipe-step__toggle--preparation')
+      ?.classList.toggle('is-checked', checked);
+    probe.style.position = 'absolute';
+    probe.style.visibility = 'hidden';
+    probe.style.pointerEvents = 'none';
+    probe.style.width = `${halfStep.getBoundingClientRect().width}px`;
+    halfStep.after(probe);
+    const height = probe.getBoundingClientRect().height;
+    probe.remove();
+    return height;
+  };
   const stepGroups = Array.from(
     article?.querySelectorAll<HTMLElement>('.recipe-step-group') ?? [],
   );
@@ -841,13 +875,15 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     const matchingHalfSteps = preparationHalfSteps.filter(
       (halfStep) => halfStep.dataset.preparationHalfStep === preparationId,
     );
-    const initialHeights = new Map<HTMLElement, number>();
+    const heights = new Map<HTMLElement, { from: number; to: number }>();
 
-    if (animate && !reducePreparationMotion) {
+    if (animate && !reducedMotionQuery.matches) {
       for (const halfStep of matchingHalfSteps) {
-        const initialHeight = halfStep.getBoundingClientRect().height;
-        for (const animation of halfStep.getAnimations()) animation.cancel();
-        initialHeights.set(halfStep, initialHeight);
+        if (halfStep.hidden) continue;
+        heights.set(halfStep, {
+          from: halfStep.getBoundingClientRect().height,
+          to: measureHalfStepHeight(halfStep, checked),
+        });
       }
     }
 
@@ -865,16 +901,27 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       const badge = halfStep.querySelector<HTMLElement>('.recipe-step__badge');
       if (badge) badge.textContent = checked ? '✓' : '';
 
-      const initialHeight = initialHeights.get(halfStep);
-      if (initialHeight === undefined) continue;
-      const finalHeight = halfStep.getBoundingClientRect().height;
-      if (Math.abs(finalHeight - initialHeight) < 1) continue;
-      halfStep.animate(
-        [
-          { height: `${initialHeight}px`, overflow: 'hidden' },
-          { height: `${finalHeight}px`, overflow: 'hidden' },
-        ],
-        { duration: 420, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+      halfStep.classList.remove('is-animating');
+      for (const animation of halfStep.getAnimations()) animation.cancel();
+
+      const height = heights.get(halfStep);
+      if (!height || Math.abs(height.to - height.from) < 1) continue;
+
+      halfStep.classList.add('is-animating');
+      const animation = halfStep.animate(
+        [{ height: `${height.from}px` }, { height: `${height.to}px` }],
+        { duration: halfStepMotion.duration, easing: halfStepMotion.easing, fill: 'forwards' },
+      );
+      /* Wypełnienie do przodu utrzymuje zmierzoną wysokość aż do chwili, w
+         której półkrok wraca do własnego układu — dzięki temu między ostatnią
+         klatką a stanem docelowym nie mignie pełna treść. */
+      animation.addEventListener(
+        'finish',
+        () => {
+          halfStep.classList.remove('is-animating');
+          animation.cancel();
+        },
+        { once: true },
       );
     }
     for (const halfStep of matchingHalfSteps) {

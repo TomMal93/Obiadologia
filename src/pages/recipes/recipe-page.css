@@ -890,7 +890,17 @@
 }
 
 .recipe-step--preparation {
+  /* Jedno tempo dla całego ruchu półkroku: wysokość ramki animuje skrypt, a
+     wnętrze przejścia CSS, więc obie warstwy muszą korzystać z tych samych
+     wartości. Skrypt odczytuje je z tych własnych właściwości. */
+  --half-step-motion-duration: 240ms;
+  --half-step-motion-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --half-step-badge-size: 24px;
+
   position: relative;
+  /* Linia rozdzielająca należy do ramki półkroku, a nie do przycisku w środku:
+     zwijanie przycina wnętrze, więc na przycisku znikałaby na czas ruchu. */
+  border-bottom: 1px dashed rgb(255 79 46 / 38%);
 }
 
 .recipe-step--preparation[hidden] {
@@ -901,22 +911,21 @@
   align-items: center;
   padding: var(--space-12);
   border: 0;
-  border-bottom: 1px dashed rgb(255 79 46 / 38%);
   border-radius: 0;
   background: var(--color-coral-soft);
   transition:
-    padding 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 240ms ease,
-    color 240ms ease;
+    padding var(--half-step-motion-duration) var(--half-step-motion-easing),
+    background-color var(--half-step-motion-duration) var(--half-step-motion-easing),
+    color var(--half-step-motion-duration) var(--half-step-motion-easing);
 }
 
 .recipe-step__toggle--preparation .recipe-step__content,
 .recipe-step__toggle--preparation .recipe-step__text {
   transition:
-    gap 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    color 240ms ease,
-    font-size 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    line-height 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    gap var(--half-step-motion-duration) var(--half-step-motion-easing),
+    color var(--half-step-motion-duration) var(--half-step-motion-easing),
+    font-size var(--half-step-motion-duration) var(--half-step-motion-easing),
+    line-height var(--half-step-motion-duration) var(--half-step-motion-easing);
 }
 
 .recipe-step__toggle--cooking {
@@ -929,11 +938,14 @@
 }
 
 .recipe-step__toggle--preparation .recipe-step__badge {
-  width: 24px;
-  height: 24px;
+  width: var(--half-step-badge-size);
+  height: var(--half-step-badge-size);
   border: 1px solid var(--color-coral);
   border-radius: calc(var(--radius-field) / 2);
   background: var(--color-surface);
+  transition:
+    color var(--half-step-motion-duration) var(--half-step-motion-easing),
+    background-color var(--half-step-motion-duration) var(--half-step-motion-easing);
 }
 
 .recipe-step__toggle.is-checked .recipe-step__badge {
@@ -953,7 +965,11 @@
   overflow: hidden;
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
-  line-height: 1.35;
+  /* Jedna linia zwiniętego półkroku zajmuje niemal dokładnie tyle, co jego
+     znacznik (`--half-step-badge-size`). Bez tego wiersz byłby wyraźnie niższy
+     od znacznika i tekst przeskakiwałby w pionie w chwili, w której animacja
+     zwijania oddaje półkrok jego własnemu układowi. */
+  line-height: 1.7;
   text-decoration: line-through;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
@@ -1014,6 +1030,39 @@
 .recipe-step__toggle--cooking.is-checked .recipe-step__action-check {
   opacity: 1;
   transform: scale(1);
+}
+
+/* Zwijanie i rozwijanie półkroku. Wysokość ramki prowadzi skrypt, więc na czas
+   ruchu treść pozostaje w całości: kolejne linie chowa i odsłania krawędź
+   ramki, zamiast znikać skokowo przy przycięciu do jednej linii. */
+.recipe-step--preparation.is-animating {
+  overflow: hidden;
+}
+
+.recipe-step--preparation.is-animating .recipe-step__text {
+  display: block;
+  overflow: hidden;
+  -webkit-line-clamp: unset;
+}
+
+/* Znacznik na czas ruchu wypada w pionowym środku widocznej wysokości półkroku.
+   Przy równych marginesach wewnętrznych jest to dokładnie ta sama pozycja co w
+   siatce, więc animacja ani się nie zaczyna, ani nie kończy przeskokiem, a
+   znacznik nie chowa się pod krawędzią zwijanej ramki. Szerokość kolumny
+   zostaje zachowana, żeby tekst nie zmieniał podziału na linie. */
+.recipe-step--preparation.is-animating .recipe-step__toggle--preparation {
+  grid-template-columns: var(--half-step-badge-size) minmax(0, 1fr);
+}
+
+.recipe-step--preparation.is-animating .recipe-step__content {
+  grid-column: 2;
+}
+
+.recipe-step--preparation.is-animating .recipe-step__badge {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--space-12);
+  margin-block: auto;
 }
 
 .step-progress {
