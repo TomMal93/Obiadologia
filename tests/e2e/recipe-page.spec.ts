@@ -348,8 +348,10 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
 
+  // Drugi etap został rozwinięty przez ścieżkę i pozostał otwarty mimo powrotu
+  // do pierwszego, więc jego akcja jest dostępna od razu.
   const secondStepItem = assistantStepItems.nth(1);
-  await secondStepItem.locator('[data-step-head]').click();
+  await expect(secondStepItem.locator('[data-step-body]')).toBeVisible();
   await secondStepItem.locator('[data-checkable-step]').click();
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
@@ -606,7 +608,7 @@ test('collapsing a section animates its height and respects reduced motion', asy
   expect(instant.collapsed).toBeLessThan(instant.open);
 });
 
-test('opening a step collapses the previously open one with a height animation', async ({ page }) => {
+test('opening a step animates its height and leaves the other open steps expanded', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
   await page.getByRole('button', { name: 'Tryb asystenta' }).click();
 
@@ -619,11 +621,25 @@ test('opening a step collapses the previously open one with a height animation',
   expect(animations).toBe(1);
   await expect(items.nth(2).locator('[data-step-head]')).toHaveAttribute('aria-expanded', 'true');
   await expect(items.nth(2).locator('[data-step-body]')).toBeVisible();
-  await expect(items.first().locator('[data-step-body]')).toBeHidden();
+  // Karty rozwijają się niezależnie: bieżący etap zostaje otwarty.
+  await expect(items.first().locator('[data-step-body]')).toBeVisible();
   await expect(items.first().locator('[data-step-head]')).toHaveAttribute(
     'aria-expanded',
-    'false',
+    'true',
   );
+
+  // Ponowne kliknięcie nagłówka zwija wyłącznie własną kartę.
+  await items.nth(2).locator('[data-step-head]').click();
+  await expect(items.nth(2).locator('[data-step-body]')).toBeHidden();
+  await expect(items.first().locator('[data-step-body]')).toBeVisible();
+
+  // Ścieżka dokłada kolejny etap do zrobienia, nie ruszając kart otwartych
+  // wcześniej przez czytelnika.
+  await items.nth(2).locator('[data-step-head]').click();
+  await items.first().locator('[data-checkable-step]').click();
+  await expect(items.first().locator('[data-step-body]')).toBeHidden();
+  await expect(items.nth(1).locator('[data-step-body]')).toBeVisible();
+  await expect(items.nth(2).locator('[data-step-body]')).toBeVisible();
 });
 
 test('completing every step shows the finished-dish message for the active mode', async ({ page }) => {

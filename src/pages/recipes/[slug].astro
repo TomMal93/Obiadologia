@@ -725,8 +725,9 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
   }
 
   /* Ścieżka kroków. Stan półkroków jest wspólny z panelem „Zanim zaczniesz”,
-     a w danej wersji listy rozwinięty pozostaje dokładnie jeden etap: ten, który
-     jest najbliżej do zrobienia, albo ten wskazany przez czytelnika. */
+     a karty etapów rozwijają się niezależnie: czytelnik może trzymać otwartych
+     kilka naraz. Na wejściu rozwinięty jest sam etap najbliższy do zrobienia,
+     a ścieżka dokłada kolejny po oznaczeniu etapu jako wykonanego. */
   const preparationToggles = Array.from(
     article?.querySelectorAll<HTMLButtonElement>('[data-preparation-toggle]') ?? [],
   );
@@ -843,12 +844,12 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     body.hidden = !open;
   };
 
-  const openStepItem = (
-    journey: HTMLElement,
-    target: HTMLElement | null,
-    animate: boolean,
-  ) => {
-    for (const item of journeyItems(journey)) setStepOpen(item, item === target, animate);
+  /* Rozwinięcie etapu nie domyka pozostałych — ścieżka tylko dokłada kartę do
+     już otwartych i pomija tę, którą czytelnik zdążył rozwinąć sam. */
+  const openStepItem = (item: HTMLElement, animate: boolean) => {
+    const head = item.querySelector<HTMLButtonElement>('[data-step-head]');
+    if (head?.getAttribute('aria-expanded') === 'true') return;
+    setStepOpen(item, true, animate);
   };
 
   const renderPreparation = (preparationId: string) => {
@@ -919,22 +920,22 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     if (finalLabel) finalLabel.hidden = false;
 
     head?.addEventListener('click', () => {
-      if (!journey) return;
       if (head.getAttribute('aria-expanded') === 'true') setStepOpen(item, false, true);
-      else openStepItem(journey, item, true);
+      else openStepItem(item, true);
     });
 
     /* Po oznaczeniu etapu ścieżka prowadzi dalej sama: karta zwija się do
-       jednoliniowej zapowiedzi, a rozwija się pierwszy etap wciąż do zrobienia. */
+       jednoliniowej zapowiedzi, a rozwija się pierwszy etap wciąż do zrobienia.
+       Pozostałe otwarte karty zostają otwarte. Cofnięcie zostawia kartę
+       rozwiniętą, więc ruchu nie ma. */
     action?.addEventListener('click', () => {
       const checked = !isStepChecked(item);
       setStepChecked(item, checked);
-      if (!journey) return;
+      if (!journey || !checked) return;
 
-      const next = checked
-        ? journeyItems(journey).find((candidate) => !isStepChecked(candidate)) ?? null
-        : item;
-      openStepItem(journey, next, true);
+      setStepOpen(item, false, true);
+      const next = journeyItems(journey).find((candidate) => !isStepChecked(candidate));
+      if (next) openStepItem(next, true);
     });
 
     renderStepItem(item);
@@ -943,7 +944,8 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
 
   for (const journey of stepJourneys) {
     const items = journeyItems(journey);
-    openStepItem(journey, items.find((item) => !isStepChecked(item)) ?? null, false);
+    const current = items.find((item) => !isStepChecked(item)) ?? null;
+    for (const item of items) setStepOpen(item, item === current, false);
   }
   renderStepJourneys();
 

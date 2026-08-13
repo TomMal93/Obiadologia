@@ -158,9 +158,20 @@
 }
 
 /* Rozwinięta karta niesie pełną treść kroku w swoim wnętrzu, więc zapowiedź
-   ustępuje jej miejsca. */
-.step-item.is-open .step-item__preview {
+   ustępuje miejsca nagłówkowi półkroków — ten stoi w wierszu sterowania kartą,
+   na wysokości strzałki zwijania. Zwinięta karta zapowiada treść, więc
+   nagłówek półkroków w niej nie stoi. */
+.step-item.is-open .step-item__preview,
+.step-item:not(.is-open) .step-item__prep-title {
   display: none;
+}
+
+.step-item__prep-title {
+  min-width: 0;
+  flex: 1;
+  color: var(--color-coral-strong);
+  font-weight: 800;
+  line-height: 1.3;
 }
 
 .step-item__preview {
@@ -205,14 +216,6 @@
   display: grid;
   gap: var(--space-8);
   padding: var(--space-12);
-}
-
-.step-prep__heading {
-  margin: 0;
-  color: var(--color-coral-strong);
-  font-size: var(--font-size-16);
-  font-weight: 800;
-  line-height: 1.3;
 }
 
 .step-prep__list {
