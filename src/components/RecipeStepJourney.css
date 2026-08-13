@@ -84,8 +84,9 @@
   bottom: calc(100% - var(--step-rail-width) / 2);
 }
 
-.step-item.is-done::before,
-.step-item.is-current::before {
+/* Oś nabiera mocnego koloru tylko za wykonanymi etapami — aktywny etap wyróżnia
+   sam znacznik, więc linia kończy bieg na jego kole. */
+.step-item.is-done::before {
   background: var(--color-coral-strong);
 }
 
