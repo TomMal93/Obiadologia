@@ -387,7 +387,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
             data-step-list="assistant"
           >
             {recipe.steps.map((step, index) => (
-              <li class="recipe-step recipe-step-group">
+              <li class:list={['recipe-step', 'recipe-step-group', index === 0 && 'is-current']}>
+                <span class="step-axis" aria-hidden="true">
+                  <span class="step-axis__marker"></span>
+                </span>
+                <div class="recipe-step__card">
                 {recipe.preparation
                   ?.filter((item) => item.beforeStep === index + 1)
                   .map((item) => (
@@ -458,6 +462,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                   </span>
                   <span data-step-group-progress-text></span>
                 </p>
+                </div>
               </li>
             ))}
           </ol>
@@ -474,7 +479,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
               <>
               <ol class="step-list steps-only-section" data-step-list="steps">
                 {recipe.stepsOnly.map((step, index) => (
-                  <li class="recipe-step recipe-step-group">
+                  <li class:list={['recipe-step', 'recipe-step-group', index === 0 && 'is-current']}>
+                    <span class="step-axis" aria-hidden="true">
+                      <span class="step-axis__marker"></span>
+                    </span>
+                    <div class="recipe-step__card">
                     <button
                       type="button"
                       class="recipe-step__toggle recipe-step__toggle--cooking"
@@ -512,6 +521,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                       </span>
                       <span data-step-group-progress-text></span>
                     </p>
+                    </div>
                   </li>
                 ))}
               </ol>
@@ -948,6 +958,24 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     }
   };
 
+  /* Oś prowadzi do pierwszego jeszcze niewykonanego kroku każdej listy. Znacznik
+     tego kroku wskazuje serwer, więc bez skryptu oś zaczyna się od kroku
+     pierwszego; dalej prowadzenie przesuwa odhaczanie. */
+  const updateCurrentSteps = () => {
+    for (const list of stepLists) {
+      const groups = Array.from(
+        list.querySelectorAll<HTMLElement>(':scope > .recipe-step-group'),
+      );
+      const current = groups.find(
+        (group) =>
+          group
+            .querySelector<HTMLButtonElement>('[data-checkable-step]')
+            ?.getAttribute('aria-pressed') !== 'true',
+      );
+      for (const group of groups) group.classList.toggle('is-current', group === current);
+    }
+  };
+
   const renderPreparation = (preparationId: string, animate = false) => {
     const checked = completedPreparation.has(preparationId);
     const matchingHalfSteps = preparationHalfSteps.filter(
@@ -1061,6 +1089,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       const group = button.closest<HTMLElement>('.recipe-step-group');
       if (group) updateStepGroupProgress(group);
       updateStepListCompletions();
+      updateCurrentSteps();
     });
   }
   for (const group of stepGroups) {
@@ -1069,6 +1098,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     updateStepGroupProgress(group);
   }
   updateStepListCompletions();
+  updateCurrentSteps();
 
   for (const image of Array.from(
     article?.querySelectorAll<HTMLImageElement>('.recipe-hero__image') ?? [],

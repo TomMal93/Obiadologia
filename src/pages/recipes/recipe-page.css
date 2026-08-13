@@ -707,7 +707,7 @@
 }
 
 .step-list {
-  gap: var(--space-12);
+  gap: var(--step-axis-gap);
 }
 
 .prep-list__toggle,
@@ -798,6 +798,22 @@
 }
 
 .step-list {
+  /* Oś kroków: pierwsza kolumna każdego kroku niesie znacznik, łącznik do karty
+     i odcinek prowadzący do znacznika kroku następnego. Wszystkie wymiary osi
+     zbiera lista, bo odcinek musi przechodzić przez jej odstęp. */
+  --step-axis-column: 32px;
+  --step-axis-gap: var(--space-12);
+  --step-axis-line: 2px;
+  --step-axis-dot: 10px;
+  --step-axis-marker: 22px;
+  /* Oś biegnie przy lewej krawędzi swojej kolumny, żeby łącznik do karty kroku
+     pozostał widoczny również przy większym znaczniku kroku bieżącego. */
+  --step-axis-inline: 11px;
+  /* Znacznik trafia w pionowy środek numeru pierwszego wiersza karty: krawędź
+     karty (1px), margines wewnętrzny kroku (`--space-12`) i połowa wysokości
+     numeru (28px). */
+  --step-axis-start: 27px;
+
   counter-reset: recipe-step;
 }
 
@@ -806,10 +822,88 @@
 }
 
 .recipe-step-group {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--step-axis-column) minmax(0, 1fr);
+}
+
+.recipe-step__card {
   overflow: hidden;
   border: 1px solid rgb(255 79 46 / 42%);
   border-radius: var(--radius-field);
   background: var(--color-surface);
+}
+
+.step-axis {
+  position: relative;
+  display: block;
+}
+
+/* Odcinek osi prowadzi od znacznika kroku do znacznika kroku następnego, więc
+   sięga poza kartę o odstęp listy i o pozycję kolejnego znacznika. Ostatni krok
+   kończy oś na własnym znaczniku i odcinka nie rysuje. */
+.step-axis::before {
+  content: '';
+  position: absolute;
+  top: var(--step-axis-start);
+  bottom: calc(-1 * (var(--step-axis-gap) + var(--step-axis-start)));
+  left: calc(var(--step-axis-inline) - var(--step-axis-line) / 2);
+  width: var(--step-axis-line);
+  background: var(--color-border);
+}
+
+.step-list > .recipe-step-group:last-child .step-axis::before {
+  display: none;
+}
+
+.step-axis::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--step-axis-start) - var(--step-axis-line) / 2);
+  right: 0;
+  left: var(--step-axis-inline);
+  height: var(--step-axis-line);
+  background: var(--color-border);
+}
+
+/* Znacznik zajmuje stałe pole niezależnie od stanu, więc oś nie przeskakuje,
+   gdy prowadzenie przechodzi do kolejnego kroku. Nieprzezroczyste tło pierścienia
+   przecina oś dokładnie na krawędzi znacznika. */
+.step-axis__marker {
+  position: absolute;
+  z-index: 1;
+  top: var(--step-axis-start);
+  left: var(--step-axis-inline);
+  display: grid;
+  width: var(--step-axis-marker);
+  height: var(--step-axis-marker);
+  place-items: center;
+  border: var(--step-axis-line) solid transparent;
+  border-radius: var(--radius-pill);
+  transform: translate(-50%, -50%);
+}
+
+.step-axis__marker::before {
+  content: '';
+  width: var(--step-axis-dot);
+  height: var(--step-axis-dot);
+  border-radius: var(--radius-pill);
+  background: var(--color-text-muted);
+}
+
+/* Krok, przy którym stoi gotowanie: pierwszy jeszcze niewykonany krok listy. */
+.recipe-step-group.is-current .step-axis::before,
+.recipe-step-group.is-current .step-axis::after {
+  background: var(--color-coral);
+}
+
+.recipe-step-group.is-current .step-axis__marker {
+  border-color: var(--color-coral);
+  background: var(--color-surface);
+}
+
+.recipe-step-group.is-current .step-axis__marker::before {
+  background: var(--color-coral);
 }
 
 .recipe-step__toggle {
@@ -947,7 +1041,7 @@
   border-radius: 0;
 }
 
-.recipe-step-group > .recipe-step__toggle--cooking:first-child {
+.recipe-step__card > .recipe-step__toggle--cooking:first-child {
   border-radius: var(--radius-field);
 }
 
@@ -1129,10 +1223,13 @@
   display: none;
 }
 
+/* Bez skryptu krok niesie tę samą geometrię co jego kontrolka, więc znacznik osi
+   trafia w numer kroku również wtedy, gdy strona pokazuje wersję zastępczą. */
 .recipe-step__fallback {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-12);
+  padding: var(--space-12);
   line-height: 1.5;
 }
 

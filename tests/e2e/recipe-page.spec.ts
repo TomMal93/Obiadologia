@@ -136,6 +136,20 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(steps.getByRole('listitem')).toHaveCount(9);
   const firstStep = steps.locator('.steps-only-section [data-checkable-step]').first();
   const firstStepAction = firstStep.locator('.recipe-step__action--pending');
+  // Oś kroków zaczyna się przy pierwszym kroku: znacznik stoi przed kartą, na
+  // wysokości numeru kroku.
+  const stepGroups = steps.locator('.steps-only-section > .recipe-step-group');
+  await expect(stepGroups.first()).toHaveClass(/is-current/);
+  await expect(stepGroups.nth(1)).not.toHaveClass(/is-current/);
+  const firstAxisGeometry = await stepGroups.first().evaluate((group) => {
+    const marker = group.querySelector<HTMLElement>('.step-axis__marker')!.getBoundingClientRect();
+    const badge = group.querySelector<HTMLElement>('.recipe-step__badge')!.getBoundingClientRect();
+    return {
+      markerCenterY: marker.y + marker.height / 2,
+      badgeCenterY: badge.y + badge.height / 2,
+    };
+  });
+  expect(Math.abs(firstAxisGeometry.markerCenterY - firstAxisGeometry.badgeCenterY)).toBeLessThan(1);
   await expect(firstStepAction).toBeVisible();
   await expect(firstStepAction.locator('.recipe-step__action-label')).toHaveText(
     'Oznacz jako zrobione',
@@ -163,6 +177,8 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStep).toHaveCSS('border-top-style', 'solid');
   await firstStep.click();
   await expect(firstStep).toHaveAttribute('aria-pressed', 'true');
+  await expect(stepGroups.first()).not.toHaveClass(/is-current/);
+  await expect(stepGroups.nth(1)).toHaveClass(/is-current/);
   await expect(firstStep.locator('.recipe-step__text')).toBeVisible();
   await expect(firstStep.locator('.recipe-step__text')).toHaveCSS(
     'text-decoration-line',
@@ -272,8 +288,50 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     '0/4 wykonane',
   );
   for (const group of await assistantStepGroups.all()) {
-    await expect(group).toHaveCSS('border-color', 'rgba(255, 79, 46, 0.42)');
-    await expect(group).toHaveCSS('box-shadow', 'none');
+    await expect(group.locator('.recipe-step__card')).toHaveCSS(
+      'border-color',
+      'rgba(255, 79, 46, 0.42)',
+    );
+    await expect(group.locator('.recipe-step__card')).toHaveCSS('box-shadow', 'none');
+    await expect(group.locator('.step-axis__marker')).toHaveCount(1);
+  }
+  // Oś łączy kolejne kroki: odcinek prowadzi od znacznika kroku do znacznika
+  // kroku następnego, a ostatni krok zamyka oś na własnym znaczniku.
+  const assistantAxis = await assistantStepGroups.evaluateAll((groups) =>
+    groups.map((group) => {
+      const axis = group.querySelector<HTMLElement>('.step-axis');
+      const marker = group.querySelector<HTMLElement>('.step-axis__marker');
+      const card = group.querySelector<HTMLElement>('.recipe-step__card');
+      if (!axis || !marker || !card) return null;
+
+      const markerBox = marker.getBoundingClientRect();
+      const cardBox = card.getBoundingClientRect();
+      const line = getComputedStyle(axis, '::before');
+      return {
+        markerCenterX: markerBox.x + markerBox.width / 2,
+        markerCenterY: markerBox.y + markerBox.height / 2,
+        markerRight: markerBox.right,
+        cardLeft: cardBox.left,
+        cardBottom: cardBox.bottom,
+        hasLine: line.display !== 'none',
+      };
+    }),
+  );
+  expect(assistantAxis.every((axis) => axis !== null)).toBe(true);
+  expect(assistantAxis.map((axis) => axis!.hasLine)).toEqual([
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+  ]);
+  for (const [index, axis] of assistantAxis.entries()) {
+    expect(axis!.markerRight).toBeLessThanOrEqual(axis!.cardLeft);
+    expect(axis!.markerCenterX).toBeCloseTo(assistantAxis[0]!.markerCenterX, 0);
+    const next = assistantAxis[index + 1];
+    if (next) expect(axis!.cardBottom).toBeLessThan(next.markerCenterY);
   }
   await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
   await expect(assistantSteps.getByText('Do zrobienia', { exact: true })).toHaveCount(0);
@@ -339,6 +397,9 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   });
   expect(animatedHalfSteps).toBe(3);
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'true');
+  // Znacznik osi prowadzi do pierwszego niewykonanego kroku listy.
+  await expect(assistantStepGroups.nth(0)).not.toHaveClass(/is-current/);
+  await expect(assistantStepGroups.nth(1)).toHaveClass(/is-current/);
   await expect(firstCookingStep.locator('..').locator('[data-step-group-progress]')).toContainText(
     'Komplet · 4 kroki',
   );
@@ -365,6 +426,8 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   });
   expect(animatedRestoredHalfSteps).toBe(3);
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'false');
+  await expect(assistantStepGroups.nth(0)).toHaveClass(/is-current/);
+  await expect(assistantStepGroups.nth(1)).not.toHaveClass(/is-current/);
   await expect(firstCookingStep.locator('..').locator('[data-step-group-progress]')).toContainText(
     '0/4 wykonane',
   );
