@@ -147,9 +147,11 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStep.locator('[data-step-badge]')).toHaveText('1');
   await expect(firstStepAction).toBeVisible();
   await expect(firstStepAction).toContainText('Oznacz jako zrobione');
-  await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');
-  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(firstStepAction).toHaveCSS('border-radius', '999px');
+  // Akcja do zrobienia jest pełnym, koralowym wezwaniem; stan wykonany odwraca
+  // kontrast na jasną powierzchnię.
+  await expect(firstStepAction).toHaveCSS('color', 'rgb(255, 255, 255)');
+  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(168, 45, 24)');
+  await expect(firstStepAction).toHaveCSS('border-radius', '12px');
   const [firstStepActionBox, firstStepBox] = await Promise.all([
     firstStepAction.boundingBox(),
     firstStep.locator('.step-final').boundingBox(),
@@ -180,7 +182,8 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     'line-through',
   );
   await expect(firstStepAction).toContainText('Zrobione');
-  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(168, 45, 24)');
+  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');
   await firstStepAction.click();
   await expect(firstStepAction).toHaveAttribute('aria-pressed', 'false');
   await expect(firstStep.locator('[data-step-badge]')).toHaveText('1');
@@ -276,6 +279,16 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(firstStepItem.locator('.step-final__badge')).toHaveCount(0);
   await expect(firstStepItem.locator('.step-final__text')).toContainText(
     'Połóż chorizo na zimnej patelni',
+  );
+  // Etap z półkrokami wyodrębnia finalny krok koralowym panelem wpuszczonym
+  // w jasną kartę.
+  await expect(firstStepItem.locator('.step-final')).toHaveCSS(
+    'background-color',
+    'rgb(255, 241, 236)',
+  );
+  await expect(firstStepItem.locator('.step-item__card')).toHaveCSS(
+    'background-color',
+    'rgb(255, 255, 255)',
   );
   const halfStepTargets = await halfSteps.evaluateAll((items) =>
     items.map((item) => item.closest<HTMLElement>('[data-step-item]')?.dataset.stepNumber),

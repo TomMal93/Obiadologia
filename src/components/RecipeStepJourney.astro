@@ -2,8 +2,9 @@
 // Ścieżka kroków gotowania: pionowa oś z numerowanymi znacznikami i kartami
 // etapów. Dokładnie jeden etap jest rozwinięty — pokazuje przypisane półkroki
 // (ich nagłówek „Przygotuj przed wykonaniem” stoi w wierszu sterowania kartą,
-// na wysokości strzałki zwijania), finalny krok i akcję oznaczenia go jako
-// zrobiony. Pozostałe etapy pozostają zwiniętym, jednoliniowym zapowiedzeniem.
+// na wysokości strzałki zwijania), a pod nimi wyodrębniony panel finalnego kroku
+// z etykietą, treścią i akcją oznaczenia go jako zrobiony.
+// Pozostałe etapy pozostają zwiniętym, jednoliniowym zapowiedzeniem.
 // Komponent renderuje jedną wersję kroków; strona przepisu osadza go osobno dla
 // „Trybu asystenta” (z półkrokami) i dla „Tylko kroki”.
 import type { PreparationStep } from '@/domain/recipe';
@@ -51,7 +52,10 @@ const cards = steps.map((text, index) => {
           <h3 class="step-item__heading">
             <button
               type="button"
-              class="step-item__head"
+              class:list={[
+                'step-item__head',
+                card.preparation.length > 0 && 'step-item__head--prep',
+              ]}
               data-step-head
               aria-expanded="true"
               aria-controls={card.bodyId}
@@ -59,7 +63,17 @@ const cards = steps.map((text, index) => {
             >
               <span class="visually-hidden">{card.label}</span>
               {card.preparation.length > 0 && (
-                <span class="step-item__prep-title">{messages.stepPreparationHeading}</span>
+                <span class="step-item__prep-title">
+                  <svg class="step-item__prep-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9.4 2.6c-.8 1-.8 1.9 0 2.9s.8 1.9 0 2.9" />
+                    <path d="M14 2.6c-.8 1-.8 1.9 0 2.9s.8 1.9 0 2.9" />
+                    <path d="M3 11.4h18" />
+                    <path d="M4.6 11.4v3a5.4 5.4 0 0 0 5.4 5.4h4a5.4 5.4 0 0 0 5.4-5.4v-3" />
+                    <path d="M19.2 12.8h1.4a1.5 1.5 0 0 1 0 3h-1" />
+                    <path d="M4.8 12.8H3.4a1.5 1.5 0 0 0 0 3h1" />
+                  </svg>
+                  <span>{messages.stepPreparationHeading}</span>
+                </span>
               )}
               <span class="step-item__preview">{card.text}</span>
               <svg class="step-item__chevron" viewBox="0 0 20 20" aria-hidden="true">
@@ -102,10 +116,10 @@ const cards = steps.map((text, index) => {
                   ))}
                 </ul>
                 <p class="step-progress" data-step-group-progress>
+                  <span data-step-group-progress-text></span>
                   <span class="step-progress__track" aria-hidden="true">
                     <span class="step-progress__fill"></span>
                   </span>
-                  <span data-step-group-progress-text></span>
                 </p>
               </div>
             )}
@@ -114,7 +128,14 @@ const cards = steps.map((text, index) => {
               <div class="step-final__content">
                 {card.preparation.length > 0 && (
                   <p class="step-final__label" data-step-final-label hidden>
-                    {messages.stepFinalLabel}
+                    <span class="step-final__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 2.4c.9 2.3 2.4 3.3 3.6 4.7a6.8 6.8 0 0 1 1.9 4.9 5.5 5.5 0 0 1-11 0c0-1.7.6-3.1 1.6-4.2.2 1 .8 1.8 1.5 1.8 1 0 1.6-.9 1.5-2.4-.1-1.6-.6-3-.1-4.8Z"
+                        />
+                      </svg>
+                    </span>
+                    <span>{messages.stepFinalLabel}</span>
                   </p>
                 )}
                 <p class="step-final__text">{card.text}</p>
