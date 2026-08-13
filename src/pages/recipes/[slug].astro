@@ -1,4 +1,5 @@
 ---
+import RecipeStepJourney from '@/components/RecipeStepJourney.astro';
 import { getPublishedRecipes } from '@/data/recipes';
 import { preparationTimings, type Recipe } from '@/domain/recipe';
 import { formatMeasure } from '@/domain/ingredient';
@@ -52,8 +53,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       data-progress-complete={messages.recipe.ingredientsProgressComplete}
       data-step-progress-template={messages.recipe.stepProgress}
       data-step-progress-complete={messages.recipe.stepProgressComplete}
-      data-step-progress-step-singular={messages.recipe.stepProgressStepSingular}
-      data-step-progress-step-plural={messages.recipe.stepProgressStepPlural}
+      data-steps-journey-template={messages.recipe.stepsJourneyProgress}
       data-base-servings={recipe.servings}
     >
       <header class="recipe-hero">
@@ -381,149 +381,21 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
             </h2>
           </div>
           <div id="steps-content" class="recipe-section-content" data-section-content>
-          <p data-steps-interaction-hint hidden>{messages.recipe.stepsInteractionHint}</p>
-          <ol
-            class:list={['step-list', recipe.stepsOnly && 'assistant-section']}
-            data-step-list="assistant"
-          >
-            {recipe.steps.map((step, index) => (
-              <li class="recipe-step recipe-step-group">
-                {recipe.preparation
-                  ?.filter((item) => item.beforeStep === index + 1)
-                  .map((item) => (
-                    <div
-                      class="recipe-step recipe-step--preparation"
-                      data-preparation-half-step={item.id}
-                      data-before-step={item.beforeStep}
-                      hidden
-                    >
-                      <button
-                        type="button"
-                        class="recipe-step__toggle recipe-step__toggle--preparation"
-                        data-preparation-toggle
-                        data-preparation-id={item.id}
-                        aria-pressed="false"
-                        aria-label={formatMessage(messages.recipe.checkPreparationLabel, {
-                          name: item.stepText,
-                        })}
-                        data-check-label={formatMessage(messages.recipe.checkPreparationLabel, {
-                          name: item.stepText,
-                        })}
-                        data-uncheck-label={formatMessage(messages.recipe.uncheckPreparationLabel, {
-                          name: item.stepText,
-                        })}
-                      >
-                        <span class="recipe-step__badge" aria-hidden="true"></span>
-                        <span class="recipe-step__content">
-                          <span class="recipe-step__text">{item.stepText}</span>
-                        </span>
-                      </button>
-                    </div>
-                  ))}
-                <button
-                  type="button"
-                  class="recipe-step__toggle recipe-step__toggle--cooking"
-                  data-checkable-step
-                  data-assistant-cooking-step
-                  data-step-number={index + 1}
-                  aria-pressed="false"
-                  aria-label={formatMessage(messages.recipe.checkStepLabel, {
-                    number: index + 1,
-                  })}
-                  data-check-label={formatMessage(messages.recipe.checkStepLabel, {
-                    number: index + 1,
-                  })}
-                  data-uncheck-label={formatMessage(messages.recipe.uncheckStepLabel, {
-                    number: index + 1,
-                  })}
-                  hidden
-                >
-                  <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
-                  <span class="recipe-step__content">
-                    <span class="recipe-step__text">{step}</span>
-                  </span>
-                  <span
-                    class="recipe-step__action recipe-step__action--pending"
-                    aria-hidden="true"
-                  >
-                    <span class="recipe-step__action-circle" aria-hidden="true"></span>
-                    <span class="recipe-step__action-label">{messages.recipe.finishStepAction}</span>
-                    <span class="recipe-step__action-check">✓</span>
-                  </span>
-                </button>
-                <span class="recipe-step__fallback">{step}</span>
-                <p class="step-progress" data-step-group-progress hidden>
-                  <span class="step-progress__track" aria-hidden="true">
-                    <span class="step-progress__fill"></span>
-                  </span>
-                  <span data-step-group-progress-text></span>
-                </p>
-              </li>
-            ))}
-          </ol>
-          <p
-            class:list={['step-list-completion', recipe.stepsOnly && 'assistant-section']}
-            data-step-list-completion="assistant"
-            aria-live="polite"
-            hidden
-          >
-            {messages.recipe.stepsCompleteMessage}
-          </p>
+          <RecipeStepJourney
+            mode="assistant"
+            steps={recipe.steps}
+            preparation={recipe.preparation}
+            messages={messages.recipe}
+            class={recipe.stepsOnly ? 'assistant-section' : undefined}
+          />
           {
             recipe.stepsOnly && (
-              <>
-              <ol class="step-list steps-only-section" data-step-list="steps">
-                {recipe.stepsOnly.map((step, index) => (
-                  <li class="recipe-step recipe-step-group">
-                    <button
-                      type="button"
-                      class="recipe-step__toggle recipe-step__toggle--cooking"
-                      data-checkable-step
-                      data-step-number={index + 1}
-                      aria-pressed="false"
-                      aria-label={formatMessage(messages.recipe.checkStepLabel, {
-                        number: index + 1,
-                      })}
-                      data-check-label={formatMessage(messages.recipe.checkStepLabel, {
-                        number: index + 1,
-                      })}
-                      data-uncheck-label={formatMessage(messages.recipe.uncheckStepLabel, {
-                        number: index + 1,
-                      })}
-                      hidden
-                    >
-                      <span class="recipe-step__badge" aria-hidden="true">{index + 1}</span>
-                      <span class="recipe-step__content">
-                        <span class="recipe-step__text">{step}</span>
-                      </span>
-                      <span
-                        class="recipe-step__action recipe-step__action--pending"
-                        aria-hidden="true"
-                      >
-                        <span class="recipe-step__action-circle" aria-hidden="true"></span>
-                        <span class="recipe-step__action-label">{messages.recipe.finishStepAction}</span>
-                        <span class="recipe-step__action-check">✓</span>
-                      </span>
-                    </button>
-                    <span class="recipe-step__fallback">{step}</span>
-                    <p class="step-progress" data-step-group-progress hidden>
-                      <span class="step-progress__track" aria-hidden="true">
-                        <span class="step-progress__fill"></span>
-                      </span>
-                      <span data-step-group-progress-text></span>
-                    </p>
-                  </li>
-                ))}
-              </ol>
-              <p
-                class="step-list-completion steps-only-section"
-                data-step-list-completion="steps"
-                aria-live="polite"
-                hidden
-              >
-                {messages.recipe.stepsCompleteMessage}
-              </p>
-              </>
+              <RecipeStepJourney
+                mode="steps"
+                steps={recipe.stepsOnly}
+                messages={messages.recipe}
+                class="steps-only-section"
+              />
             )
           }
           </div>
@@ -852,93 +724,92 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     }
   }
 
+  /* Ścieżka kroków. Stan półkroków jest wspólny z panelem „Zanim zaczniesz”,
+     a w danej wersji listy rozwinięty pozostaje dokładnie jeden etap: ten, który
+     jest najbliżej do zrobienia, albo ten wskazany przez czytelnika. */
   const preparationToggles = Array.from(
     article?.querySelectorAll<HTMLButtonElement>('[data-preparation-toggle]') ?? [],
   );
-  const preparationHalfSteps = Array.from(
-    article?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
-  );
   const completedPreparation = new Set<string>();
-  const halfStepMotion = (() => {
-    const styles = preparationHalfSteps[0] ? getComputedStyle(preparationHalfSteps[0]) : null;
-    const duration = parseMotionDuration(styles?.getPropertyValue('--half-step-motion-duration'));
-    const easing = styles?.getPropertyValue('--half-step-motion-easing').trim();
-    return { duration: duration || 240, easing: easing || 'ease' };
-  })();
-
-  /* Docelowa wysokość półkroku musi uwzględniać cały układ stanu docelowego —
-     mniejszą czcionkę, węższe marginesy i przycięcie do jednej linii. Przejścia
-     CSS trwają, więc zmierzyć da się ją tylko na kopii, która wchodzi do układu
-     od razu w stanie docelowym i nie przerywa ruchu oryginału. */
-  const measureHalfStepHeight = (halfStep: HTMLElement, checked: boolean) => {
-    const probe = halfStep.cloneNode(true) as HTMLElement;
-    probe.classList.remove('is-animating');
-    probe.hidden = false;
-    probe.setAttribute('aria-hidden', 'true');
-    probe
-      .querySelector<HTMLElement>('.recipe-step__toggle--preparation')
-      ?.classList.toggle('is-checked', checked);
-    probe.style.position = 'absolute';
-    probe.style.visibility = 'hidden';
-    probe.style.pointerEvents = 'none';
-    probe.style.width = `${halfStep.getBoundingClientRect().width}px`;
-    halfStep.after(probe);
-    const height = probe.getBoundingClientRect().height;
-    probe.remove();
-    return height;
-  };
-  const stepGroups = Array.from(
-    article?.querySelectorAll<HTMLElement>('.recipe-step-group') ?? [],
+  const stepItems = Array.from(
+    article?.querySelectorAll<HTMLElement>('[data-step-item]') ?? [],
   );
-  const updateStepGroupProgress = (group: HTMLElement) => {
-    const progress = group.querySelector<HTMLElement>('[data-step-group-progress]');
-    const progressText = progress?.querySelector<HTMLElement>('[data-step-group-progress-text]');
-    if (
-      !article
-      || !progress
-      || !progressText
-      || !article.dataset.stepProgressTemplate
-    ) return;
+  const stepJourneys = Array.from(
+    article?.querySelectorAll<HTMLElement>('[data-step-journey]') ?? [],
+  );
 
-    const controls = Array.from(
-      group.querySelectorAll<HTMLButtonElement>(
-        '[data-preparation-half-step] [data-preparation-toggle], [data-checkable-step]',
-      ),
+  const journeyItems = (journey: HTMLElement) =>
+    Array.from(journey.querySelectorAll<HTMLElement>('[data-step-item]'));
+  const stepAction = (item: HTMLElement) =>
+    item.querySelector<HTMLButtonElement>('[data-checkable-step]');
+  const isStepChecked = (item: HTMLElement) =>
+    stepAction(item)?.getAttribute('aria-pressed') === 'true';
+
+  const renderStepItem = (item: HTMLElement) => {
+    const action = stepAction(item);
+    const checked = action?.getAttribute('aria-pressed') === 'true';
+    item.classList.toggle('is-done', checked);
+
+    const badge = item.querySelector<HTMLElement>('[data-step-badge]');
+    if (badge) badge.textContent = checked ? '✓' : (item.dataset.stepNumber ?? '');
+
+    const label = action?.querySelector<HTMLElement>('[data-step-action-label]');
+    if (action && label) {
+      label.textContent = (checked ? action.dataset.uncheckLabel : action.dataset.checkLabel) ?? '';
+    }
+  };
+
+  const renderStepPreparationProgress = (item: HTMLElement) => {
+    const progress = item.querySelector<HTMLElement>('[data-step-group-progress]');
+    const progressText = progress?.querySelector<HTMLElement>('[data-step-group-progress-text]');
+    const toggles = Array.from(
+      item.querySelectorAll<HTMLButtonElement>('[data-preparation-toggle]'),
     );
-    const checked = controls.filter(
+    const template = article?.dataset.stepProgressTemplate;
+    if (!progress || !progressText || !template || toggles.length === 0) return;
+
+    const checked = toggles.filter(
       (button) => button.getAttribute('aria-pressed') === 'true',
     ).length;
-    const complete = checked === controls.length;
-    progress.style.setProperty('--step-progress', String(checked / controls.length));
+    const complete = checked === toggles.length;
+    progress.style.setProperty('--step-progress', String(checked / toggles.length));
     progress.classList.toggle('is-complete', complete);
-    progressText.textContent = complete && article.dataset.stepProgressComplete
+    progressText.textContent = complete && article?.dataset.stepProgressComplete
       ? article.dataset.stepProgressComplete
-        .replace('{total}', String(controls.length))
-        .replace(
-          '{stepLabel}',
-          controls.length === 1
-            ? (article.dataset.stepProgressStepSingular ?? '')
-            : (article.dataset.stepProgressStepPlural ?? ''),
-        )
-      : article.dataset.stepProgressTemplate
+      : template
         .replace('{checked}', String(checked))
-        .replace('{total}', String(controls.length));
+        .replace('{total}', String(toggles.length));
   };
 
-  const stepLists = Array.from(
-    article?.querySelectorAll<HTMLOListElement>('[data-step-list]') ?? [],
-  );
-  const updateStepListCompletions = () => {
-    for (const list of stepLists) {
-      const mode = list.dataset.stepList;
-      const completion = mode
-        ? article?.querySelector<HTMLElement>(`[data-step-list-completion="${mode}"]`)
-        : null;
-      if (!completion) continue;
+  const renderJourney = (journey: HTMLElement) => {
+    const items = journeyItems(journey);
+    if (items.length === 0) return;
 
+    const completed = items.filter(isStepChecked).length;
+    const currentIndex = items.findIndex((item) => !isStepChecked(item));
+    for (const [index, item] of items.entries()) {
+      item.classList.toggle('is-current', index === currentIndex);
+    }
+
+    const progress = journey.querySelector<HTMLElement>('[data-steps-progress]');
+    const progressText = progress?.querySelector<HTMLElement>('[data-steps-progress-text]');
+    const template = article?.dataset.stepsJourneyTemplate;
+    if (progress && progressText && template) {
+      progress.hidden = false;
+      progress.style.setProperty('--steps-progress', String(completed / items.length));
+      progressText.textContent = template
+        .replace('{current}', String(currentIndex === -1 ? items.length : currentIndex + 1))
+        .replace('{total}', String(items.length));
+    }
+
+    const mode = journey.dataset.stepJourney;
+    const completion = mode
+      ? journey.querySelector<HTMLElement>(`[data-step-list-completion="${mode}"]`)
+      : null;
+    if (completion) {
       const controls = Array.from(
-        list.querySelectorAll<HTMLButtonElement>(
-          '[data-preparation-half-step] [data-preparation-toggle], [data-checkable-step]',
+        journey.querySelectorAll<HTMLButtonElement>(
+          '[data-checkable-step], [data-preparation-toggle]',
         ),
       );
       completion.hidden = !(
@@ -948,22 +819,40 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     }
   };
 
-  const renderPreparation = (preparationId: string, animate = false) => {
-    const checked = completedPreparation.has(preparationId);
-    const matchingHalfSteps = preparationHalfSteps.filter(
-      (halfStep) => halfStep.dataset.preparationHalfStep === preparationId,
-    );
-    const heights = new Map<HTMLElement, { from: number; to: number }>();
+  const renderStepJourneys = () => {
+    for (const journey of stepJourneys) renderJourney(journey);
+  };
 
-    if (animate && !reducedMotionQuery.matches) {
-      for (const halfStep of matchingHalfSteps) {
-        if (halfStep.hidden) continue;
-        heights.set(halfStep, {
-          from: halfStep.getBoundingClientRect().height,
-          to: measureHalfStepHeight(halfStep, checked),
-        });
-      }
+  const setStepOpen = (item: HTMLElement, open: boolean, animate: boolean) => {
+    const head = item.querySelector<HTMLButtonElement>('[data-step-head]');
+    const body = item.querySelector<HTMLElement>('[data-step-body]');
+    if (!head || !body) return;
+
+    head.setAttribute('aria-expanded', String(open));
+    item.classList.toggle('is-open', open);
+
+    if (animate) {
+      animateSection(body, open);
+      return;
     }
+
+    for (const animation of body.getAnimations()) animation.cancel();
+    body.classList.remove('is-animating');
+    body.style.height = '';
+    body.style.paddingTop = '';
+    body.hidden = !open;
+  };
+
+  const openStepItem = (
+    journey: HTMLElement,
+    target: HTMLElement | null,
+    animate: boolean,
+  ) => {
+    for (const item of journeyItems(journey)) setStepOpen(item, item === target, animate);
+  };
+
+  const renderPreparation = (preparationId: string) => {
+    const checked = completedPreparation.has(preparationId);
 
     for (const button of preparationToggles) {
       if (button.dataset.preparationId !== preparationId) continue;
@@ -973,102 +862,90 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         'aria-label',
         (checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
       );
-    }
-    for (const halfStep of matchingHalfSteps) {
-      halfStep.hidden = false;
-      const badge = halfStep.querySelector<HTMLElement>('.recipe-step__badge');
-      if (badge) badge.textContent = checked ? '✓' : '';
 
-      halfStep.classList.remove('is-animating');
-      for (const animation of halfStep.getAnimations()) animation.cancel();
-
-      const height = heights.get(halfStep);
-      if (!height || Math.abs(height.to - height.from) < 1) continue;
-
-      halfStep.classList.add('is-animating');
-      const animation = halfStep.animate(
-        [{ height: `${height.from}px` }, { height: `${height.to}px` }],
-        { duration: halfStepMotion.duration, easing: halfStepMotion.easing, fill: 'forwards' },
-      );
-      /* Wypełnienie do przodu utrzymuje zmierzoną wysokość aż do chwili, w
-         której półkrok wraca do własnego układu — dzięki temu między ostatnią
-         klatką a stanem docelowym nie mignie pełna treść. */
-      animation.addEventListener(
-        'finish',
-        () => {
-          halfStep.classList.remove('is-animating');
-          animation.cancel();
-        },
-        { once: true },
-      );
+      const item = button.closest<HTMLElement>('[data-step-item]');
+      if (item) renderStepPreparationProgress(item);
     }
-    for (const halfStep of matchingHalfSteps) {
-      const group = halfStep.closest<HTMLElement>('.recipe-step-group');
-      if (group) updateStepGroupProgress(group);
+
+    renderStepJourneys();
+  };
+
+  /* Etap gotowania domyka też przypisane do niego półkroki — i tylko je. */
+  const setStepChecked = (item: HTMLElement, checked: boolean) => {
+    const action = stepAction(item);
+    if (!action) return;
+
+    action.setAttribute('aria-pressed', String(checked));
+    for (const toggle of item.querySelectorAll<HTMLButtonElement>('[data-preparation-toggle]')) {
+      const preparationId = toggle.dataset.preparationId;
+      if (!preparationId) continue;
+
+      if (checked) completedPreparation.add(preparationId);
+      else completedPreparation.delete(preparationId);
+      renderPreparation(preparationId);
     }
-    updateStepListCompletions();
+
+    renderStepItem(item);
+    renderStepPreparationProgress(item);
+    renderStepJourneys();
   };
 
   for (const button of preparationToggles) {
     button.hidden = false;
-    if (button.classList.contains('prep-list__toggle')) {
-      button.parentElement?.querySelector<HTMLElement>('.prep-list__fallback')
-        ?.setAttribute('hidden', '');
-    }
+    button.parentElement?.querySelector<HTMLElement>('.prep-list__fallback')
+      ?.setAttribute('hidden', '');
 
     const preparationId = button.dataset.preparationId;
     if (!preparationId) continue;
-    renderPreparation(preparationId);
     button.addEventListener('click', () => {
-      const checked = !completedPreparation.has(preparationId);
-
-      if (checked) completedPreparation.add(preparationId);
-      else completedPreparation.delete(preparationId);
-      renderPreparation(preparationId, true);
+      if (completedPreparation.has(preparationId)) completedPreparation.delete(preparationId);
+      else completedPreparation.add(preparationId);
+      renderPreparation(preparationId);
     });
   }
 
-  const stepToggles = Array.from(
-    article?.querySelectorAll<HTMLButtonElement>('[data-checkable-step]') ?? [],
-  );
-  const stepsInteractionHint = article?.querySelector<HTMLElement>('[data-steps-interaction-hint]');
-  if (stepsInteractionHint && stepToggles.length > 0) stepsInteractionHint.hidden = false;
-  for (const button of stepToggles) {
-    button.hidden = false;
-    button.parentElement?.querySelector<HTMLElement>('.recipe-step__fallback')
+  for (const item of stepItems) {
+    const journey = item.closest<HTMLElement>('[data-step-journey]');
+    const head = item.querySelector<HTMLButtonElement>('[data-step-head]');
+    const action = stepAction(item);
+    const preparationBlock = item.querySelector<HTMLElement>('[data-step-prep]');
+    const finalLabel = item.querySelector<HTMLElement>('[data-step-final-label]');
+
+    if (head) head.hidden = false;
+    item.querySelector<HTMLElement>('.step-item__heading-fallback')
       ?.setAttribute('hidden', '');
-    button.addEventListener('click', () => {
-      const checked = button.getAttribute('aria-pressed') === 'true';
-      if (button.hasAttribute('data-assistant-cooking-step')) {
-        const stepNumber = Number(button.dataset.stepNumber);
-        for (const halfStep of preparationHalfSteps) {
-          const beforeStep = Number(halfStep.dataset.beforeStep);
-          const preparationId = halfStep.dataset.preparationHalfStep;
-          if (!preparationId || beforeStep !== stepNumber) continue;
+    if (action) action.hidden = false;
+    if (preparationBlock) preparationBlock.hidden = false;
+    if (finalLabel) finalLabel.hidden = false;
 
-          if (checked) completedPreparation.delete(preparationId);
-          else completedPreparation.add(preparationId);
-          renderPreparation(preparationId, true);
-        }
-      }
-
-      button.setAttribute('aria-pressed', String(!checked));
-      button.classList.toggle('is-checked', !checked);
-      button.setAttribute(
-        'aria-label',
-        (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
-      );
-      const group = button.closest<HTMLElement>('.recipe-step-group');
-      if (group) updateStepGroupProgress(group);
-      updateStepListCompletions();
+    head?.addEventListener('click', () => {
+      if (!journey) return;
+      if (head.getAttribute('aria-expanded') === 'true') setStepOpen(item, false, true);
+      else openStepItem(journey, item, true);
     });
+
+    /* Po oznaczeniu etapu ścieżka prowadzi dalej sama: karta zwija się do
+       jednoliniowej zapowiedzi, a rozwija się pierwszy etap wciąż do zrobienia. */
+    action?.addEventListener('click', () => {
+      const checked = !isStepChecked(item);
+      setStepChecked(item, checked);
+      if (!journey) return;
+
+      const next = checked
+        ? journeyItems(journey).find((candidate) => !isStepChecked(candidate)) ?? null
+        : item;
+      openStepItem(journey, next, true);
+    });
+
+    renderStepItem(item);
+    renderStepPreparationProgress(item);
   }
-  for (const group of stepGroups) {
-    const progress = group.querySelector<HTMLElement>('[data-step-group-progress]');
-    if (progress) progress.hidden = false;
-    updateStepGroupProgress(group);
+
+  for (const journey of stepJourneys) {
+    const items = journeyItems(journey);
+    openStepItem(journey, items.find((item) => !isStepChecked(item)) ?? null, false);
   }
-  updateStepListCompletions();
+  renderStepJourneys();
 
   for (const image of Array.from(
     article?.querySelectorAll<HTMLImageElement>('.recipe-hero__image') ?? [],

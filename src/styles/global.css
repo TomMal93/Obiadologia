@@ -123,6 +123,21 @@ button {
    komponentu mieszkają przy nim we współlokowanym pliku .css importowanym
    przez ten komponent, a nie tutaj. */
 
+/* Treść wyłącznie dla technologii asystujących — widoczna nazwa kontrolki może
+   być krótsza niż jej pełna, dostępna nazwa. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .eyebrow {
   margin: 0;
   color: var(--color-heading-accent-strong);

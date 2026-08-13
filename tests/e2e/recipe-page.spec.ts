@@ -132,26 +132,27 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
 
   await page.getByRole('button', { name: 'Tylko kroki' }).click();
   const steps = page.getByRole('region', { name: 'Kroki' });
-  await expect(steps.getByText('Dotknij kroku, aby oznaczyć go jako wykonany.')).toBeVisible();
+  const standaloneJourney = steps.locator('[data-step-journey="steps"]');
   await expect(steps.getByRole('listitem')).toHaveCount(9);
-  const firstStep = steps.locator('.steps-only-section [data-checkable-step]').first();
-  const firstStepAction = firstStep.locator('.recipe-step__action--pending');
+  await expect(standaloneJourney.locator('[data-steps-progress-text]')).toHaveText('Krok 1 z 9');
+
+  const stepItems = standaloneJourney.locator('[data-step-item]');
+  const firstStep = stepItems.first();
+  const secondStep = stepItems.nth(1);
+  const firstStepAction = firstStep.locator('[data-checkable-step]');
+  // Ścieżka prowadzi po jednym etapie: rozwinięty jest tylko najbliższy do zrobienia.
+  await expect(firstStep).toHaveClass(/is-current/);
+  await expect(firstStep.locator('[data-step-body]')).toBeVisible();
+  await expect(secondStep.locator('[data-step-body]')).toBeHidden();
+  await expect(firstStep.locator('[data-step-badge]')).toHaveText('1');
   await expect(firstStepAction).toBeVisible();
-  await expect(firstStepAction.locator('.recipe-step__action-label')).toHaveText(
-    'Oznacz jako zrobione',
-  );
-  await expect(firstStepAction.locator('.recipe-step__action-check')).toHaveCSS('opacity', '0');
-  await expect(firstStepAction.locator('.recipe-step__action-circle')).toHaveCSS(
-    'border-top-style',
-    'solid',
-  );
-  await expect(firstStepAction).toHaveCSS('color', 'rgb(110, 104, 99)');
+  await expect(firstStepAction).toContainText('Oznacz jako zrobione');
+  await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');
   await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(firstStepAction).toHaveCSS('border-radius', '999px');
-  await expect(firstStepAction).toHaveCSS('border-top-style', 'solid');
   const [firstStepActionBox, firstStepBox] = await Promise.all([
     firstStepAction.boundingBox(),
-    firstStep.boundingBox(),
+    firstStep.locator('.step-final').boundingBox(),
   ]);
   expect(firstStepActionBox).not.toBeNull();
   expect(firstStepBox).not.toBeNull();
@@ -159,41 +160,29 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     firstStepBox!.x + firstStepBox!.width / 2,
     0,
   );
-  const firstStepHeight = firstStepBox!.height;
-  await expect(firstStep).toHaveCSS('border-top-style', 'solid');
-  await firstStep.click();
-  await expect(firstStep).toHaveAttribute('aria-pressed', 'true');
-  await expect(firstStep.locator('.recipe-step__text')).toBeVisible();
-  await expect(firstStep.locator('.recipe-step__text')).toHaveCSS(
+
+  await firstStepAction.click();
+  await expect(firstStepAction).toHaveAttribute('aria-pressed', 'true');
+  await expect(firstStep).toHaveClass(/is-done/);
+  await expect(firstStep.locator('[data-step-badge]')).toHaveText('✓');
+  // Wykonany etap zwija się do jednoliniowej zapowiedzi z etykietą „Etap 1”,
+  // a ścieżka rozwija kolejny etap do zrobienia.
+  await expect(firstStep.locator('[data-step-body]')).toBeHidden();
+  await expect(firstStep.locator('.step-item__label')).toHaveText('Etap 1');
+  await expect(secondStep.locator('[data-step-body]')).toBeVisible();
+  await expect(standaloneJourney.locator('[data-steps-progress-text]')).toHaveText('Krok 2 z 9');
+
+  await firstStep.locator('[data-step-head]').click();
+  await expect(firstStep.locator('[data-step-body]')).toBeVisible();
+  await expect(firstStep.locator('.step-final__text')).toHaveCSS(
     'text-decoration-line',
     'line-through',
   );
-  await expect(firstStep.locator('.recipe-step__badge')).toHaveText('1');
-  await expect(firstStepAction).toBeVisible();
-  await expect(firstStepAction).toHaveCSS('color', 'rgb(255, 255, 255)');
-  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(255, 79, 46)');
-  await expect(firstStepAction).toHaveCSS('border-top-style', 'solid');
-  await expect(firstStepAction.locator('.recipe-step__action-label')).toBeHidden();
-  await expect(firstStepAction.locator('.recipe-step__action-circle')).toBeHidden();
-  await expect(firstStepAction.locator('.recipe-step__action-check')).toHaveCSS('opacity', '1');
-  const [checkedActionBox, checkedMarkBox] = await Promise.all([
-    firstStepAction.boundingBox(),
-    firstStepAction.locator('.recipe-step__action-check').boundingBox(),
-  ]);
-  expect(checkedActionBox).not.toBeNull();
-  expect(checkedMarkBox).not.toBeNull();
-  expect(checkedMarkBox!.x + checkedMarkBox!.width / 2).toBeCloseTo(
-    checkedActionBox!.x + checkedActionBox!.width / 2,
-    0,
-  );
-  expect(checkedMarkBox!.y + checkedMarkBox!.height / 2).toBeCloseTo(
-    checkedActionBox!.y + checkedActionBox!.height / 2,
-    0,
-  );
-  await expect(firstStep.locator('.recipe-step__complete-title')).toHaveCount(0);
-  expect((await firstStep.boundingBox())!.height).toBeCloseTo(firstStepHeight, 0);
-  await expect(firstStep).toHaveAttribute('aria-label', 'Cofnij wykonanie kroku 1');
-  await expect(firstStep.locator('.recipe-step__action--complete')).toHaveCount(0);
+  await expect(firstStepAction).toContainText('Zrobione');
+  await expect(firstStepAction).toHaveCSS('background-color', 'rgb(168, 45, 24)');
+  await firstStepAction.click();
+  await expect(firstStepAction).toHaveAttribute('aria-pressed', 'false');
+  await expect(firstStep.locator('[data-step-badge]')).toHaveText('1');
 
   const tips = page.getByRole('region', { name: 'Coś jeszcze' });
   await expect(tips.getByRole('listitem')).toHaveCount(3);
@@ -260,34 +249,33 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(
     preparation.getByRole('region', { name: 'Tuż przed lub w trakcie' }).getByRole('listitem'),
   ).toHaveCount(3);
-  const assistantSteps = steps.locator('.step-list.assistant-section');
-  const standaloneSteps = steps.locator('.step-list.steps-only-section');
+  const assistantSteps = steps.locator('[data-step-journey="assistant"]');
+  const standaloneSteps = steps.locator('[data-step-journey="steps"]');
   const halfSteps = assistantSteps.locator('[data-preparation-half-step]');
+  const assistantStepItems = assistantSteps.locator('[data-step-item]');
   await expect(assistantSteps).toBeVisible();
   await expect(standaloneSteps).toBeHidden();
-  await expect(assistantSteps.getByRole('listitem')).toHaveCount(7);
-  const assistantStepGroups = assistantSteps.locator(':scope > .recipe-step-group');
-  await expect(assistantStepGroups).toHaveCount(7);
-  await expect(assistantStepGroups.first().locator('[data-step-group-progress]')).toContainText(
-    '0/4 wykonane',
-  );
-  for (const group of await assistantStepGroups.all()) {
-    await expect(group).toHaveCSS('border-color', 'rgba(255, 79, 46, 0.42)');
-    await expect(group).toHaveCSS('box-shadow', 'none');
-  }
-  await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
+  await expect(assistantStepItems).toHaveCount(7);
+  await expect(assistantSteps.locator('[data-steps-progress-text]')).toHaveText('Krok 1 z 7');
+  await expect(halfSteps).toHaveCount(5);
   await expect(assistantSteps.getByText('Do zrobienia', { exact: true })).toHaveCount(0);
-  await expect(
-    assistantSteps.locator('.recipe-step:not(.recipe-step--preparation)').first(),
-  ).toContainText(
+
+  // Ścieżka prowadzi etap po etapie: rozwinięty jest tylko najbliższy do
+  // zrobienia, a przypisane półkroki są częścią jego karty.
+  const firstStepItem = assistantStepItems.first();
+  await expect(firstStepItem).toHaveClass(/is-current/);
+  await expect(firstStepItem.locator('[data-step-body]')).toBeVisible();
+  await expect(assistantStepItems.nth(1).locator('[data-step-body]')).toBeHidden();
+  await expect(firstStepItem.getByText('Przygotuj przed wykonaniem')).toBeVisible();
+  await expect(firstStepItem.locator('[data-step-group-progress]')).toContainText(
+    '0/3 wykonane',
+  );
+  await expect(firstStepItem.getByText('Finalny krok')).toBeVisible();
+  await expect(firstStepItem.locator('.step-final__text')).toContainText(
     'Połóż chorizo na zimnej patelni',
   );
   const halfStepTargets = await halfSteps.evaluateAll((items) =>
-    items.map(
-      (item) =>
-        item.parentElement?.querySelector<HTMLElement>('[data-assistant-cooking-step]')?.dataset
-          .stepNumber,
-    ),
+    items.map((item) => item.closest<HTMLElement>('[data-step-item]')?.dataset.stepNumber),
   );
   expect(halfStepTargets).toEqual(['1', '1', '1', '2', '4']);
 
@@ -295,54 +283,40 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   const chorizoHalfStep = assistantSteps.locator(
     '[data-preparation-half-step="pokroj-chorizo"]',
   );
+  const chorizoHalfStepToggle = chorizoHalfStep.getByRole('button');
   await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'false');
   await expect(chorizoHalfStep).toBeVisible();
   await chorizoPreparation.click();
   await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'true');
-  await expect(chorizoHalfStep).toBeVisible();
-  await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
-  await expect(chorizoHalfStep.locator('.recipe-step__text')).toBeVisible();
-  await expect(chorizoHalfStep.locator('.recipe-step__text')).toHaveCSS('font-size', '14px');
+  await expect(chorizoHalfStepToggle).toHaveAttribute('aria-pressed', 'true');
+  await expect(chorizoHalfStepToggle).toHaveClass(/is-checked/);
+  await expect(chorizoHalfStep.locator('.step-prep__text')).toBeVisible();
   await expect(chorizoHalfStep).not.toContainText('Gotowe');
-  await expect(chorizoHalfStep.locator('.recipe-step__text')).toHaveCSS(
-    'text-decoration-line',
-    'line-through',
-  );
-  await expect(chorizoHalfStep.getByRole('button')).toHaveAttribute(
+  await expect(chorizoHalfStepToggle).toHaveAttribute(
     'aria-label',
     /Cofnij wykonanie przygotowania/,
   );
-  await expect(chorizoHalfStep.locator('.recipe-step__action--complete')).toHaveCount(0);
-  await expect(assistantSteps.locator('.recipe-step--preparation:visible')).toHaveCount(5);
+  await expect(firstStepItem.locator('[data-step-group-progress]')).toContainText(
+    '1/3 wykonane',
+  );
   await chorizoPreparation.click();
-  await expect(chorizoHalfStep).toBeVisible();
-  await expect(chorizoHalfStep.locator('.recipe-step__action--pending')).toHaveCount(0);
-  await expect(chorizoHalfStep.locator('.recipe-step__badge')).toHaveText('');
+  await expect(chorizoHalfStepToggle).toHaveAttribute('aria-pressed', 'false');
+  await expect(firstStepItem.locator('[data-step-group-progress]')).toContainText(
+    '0/3 wykonane',
+  );
 
-  await chorizoHalfStep.getByRole('button').click();
+  await chorizoHalfStepToggle.click();
   await expect(chorizoPreparation).toHaveAttribute('aria-pressed', 'true');
-  await expect(chorizoHalfStep).toBeVisible();
-  await expect(chorizoHalfStep.locator('.recipe-step__badge')).toHaveText('✓');
-  await expect(chorizoHalfStep.getByRole('button')).toBeFocused();
+  await expect(chorizoHalfStepToggle).toBeFocused();
 
-  const firstCookingStep = assistantSteps.locator(
-    '[data-assistant-cooking-step][data-step-number="1"]',
-  );
-  const preparationBeforeFirstStep = assistantSteps.locator(
-    '[data-preparation-half-step][data-before-step="1"] [data-preparation-toggle]',
-  );
-  const animatedHalfSteps = await firstCookingStep.evaluate((button) => {
-    (button as HTMLButtonElement).click();
-    return Array.from(
-      button.parentElement?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
-    ).filter((halfStep) => halfStep.getAnimations().length > 0).length;
-  });
-  expect(animatedHalfSteps).toBe(3);
-  await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'true');
-  await expect(firstCookingStep.locator('..').locator('[data-step-group-progress]')).toContainText(
-    'Komplet · 4 kroki',
-  );
+  const firstCookingStep = firstStepItem.locator('[data-checkable-step]');
+  const preparationBeforeFirstStep = firstStepItem.locator('[data-preparation-toggle]');
   await expect(preparationBeforeFirstStep).toHaveCount(3);
+  await firstCookingStep.click();
+  await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'true');
+  await expect(firstStepItem.locator('[data-step-group-progress]')).toContainText(
+    'Przygotowanie gotowe',
+  );
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'true');
   }
@@ -356,26 +330,24 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
       '[data-preparation-half-step][data-before-step="4"] [data-preparation-toggle]',
     ),
   ).toHaveAttribute('aria-pressed', 'false');
+  // Wykonany etap zwija się, a ścieżka rozwija kolejny do zrobienia.
+  await expect(firstStepItem.locator('[data-step-body]')).toBeHidden();
+  await expect(assistantStepItems.nth(1).locator('[data-step-body]')).toBeVisible();
+  await expect(assistantSteps.locator('[data-steps-progress-text]')).toHaveText('Krok 2 z 7');
 
-  const animatedRestoredHalfSteps = await firstCookingStep.evaluate((button) => {
-    (button as HTMLButtonElement).click();
-    return Array.from(
-      button.parentElement?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
-    ).filter((halfStep) => halfStep.getAnimations().length > 0).length;
-  });
-  expect(animatedRestoredHalfSteps).toBe(3);
+  await firstStepItem.locator('[data-step-head]').click();
+  await firstCookingStep.click();
   await expect(firstCookingStep).toHaveAttribute('aria-pressed', 'false');
-  await expect(firstCookingStep.locator('..').locator('[data-step-group-progress]')).toContainText(
-    '0/4 wykonane',
+  await expect(firstStepItem.locator('[data-step-group-progress]')).toContainText(
+    '0/3 wykonane',
   );
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
 
-  const secondCookingStep = assistantSteps.locator(
-    '[data-assistant-cooking-step][data-step-number="2"]',
-  );
-  await secondCookingStep.click();
+  const secondStepItem = assistantStepItems.nth(1);
+  await secondStepItem.locator('[data-step-head]').click();
+  await secondStepItem.locator('[data-checkable-step]').click();
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
@@ -417,17 +389,13 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(assistantSteps).toBeHidden();
   await expect(standaloneSteps).toBeVisible();
   await expect(standaloneSteps.getByRole('listitem')).toHaveCount(9);
-  await expect(
-    standaloneSteps.locator('.recipe-step-group').first().locator('[data-step-group-progress]'),
-  ).toContainText('0/1 wykonane');
-  await standaloneSteps.locator('[data-checkable-step]').first().click();
-  await expect(
-    standaloneSteps.locator('.recipe-step-group').first().locator('[data-step-group-progress]'),
-  ).toContainText('Komplet · 1 krok');
-  await expect(standaloneSteps.locator('.recipe-step__toggle').first()).toHaveCSS(
-    'border-color',
-    'rgba(255, 79, 46, 0.42)',
-  );
+  // Wersja samodzielna nie ma półkroków, więc nie ma też licznika przygotowania.
+  await expect(standaloneSteps.locator('[data-step-group-progress]')).toHaveCount(0);
+  await expect(standaloneSteps.locator('[data-steps-progress-text]')).toHaveText('Krok 1 z 9');
+  const standaloneStepItems = standaloneSteps.locator('[data-step-item]');
+  await standaloneStepItems.first().locator('[data-checkable-step]').click();
+  await expect(standaloneStepItems.first()).toHaveClass(/is-done/);
+  await expect(standaloneSteps.locator('[data-steps-progress-text]')).toHaveText('Krok 2 z 9');
   await expect(standaloneSteps.getByRole('listitem').first()).toContainText(
     'Cukinię pokrój w półplastry',
   );
@@ -635,39 +603,67 @@ test('collapsing a section animates its height and respects reduced motion', asy
   expect(instant.collapsed).toBeLessThan(instant.open);
 });
 
+test('opening a step collapses the previously open one with a height animation', async ({ page }) => {
+  await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
+  await page.getByRole('button', { name: 'Tryb asystenta' }).click();
+
+  const items = page.locator('[data-step-journey="assistant"] [data-step-item]');
+  const animations = await items.nth(2).evaluate((item) => {
+    item.querySelector<HTMLButtonElement>('[data-step-head]')?.click();
+    return item.querySelector<HTMLElement>('[data-step-body]')?.getAnimations().length ?? 0;
+  });
+
+  expect(animations).toBe(1);
+  await expect(items.nth(2).locator('[data-step-head]')).toHaveAttribute('aria-expanded', 'true');
+  await expect(items.nth(2).locator('[data-step-body]')).toBeVisible();
+  await expect(items.first().locator('[data-step-body]')).toBeHidden();
+  await expect(items.first().locator('[data-step-head]')).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  );
+});
+
 test('completing every step shows the finished-dish message for the active mode', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
   await page.getByRole('button', { name: 'Tylko kroki' }).click();
-  const standaloneList = page.locator('[data-step-list="steps"]');
+  const standaloneJourney = page.locator('[data-step-journey="steps"]');
+  const standaloneItems = standaloneJourney.locator('[data-step-item]');
   const standaloneCompletion = page.locator('[data-step-list-completion="steps"]');
   await expect(standaloneCompletion).toBeHidden();
 
-  for (const step of await standaloneList.locator('[data-checkable-step]').all()) {
-    await step.click();
+  // Ścieżka sama rozwija kolejny etap, więc kroki odhaczamy po kolei.
+  for (const item of await standaloneItems.all()) {
+    await item.locator('[data-checkable-step]').click();
   }
   await expect(standaloneCompletion).toBeVisible();
   await expect(standaloneCompletion).toHaveText('Gratulacje, danie gotowe!');
+  await expect(standaloneJourney.locator('[data-steps-progress-text]')).toHaveText('Krok 9 z 9');
   expect(
     await standaloneCompletion.evaluate((element) =>
       element.previousElementSibling?.matches('[data-step-list="steps"]'),
     ),
   ).toBe(true);
 
-  await standaloneList.locator('[data-checkable-step]').last().click();
+  const lastStandaloneItem = standaloneItems.last();
+  await lastStandaloneItem.locator('[data-step-head]').click();
+  await lastStandaloneItem.locator('[data-checkable-step]').click();
   await expect(standaloneCompletion).toBeHidden();
 
   await page.getByRole('button', { name: 'Tryb asystenta' }).click();
-  const assistantList = page.locator('[data-step-list="assistant"]');
+  const assistantJourney = page.locator('[data-step-journey="assistant"]');
+  const assistantItems = assistantJourney.locator('[data-step-item]');
   const assistantCompletion = page.locator('[data-step-list-completion="assistant"]');
   await expect(assistantCompletion).toBeHidden();
-  for (const step of await assistantList.locator('[data-assistant-cooking-step]').all()) {
-    await step.click();
+  for (const item of await assistantItems.all()) {
+    await item.locator('[data-checkable-step]').click();
   }
   await expect(assistantCompletion).toBeVisible();
   await expect(standaloneCompletion).toBeHidden();
 
-  await assistantList.locator('[data-assistant-cooking-step]').first().click();
+  const firstAssistantItem = assistantItems.first();
+  await firstAssistantItem.locator('[data-step-head]').click();
+  await firstAssistantItem.locator('[data-checkable-step]').click();
   await expect(assistantCompletion).toBeHidden();
 });
 
