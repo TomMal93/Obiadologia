@@ -3,7 +3,12 @@
    do zrobienia) i `is-open` (rozwinięty). Kolor nigdy nie jest jedynym nośnikiem
    znaczenia: znacznik wykonanego etapu pokazuje ✓, a jego treść zostaje
    przekreślona. Numer etapu niesie wyłącznie znacznik osi — karta nie powtarza
-   go ani etykietą „Etap N”, ani znacznikiem przy finalnym kroku. */
+   go ani etykietą „Etap N”, ani znacznikiem przy finalnym kroku.
+
+   Oś czyta się jak przebyta droga: znaczniki etapów wykonanych i bieżącego są
+   pełnowymiarowe, a etapy jeszcze do zrobienia dostają mniejsze, jasne kółka.
+   Bieżący etap dodatkowo otacza pierścień, żeby „tu jesteś” było widoczne bez
+   czytania numeru. */
 
 .step-journey {
   display: grid;
@@ -43,8 +48,20 @@
   width: calc(var(--steps-progress, 0) * 100%);
 }
 
+/* Geometria osi. Rozmiary znaczników i wysokość wiersza sterowania kartą są
+   lokalnym, precyzyjnym dostrojeniem (jak rozmiary ikon), więc pozostają
+   wartościami literalnymi. Wszystkie znaczniki są wyśrodkowane na tym samym
+   wierszu, dlatego środek każdego z nich leży na połowie `--step-head-height`
+   niezależnie od własnej średnicy — z tego korzysta też urwanie linii przy
+   pierwszym i ostatnim etapie. */
 .step-list {
   --step-list-gap: var(--space-8);
+  --step-rail-width: 36px;
+  --step-head-height: 44px;
+  --step-marker-size: 32px;
+  --step-marker-todo-size: 24px;
+  --step-marker-current-size: 34px;
+  --step-rail-line: color-mix(in srgb, var(--color-coral) 20%, var(--color-surface));
 
   display: grid;
   gap: var(--step-list-gap);
@@ -54,8 +71,6 @@
 }
 
 .step-item {
-  --step-rail-width: var(--space-32);
-
   position: relative;
   display: grid;
   grid-template-columns: var(--step-rail-width) minmax(0, 1fr);
@@ -73,49 +88,85 @@
   bottom: calc(-1 * var(--step-list-gap, 0px));
   left: calc(var(--step-rail-width) / 2 - 1px);
   width: 2px;
-  background: var(--color-coral-soft);
+  background: var(--step-rail-line);
   content: '';
 }
 
 .step-item:first-child::before {
-  top: calc(var(--step-rail-width) / 2);
+  top: calc(var(--step-head-height) / 2);
 }
 
 .step-item:last-child::before {
-  bottom: calc(100% - var(--step-rail-width) / 2);
+  bottom: calc(100% - var(--step-head-height) / 2);
 }
 
-/* Oś nabiera mocnego koloru tylko za wykonanymi etapami — aktywny etap wyróżnia
-   sam znacznik, więc linia kończy bieg na jego kole. */
-.step-item.is-done::before {
+/* Oś nabiera mocnego koloru na całej przebytej drodze — także na odcinku
+   bieżącego etapu, więc koral kończy bieg dopiero przy pierwszym etapie
+   pozostałym do zrobienia. */
+.step-item.is-done::before,
+.step-item.is-current::before {
   background: var(--color-coral-strong);
 }
 
+/* Koralowy odcinek dobiega do znacznika pierwszego etapu do zrobienia, więc
+   linia nie gaśnie w połowie odstępu między kartami. */
+.step-item.is-current + .step-item::before {
+  background: linear-gradient(
+    var(--color-coral-strong) 0 calc(var(--step-head-height) / 2),
+    var(--step-rail-line) calc(var(--step-head-height) / 2)
+  );
+}
+
+/* Stan podstawowy znacznika to etap do zrobienia: mniejsze, jasne kółko z
+   numerem. Każdy znacznik jest wyśrodkowany w kolumnie osi i na wierszu
+   sterowania kartą, więc zmiana średnicy nie rusza linii ani układu karty. */
 .step-item__badge {
   position: relative;
   z-index: 1;
   display: grid;
-  width: var(--step-rail-width);
-  height: var(--step-rail-width);
+  width: var(--step-marker-todo-size);
+  height: var(--step-marker-todo-size);
+  justify-self: center;
+  margin-top: calc((var(--step-head-height) - var(--step-marker-todo-size)) / 2);
   place-items: center;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--step-rail-line);
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
   font-weight: 800;
   line-height: 1;
   background: var(--color-surface);
-  transition: color 240ms ease, border-color 240ms ease, background-color 240ms ease;
+  transition: width 240ms ease, height 240ms ease, margin-top 240ms ease,
+    color 240ms ease, border-color 240ms ease, background-color 240ms ease;
 }
 
 .step-item.is-current .step-item__badge {
+  width: var(--step-marker-current-size);
+  height: var(--step-marker-current-size);
+  margin-top: calc((var(--step-head-height) - var(--step-marker-current-size)) / 2);
+  border-width: 3px;
   border-color: var(--color-coral-strong);
   color: var(--color-coral-strong);
+  font-size: var(--font-size-20);
+}
+
+/* Pierścień bieżącego etapu ma przezroczyste wnętrze, więc oś przechodzi przez
+   przerwę między nim a kołem znacznika i nie urywa się nad kartą. */
+.step-item.is-current .step-item__badge::after {
+  position: absolute;
+  border: 2px solid var(--step-rail-line);
+  border-radius: inherit;
+  content: '';
+  inset: -4px;
 }
 
 .step-item.is-done .step-item__badge {
+  width: var(--step-marker-size);
+  height: var(--step-marker-size);
+  margin-top: calc((var(--step-head-height) - var(--step-marker-size)) / 2);
   border-color: var(--color-coral-strong);
   color: var(--color-surface);
+  font-size: var(--font-size-20);
   background: var(--color-coral-strong);
 }
 
@@ -145,7 +196,7 @@
 .step-item__head {
   display: flex;
   width: 100%;
-  min-height: 44px;
+  min-height: var(--step-head-height);
   align-items: center;
   gap: var(--space-8);
   padding: var(--space-8) var(--space-12);
@@ -180,6 +231,7 @@
   overflow: hidden;
   color: var(--color-text);
   font-weight: 500;
+  line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

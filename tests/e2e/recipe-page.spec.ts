@@ -1,5 +1,15 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
+
+const markerWidth = (step: Locator) =>
+  step.locator('[data-step-badge]').evaluate((element) => element.getBoundingClientRect().width);
+// Odcinek osi jest jednolity albo — tuż pod bieżącym etapem — gaśnie gradientem
+// przy znaczniku, więc test czyta to, co faktycznie maluje tło.
+const railPaint = (step: Locator) =>
+  step.evaluate((element) => {
+    const style = getComputedStyle(element, '::before');
+    return style.backgroundImage === 'none' ? style.backgroundColor : style.backgroundImage;
+  });
 
 test('published chorizo shakshuka recipe presents its complete model data', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
@@ -145,6 +155,13 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStep.locator('[data-step-body]')).toBeVisible();
   await expect(secondStep.locator('[data-step-body]')).toBeHidden();
   await expect(firstStep.locator('[data-step-badge]')).toHaveText('1');
+  // Oś niesie stan także geometrią i kolorem: znacznik bieżącego etapu jest
+  // większy od znacznika etapu do zrobienia, a koral prowadzi aż do znacznika
+  // pierwszego etapu pozostałego do zrobienia i dalej nie sięga.
+  expect(await markerWidth(firstStep)).toBeGreaterThan(await markerWidth(secondStep));
+  expect(await railPaint(firstStep)).toBe('rgb(168, 45, 24)');
+  expect(await railPaint(secondStep)).toContain('rgb(168, 45, 24)');
+  expect(await railPaint(stepItems.nth(2))).not.toContain('rgb(168, 45, 24)');
   await expect(firstStepAction).toBeVisible();
   await expect(firstStepAction).toContainText('Oznacz jako zrobione');
   await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');
