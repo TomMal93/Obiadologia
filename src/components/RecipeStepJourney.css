@@ -43,8 +43,10 @@
 }
 
 .step-list {
+  --step-list-gap: var(--space-8);
+
   display: grid;
-  gap: var(--space-8);
+  gap: var(--step-list-gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -60,12 +62,14 @@
   align-items: start;
 }
 
-/* Ciągła oś łączy znaczniki etapów. Pierwszy i ostatni etap urywają ją na
-   środku własnego znacznika, więc linia nie wystaje poza ścieżkę. */
+/* Ciągła oś łączy znaczniki etapów. Odcinek każdego etapu sięga w dół przez
+   odstęp listy, więc linia nie urywa się między kartami. Pierwszy i ostatni
+   etap urywają ją na środku własnego znacznika, żeby nie wystawała poza
+   ścieżkę. */
 .step-item::before {
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: calc(-1 * var(--step-list-gap, 0px));
   left: calc(var(--step-rail-width) / 2 - 1px);
   width: 2px;
   background: var(--color-coral-soft);
@@ -80,8 +84,9 @@
   bottom: calc(100% - var(--step-rail-width) / 2);
 }
 
-.step-item.is-done::before,
-.step-item.is-current::before {
+/* Oś nabiera mocnego koloru tylko za wykonanymi etapami — aktywny etap wyróżnia
+   sam znacznik, więc linia kończy bieg na jego kole. */
+.step-item.is-done::before {
   background: var(--color-coral-strong);
 }
 
