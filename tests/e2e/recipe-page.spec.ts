@@ -165,10 +165,11 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(firstStepAction).toHaveAttribute('aria-pressed', 'true');
   await expect(firstStep).toHaveClass(/is-done/);
   await expect(firstStep.locator('[data-step-badge]')).toHaveText('✓');
-  // Wykonany etap zwija się do jednoliniowej zapowiedzi z etykietą „Etap 1”,
-  // a ścieżka rozwija kolejny etap do zrobienia.
+  // Wykonany etap zwija się do samej jednoliniowej zapowiedzi treści — kafel nie
+  // powtarza numeru etykietą „Etap 1” — a ścieżka rozwija kolejny etap do zrobienia.
   await expect(firstStep.locator('[data-step-body]')).toBeHidden();
-  await expect(firstStep.locator('.step-item__label')).toHaveText('Etap 1');
+  await expect(firstStep.locator('.step-item__preview')).toBeVisible();
+  await expect(firstStep.locator('.step-item__label')).toHaveCount(0);
   await expect(secondStep.locator('[data-step-body]')).toBeVisible();
   await expect(standaloneJourney.locator('[data-steps-progress-text]')).toHaveText('Krok 2 z 9');
 
@@ -271,6 +272,8 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     '0/3 wykonane',
   );
   await expect(firstStepItem.getByText('Finalny krok')).toBeVisible();
+  // Finalny krok stoi bez znacznika z numerem — numer niesie wyłącznie oś.
+  await expect(firstStepItem.locator('.step-final__badge')).toHaveCount(0);
   await expect(firstStepItem.locator('.step-final__text')).toContainText(
     'Połóż chorizo na zimnej patelni',
   );
@@ -345,8 +348,10 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
   }
 
+  // Drugi etap został rozwinięty przez ścieżkę i pozostał otwarty mimo powrotu
+  // do pierwszego, więc jego akcja jest dostępna od razu.
   const secondStepItem = assistantStepItems.nth(1);
-  await secondStepItem.locator('[data-step-head]').click();
+  await expect(secondStepItem.locator('[data-step-body]')).toBeVisible();
   await secondStepItem.locator('[data-checkable-step]').click();
   for (const preparationButton of await preparationBeforeFirstStep.all()) {
     await expect(preparationButton).toHaveAttribute('aria-pressed', 'false');
@@ -603,7 +608,7 @@ test('collapsing a section animates its height and respects reduced motion', asy
   expect(instant.collapsed).toBeLessThan(instant.open);
 });
 
-test('opening a step collapses the previously open one with a height animation', async ({ page }) => {
+test('opening a step animates its height and leaves the other open steps expanded', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
   await page.getByRole('button', { name: 'Tryb asystenta' }).click();
 
@@ -616,11 +621,25 @@ test('opening a step collapses the previously open one with a height animation',
   expect(animations).toBe(1);
   await expect(items.nth(2).locator('[data-step-head]')).toHaveAttribute('aria-expanded', 'true');
   await expect(items.nth(2).locator('[data-step-body]')).toBeVisible();
-  await expect(items.first().locator('[data-step-body]')).toBeHidden();
+  // Karty rozwijają się niezależnie: bieżący etap zostaje otwarty.
+  await expect(items.first().locator('[data-step-body]')).toBeVisible();
   await expect(items.first().locator('[data-step-head]')).toHaveAttribute(
     'aria-expanded',
-    'false',
+    'true',
   );
+
+  // Ponowne kliknięcie nagłówka zwija wyłącznie własną kartę.
+  await items.nth(2).locator('[data-step-head]').click();
+  await expect(items.nth(2).locator('[data-step-body]')).toBeHidden();
+  await expect(items.first().locator('[data-step-body]')).toBeVisible();
+
+  // Ścieżka dokłada kolejny etap do zrobienia, nie ruszając kart otwartych
+  // wcześniej przez czytelnika.
+  await items.nth(2).locator('[data-step-head]').click();
+  await items.first().locator('[data-checkable-step]').click();
+  await expect(items.first().locator('[data-step-body]')).toBeHidden();
+  await expect(items.nth(1).locator('[data-step-body]')).toBeVisible();
+  await expect(items.nth(2).locator('[data-step-body]')).toBeVisible();
 });
 
 test('completing every step shows the finished-dish message for the active mode', async ({ page }) => {

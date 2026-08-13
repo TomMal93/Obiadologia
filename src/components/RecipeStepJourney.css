@@ -1,8 +1,9 @@
 /* Ścieżka kroków: oś z numerowanymi znacznikami po lewej i karty etapów po
    prawej. Stan etapu niesie klasa `is-done` (wykonany), `is-current` (najbliższy
    do zrobienia) i `is-open` (rozwinięty). Kolor nigdy nie jest jedynym nośnikiem
-   znaczenia: znacznik wykonanego etapu pokazuje ✓, a etykieta „Etap N” wraca do
-   zwiniętego wiersza, gdy numer ustąpił miejsca znacznikowi wykonania. */
+   znaczenia: znacznik wykonanego etapu pokazuje ✓, a jego treść zostaje
+   przekreślona. Numer etapu niesie wyłącznie znacznik osi — karta nie powtarza
+   go ani etykietą „Etap N”, ani znacznikiem przy finalnym kroku. */
 
 .step-journey {
   display: grid;
@@ -156,23 +157,21 @@
   cursor: pointer;
 }
 
-.step-item__heading-fallback,
-.step-item__label {
-  flex: none;
-  color: var(--color-text-muted);
-  font-weight: 700;
+/* Rozwinięta karta niesie pełną treść kroku w swoim wnętrzu, więc zapowiedź
+   ustępuje miejsca nagłówkowi półkroków — ten stoi w wierszu sterowania kartą,
+   na wysokości strzałki zwijania. Zwinięta karta zapowiada treść, więc
+   nagłówek półkroków w niej nie stoi. */
+.step-item.is-open .step-item__preview,
+.step-item:not(.is-open) .step-item__prep-title {
+  display: none;
 }
 
-.step-item.is-open .step-item__label {
+.step-item__prep-title {
+  min-width: 0;
+  flex: 1;
   color: var(--color-coral-strong);
   font-weight: 800;
-}
-
-/* Numer etapu wraca do wiersza tylko wtedy, gdy nie niesie go już znacznik osi
-   (etap wykonany) albo gdy karta jest rozwinięta i nie ma w niej zapowiedzi. */
-.step-item:not(.is-done, .is-open) .step-item__label,
-.step-item.is-open .step-item__preview {
-  display: none;
+  line-height: 1.3;
 }
 
 .step-item__preview {
@@ -217,14 +216,6 @@
   display: grid;
   gap: var(--space-8);
   padding: var(--space-12);
-}
-
-.step-prep__heading {
-  margin: 0;
-  color: var(--color-coral-strong);
-  font-size: var(--font-size-16);
-  font-weight: 800;
-  line-height: 1.3;
 }
 
 .step-prep__list {
@@ -306,30 +297,13 @@
 
 .step-final {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-12);
   padding: var(--space-12);
 }
 
 .step-prep + .step-final {
   border-top: 1px solid rgb(255 79 46 / 24%);
-}
-
-.step-final__badge {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  border-radius: var(--radius-pill);
-  color: var(--color-coral-strong);
-  font-size: var(--font-size-14);
-  font-weight: 800;
-  line-height: 1;
-  background: var(--color-coral-soft);
-}
-
-.step-item.is-open .step-final__badge {
-  background: var(--color-surface);
 }
 
 .step-final__content {
@@ -423,9 +397,4 @@
 .step-final__action[hidden],
 .step-list-completion[hidden] {
   display: none;
-}
-
-.step-item__heading-fallback {
-  display: block;
-  padding: var(--space-8) var(--space-12);
 }

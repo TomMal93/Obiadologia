@@ -1,7 +1,8 @@
 ---
 // Ścieżka kroków gotowania: pionowa oś z numerowanymi znacznikami i kartami
 // etapów. Dokładnie jeden etap jest rozwinięty — pokazuje przypisane półkroki
-// („Przygotuj przed wykonaniem”), finalny krok i akcję oznaczenia go jako
+// (ich nagłówek „Przygotuj przed wykonaniem” stoi w wierszu sterowania kartą,
+// na wysokości strzałki zwijania), finalny krok i akcję oznaczenia go jako
 // zrobiony. Pozostałe etapy pozostają zwiniętym, jednoliniowym zapowiedzeniem.
 // Komponent renderuje jedną wersję kroków; strona przepisu osadza go osobno dla
 // „Trybu asystenta” (z półkrokami) i dla „Tylko kroki”.
@@ -56,19 +57,21 @@ const cards = steps.map((text, index) => {
               aria-controls={card.bodyId}
               hidden
             >
-              <span class="step-item__label">{card.label}</span>
+              <span class="visually-hidden">{card.label}</span>
+              {card.preparation.length > 0 && (
+                <span class="step-item__prep-title">{messages.stepPreparationHeading}</span>
+              )}
               <span class="step-item__preview">{card.text}</span>
               <svg class="step-item__chevron" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="m5 12 5-5 5 5" />
               </svg>
             </button>
-            <span class="step-item__heading-fallback">{card.label}</span>
+            <span class="step-item__heading-fallback visually-hidden">{card.label}</span>
           </h3>
 
           <div class="step-item__body" id={card.bodyId} data-step-body>
             {card.preparation.length > 0 && (
               <div class="step-prep" data-step-prep hidden>
-                <p class="step-prep__heading">{messages.stepPreparationHeading}</p>
                 <ul class="step-prep__list">
                   {card.preparation.map((item) => (
                     <li
@@ -108,7 +111,6 @@ const cards = steps.map((text, index) => {
             )}
 
             <div class="step-final">
-              <span class="step-final__badge" aria-hidden="true">{card.number}</span>
               <div class="step-final__content">
                 {card.preparation.length > 0 && (
                   <p class="step-final__label" data-step-final-label hidden>
