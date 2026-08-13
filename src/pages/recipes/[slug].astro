@@ -597,9 +597,94 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     window.history.back();
   });
 
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const parseMotionDuration = (value: string | undefined) => {
+    const token = value?.trim() ?? '';
+    const amount = Number.parseFloat(token);
+    if (!Number.isFinite(amount) || amount <= 0) return 0;
+    return token.endsWith('ms') ? amount : amount * 1000;
+  };
+  const parsePixels = (value: string | undefined) => {
+    const amount = Number.parseFloat(value ?? '');
+    return Number.isFinite(amount) ? amount : 0;
+  };
+
   const sectionToggles = Array.from(
     article?.querySelectorAll<HTMLButtonElement>('[data-section-toggle]') ?? [],
   );
+  const sectionMotion = (() => {
+    const sample = article?.querySelector<HTMLElement>('[data-section-content]');
+    const styles = sample ? getComputedStyle(sample) : null;
+    const duration = parseMotionDuration(styles?.getPropertyValue('--section-motion-duration'));
+    const easing = styles?.getPropertyValue('--section-motion-easing').trim();
+    return { duration: duration || 240, easing: easing || 'ease' };
+  })();
+
+  /* Zwijana treść zostaje w układzie przez cały ruch i dopiero na końcu znika,
+     więc animować da się jedynie jej wysokość. Odstęp siatki nad treścią zniknie
+     razem z nią, dlatego na czas ruchu przenosimy go do górnego paddingu treści
+     (`row-gap` rodzica schodzi do zera) i animujemy razem z wysokością — inaczej
+     układ przeskoczyłby o wysokość odstępu w chwili ukrycia. */
+  const animateSection = (content: HTMLElement, nextExpanded: boolean) => {
+    const parent = content.parentElement;
+    const wasAnimating = content.classList.contains('is-animating');
+    const wasHidden = content.hidden;
+    const fromHeight = wasHidden ? 0 : content.getBoundingClientRect().height;
+    const fromPadding = wasHidden ? 0 : parsePixels(getComputedStyle(content).paddingTop);
+
+    for (const animation of content.getAnimations()) animation.cancel();
+    content.classList.remove('is-animating');
+    content.style.height = '';
+    content.style.paddingTop = '';
+    if (parent) parent.style.rowGap = '';
+    content.hidden = false;
+
+    const gap = parent ? parsePixels(getComputedStyle(parent).rowGap) : 0;
+    const openHeight = content.getBoundingClientRect().height + gap;
+    const openPadding = parsePixels(getComputedStyle(content).paddingTop) + gap;
+    /* Przerwany ruch startuje z własnej, zmierzonej klatki; stan spoczynkowy
+       dolicza do niej odstęp siatki, który zaraz przejmie padding treści. */
+    const from = wasHidden || wasAnimating
+      ? { height: fromHeight, paddingTop: fromPadding }
+      : { height: openHeight, paddingTop: openPadding };
+    const to = nextExpanded
+      ? { height: openHeight, paddingTop: openPadding }
+      : { height: 0, paddingTop: 0 };
+
+    if (reducedMotionQuery.matches || Math.abs(to.height - from.height) < 1) {
+      content.hidden = !nextExpanded;
+      return;
+    }
+
+    content.classList.add('is-animating');
+    if (parent) parent.style.rowGap = '0px';
+    content.style.height = `${from.height}px`;
+    content.style.paddingTop = `${from.paddingTop}px`;
+
+    const animation = content.animate(
+      [
+        { height: `${from.height}px`, paddingTop: `${from.paddingTop}px` },
+        { height: `${to.height}px`, paddingTop: `${to.paddingTop}px` },
+      ],
+      { duration: sectionMotion.duration, easing: sectionMotion.easing, fill: 'forwards' },
+    );
+    /* Wypełnienie do przodu utrzymuje ostatnią klatkę aż do przywrócenia
+       własnego układu sekcji, więc między końcem ruchu a stanem docelowym nic
+       nie mignie. */
+    animation.addEventListener(
+      'finish',
+      () => {
+        content.classList.remove('is-animating');
+        animation.cancel();
+        content.style.height = '';
+        content.style.paddingTop = '';
+        if (parent) parent.style.rowGap = '';
+        content.hidden = !nextExpanded;
+      },
+      { once: true },
+    );
+  };
+
   for (const toggle of sectionToggles) {
     const contentId = toggle.getAttribute('aria-controls');
     const content = contentId ? document.getElementById(contentId) : null;
@@ -614,7 +699,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
       const nextExpanded = !expanded;
       toggle.setAttribute('aria-expanded', String(nextExpanded));
-      content.hidden = !nextExpanded;
+      animateSection(content, nextExpanded);
     });
   }
 
@@ -774,13 +859,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     article?.querySelectorAll<HTMLElement>('[data-preparation-half-step]') ?? [],
   );
   const completedPreparation = new Set<string>();
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const parseMotionDuration = (value: string | undefined) => {
-    const token = value?.trim() ?? '';
-    const amount = Number.parseFloat(token);
-    if (!Number.isFinite(amount) || amount <= 0) return 0;
-    return token.endsWith('ms') ? amount : amount * 1000;
-  };
   const halfStepMotion = (() => {
     const styles = preparationHalfSteps[0] ? getComputedStyle(preparationHalfSteps[0]) : null;
     const duration = parseMotionDuration(styles?.getPropertyValue('--half-step-motion-duration'));
