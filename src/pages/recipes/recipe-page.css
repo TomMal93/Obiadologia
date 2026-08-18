@@ -662,8 +662,8 @@
 }
 
 .ingredient__toggle.is-checked .ingredient__box {
-  border-color: var(--color-coral);
-  background: var(--color-coral);
+  border-color: var(--color-coral-strong);
+  background: var(--color-coral-strong);
 }
 
 .ingredient__toggle.is-checked .ingredient__box::before {
@@ -863,14 +863,15 @@
 }
 
 .prep-list__box {
-  border: 2px solid var(--color-coral);
+  border: 2px solid var(--color-border);
   border-radius: calc(var(--radius-field) / 2);
   background: var(--color-surface);
 }
 
 .prep-list__toggle.is-checked .prep-list__box {
+  border-color: var(--color-coral-strong);
   color: var(--color-surface);
-  background: var(--color-coral);
+  background: var(--color-coral-strong);
 }
 
 .prep-list__toggle.is-checked .prep-list__box::before {

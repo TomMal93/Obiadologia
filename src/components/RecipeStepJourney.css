@@ -248,7 +248,7 @@
   height: 24px;
   flex: none;
   place-items: center;
-  border: 2px solid var(--color-coral);
+  border: 2px solid var(--color-border);
   border-radius: calc(var(--radius-field) / 2);
   color: var(--color-surface);
   font-size: var(--font-size-14);
