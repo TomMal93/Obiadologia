@@ -81,26 +81,40 @@
 
 .recipe-back__surface {
   display: inline-flex;
-  height: 36px;
+  height: 32px;
   align-items: center;
   gap: var(--space-4);
-  padding: 0 var(--space-12);
+  padding: 0 var(--space-12) 0 var(--space-8);
+  border: 1px solid rgb(255 255 255 / 45%);
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
-  font-size: var(--font-size-14);
+  font-size: 13px;
   font-weight: 600;
-  background: rgb(255 255 255 / 68%);
+  background: rgb(255 255 255 / 65%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.recipe-back:hover .recipe-back__surface {
+  color: var(--color-text);
+  background: rgb(255 255 255 / 85%);
 }
 
 .recipe-back__icon {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   flex: none;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.5;
+  stroke-width: 2;
+}
+
+.recipe-back__text {
+  line-height: 1;
 }
 
 .recipe-hero__caption {
