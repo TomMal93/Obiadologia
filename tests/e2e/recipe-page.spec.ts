@@ -43,7 +43,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   }
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
-  await expect(ingredients.getByText('0/13 zebrane')).toBeVisible();
+  await expect(ingredients.getByText('0/3 zebrane')).toBeVisible();
   await expect(ingredients.getByRole('heading', { level: 3 })).toHaveText([
     'Warzywa i owoce',
     'Mięso i wędliny',
@@ -63,17 +63,14 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(ingredients.locator('.unit-toggle')).toHaveCount(0);
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
-    const progress = section.querySelector('.ingredient-progress');
-    const chevron = section.querySelector('.recipe-section-toggle svg');
+    const chevron = section.querySelector('.recipe-section-toggle svg:last-child');
     if (
       !(heading instanceof HTMLElement)
-      || !(progress instanceof HTMLElement)
       || !(chevron instanceof SVGElement)
     ) {
       throw new Error('Ingredient section header was not found');
     }
     const headingBounds = heading.getBoundingClientRect();
-    const progressBounds = progress.getBoundingClientRect();
     const chevronBounds = chevron.getBoundingClientRect();
     const sectionBounds = section.getBoundingClientRect();
     const sectionStyles = getComputedStyle(section);
@@ -82,25 +79,14 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
       sectionRight: sectionBounds.right,
       sectionBorderRight: Number.parseFloat(sectionStyles.borderRightWidth),
       sectionPaddingRight: Number.parseFloat(sectionStyles.paddingRight),
-      progressCenter: progressBounds.top + progressBounds.height / 2,
-      progressRight: progressBounds.right,
-      chevronLeft: chevronBounds.left,
       chevronRight: chevronBounds.right,
     };
   });
-  // Strzałka stoi na prawej krawędzi jak w „O daniu”, a licznik pozostaje przed nią.
-  expect(ingredientHeadGeometry.progressCenter).toBeCloseTo(
-    ingredientHeadGeometry.headingCenter,
-    0,
-  );
   expect(ingredientHeadGeometry.chevronRight).toBeCloseTo(
     ingredientHeadGeometry.sectionRight
       - ingredientHeadGeometry.sectionBorderRight
       - ingredientHeadGeometry.sectionPaddingRight,
     0,
-  );
-  expect(ingredientHeadGeometry.progressRight).toBeLessThan(
-    ingredientHeadGeometry.chevronLeft,
   );
   await expect(
     ingredients.getByRole('button', { name: /Odhacz składnik: chorizo/ }),
@@ -123,12 +109,13 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(servings).toHaveText('2');
   await expect(chorizo.locator('[data-ingredient-measure]')).toHaveText('80 g / 10 plastrów');
 
+  const meatGroup = ingredients.locator('[data-ingredient-group]').filter({ hasText: 'Mięso i wędliny' });
   const chorizoToggle = ingredients.locator('[data-checkable-ingredient]').filter({
     hasText: 'chorizo',
   });
   await chorizoToggle.click();
   await expect(chorizoToggle).toHaveAttribute('aria-pressed', 'true');
-  await expect(ingredients.getByText('1/13 zebrane')).toBeVisible();
+  await expect(meatGroup.getByText('Komplet')).toBeVisible();
 
   await page.getByRole('button', { name: 'Tylko kroki' }).click();
   const steps = page.getByRole('region', { name: 'Kroki' });
@@ -471,7 +458,7 @@ test('every main recipe section can be collapsed and expanded independently', as
       const container = document.querySelector(containerSelector);
       const toggle = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-section-toggle]'))
         .find((button) => button.textContent?.trim() === toggleName);
-      const icon = toggle?.querySelector('svg');
+      const icon = toggle?.querySelector('svg:last-child');
       if (!(container instanceof HTMLElement) || !(icon instanceof SVGElement)) {
         throw new Error(`Nie znaleziono geometrii sekcji: ${toggleName}`);
       }
@@ -713,26 +700,27 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
-  const progress = ingredients.locator('[data-ingredient-progress]');
+  const vegetableGroup = ingredients.locator('[data-ingredient-group]').first();
+  const progress = vegetableGroup.locator('[data-ingredient-group-progress]');
   const progressText = progress.locator('[data-ingredient-progress-text]');
   const arc = progress.locator('.ingredient-progress__arc');
-  const toggles = ingredients.locator('[data-checkable-ingredient]');
+  const toggles = vegetableGroup.locator('[data-checkable-ingredient]');
   // Nieprzebyta część pierścienia; wartość wyliczona ma postać `calc(0.92px)`.
   const ringRemainder = () =>
     arc.evaluate((element) =>
       Number.parseFloat(getComputedStyle(element).strokeDashoffset.replace(/[^\d.]+/g, ' ').trim()),
     );
 
-  await expect(progressText).toHaveText('0/13 zebrane');
+  await expect(progressText).toHaveText('0/3 zebrane');
   await expect(progress).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(progress).toHaveCSS('border-top-style', 'none');
   await expect(progress).toHaveCSS('box-shadow', 'none');
   expect(await ringRemainder()).toBeCloseTo(1, 2);
 
   await toggles.first().click();
-  await expect(progressText).toHaveText('1/13 zebrane');
+  await expect(progressText).toHaveText('1/3 zebrane');
   // Pierścień dojeżdża płynnie, więc czekamy na koniec przejścia.
-  await expect.poll(ringRemainder).toBeCloseTo(12 / 13, 2);
+  await expect.poll(ringRemainder).toBeCloseTo(2 / 3, 2);
 
   const total = await toggles.count();
   for (let index = 1; index < total; index += 1) {
@@ -744,7 +732,7 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
   await expect(progress).toHaveCSS('box-shadow', 'none');
 
   await toggles.first().click();
-  await expect(progressText).toHaveText('12/13 zebrane');
+  await expect(progressText).toHaveText('2/3 zebrane');
   await expect(progress).not.toHaveClass(/is-complete/);
 });
 

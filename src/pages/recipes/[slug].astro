@@ -25,10 +25,6 @@ interface Props {
 const { recipe } = Astro.props;
 const messages = getMessages(defaultLocale);
 const hasAssistantContent = Boolean(recipe.preparation);
-const ingredientProgress = formatMessage(messages.recipe.ingredientsProgress, {
-  checked: 0,
-  total: recipe.ingredients.length,
-});
 const ingredientGroups = ingredientCategories.flatMap((category) => {
   const ingredients = recipe.ingredients.filter(
     (ingredient) => ingredient.category === category,
@@ -171,10 +167,28 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                 data-section-toggle
                 hidden
               >
-                <span>{messages.recipe.descriptionHeading}</span>
+                <span class="recipe-section-head__title">
+                  <span class="recipe-section-head__badge" aria-hidden="true">
+                    <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                  </span>
+                  <span>{messages.recipe.descriptionHeading}</span>
+                </span>
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
               </button>
-              <span class="recipe-section-title-fallback">{messages.recipe.descriptionHeading}</span>
+              <span class="recipe-section-title-fallback">
+                <span class="recipe-section-head__title">
+                  <span class="recipe-section-head__badge" aria-hidden="true">
+                    <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                  </span>
+                  <span>{messages.recipe.descriptionHeading}</span>
+                </span>
+              </span>
             </h2>
           </div>
           <div id="description-content" data-section-content>
@@ -183,7 +197,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         </section>
 
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
-          <div class="recipe-section-head recipe-ingredients__head">
+          <div class="recipe-section-head">
             <h2 id="ingredients-heading">
               <button
                 type="button"
@@ -193,30 +207,55 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                 data-section-toggle
                 hidden
               >
-                <span>{messages.recipe.ingredientsHeading}</span>
+                <span class="recipe-section-head__title">
+                  <span class="recipe-section-head__badge" aria-hidden="true">
+                    <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                      <path d="M3 6h18"></path>
+                      <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                  </span>
+                  <span>{messages.recipe.ingredientsHeading}</span>
+                </span>
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
               </button>
-              <span class="recipe-section-title-fallback">{messages.recipe.ingredientsHeading}</span>
+              <span class="recipe-section-title-fallback">
+                <span class="recipe-section-head__title">
+                  <span class="recipe-section-head__badge" aria-hidden="true">
+                    <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                      <path d="M3 6h18"></path>
+                      <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                  </span>
+                  <span>{messages.recipe.ingredientsHeading}</span>
+                </span>
+              </span>
             </h2>
-            <p class="ingredient-progress" data-ingredient-progress aria-live="polite" hidden>
-              <span class="ingredient-progress__dial" aria-hidden="true">
-                <svg class="ingredient-progress__ring" viewBox="0 0 24 24">
-                  <circle class="ingredient-progress__track" cx="12" cy="12" r="10"></circle>
-                  <circle class="ingredient-progress__arc" cx="12" cy="12" r="10" pathLength="1"
-                  ></circle>
-                </svg>
-                <span class="ingredient-progress__mark">✓</span>
-              </span>
-              <span class="ingredient-progress__text" data-ingredient-progress-text>
-                {ingredientProgress}
-              </span>
-            </p>
           </div>
 
           <div class="ingredient-groups" id="ingredients-content" data-section-content>
             {ingredientGroups.map(({ category, ingredients }) => (
-              <section class="ingredient-group">
-                <h3>{messages.recipe.ingredientCategories[category]}</h3>
+              <section class="ingredient-group" data-ingredient-group>
+                <div class="ingredient-group__head">
+                  <h3>{messages.recipe.ingredientCategories[category]}</h3>
+                  <p class="ingredient-progress" data-ingredient-group-progress aria-live="polite" hidden>
+                    <span class="ingredient-progress__dial" aria-hidden="true">
+                      <svg class="ingredient-progress__ring" viewBox="0 0 24 24">
+                        <circle class="ingredient-progress__track" cx="12" cy="12" r="10"></circle>
+                        <circle class="ingredient-progress__arc" cx="12" cy="12" r="10" pathLength="1"
+                        ></circle>
+                      </svg>
+                      <span class="ingredient-progress__mark">✓</span>
+                    </span>
+                    <span class="ingredient-progress__text" data-ingredient-progress-text>
+                      {formatMessage(messages.recipe.ingredientsProgress, {
+                        checked: 0,
+                        total: ingredients.length,
+                      })}
+                    </span>
+                  </p>
+                </div>
                 <ul class="ingredient-list">
                   {ingredients.map((ingredient) => (
                     <li
@@ -671,36 +710,48 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     renderServings();
   }
 
-  const progress = article?.querySelector<HTMLElement>('[data-ingredient-progress]');
+  const ingredientGroupsElements = Array.from(
+    article?.querySelectorAll<HTMLElement>('[data-ingredient-group]') ?? [],
+  );
   const ingredientToggles = Array.from(
     article?.querySelectorAll<HTMLButtonElement>('[data-checkable-ingredient]') ?? [],
   );
 
-  const progressText = progress?.querySelector<HTMLElement>('[data-ingredient-progress-text]');
-
   if (
-    progress
-    && progressText
+    ingredientGroupsElements.length > 0
     && ingredientToggles.length > 0
     && article?.dataset.progressTemplate
   ) {
-    progress.hidden = false;
     const progressTemplate = article.dataset.progressTemplate;
     const progressComplete = article.dataset.progressComplete;
-    const total = ingredientToggles.length;
 
-    const updateProgress = () => {
-      const checked = ingredientToggles.filter(
+    const updateGroupProgress = (group: HTMLElement) => {
+      const groupToggles = Array.from(
+        group.querySelectorAll<HTMLButtonElement>('[data-checkable-ingredient]'),
+      );
+      const groupProgress = group.querySelector<HTMLElement>('[data-ingredient-group-progress]');
+      const progressText = group.querySelector<HTMLElement>('[data-ingredient-progress-text]');
+      if (!groupProgress || !progressText || groupToggles.length === 0) return;
+
+      groupProgress.hidden = false;
+      const checked = groupToggles.filter(
         (button) => button.getAttribute('aria-pressed') === 'true',
       ).length;
+      const total = groupToggles.length;
       const complete = checked === total;
-      progress.style.setProperty('--ingredient-progress', String(checked / total));
-      progress.classList.toggle('is-complete', complete);
+      groupProgress.style.setProperty('--ingredient-progress', String(checked / total));
+      groupProgress.classList.toggle('is-complete', complete);
       progressText.textContent = complete && progressComplete
         ? progressComplete
         : progressTemplate
           .replace('{checked}', String(checked))
           .replace('{total}', String(total));
+    };
+
+    const updateAllProgress = () => {
+      for (const group of ingredientGroupsElements) {
+        updateGroupProgress(group);
+      }
     };
 
     for (const button of ingredientToggles) {
@@ -715,11 +766,12 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
           'aria-label',
           (!checked ? button.dataset.uncheckLabel : button.dataset.checkLabel) ?? '',
         );
-        updateProgress();
+        const group = button.closest<HTMLElement>('[data-ingredient-group]');
+        if (group) updateGroupProgress(group);
       });
     }
 
-    updateProgress();
+    updateAllProgress();
   }
 
   const assistantChoice = article?.querySelector<HTMLElement>('[data-assistant-choice]');
