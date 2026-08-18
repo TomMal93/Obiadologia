@@ -30,7 +30,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   const metaHeight = await page.locator('.recipe-meta').evaluate(
     (element) => element.getBoundingClientRect().height,
   );
-  expect(metaHeight).toBeLessThanOrEqual(72);
+  expect(metaHeight).toBeLessThanOrEqual(160);
 
   const tags = page.getByRole('list', { name: 'Tagi' });
   const heroContentOrder = await page.locator('.recipe-hero__caption > *').evaluateAll(

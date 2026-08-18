@@ -101,10 +101,25 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       <div class="recipe-summary">
         <div class="recipe-meta" aria-label={`${messages.recipe.difficultyLabel}, ${messages.recipe.servingsLabel}, ${messages.recipe.timeLabel}`}>
           <div class="recipe-meta__item">
+            <span class="recipe-meta__badge" aria-hidden="true">
+              <svg class="recipe-meta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 13.8a4.5 4.5 0 1 1-1.8-8.6 4.5 4.5 0 0 1 7.8-2.2 4.5 4.5 0 0 1 7.8 2.2 4.5 4.5 0 1 1-1.8 8.6"></path>
+                <path d="M6 14h12v7H6z"></path>
+                <line x1="6" y1="18" x2="18" y2="18"></line>
+              </svg>
+            </span>
             <span class="recipe-meta__label">{messages.recipe.difficultyLabel}</span>
-            <strong>{messages.recipe.difficulty[recipe.difficulty]}</strong>
+            <strong class="recipe-meta__value">{messages.recipe.difficulty[recipe.difficulty]}</strong>
           </div>
           <div class="recipe-meta__item recipe-meta__item--servings">
+            <span class="recipe-meta__badge" aria-hidden="true">
+              <svg class="recipe-meta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </span>
             <span class="recipe-meta__label">{messages.recipe.servingsLabel}</span>
             <div class="servings-control">
               <button
@@ -129,8 +144,14 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
             </div>
           </div>
           <div class="recipe-meta__item">
+            <span class="recipe-meta__badge" aria-hidden="true">
+              <svg class="recipe-meta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </span>
             <span class="recipe-meta__label">{messages.recipe.timeLabel}</span>
-            <strong>
+            <strong class="recipe-meta__value">
               <span class="visually-hidden">{messages.recipe.preparationTimeLabel} </span>
               {recipe.preparationMinutes} {messages.common.minuteAbbreviation}
             </strong>
