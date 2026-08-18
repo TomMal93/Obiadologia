@@ -143,6 +143,8 @@
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  -webkit-text-stroke: 1px var(--color-coral-strong);
+  paint-order: stroke fill;
   text-shadow: 0 2px 8px rgb(168 45 24 / 90%);
 }
 
@@ -165,6 +167,8 @@
   line-height: 1.15;
   text-align: center;
   text-wrap: balance;
+  -webkit-text-stroke: 1.25px var(--color-coral-strong);
+  paint-order: stroke fill;
   text-shadow:
     0 2px 14px rgb(168 45 24 / 95%),
     0 4px 28px rgb(168 45 24 / 65%),
