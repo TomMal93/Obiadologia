@@ -120,6 +120,7 @@
 }
 
 .step-item__card {
+  position: relative;
   display: grid;
   min-width: 0;
   grid-template-columns: minmax(0, 1fr);
@@ -155,6 +156,33 @@
   text-align: left;
   background: transparent;
   cursor: pointer;
+}
+
+.step-item:not(.has-prep).is-open .step-item__head {
+  position: absolute;
+  top: var(--space-8);
+  right: var(--space-8);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  z-index: 2;
+}
+
+.step-item:not(.has-prep).is-open .step-item__chevron {
+  margin: 0;
+}
+
+.step-item:not(.has-prep).is-open .step-final__text::before {
+  display: block;
+  float: right;
+  width: 36px;
+  height: 36px;
+  margin-left: var(--space-8);
+  content: '';
 }
 
 /* Rozwinięta karta niesie pełną treść kroku w swoim wnętrzu, więc zapowiedź
@@ -232,7 +260,7 @@
   min-height: 44px;
   align-items: start;
   gap: var(--space-12);
-  padding: var(--space-4) var(--space-8);
+  padding: var(--space-4) 0;
   border: 0;
   border-radius: var(--space-8);
   color: var(--color-text);
@@ -268,6 +296,7 @@
 
 .step-prep__text {
   min-width: 0;
+  flex: 1;
   line-height: 1.5;
 }
 

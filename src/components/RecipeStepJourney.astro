@@ -45,7 +45,11 @@ const cards = steps.map((text, index) => {
 
   <ol class="step-list" data-step-list={mode}>
     {cards.map((card) => (
-      <li class="step-item" data-step-item data-step-number={card.number}>
+      <li
+        class:list={['step-item', { 'has-prep': card.preparation.length > 0 }]}
+        data-step-item
+        data-step-number={card.number}
+      >
         <span class="step-item__badge" data-step-badge aria-hidden="true">{card.number}</span>
         <div class="step-item__card">
           <h3 class="step-item__heading">
