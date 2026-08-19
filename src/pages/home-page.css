@@ -575,23 +575,59 @@ button.path-tile {
 
 .path-note {
   grid-row: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   align-self: end;
+  width: 100%;
   margin: 0;
-  padding: clamp(10px, 2vh, 14px) 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-field);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-14);
-  line-height: 1.4;
+  padding: 0;
   text-align: center;
-  background: rgb(255 255 255 / 60%);
 }
 
-.path-note strong {
-  display: block;
-  margin-bottom: var(--space-4);
+.path-note-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: clamp(6px, 1.2vh, 10px);
+  margin-bottom: clamp(10px, 1.8vh, 14px);
+  opacity: 0.55;
+}
+
+.path-note-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.path-note-dot--map {
+  background-color: var(--color-map);
+}
+
+.path-note-dot--search {
+  background-color: var(--color-search);
+}
+
+.path-note-dot--categories {
+  background-color: var(--color-categories);
+}
+
+.path-note-lead {
+  margin: 0 0 clamp(3px, 0.8vh, 5px);
   color: var(--color-text);
-  font-size: 15px;
+  font-size: clamp(14px, 3.8vw, 15px);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.path-note-body {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: clamp(13px, 3.4vw, 14px);
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 .home-footer {

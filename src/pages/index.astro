@@ -150,9 +150,15 @@ const backgroundPhrases = [
           </article>
         </div>
 
-        <p class="path-note">
-          <strong>{messages.home.paths.noteLead}</strong> {messages.home.paths.noteBody}
-        </p>
+        <div class="path-note">
+          <span class="path-note-dots" aria-hidden="true">
+            <span class="path-note-dot path-note-dot--map"></span>
+            <span class="path-note-dot path-note-dot--search"></span>
+            <span class="path-note-dot path-note-dot--categories"></span>
+          </span>
+          <p class="path-note-lead">{messages.home.paths.noteLead}</p>
+          <p class="path-note-body">{messages.home.paths.noteBody}</p>
+        </div>
       </section>
     </div>
 
