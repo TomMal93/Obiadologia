@@ -282,7 +282,9 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--brand-pulse) 20%, transparent));
+  -webkit-text-stroke: 0.6px color-mix(in srgb, var(--brand-pulse) 40%, transparent);
+  paint-order: stroke fill;
+  filter: drop-shadow(0 1.5px 3px color-mix(in srgb, var(--brand-pulse) 16%, transparent));
 }
 
 /* Rozgałęzienie od węzła „O" do trzech ścieżek. Węzeł i kropki są w jednym
@@ -486,13 +488,13 @@
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: clamp(6px, 1.4vh, 10px);
+  gap: clamp(4px, 1vh, 8px);
   width: 100%;
   /* Wspólna min. wysokość i proporcja wyrównują kafle w jeden rząd mimo różnej
      długości opisów nad nimi. */
   aspect-ratio: 1 / 1.05;
   min-height: clamp(100px, 26vw, 130px);
-  padding: clamp(12px, 2.5vh, 18px) clamp(6px, 1.5vw, 12px) clamp(10px, 2vh, 16px);
+  padding: clamp(8px, 1.8vh, 14px) clamp(4px, 1vw, 8px) clamp(8px, 1.6vh, 12px);
   border: 1px solid var(--col-glass-border, color-mix(in srgb, var(--col-accent) 45%, transparent));
   border-radius: clamp(22px, 5.5vw, 28px);
   color: inherit;
@@ -532,8 +534,8 @@ button.path-tile {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(36px, 9.5vw, 46px);
-  height: clamp(36px, 9.5vw, 46px);
+  width: clamp(52px, 13.5vw, 64px);
+  height: clamp(52px, 13.5vw, 64px);
   color: var(--col-accent);
 }
 
