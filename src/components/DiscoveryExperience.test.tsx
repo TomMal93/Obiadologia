@@ -138,6 +138,12 @@ describe('DiscoveryExperience overlay', () => {
     const tropes = within(dialog).getByRole('group', { name: 'A może w tę stronę?' });
     const tiles = within(tropes).getAllByRole('button');
     expect(tiles.length).toBeGreaterThan(8);
+    const daypartTiles = tiles.filter((tile) => tile.classList.contains('trope-tile--daypart'));
+    const tempoTiles = tiles.filter((tile) => tile.classList.contains('trope-tile--tempo'));
+    const occasionTiles = tiles.filter((tile) => tile.classList.contains('trope-tile--occasion'));
+    expect(daypartTiles.length).toBeGreaterThanOrEqual(3);
+    expect(tempoTiles.length).toBeGreaterThanOrEqual(3);
+    expect(occasionTiles.length).toBeGreaterThanOrEqual(3);
 
     fireEvent.click(tiles[0] as HTMLButtonElement);
 

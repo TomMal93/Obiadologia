@@ -481,48 +481,93 @@
   gap: var(--space-4);
   margin-inline: auto;
   margin-bottom: var(--space-32);
-  padding: 2px;
+  padding: 4px;
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  box-shadow: inset 0 0 0 1px var(--color-border);
+  background: var(--color-bg);
+  box-shadow:
+    inset 0 1px 3px 0 rgb(0 0 0 / 6%),
+    inset 0 0 0 1px var(--color-border);
 }
 
 .mode-switch button:first-child {
   /* Zmiękczony koral aktywnej Wyszukiwarki: jaśniejszy niż `-strong`, wciąż
      wyprowadzony z tokenów drogi i spełniający kontrast AA (~4,9:1) na tle
      `-soft`. */
+  --switch-accent: var(--color-search);
   --switch-strong: color-mix(in srgb, var(--color-search) 30%, var(--color-search-strong));
   --switch-soft: var(--color-search-soft);
+  --switch-glow: rgb(255 79 46 / 20%);
+  --switch-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(255 244 240 / 85%) 50%, rgb(254 225 217 / 65%) 100%);
 }
 
 .mode-switch button:nth-child(2) {
+  --switch-accent: var(--color-map);
   --switch-strong: var(--color-map-strong);
   --switch-soft: var(--color-map-soft);
+  --switch-glow: rgb(23 104 210 / 22%);
+  --switch-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(240 248 255 / 85%) 50%, rgb(218 236 254 / 65%) 100%);
 }
 
 .mode-switch button {
   display: flex;
-  min-height: 44px;
+  min-height: 40px;
   align-items: center;
   justify-content: center;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
   font-size: var(--font-size-16);
   cursor: pointer;
   background: transparent;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background-color 140ms ease, color 140ms ease;
 }
 
 @media (hover: hover) {
   .mode-switch button:not(.is-active):hover {
     color: var(--color-text);
+    background: rgb(255 255 255 / 50%);
   }
 }
 
 .mode-switch button.is-active {
+  border: 1px solid color-mix(in srgb, var(--switch-accent) 24%, rgb(255 255 255 / 90%));
   color: var(--switch-strong);
   font-weight: 800;
-  background: var(--switch-soft);
+  background-color: var(--switch-soft);
+  background-image: var(--switch-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgb(255 255 255 / 95%),
+    inset 0 -1.5px 2px 0 color-mix(in srgb, var(--switch-accent) 12%, transparent),
+    0 2px 8px -1px var(--switch-glow, rgb(0 0 0 / 12%)),
+    0 1px 3px 0 rgb(0 0 0 / 6%);
+}
+
+@media (hover: hover) {
+  .mode-switch button.is-active:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 2px 3px 0 rgb(255 255 255 / 95%),
+      inset 0 -1.5px 2px 0 color-mix(in srgb, var(--switch-accent) 18%, transparent),
+      0 4px 12px -2px var(--switch-glow, rgb(0 0 0 / 16%)),
+      0 1px 4px 0 rgb(0 0 0 / 8%);
+  }
+}
+
+.mode-switch button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.mode-switch button:focus-visible {
+  outline: 3px solid var(--switch-accent, var(--color-coral));
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-switch button {
+    transition: none;
+  }
 }
 
 .overlay-mode {
@@ -772,13 +817,16 @@
   --trope-accent: var(--color-search);
   --trope-strong: var(--color-search-strong);
   --trope-soft: var(--color-search-soft);
+  --trope-glow: rgb(255 79 46 / 20%);
+  --trope-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(255 244 240 / 85%) 50%, rgb(254 225 217 / 65%) 100%);
+  --trope-glass-border: color-mix(in srgb, var(--trope-accent) 35%, rgb(255 255 255 / 80%));
 
   display: flex;
   min-width: 0;
   align-items: center;
   justify-content: center;
   padding: var(--space-8);
-  border: 0;
+  border: 1px solid var(--trope-glass-border, color-mix(in srgb, var(--trope-accent) 35%, rgb(255 255 255 / 80%)));
   border-radius: var(--radius-field);
   color: var(--trope-strong);
   font-size: var(--font-size-14);
@@ -786,21 +834,42 @@
   line-height: 1.15;
   text-align: center;
   cursor: pointer;
-  background: var(--trope-soft);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--trope-accent) 22%, transparent);
-  transition: background-color 140ms ease;
+  background-color: var(--trope-soft);
+  background-image: var(--trope-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgb(255 255 255 / 95%),
+    inset 0 -1.5px 2px 0 color-mix(in srgb, var(--trope-accent) 12%, transparent),
+    0 4px 12px -3px var(--trope-glow, rgb(0 0 0 / 6%));
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.trope-tile--daypart {
+  --trope-accent: var(--color-search);
+  --trope-strong: var(--color-search-strong);
+  --trope-soft: var(--color-search-soft);
+  --trope-glow: rgb(255 79 46 / 20%);
+  --trope-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(255 244 240 / 85%) 50%, rgb(254 225 217 / 65%) 100%);
+  --trope-glass-border: color-mix(in srgb, var(--trope-accent) 35%, rgb(255 255 255 / 80%));
 }
 
 .trope-tile--tempo {
   --trope-accent: var(--color-categories);
   --trope-strong: var(--color-categories-strong);
   --trope-soft: var(--color-categories-soft);
+  --trope-glow: rgb(21 148 71 / 20%);
+  --trope-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(242 252 245 / 85%) 50%, rgb(220 246 228 / 65%) 100%);
+  --trope-glass-border: color-mix(in srgb, var(--trope-accent) 35%, rgb(255 255 255 / 80%));
 }
 
 .trope-tile--occasion {
   --trope-accent: var(--color-map);
   --trope-strong: var(--color-map-strong);
   --trope-soft: var(--color-map-soft);
+  --trope-glow: rgb(23 104 210 / 22%);
+  --trope-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(240 248 255 / 85%) 50%, rgb(218 236 254 / 65%) 100%);
+  --trope-glass-border: color-mix(in srgb, var(--trope-accent) 35%, rgb(255 255 255 / 80%));
 }
 
 @media (min-width: 361px) {
@@ -844,8 +913,20 @@
 
 @media (hover: hover) {
   .trope-tile:hover {
-    background: color-mix(in srgb, var(--trope-accent) 16%, var(--color-surface));
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 2px 3px 0 rgb(255 255 255 / 95%),
+      inset 0 -1.5px 2px 0 color-mix(in srgb, var(--trope-accent) 18%, transparent),
+      0 6px 16px -3px var(--trope-glow, rgb(0 0 0 / 10%));
   }
+}
+
+.trope-tile:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow:
+    inset 0 1px 2px 0 rgb(255 255 255 / 90%),
+    inset 0 1.5px 3px 0 color-mix(in srgb, var(--trope-accent) 20%, transparent),
+    0 2px 6px -2px var(--trope-glow, rgb(0 0 0 / 6%));
 }
 
 .trope-tile:focus-visible {

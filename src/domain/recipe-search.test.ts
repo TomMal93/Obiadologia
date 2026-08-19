@@ -70,6 +70,24 @@ describe('recipe search', () => {
       expect(search.search(trope.query).length).toBeGreaterThan(0);
     }
   });
+
+  it('balances tropes roughly equally across visual color groups in bento', () => {
+    const search = createRecipeSearch(testRecipes);
+    const tropes = search.tropes(16);
+
+    const colorGroups = {
+      coral: tropes.filter((t) => t.kind === 'daypart' || t.kind === 'ingredient').length,
+      green: tropes.filter((t) => t.kind === 'tempo').length,
+      blue: tropes.filter((t) => t.kind === 'occasion').length,
+    };
+
+    expect(tropes.length).toBe(16);
+    expect(colorGroups.coral).toBeGreaterThanOrEqual(4);
+    expect(colorGroups.green).toBeGreaterThanOrEqual(4);
+    expect(colorGroups.blue).toBeGreaterThanOrEqual(4);
+    const counts = [colorGroups.coral, colorGroups.green, colorGroups.blue];
+    expect(Math.max(...counts) - Math.min(...counts)).toBeLessThanOrEqual(2);
+  });
 });
 
 describe('map ranking', () => {
