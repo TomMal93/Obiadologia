@@ -43,7 +43,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   }
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
-  await expect(ingredients.getByText('0/5 zebrane')).toBeVisible();
+  await expect(ingredients.getByText('0/5')).toBeVisible();
   await expect(ingredients.getByRole('heading', { level: 3 })).toHaveText([
     'Warzywa i owoce',
     'Mięso i wędliny',
@@ -734,12 +734,12 @@ test('ingredient counter fills its progress bar and lands on a complete state', 
       Number.parseFloat(getComputedStyle(element).getPropertyValue('--ingredient-progress') || '0'),
     );
 
-  await expect(progressText).toHaveText('0/5 zebrane');
+  await expect(progressText).toHaveText('0/5');
   await expect(progress).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   expect(await fillRatio()).toBeCloseTo(0, 2);
 
   await toggles.first().click();
-  await expect(progressText).toHaveText('1/5 zebrane');
+  await expect(progressText).toHaveText('1/5');
   await expect.poll(fillRatio).toBeCloseTo(1 / 5, 2);
 
   const total = await toggles.count();
@@ -751,7 +751,7 @@ test('ingredient counter fills its progress bar and lands on a complete state', 
   expect(await fillRatio()).toBeCloseTo(1, 2);
 
   await toggles.first().click();
-  await expect(progressText).toHaveText('4/5 zebrane');
+  await expect(progressText).toHaveText('4/5');
   await expect(progress).not.toHaveClass(/is-complete/);
 });
 

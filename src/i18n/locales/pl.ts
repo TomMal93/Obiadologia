@@ -197,7 +197,7 @@ export const pl = {
       pantry: 'Spiżarnia',
       spices: 'Przyprawy',
     },
-    ingredientsProgress: '{checked}/{total} zebrane',
+    ingredientsProgress: '{checked}/{total}',
     ingredientsProgressComplete: 'Komplet',
     checkIngredientLabel: 'Odhacz składnik: {name}',
     uncheckIngredientLabel: 'Cofnij odhaczenie składnika: {name}',
