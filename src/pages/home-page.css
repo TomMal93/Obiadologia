@@ -130,8 +130,8 @@
   color: var(--color-text);
   /* Skaluje się z szerokością ekranu, aby dominować pierwszemu ekranowi jak
      na makiecie, wciąż mieszcząc się w kontenerze mobilnym. */
-  font-size: clamp(40px, 12vw, 66px);
-  line-height: 0.95;
+  font-size: clamp(43px, 13vw, 70px);
+  line-height: 0.94;
   letter-spacing: -0.06em;
   background-image: linear-gradient(
     180deg,
