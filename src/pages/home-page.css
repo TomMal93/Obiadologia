@@ -15,7 +15,7 @@
   flex-direction: column;
   min-height: calc(100vh - var(--header-block));
   min-height: calc(100svh - var(--header-block));
-  padding: 0 var(--gutter) 46px;
+  padding: 0 var(--gutter) clamp(24px, 4vh, 32px);
 }
 
 /* Delikatne, powtarzalne hasła w tle — czysto dekoracyjne (aria-hidden),
@@ -242,7 +242,7 @@
   max-width: calc(100% - 24px);
   margin: 0;
   padding: var(--space-8) var(--space-16);
-  border: 1px solid var(--brand-pulse);
+  border: 1px solid color-mix(in srgb, var(--brand-pulse) 40%, rgb(255 255 255 / 80%));
   border-radius: var(--radius-pill);
   /* Tło pigułki to pastelowy puls (jak tło kafli), a tekst pulsuje w tym samym
      rytmie nasyconym odcieniem marki — nasycony kolor na swoim jasnym
@@ -252,8 +252,15 @@
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
-  background: var(--brand-pulse-soft);
-  box-shadow: var(--shadow-surface);
+  background-color: var(--brand-pulse-soft);
+  background-image: radial-gradient(130% 120% at 30% 15%, rgb(255 255 255 / 96%) 0%, color-mix(in srgb, var(--brand-pulse-soft) 85%, white) 50%, var(--brand-pulse-soft) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgb(255 255 255 / 95%),
+    inset 0 -1.5px 2px 0 color-mix(in srgb, var(--brand-pulse) 12%, transparent),
+    0 6px 16px -4px color-mix(in srgb, var(--brand-pulse) 22%, transparent);
+  text-shadow: 0 1px 1px rgb(255 255 255 / 80%);
   transform: translate(-50%, -50%);
 }
 
@@ -266,14 +273,14 @@
   text-align: center;
   background-image: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--color-text) 55%, white) 0%,
-    var(--color-text) 45%,
-    #0c0a08 100%
+    color-mix(in srgb, var(--color-text) 70%, white) 0%,
+    var(--color-text) 40%,
+    #050403 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1.5px 3px rgb(0 0 0 / 8%));
+  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--brand-pulse) 20%, transparent));
 }
 
 /* Rozgałęzienie od węzła „O" do trzech ścieżek. Węzeł i kropki są w jednym
