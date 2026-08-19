@@ -1,8 +1,8 @@
 {
   "id": "recipe_011",
   "slug": "szakszuka-z-chorizo-i-cukinia",
-  "title": "Szakszuka z chorizo i cukinią",
-  "description": "Aromatyczna szakszuka z rumianym chorizo, delikatną cukinią i szpinakiem w ziołowym sosie pomidorowym. Jajka z miękkim żółtkiem dopełniają całość, tworząc sycące śniadanie albo kolację z jednej patelni.",
+  "title": "Szakszuka",
+  "description": "Klasyczna szakszuka w bogatszym wydaniu – z chrupiącym chorizo, młodą cukinią i świeżym szpinakiem w aromatycznym sosie pomidorowym. Świetna na leniwe śniadanie, ale również fajna opcja na kolację.",
   "image": {
     "src": "/images/recipes/szakszuka-z-chorizo-i-cukinia.jpg",
     "alt": "Szakszuka z czterema jajkami, chorizo, półplastrami cukinii i szpinakiem na żeliwnej patelni"
@@ -211,12 +211,9 @@
     "dinner"
   ],
   "tempos": [
-    "now",
     "today"
   ],
-  "occasions": [
-    "guests"
-  ],
+  "occasions": [],
   "mapPosition": {
     "pace": 0.35,
     "lightness": 0.45

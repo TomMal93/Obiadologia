@@ -23,7 +23,7 @@ test('category selection opens the published chorizo shakshuka recipe', async ({
   await page.getByRole('button', { name: /Śniadanie/ }).click();
   const results = page.getByRole('region', { name: 'Wyniki kategorii' });
   await expect(results.getByRole('link')).toHaveCount(1);
-  const card = results.getByRole('link', { name: /Szakszuka z chorizo i cukinią/ });
+  const card = results.getByRole('link', { name: /Szakszuka/ });
   await expect(card).toBeVisible();
   const selectedFrameGeometry = await readFrameGeometry();
   expect(selectedFrameGeometry.documentTop).toBeCloseTo(initialFrameGeometry.documentTop, 0);
@@ -32,7 +32,7 @@ test('category selection opens the published chorizo shakshuka recipe', async ({
   await card.click();
   await expect(page).toHaveURL(/\/recipes\/szakszuka-z-chorizo-i-cukinia$/);
   await expect(
-    page.getByRole('heading', { name: 'Szakszuka z chorizo i cukinią' }),
+    page.getByRole('heading', { name: 'Szakszuka' }),
   ).toBeVisible();
 });
 

@@ -1,0 +1,171 @@
+{
+  "id": "recipe_012",
+  "slug": "domowe-spaghetti-bolognese",
+  "title": "Spaghetti",
+  "description": "Szybkie, klasyczne domowe spaghetti na bazie mielonej szynki lub łopatki wieprzowej w aromatycznym sosie z passaty pomidorowej, ziół i czosnku, posypane tartym serem.",
+  "image": {
+    "src": "/images/recipes/domowe-spaghetti-bolognese.jpg",
+    "alt": "Zbliżenie na gniazdo spaghetti z sosem pomidorowo-mięsnym, tartym serem, pieprzem i świeżą bazylią"
+  },
+  "preparationMinutes": 30,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "makaron spaghetti",
+      "amount": 400,
+      "unit": "g"
+    },
+    {
+      "category": "meat",
+      "name": "mięso mielone wieprzowe (z szynki lub łopatki)",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "ząbek czosnku",
+      "amount": 3,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "passata pomidorowa",
+      "amount": 500,
+      "unit": "g",
+      "household": {
+        "unit": "cup",
+        "metricAmount": 250
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "olej lub oliwa do smażenia",
+      "amount": 15,
+      "unit": "ml",
+      "measure": "household"
+    },
+    {
+      "category": "dairy",
+      "name": "ser żółty lub parmezan do podania",
+      "amount": 60,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "spices",
+      "name": "oregano suszone",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 2
+      },
+      "measure": "household"
+    },
+    {
+      "category": "spices",
+      "name": "bazylia suszona",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 1
+      },
+      "measure": "household"
+    },
+    {
+      "category": "spices",
+      "name": "sól",
+      "amount": 4,
+      "unit": "g",
+      "household": {
+        "unit": "pinch",
+        "metricAmount": 1
+      },
+      "measure": "household"
+    },
+    {
+      "category": "spices",
+      "name": "pieprz czarny mielony",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "pinch",
+        "metricAmount": 1
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "pokroj-cebule-i-czosnek",
+      "text": "Cebulę pokrój w drobną kostkę, a czosnek posiekaj. Możesz przechować je w zamkniętym pojemniku w lodówce.",
+      "stepText": "Cebulę pokrój w drobną kostkę, a czosnek posiekaj.",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-garnek-i-patelnie",
+      "text": "Przygotuj głęboką patelnię z pokrywką oraz duży garnek do ugotowania makaronu.",
+      "stepText": "Przygotuj głęboką patelnię z pokrywką oraz duży garnek do ugotowania makaronu.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Na głębokiej patelni rozgrzej olej na średnim ogniu. Wrzuć posiekaną cebulę, po chwili dodaj czosnek i oprósz 2 szczyptami soli. Smaż przez 2–3 minuty do zeszklenia.",
+    "Dodaj mięso mielone. Rozdrabniaj je energicznie łopatką na jak najdrobniejsze cząstki, oprósz pieprzem i podsmażaj, aż zmieni kolor i będzie tuż przed całkowitym ścięciem.",
+    "Wlej passatę pomidorową i wymieszaj z mięsem. Przykryj patelnię pokrywką, zmniejsz ogień i duś sos przez około 15 minut, mieszając co jakiś czas.",
+    "W międzyczasie wstaw garnek z osoloną wodą. Gdy zawrze, wrzuć makaron spaghetti i ugotuj al dente zgodnie z czasem na opakowaniu.",
+    "Do sosu wsyp oregano oraz bazylię. Wymieszaj, przykryj i gotuj na małym ogniu jeszcze przez 3–4 minuty, aby smaki się połączyły.",
+    "Odcedź makaron. Wyłóż porcje na talerze, polej sosem i posyp startym serem."
+  ],
+  "stepsOnly": [
+    "Cebulę pokrój w drobną kostkę, a czosnek posiekaj. Przygotuj głęboką patelnię z pokrywką oraz duży garnek na makaron.",
+    "Na patelni rozgrzej olej na średnim ogniu. Wrzuć cebulę, po chwili dodaj czosnek i 2 szczypty soli. Smaż 2–3 minuty do zeszklenia.",
+    "Dodaj mięso mielone, rozdrabniaj je łopatką na drobne cząstki, dopraw pieprzem i smaż krótko tuż przed całkowitym ścięciem.",
+    "Zalej mięso passatą pomidorową, wymieszaj, przykryj pokrywką i duś na wolnym ogniu przez ok. 15 minut, od czasu do czasu mieszając.",
+    "Wstaw garnek z osoloną wodą. Gdy zawrze, wrzuć spaghetti i ugotuj al dente według instrukcji na opakowaniu.",
+    "Do sosu wsyp oregano oraz bazylię, wymieszaj, przykryj i gotuj jeszcze 3–4 minuty.",
+    "Odcedź makaron, rozłóż na talerze, polej sosem i posyp obficie startym serem."
+  ],
+  "tips": [
+    "Rozdrabnianie mięsa łopatką od razu po wrzuceniu na patelnię zapobiega powstawaniu zbitych grudek i daje drobną, jednolitą strukturę sosu.",
+    "Dodanie suszonych ziół (oregano i bazylii) pod koniec duszenia sosu chroni je przed przypaleniem i pozwala uwolnić pełnię świeżego aromatu."
+  ],
+  "tags": [
+    "makaron",
+    "wieprzowina",
+    "na dziś"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [
+    "kids",
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.35,
+    "lightness": 0.4
+  },
+  "editorialPriority": 50,
+  "status": "published"
+}

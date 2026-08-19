@@ -16,7 +16,7 @@ test('search session switches modes and explicit close resets on browser Forward
 
   await search.fill('chorizo');
   await expect(
-    dialog.getByRole('link', { name: /Szakszuka z chorizo i cukinią/ }),
+    dialog.getByRole('link', { name: /Szakszuka/ }),
   ).toBeVisible();
 
   await dialog.getByRole('button', { name: /Mapa/ }).click();

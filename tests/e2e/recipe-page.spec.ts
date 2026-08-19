@@ -4,11 +4,11 @@ import { expect, test } from '@playwright/test';
 test('published chorizo shakshuka recipe presents its complete model data', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
-  await expect(page).toHaveTitle('Szakszuka z chorizo i cukinią — Obiadologia');
+  await expect(page).toHaveTitle('Szakszuka — Obiadologia');
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Szakszuka z chorizo i cukinią' }),
+    page.getByRole('heading', { level: 1, name: 'Szakszuka' }),
   ).toBeVisible();
-  await expect(page.getByText(/Aromatyczna szakszuka z rumianym chorizo/)).toBeVisible();
+  await expect(page.getByText(/Klasyczna szakszuka w bogatszym wydaniu/)).toBeVisible();
   await expect(page.getByText('Czas przygotowania: 35 min')).toBeVisible();
   await expect(page.getByText('Łatwa', { exact: true })).toBeVisible();
 
@@ -194,7 +194,7 @@ test('recipe back action restores the previous discovery view', async ({ page })
   const dialog = page.getByRole('dialog');
   const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
   await search.fill('chorizo');
-  await dialog.getByRole('link', { name: /Szakszuka z chorizo i cukinią/ }).click();
+  await dialog.getByRole('link', { name: /Szakszuka/ }).click();
   await expect(page).toHaveURL(/\/recipes\/szakszuka-z-chorizo-i-cukinia$/);
 
   await page.getByRole('link', { name: 'Powrót do poprzedniego widoku' }).click();

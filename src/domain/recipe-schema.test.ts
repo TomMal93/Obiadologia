@@ -20,8 +20,9 @@ describe('Recipe schema', () => {
   });
 
   it('validates the published application catalog', () => {
-    expect(catalog).toHaveLength(1);
-    expect(catalog[0]?.slug).toBe('szakszuka-z-chorizo-i-cukinia');
+    expect(catalog).toHaveLength(2);
+    expect(catalog.map((r) => r.slug)).toContain('szakszuka-z-chorizo-i-cukinia');
+    expect(catalog.map((r) => r.slug)).toContain('domowe-spaghetti-bolognese');
   });
 
   it('provides natural household measures for the chorizo shakshuka', () => {
