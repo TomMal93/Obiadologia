@@ -55,6 +55,18 @@ const backgroundPhrases = [
               <stop class="tree-gradient-start tree-gradient-start--categories" offset="0" />
               <stop class="tree-gradient-end--categories" offset="1" />
             </linearGradient>
+            <linearGradient id="tree-pulse-gradient-map" x1="0" y1="52" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+              <stop class="tree-pulse-start tree-pulse-start--map" offset="0" />
+              <stop class="tree-pulse-end tree-pulse-end--map" offset="1" />
+            </linearGradient>
+            <linearGradient id="tree-pulse-gradient-search" x1="0" y1="52" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+              <stop class="tree-pulse-start tree-pulse-start--search" offset="0" />
+              <stop class="tree-pulse-end tree-pulse-end--search" offset="1" />
+            </linearGradient>
+            <linearGradient id="tree-pulse-gradient-categories" x1="0" y1="52" x2="0" y2="124" gradientUnits="userSpaceOnUse">
+              <stop class="tree-pulse-start tree-pulse-start--categories" offset="0" />
+              <stop class="tree-pulse-end tree-pulse-end--categories" offset="1" />
+            </linearGradient>
             <radialGradient id="tree-node-ring-search" cx="150" cy="30" r="30" gradientUnits="userSpaceOnUse">
               <stop class="tree-node-ring-solid tree-node-ring-solid--search" offset="0.72" />
               <stop class="tree-node-ring-clear tree-node-ring-clear--search" offset="0.92" />
@@ -71,6 +83,9 @@ const backgroundPhrases = [
           <path class="tree-line tree-line--map" d="M150 52 C150 90 50 74 50 124" />
           <path class="tree-line tree-line--search" d="M150 52 L150 124" />
           <path class="tree-line tree-line--categories" d="M150 52 C150 90 250 74 250 124" />
+          <path class="tree-line-pulse tree-line-pulse--map" pathLength="100" d="M150 52 C150 90 50 74 50 124" />
+          <path class="tree-line-pulse tree-line-pulse--search" pathLength="100" d="M150 52 L150 124" />
+          <path class="tree-line-pulse tree-line-pulse--categories" pathLength="100" d="M150 52 C150 90 250 74 250 124" />
           <circle class="tree-dot tree-dot--map" cx="50" cy="124" r="5" />
           <circle class="tree-dot tree-dot--search" cx="150" cy="124" r="5" />
           <circle class="tree-dot tree-dot--categories" cx="250" cy="124" r="5" />
