@@ -435,3 +435,6 @@ dist/
 # Test reports
 playwright-report/
 test-results/
+
+# pnpm
+.pnpm-store/

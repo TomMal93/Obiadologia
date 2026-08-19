@@ -95,7 +95,7 @@ Dane i komunikaty zastępcze muszą być jawnie oznaczone jako prototypowe i nie
 - Automatyczna dostępność nie zastępuje ręcznej obsługi klawiaturą i czytnikiem ekranu.
 - Porównanie wizualne obejmuje obowiązkowe szerokości mobilne, reprezentatywną niską i wysoką wysokość telefonu oraz widok wyśrodkowanego kontenera na `768px`; potwierdza proporcjonalną spójność sekcji i brak ucięć, ale nie powinno blokować przez nieistotne różnice antyaliasingu.
 
-## Polecenia weryfikacyjne
+## Polecenia weryfikacyjne i workflow
 
 Katalog roboczy: katalog główny repozytorium. Projekt przypina Node.js w `.node-version`, a wersję pnpm w polu `packageManager` pliku `package.json`.
 
@@ -106,18 +106,20 @@ corepack pnpm install --frozen-lockfile
 # jednorazowo na stanowisku uruchamiającym E2E
 corepack pnpm exec playwright install chromium
 
-# osobne bramki
-corepack pnpm lint
-corepack pnpm typecheck
-corepack pnpm test
-corepack pnpm test:e2e
-corepack pnpm build
+# 1. Szybka pętla deweloperska (podczas iteracji i drobnych zmian — natychmiastowy feedback)
+corepack pnpm test        # Vitest + React Testing Library (logika, schematy, komponenty w jsdom)
+corepack pnpm typecheck   # astro check (sprawdzanie typów TS w plikach .ts, .tsx, .astro)
+corepack pnpm lint        # eslint . --max-warnings=0 (reguły jakości, hooki React, a11y w JSX)
+# lub opcjonalnie w tle: corepack pnpm test:watch
 
-# pełny zestaw po przygotowaniu przeglądarki Playwright
-corepack pnpm verify
+# 2. Pełna bramka weryfikacyjna (przed commitem, PR-em i na CI)
+corepack pnpm verify      # lint + typecheck + test + test:e2e
 ```
 
-`lint` uruchamia ESLint, `typecheck` — `astro check` (kontrola typów projektu Astro), a `verify` łączy powyższe bramki w jeden przebieg. `test` obejmuje Vitest oraz React Testing Library. `test:e2e` uruchamia Playwright w mobilnym Chromium i zawiera automatyczną kontrolę `axe-core`; przed testami `webServer` Playwrighta sam buduje stronę i serwuje ją przez `astro preview`, więc `verify` nie powtarza osobnego kroku `build`. Build MUSI generować statyczną stronę główną oraz dostępne trasy `/recipes/:slug`.
+### Podział weryfikacji w procesie pracy:
+1. **Szybka pętla (w trakcie pracy):** Uruchamiana na bieżąco po zmianach w kodzie (`test`, `typecheck`, `lint`). Wykonuje się w pamięci (1–3s) bez narzutu budowania i uruchamiania przeglądarki.
+2. **Pełna bramka (przed poleceniem zacommitowania):** Uruchamia `corepack pnpm verify` (w tym Playwright E2E z automatycznym audytem `axe-core`). Przed testami E2E `webServer` Playwrighta sam buduje stronę i serwuje ją przez `astro preview`.
+   - **Zasada obsługi błędów:** Jeżeli pełna bramka wykaże jakikolwiek błąd, proces commitowania **MUSI zostać przerwany**, a raport z błędem przedstawiony do decyzji programisty/użytkownika.
 
 Te same bramki uruchamia automatycznie workflow GitHub Actions [`verify.yml`](../../.github/workflows/verify.yml) dla każdego pusha do `main` i każdego pull requesta.
 

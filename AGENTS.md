@@ -80,7 +80,7 @@ Aktualizuj obie tabele, gdy przenosisz odpowiedzialność między plikami albo z
 4. Nie dodawaj domyślnych wyborów w trybie Kategorii. Stan z wybranymi wartościami na makiecie przedstawia przykład po interakcji. Mapa rozpoczyna w punkcie środkowym.
 5. Każdą istotną zmianę zachowania uzupełnij w odpowiedniej specyfikacji i kryteriach akceptacji.
 6. Nie podejmuj po cichu kosztownych decyzji technicznych. Zapisz je jako otwarte albo dodaj ADR po uzgodnieniu.
-7. Po implementacji uruchom testy wskazane w projekcie. Dopóki nie powstanie kod aplikacji i rzeczywiste skrypty projektu, brak poleceń jest jawnym stanem etapu, a nie zgodą na pominięcie weryfikacji po ich dodaniu.
+7. Podczas iteracji i pracy nad kodem uruchamiaj szybką pętlę weryfikacyjną (`pnpm test`, `pnpm typecheck`, `pnpm lint`). Przed utworzeniem commita lub finalizacją zadania uruchom pełną bramkę (`pnpm verify`, w tym `pnpm test:e2e`). W razie wystąpienia błędu na pełnej bramce przerwij procedurę commitowania, przedstaw raport błędu i poczekaj na decyzję użytkownika.
 8. W bieżącym etapie twórz wyłącznie jeden układ mobilny. Nie projektuj osobnych układów tabletowych ani desktopowych.
 9. Nie implementuj zakresu odłożonego na później. Jeżeli jest potrzebny do zachowania przepływu, użyj jawnie opisanego ekranu lub danych zastępczych.
 

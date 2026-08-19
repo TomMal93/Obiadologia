@@ -13,7 +13,9 @@ export default defineConfig({
   webServer: {
     // Jawny host: „localhost" binduje się na IPv4 albo IPv6 zależnie od wersji
     // Node, a kontrola gotowości puka na 127.0.0.1 — bez tego CI czeka w nieskończoność.
-    command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 4321',
+    command: process.platform === 'win32'
+      ? 'npm.cmd run build && npm.cmd run preview -- --host 127.0.0.1 --port 4321'
+      : 'npm run build && npm run preview -- --host 127.0.0.1 --port 4321',
     url: 'http://127.0.0.1:4321',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

@@ -61,6 +61,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
     '700',
   );
   await expect(ingredients.locator('.unit-toggle')).toHaveCount(0);
+  await expect(ingredients.locator('.recipe-section-toggle')).toBeVisible();
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
     const chevron = section.querySelector('.recipe-section-toggle > svg');
@@ -696,31 +697,27 @@ test('recipe page stays centered and has no horizontal overflow', async ({ page 
   }
 });
 
-test('ingredient counter fills its ring and lands on a complete state', async ({ page }) => {
+test('ingredient counter fills its progress bar and lands on a complete state', async ({ page }) => {
   await page.goto('/recipes/szakszuka-z-chorizo-i-cukinia');
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
   const vegetableGroup = ingredients.locator('[data-ingredient-group]').first();
   const progress = vegetableGroup.locator('[data-ingredient-group-progress]');
   const progressText = progress.locator('[data-ingredient-progress-text]');
-  const arc = progress.locator('.ingredient-progress__arc');
   const toggles = vegetableGroup.locator('[data-checkable-ingredient]');
-  // Nieprzebyta część pierścienia; wartość wyliczona ma postać `calc(0.92px)`.
-  const ringRemainder = () =>
-    arc.evaluate((element) =>
-      Number.parseFloat(getComputedStyle(element).strokeDashoffset.replace(/[^\d.]+/g, ' ').trim()),
+
+  const fillRatio = () =>
+    progress.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).getPropertyValue('--ingredient-progress') || '0'),
     );
 
   await expect(progressText).toHaveText('0/5 zebrane');
   await expect(progress).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
-  await expect(progress).toHaveCSS('border-top-style', 'none');
-  await expect(progress).toHaveCSS('box-shadow', 'none');
-  expect(await ringRemainder()).toBeCloseTo(1, 2);
+  expect(await fillRatio()).toBeCloseTo(0, 2);
 
   await toggles.first().click();
   await expect(progressText).toHaveText('1/5 zebrane');
-  // Pierścień dojeżdża płynnie, więc czekamy na koniec przejścia.
-  await expect.poll(ringRemainder).toBeCloseTo(4 / 5, 2);
+  await expect.poll(fillRatio).toBeCloseTo(1 / 5, 2);
 
   const total = await toggles.count();
   for (let index = 1; index < total; index += 1) {
@@ -728,8 +725,7 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
   }
   await expect(progressText).toHaveText('Komplet');
   await expect(progress).toHaveClass(/is-complete/);
-  await expect(progress.locator('.ingredient-progress__mark')).toHaveCSS('opacity', '1');
-  await expect(progress).toHaveCSS('box-shadow', 'none');
+  expect(await fillRatio()).toBeCloseTo(1, 2);
 
   await toggles.first().click();
   await expect(progressText).toHaveText('4/5 zebrane');

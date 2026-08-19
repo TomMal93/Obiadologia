@@ -480,18 +480,32 @@
   display: inline-flex;
   flex: none;
   align-items: center;
-  gap: var(--space-4);
-  padding: 2px 6px 2px 2px;
-  border: 0;
-  border-radius: var(--radius-pill);
+  gap: var(--space-8);
+  margin: 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   white-space: nowrap;
   background: transparent;
-  margin: 0;
-  transition: color 240ms ease, background-color 240ms ease;
+  transition: color 240ms ease;
+}
+
+.ingredient-progress__track {
+  width: 48px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-coral-soft);
+}
+
+.ingredient-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-coral-strong);
+  transition: width 320ms ease;
+  width: calc(var(--ingredient-progress, 0) * 100%);
 }
 
 .ingredient-progress__text {
@@ -502,63 +516,6 @@
 
 .ingredient-progress.is-complete {
   color: var(--color-coral-strong);
-  background: var(--color-coral-soft);
-}
-
-.ingredient-progress__dial {
-  display: grid;
-  width: 18px;
-  height: 18px;
-  flex: none;
-  place-items: center;
-}
-
-.ingredient-progress__dial > * {
-  grid-area: 1 / 1;
-}
-
-.ingredient-progress__ring {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.ingredient-progress__track,
-.ingredient-progress__arc {
-  fill: none;
-  stroke-width: 2.25;
-}
-
-.ingredient-progress__track {
-  stroke: var(--color-border);
-}
-
-.ingredient-progress__arc {
-  stroke: var(--color-coral);
-  stroke-linecap: round;
-  /* `pathLength` skaluje obwód do 1, więc 1px to pełny pierścień. */
-  stroke-dasharray: 1px;
-  stroke-dashoffset: calc((1 - var(--ingredient-progress, 0)) * 1px);
-  transition: stroke-dashoffset 320ms ease, stroke 240ms ease;
-}
-
-.ingredient-progress__mark {
-  color: var(--color-coral-strong);
-  font-size: var(--font-size-14);
-  line-height: 1;
-  opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 240ms ease, transform 240ms ease;
-}
-
-.ingredient-progress.is-complete .ingredient-progress__mark {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.ingredient-progress.is-complete .ingredient-progress__ring {
-  opacity: 0;
-  transition: opacity 240ms ease;
 }
 
 .recipe-segmented {

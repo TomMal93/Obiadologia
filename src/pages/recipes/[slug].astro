@@ -197,7 +197,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         </section>
 
         <section class="recipe-ingredients" aria-labelledby="ingredients-heading">
-          <div class="recipe-section-head">
+          <div class="recipe-section-head recipe-section-head--stacked">
             <h2 id="ingredients-heading">
               <button
                 type="button"
@@ -240,13 +240,8 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                 <div class="ingredient-group__head">
                   <h3>{messages.recipe.ingredientCategories[category]}</h3>
                   <p class="ingredient-progress" data-ingredient-group-progress aria-live="polite" hidden>
-                    <span class="ingredient-progress__dial" aria-hidden="true">
-                      <svg class="ingredient-progress__ring" viewBox="0 0 24 24">
-                        <circle class="ingredient-progress__track" cx="12" cy="12" r="10"></circle>
-                        <circle class="ingredient-progress__arc" cx="12" cy="12" r="10" pathLength="1"
-                        ></circle>
-                      </svg>
-                      <span class="ingredient-progress__mark">✓</span>
+                    <span class="ingredient-progress__track" aria-hidden="true">
+                      <span class="ingredient-progress__fill"></span>
                     </span>
                     <span class="ingredient-progress__text" data-ingredient-progress-text>
                       {formatMessage(messages.recipe.ingredientsProgress, {
