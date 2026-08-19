@@ -492,11 +492,12 @@
 }
 
 .ingredient-progress__track {
-  width: 48px;
+  width: 80px;
   height: 6px;
   overflow: hidden;
   border-radius: var(--radius-pill);
   background: var(--color-coral-soft);
+  transition: width 240ms ease;
 }
 
 .ingredient-progress__fill {
@@ -516,6 +517,10 @@
 
 .ingredient-progress.is-complete {
   color: var(--color-coral-strong);
+}
+
+.ingredient-progress.is-complete .ingredient-progress__track {
+  width: 48px;
 }
 
 .recipe-segmented {
