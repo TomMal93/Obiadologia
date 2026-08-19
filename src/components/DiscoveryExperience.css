@@ -108,18 +108,27 @@
   --group-accent: var(--color-search);
   --group-strong: var(--color-search-strong);
   --group-soft: var(--color-search-soft);
+  --group-glow: rgb(255 79 46 / 20%);
+  --group-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(255 244 240 / 85%) 50%, rgb(254 225 217 / 65%) 100%);
+  --group-glass-border: color-mix(in srgb, var(--group-accent) 35%, rgb(255 255 255 / 80%));
 }
 
 .category-group--tempo {
   --group-accent: var(--color-categories);
   --group-strong: var(--color-categories-strong);
   --group-soft: var(--color-categories-soft);
+  --group-glow: rgb(21 148 71 / 20%);
+  --group-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(242 252 245 / 85%) 50%, rgb(220 246 228 / 65%) 100%);
+  --group-glass-border: color-mix(in srgb, var(--group-accent) 35%, rgb(255 255 255 / 80%));
 }
 
 .category-group--occasion {
   --group-accent: var(--color-map);
   --group-strong: var(--color-map-strong);
   --group-soft: var(--color-map-soft);
+  --group-glow: rgb(23 104 210 / 22%);
+  --group-glass-bg: radial-gradient(135% 135% at 20% 15%, rgb(255 255 255 / 96%) 0%, rgb(240 248 255 / 85%) 50%, rgb(218 236 254 / 65%) 100%);
+  --group-glass-border: color-mix(in srgb, var(--group-accent) 35%, rgb(255 255 255 / 80%));
 }
 
 .option-grid {
@@ -140,31 +149,53 @@
   /* Celowy mikroodstęp poza siatką, aby ikona i etykieta tworzyły jedną grupę. */
   gap: 2px;
   padding: var(--space-4);
-  border: 2px solid transparent;
+  border: 1px solid var(--group-glass-border, color-mix(in srgb, var(--group-accent) 35%, rgb(255 255 255 / 80%)));
   border-radius: var(--radius-field);
   /* Etykieta w kolorze tożsamości grupy (wariant `-strong` dla kontrastu AA). */
   color: var(--group-strong);
   font-size: var(--font-size-14);
   line-height: 1.2;
   cursor: pointer;
-  background: var(--color-surface);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--group-accent) 18%, var(--color-border));
+  background-color: var(--group-soft);
+  background-image: var(--group-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgb(255 255 255 / 95%),
+    inset 0 -1.5px 2px 0 color-mix(in srgb, var(--group-accent) 12%, transparent),
+    0 4px 12px -3px var(--group-glow, rgb(0 0 0 / 6%));
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 
-/* Hover sygnalizujemy tłem, dzięki czemu subtelna ramka pozostaje stabilna
-   także wtedy, gdy kursor zostaje na przycisku po jego odznaczeniu. */
+/* Hover sygnalizujemy subtelnym uniesieniem i wzmocnionym cieniem */
 @media (hover: hover) {
   .category-option:not(.is-selected):hover {
-    background: var(--group-soft);
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 2px 3px 0 rgb(255 255 255 / 95%),
+      inset 0 -1.5px 2px 0 color-mix(in srgb, var(--group-accent) 18%, transparent),
+      0 6px 16px -3px var(--group-glow, rgb(0 0 0 / 10%));
   }
+}
+
+.category-option:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow:
+    inset 0 1px 2px 0 rgb(255 255 255 / 90%),
+    inset 0 1.5px 3px 0 color-mix(in srgb, var(--group-accent) 20%, transparent),
+    0 2px 6px -2px var(--group-glow, rgb(0 0 0 / 6%));
 }
 
 .category-option.is-selected {
   border: 2px solid var(--group-accent);
   color: var(--group-strong);
   font-weight: 800;
-  background: var(--group-soft);
-  box-shadow: none;
+  background-color: var(--group-soft);
+  background-image: var(--group-glass-bg);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgb(255 255 255 / 90%),
+    inset 0 0 0 1px color-mix(in srgb, var(--group-accent) 40%, transparent),
+    0 6px 14px -3px var(--group-glow, rgb(0 0 0 / 12%));
 }
 
 /* Drugorzędny odnośnik pod grupami wyboru — celowo subtelny, ale mówiący tym
