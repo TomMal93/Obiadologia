@@ -302,6 +302,7 @@
 
 .step-prep__toggle.is-checked .step-prep__text {
   color: var(--color-text-muted);
+  text-decoration: line-through;
 }
 
 .step-progress {

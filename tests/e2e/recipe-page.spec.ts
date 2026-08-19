@@ -282,6 +282,10 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   await expect(chorizoHalfStepToggle).toHaveAttribute('aria-pressed', 'true');
   await expect(chorizoHalfStepToggle).toHaveClass(/is-checked/);
   await expect(chorizoHalfStep.locator('.step-prep__text')).toBeVisible();
+  await expect(chorizoHalfStep.locator('.step-prep__text')).toHaveCSS(
+    'text-decoration-line',
+    'line-through',
+  );
   await expect(chorizoHalfStep).not.toContainText('Gotowe');
   await expect(chorizoHalfStepToggle).toHaveAttribute(
     'aria-label',
