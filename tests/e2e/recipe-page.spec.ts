@@ -43,7 +43,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   }
 
   const ingredients = page.getByRole('region', { name: 'Składniki' });
-  await expect(ingredients.getByText('0/3 zebrane')).toBeVisible();
+  await expect(ingredients.getByText('0/5 zebrane')).toBeVisible();
   await expect(ingredients.getByRole('heading', { level: 3 })).toHaveText([
     'Warzywa i owoce',
     'Mięso i wędliny',
@@ -63,7 +63,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(ingredients.locator('.unit-toggle')).toHaveCount(0);
   const ingredientHeadGeometry = await ingredients.evaluate((section) => {
     const heading = section.querySelector('#ingredients-heading');
-    const chevron = section.querySelector('.recipe-section-toggle svg:last-child');
+    const chevron = section.querySelector('.recipe-section-toggle > svg');
     if (
       !(heading instanceof HTMLElement)
       || !(chevron instanceof SVGElement)
@@ -352,10 +352,10 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
   const choiceHeadingLeft = await page.getByRole('heading', {
     name: 'Jak chcesz gotować?',
   }).evaluate((element) => element.getBoundingClientRect().left);
-  const preparationHeadingLeft = await preparation.getByRole('heading', {
-    name: 'Zanim zaczniesz',
+  const descriptionHeadingLeft = await page.getByRole('heading', {
+    name: 'O daniu',
   }).evaluate((element) => element.getBoundingClientRect().left);
-  expect(choiceHeadingLeft).toBeCloseTo(preparationHeadingLeft, 0);
+  expect(choiceHeadingLeft).toBeCloseTo(descriptionHeadingLeft, 0);
   const neutralCardStyles = await Promise.all(
     [preparation, steps].map((section) =>
       section.evaluate((element) => {
@@ -458,7 +458,7 @@ test('every main recipe section can be collapsed and expanded independently', as
       const container = document.querySelector(containerSelector);
       const toggle = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-section-toggle]'))
         .find((button) => button.textContent?.trim() === toggleName);
-      const icon = toggle?.querySelector('svg:last-child');
+      const icon = toggle?.querySelector(':scope > svg');
       if (!(container instanceof HTMLElement) || !(icon instanceof SVGElement)) {
         throw new Error(`Nie znaleziono geometrii sekcji: ${toggleName}`);
       }
@@ -497,7 +497,7 @@ test('every main recipe section can be collapsed and expanded independently', as
     if (name === 'Zanim zaczniesz' || name === 'Kroki') {
       const centers = await section.evaluate((element) => {
         const head = element.querySelector('.recipe-section-head');
-        const icon = element.querySelector('.recipe-section-toggle svg');
+        const icon = element.querySelector('.recipe-section-toggle > svg');
         if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
           throw new Error('Nie znaleziono geometrii zwiniętego nagłówka');
         }
@@ -515,7 +515,7 @@ test('every main recipe section can be collapsed and expanded independently', as
     if (name === 'Zanim zaczniesz' || name === 'Kroki') {
       const centers = await section.evaluate((element) => {
         const head = element.querySelector('.recipe-section-head');
-        const icon = element.querySelector('.recipe-section-toggle svg');
+        const icon = element.querySelector('.recipe-section-toggle > svg');
         if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
           throw new Error('Nie znaleziono geometrii rozwiniętego nagłówka');
         }
@@ -711,16 +711,16 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
       Number.parseFloat(getComputedStyle(element).strokeDashoffset.replace(/[^\d.]+/g, ' ').trim()),
     );
 
-  await expect(progressText).toHaveText('0/3 zebrane');
+  await expect(progressText).toHaveText('0/5 zebrane');
   await expect(progress).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(progress).toHaveCSS('border-top-style', 'none');
   await expect(progress).toHaveCSS('box-shadow', 'none');
   expect(await ringRemainder()).toBeCloseTo(1, 2);
 
   await toggles.first().click();
-  await expect(progressText).toHaveText('1/3 zebrane');
+  await expect(progressText).toHaveText('1/5 zebrane');
   // Pierścień dojeżdża płynnie, więc czekamy na koniec przejścia.
-  await expect.poll(ringRemainder).toBeCloseTo(2 / 3, 2);
+  await expect.poll(ringRemainder).toBeCloseTo(4 / 5, 2);
 
   const total = await toggles.count();
   for (let index = 1; index < total; index += 1) {
@@ -732,7 +732,7 @@ test('ingredient counter fills its ring and lands on a complete state', async ({
   await expect(progress).toHaveCSS('box-shadow', 'none');
 
   await toggles.first().click();
-  await expect(progressText).toHaveText('2/3 zebrane');
+  await expect(progressText).toHaveText('4/5 zebrane');
   await expect(progress).not.toHaveClass(/is-complete/);
 });
 

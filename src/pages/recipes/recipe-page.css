@@ -119,21 +119,29 @@
 
 .recipe-hero__caption {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   display: grid;
+  align-content: end;
   justify-items: center;
   gap: var(--space-8);
-  padding: 30px var(--gutter) calc(68px + var(--space-16));
+  padding: var(--space-32) var(--gutter) calc(68px + var(--space-16));
   text-align: center;
-  background: radial-gradient(
-    ellipse 125% 78% at 50% 42%,
-    rgb(168 45 24 / 70%) 0%,
-    rgb(168 45 24 / 55%) 30%,
-    rgb(168 45 24 / 28%) 58%,
-    rgb(168 45 24 / 8%) 80%,
-    transparent 92%
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(168 45 24 / 2%) 12%,
+    rgb(168 45 24 / 6%) 22%,
+    rgb(168 45 24 / 14%) 32%,
+    rgb(168 45 24 / 26%) 42%,
+    rgb(168 45 24 / 42%) 52%,
+    rgb(168 45 24 / 60%) 62%,
+    rgb(168 45 24 / 74%) 72%,
+    rgb(168 45 24 / 74%) 76%,
+    rgb(168 45 24 / 64%) 82%,
+    rgb(168 45 24 / 48%) 88%,
+    rgb(168 45 24 / 28%) 93%,
+    rgb(168 45 24 / 10%) 97%,
+    transparent 100%
   );
   pointer-events: none;
 }
@@ -479,11 +487,17 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-14);
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
   background: transparent;
   margin: 0;
   transition: color 240ms ease, background-color 240ms ease;
+}
+
+.ingredient-progress__text {
+  font-size: var(--font-size-14);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
 }
 
 .ingredient-progress.is-complete {
@@ -799,8 +813,13 @@
 .recipe-lead .recipe-section-head,
 .recipe-ingredients .recipe-section-head,
 .recipe-prep .recipe-section-head,
-.recipe-steps .recipe-section-head {
+.recipe-steps .recipe-section-head,
+.recipe-tips .recipe-section-head {
   margin-bottom: 0;
+}
+
+.recipe-tips .recipe-section-head__badge {
+  background: var(--color-surface);
 }
 
 .recipe-prep .recipe-section-head,
@@ -808,16 +827,16 @@
   position: relative;
 }
 
-.recipe-prep .recipe-section-toggle svg,
-.recipe-steps .recipe-section-toggle svg {
+.recipe-prep .recipe-section-toggle > svg,
+.recipe-steps .recipe-section-toggle > svg {
   position: absolute;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
 }
 
-.recipe-prep .recipe-section-toggle[aria-expanded='false'] svg,
-.recipe-steps .recipe-section-toggle[aria-expanded='false'] svg {
+.recipe-prep .recipe-section-toggle[aria-expanded='false'] > svg,
+.recipe-steps .recipe-section-toggle[aria-expanded='false'] > svg {
   transform: translateY(-50%) rotate(180deg);
 }
 

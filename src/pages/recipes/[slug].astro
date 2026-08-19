@@ -370,10 +370,30 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                     data-section-toggle
                     hidden
                   >
-                    <span>{messages.recipe.preparationHeading}</span>
+                    <span class="recipe-section-head__title">
+                      <span class="recipe-section-head__badge" aria-hidden="true">
+                        <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                          <path d="m9 14 2 2 4-4"></path>
+                        </svg>
+                      </span>
+                      <span>{messages.recipe.preparationHeading}</span>
+                    </span>
                     <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
                   </button>
-                  <span class="recipe-section-title-fallback">{messages.recipe.preparationHeading}</span>
+                  <span class="recipe-section-title-fallback">
+                    <span class="recipe-section-head__title">
+                      <span class="recipe-section-head__badge" aria-hidden="true">
+                        <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                          <path d="m9 14 2 2 4-4"></path>
+                        </svg>
+                      </span>
+                      <span>{messages.recipe.preparationHeading}</span>
+                    </span>
+                  </span>
                 </h2>
               </div>
               <div id="preparation-content" class="recipe-section-content" data-section-content>
@@ -434,10 +454,26 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
                 data-section-toggle
                 hidden
               >
-                <span>{messages.recipe.stepsHeading}</span>
+                <span class="recipe-section-head__title">
+                  <span class="recipe-section-head__badge" aria-hidden="true">
+                    <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                    </svg>
+                  </span>
+                  <span>{messages.recipe.stepsHeading}</span>
+                </span>
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
               </button>
-              <span class="recipe-section-title-fallback">{messages.recipe.stepsHeading}</span>
+              <span class="recipe-section-title-fallback">
+                <span class="recipe-section-head__title">
+                  <span class="recipe-section-head__badge" aria-hidden="true">
+                    <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                    </svg>
+                  </span>
+                  <span>{messages.recipe.stepsHeading}</span>
+                </span>
+              </span>
             </h2>
           </div>
           <div id="steps-content" class="recipe-section-content" data-section-content>
@@ -464,20 +500,46 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
           {
             recipe.tips && (
               <section class="recipe-tips recipe-mode-content" aria-labelledby="tips-heading">
-              <h2 id="tips-heading">
-                <button
-                  type="button"
-                  class="recipe-section-toggle"
-                  aria-expanded="true"
-                  aria-controls="tips-content"
-                  data-section-toggle
-                  hidden
-                >
-                  <span>{messages.recipe.tipsHeading}</span>
-                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
-                </button>
-                <span class="recipe-section-title-fallback">{messages.recipe.tipsHeading}</span>
-              </h2>
+              <div class="recipe-section-head">
+                <h2 id="tips-heading">
+                  <button
+                    type="button"
+                    class="recipe-section-toggle"
+                    aria-expanded="true"
+                    aria-controls="tips-content"
+                    data-section-toggle
+                    hidden
+                  >
+                    <span class="recipe-section-head__title">
+                      <span class="recipe-section-head__badge" aria-hidden="true">
+                        <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                          <path d="M5 3v4"></path>
+                          <path d="M19 17v4"></path>
+                          <path d="M3 5h4"></path>
+                          <path d="M17 19h4"></path>
+                        </svg>
+                      </span>
+                      <span>{messages.recipe.tipsHeading}</span>
+                    </span>
+                    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 12 5-5 5 5" /></svg>
+                  </button>
+                  <span class="recipe-section-title-fallback">
+                    <span class="recipe-section-head__title">
+                      <span class="recipe-section-head__badge" aria-hidden="true">
+                        <svg class="recipe-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                          <path d="M5 3v4"></path>
+                          <path d="M19 17v4"></path>
+                          <path d="M3 5h4"></path>
+                          <path d="M17 19h4"></path>
+                        </svg>
+                      </span>
+                      <span>{messages.recipe.tipsHeading}</span>
+                    </span>
+                  </span>
+                </h2>
+              </div>
               <ul class="tips-list" id="tips-content" data-section-content>
                 {recipe.tips.map((tip) => (
                   <li>
