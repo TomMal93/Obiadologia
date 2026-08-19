@@ -468,10 +468,11 @@
 /* Subtle glass/gloss text effect on path-title typography */
 .path-title {
   margin: 0;
+  padding: 0.08em 0.12em;
   color: var(--col-accent);
   font-size: clamp(18px, 4.8vw, 21px);
   font-weight: 600;
-  line-height: 1.02;
+  line-height: 1.22;
   letter-spacing: -0.02em;
   text-align: center;
   background-image: linear-gradient(
