@@ -704,6 +704,20 @@
   opacity: 0;
 }
 
+.recipe-cooking-flow:has(.assistant-choice .recipe-section-toggle[aria-expanded='false']) {
+  border-radius: var(--radius-field);
+  padding: var(--space-16);
+  gap: 0;
+}
+
+.recipe-cooking-flow:has(.assistant-choice .recipe-section-toggle[aria-expanded='false']) .assistant-choice {
+  padding-top: 0;
+}
+
+.recipe-cooking-flow:has(.assistant-choice .recipe-section-toggle[aria-expanded='false']) .assistant-choice .recipe-section-head {
+  padding-inline: 0;
+}
+
 .assistant-choice {
   display: grid;
   gap: var(--space-8);

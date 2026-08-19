@@ -474,6 +474,25 @@ test('every main recipe section can be collapsed and expanded independently', as
   expect(toggleRightInsets.cookingChoice).toBeCloseTo(toggleRightInsets.description, 0);
   await choice.click();
   await expect(page.getByRole('button', { name: 'Tryb asystenta' })).toBeHidden();
+  const collapsedFrameShapes = await page.evaluate(() => {
+    const cookingFlow = document.querySelector('.recipe-cooking-flow');
+    const description = document.querySelector('.recipe-lead');
+    if (!(cookingFlow instanceof HTMLElement) || !(description instanceof HTMLElement)) {
+      throw new Error('Nie znaleziono ramek do porównania kształtu');
+    }
+    const cookingStyles = getComputedStyle(cookingFlow);
+    const descriptionStyles = getComputedStyle(description);
+    return {
+      cookingBorderRadius: cookingStyles.borderRadius,
+      descriptionBorderRadius: descriptionStyles.borderRadius,
+      cookingPadding: cookingStyles.padding,
+      descriptionPadding: descriptionStyles.padding,
+    };
+  });
+  expect(collapsedFrameShapes.cookingBorderRadius).toBe(
+    collapsedFrameShapes.descriptionBorderRadius,
+  );
+  expect(collapsedFrameShapes.cookingPadding).toBe(collapsedFrameShapes.descriptionPadding);
   await choice.click();
   await page.getByRole('button', { name: 'Tryb asystenta' }).click();
   await expect(page.locator('.recipe-cooking-flow')).not.toHaveCSS(
