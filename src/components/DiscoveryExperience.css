@@ -8,8 +8,12 @@
 }
 
 .screen.category-section {
+  --brand-pulse: var(--color-coral);
+  --brand-pulse-soft: var(--color-coral-soft);
+
   justify-content: flex-start;
   padding-block-start: 20px;
+  animation: brand-pulse 9s ease-in-out infinite;
 }
 
 .category-section > .section-heading {
@@ -45,7 +49,8 @@
 
 .category-panel {
   padding: clamp(var(--space-4), 1vh, var(--space-8)) var(--space-16);
-  border-radius: var(--radius-card);
+  border: 1px solid var(--brand-pulse);
+  border-radius: var(--radius-panel);
   background: var(--color-surface);
   box-shadow: var(--shadow-surface);
 }

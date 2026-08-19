@@ -179,3 +179,13 @@ test('path tree lines progress from a soft color to the full path accent', async
     expect(startColor).not.toBe(endColor);
   }
 });
+
+test('category panel is framed like path panel', async ({ page }) => {
+  await page.goto('/');
+
+  const categoryPanel = page.locator('.category-panel');
+  await expect(categoryPanel).toHaveCSS('border-top-width', '1px');
+  await expect(categoryPanel).toHaveCSS('border-top-style', 'solid');
+  await expect(categoryPanel).toHaveCSS('border-top-left-radius', '28px');
+});
+
