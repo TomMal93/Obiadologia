@@ -120,6 +120,7 @@ corepack pnpm verify      # lint + typecheck + test + test:e2e
 1. **Szybka pętla (w trakcie pracy):** Uruchamiana na bieżąco po zmianach w kodzie (`test`, `typecheck`, `lint`). Wykonuje się w pamięci (1–3s) bez narzutu budowania i uruchamiania przeglądarki.
 2. **Pełna bramka (przed poleceniem zacommitowania):** Uruchamia `corepack pnpm verify` (w tym Playwright E2E z automatycznym audytem `axe-core`). Przed testami E2E `webServer` Playwrighta sam buduje stronę i serwuje ją przez `astro preview`.
    - **Zasada obsługi błędów:** Jeżeli pełna bramka wykaże jakikolwiek błąd, proces commitowania **MUSI zostać przerwany**, a raport z błędem przedstawiony do decyzji programisty/użytkownika.
+   - **Wyjątek (jawne polecenie commita):** Jeżeli użytkownik wyraźnie zażąda commita bez testów (np. poleceniem typu „git commit bez testów”), bramka weryfikacyjna jest pomijana i następuje bezpośrednie wykonanie commita.
 
 Te same bramki uruchamia automatycznie workflow GitHub Actions [`verify.yml`](../../.github/workflows/verify.yml) dla każdego pusha do `main` i każdego pull requesta.
 
