@@ -41,7 +41,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `tags` | string[] | co najmniej jedna cecha smaku, diety lub sytuacji; kolejność określa priorytet prezentacji |
 | `mealTimes` | MealTime[] | co najmniej jedna pora dnia |
 | `tempos` | Tempo[] | co najmniej jedno tempo |
-| `occasions` | Occasion[] | co najmniej jedna okazja |
+| `occasions` | Occasion[] | lista pasujących okazji (może być pusta, jeśli potrawa nie ma dedykowanej okazji) |
 | `mapPosition` | MapPosition | dwie znormalizowane wartości |
 | `editorialPriority` | number | rozstrzyganie podobnych wyników |
 | `status` | status | `draft`, `published` albo `archived` |

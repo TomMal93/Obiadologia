@@ -125,8 +125,9 @@ dotyczących techniki, typowych błędów albo sposobu uzyskania lepszego efektu
 
 ## Dopasowanie do sposobów odkrywania
 
-Wybierz co najmniej jedną wartość w każdej grupie. Można zaznaczyć kilka
-wartości.
+Wybierz co najmniej jedną wartość w grupach Pora dnia i Tempo. Grupa Okazja
+może pozostać pusta, jeśli danie nie ma dedykowanej okazji. Można zaznaczyć
+kilka wartości.
 
 ### Pora dnia (`mealTimes`)
 
@@ -168,7 +169,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Przepis z sekcją „Zanim zaczniesz” ma wypełnione kroki samodzielne, a przepis bez tej sekcji ich nie ma.
 - [ ] Kroki samodzielne są innym tekstem niż kroki podstawowe i nie gubią żadnej czynności z „Zanim zaczniesz”.
 - [ ] Opcjonalne porady są niepuste albo sekcja „Coś jeszcze” została pominięta.
-- [ ] Każda grupa dopasowania ma co najmniej jedną wartość.
+- [ ] Grupy pora dnia (`mealTimes`) i tempo (`tempos`) mają co najmniej jedną wartość.
 - [ ] Wartości Mapy mieszczą się w zakresie `0–1`.
 - [ ] Zdjęcie ma opis alternatywny albo jest jawnie oznaczone jako `null`.
 - [ ] Opcjonalne sekcje są całkowicie uzupełnione albo całkowicie pominięte.

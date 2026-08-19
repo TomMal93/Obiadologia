@@ -61,7 +61,7 @@ export const recipeSchema = z
     tags: z.array(z.string().trim().min(1)).min(1),
     mealTimes: z.array(z.enum(mealTimes)).min(1),
     tempos: z.array(z.enum(tempos)).min(1),
-    occasions: z.array(z.enum(occasions)).min(1),
+    occasions: z.array(z.enum(occasions)),
     mapPosition: z
       .object({
         pace: z.number().min(0).max(1),
