@@ -377,6 +377,12 @@
   stop-color: var(--color-map);
 }
 
+.tree-node-ring-segment {
+  transform-origin: 150px 30px;
+  transform-box: view-box;
+  animation: ring-segment-breathe 3s ease-in-out infinite;
+}
+
 .tree-node-ring-segment--search {
   fill: url('#tree-node-ring-search');
 }
@@ -387,6 +393,17 @@
 
 .tree-node-ring-segment--map {
   fill: url('#tree-node-ring-map');
+}
+
+@keyframes ring-segment-breathe {
+  0%,
+  100% {
+    transform: scale(0.98);
+  }
+
+  50% {
+    transform: scale(1.045);
+  }
 }
 
 .tree-node {
@@ -644,5 +661,9 @@ button.path-tile {
 @media (prefers-reduced-motion: reduce) {
   .path-tile {
     transition: none;
+  }
+
+  .tree-node-ring-segment {
+    animation: none;
   }
 }
