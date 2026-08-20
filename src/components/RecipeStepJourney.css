@@ -139,6 +139,9 @@
 
 .step-item.is-open .step-item__card {
   border-color: rgb(255 79 46 / 46%);
+}
+
+.step-item.is-current .step-item__card {
   background: var(--color-coral-soft);
 }
 
