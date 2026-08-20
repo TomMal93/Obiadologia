@@ -87,7 +87,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px`, progi `16px` tekstu i `44 × 44px` obszaru akcji) definiuje [ui-system.md](../../design/ui-system.md).
 
 - Hero zajmuje pełną szerokość kontenera mobilnego, ma stałą wysokość w rytmie projektu i `object-fit: cover`; awaria lub brak obrazu nie zmienia jego geometrii.
-- Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia.
+- Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia, a tytuł jest dominującym typograficznie elementem nakładki.
 - Akcja „Powrót” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
 - Akcje zmiany porcji są okrągłe, mają minimalny obszar aktywny `44 × 44px`, dostępne nazwy i stan `disabled` na granicach zakresu.
 - Opis rozpoczyna właściwą kolumnę treści jako panel „O daniu” w tej samej neutralnej ramce i z takim samym nagłówkiem jak sekcja „Zanim zaczniesz”. Nie jest częścią koralowego paska metadanych.
