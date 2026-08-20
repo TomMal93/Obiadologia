@@ -137,8 +137,19 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(secondStep.locator('[data-step-body]')).toBeHidden();
   await expect(stepMarkers).toHaveCount(9);
   await expect(stepMarkers.first()).toHaveAttribute('aria-current', 'step');
+  await expect(stepMarkers.first()).toHaveAttribute('aria-expanded', 'true');
   await expect(stepMarkers.first().locator('[data-step-badge]')).toHaveText('1');
   await expect(secondStep.locator('.step-item__label')).toHaveText('Krok 2');
+  await expect.poll(() => stepMarkers.first().evaluate((marker) =>
+    getComputedStyle(marker, '::after').opacity)).toBe('1');
+  await stepMarkers.first().click();
+  await expect(firstStep.locator('[data-step-body]')).toBeHidden();
+  await expect(stepMarkers.first()).toHaveAttribute('aria-expanded', 'false');
+  await expect.poll(() => stepMarkers.first().evaluate((marker) =>
+    getComputedStyle(marker, '::after').opacity)).toBe('0');
+  await stepMarkers.first().click();
+  await expect(firstStep.locator('[data-step-body]')).toBeVisible();
+  await expect(stepMarkers.first()).toHaveAttribute('aria-expanded', 'true');
   await expect(firstStepAction).toBeVisible();
   await expect(firstStepAction).toContainText('Oznacz jako zrobione');
   await expect(firstStepAction).toHaveCSS('color', 'rgb(168, 45, 24)');

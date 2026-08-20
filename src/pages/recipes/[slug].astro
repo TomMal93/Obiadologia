@@ -961,6 +961,11 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
 
     head.setAttribute('aria-expanded', String(open));
     item.classList.toggle('is-open', open);
+    const journey = item.closest<HTMLElement>('[data-step-journey]');
+    const number = item.dataset.stepNumber;
+    journey
+      ?.querySelector<HTMLButtonElement>(`[data-step-marker][data-step-number="${number}"]`)
+      ?.setAttribute('aria-expanded', String(open));
 
     if (animate) {
       animateSection(body, open);
@@ -1085,9 +1090,9 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         const number = Number(marker.dataset.stepNumber);
         const item = items[number - 1];
         if (!item) return;
-        openStepItem(item, true);
-        item.querySelector<HTMLButtonElement>('[data-step-head]')?.focus({ preventScroll: true });
-        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const open = marker.getAttribute('aria-expanded') !== 'true';
+        setStepOpen(item, open, true);
+        if (open) item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     }
   }

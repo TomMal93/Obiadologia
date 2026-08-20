@@ -48,6 +48,7 @@ const cards = steps.map((text, index) => {
           data-step-number={card.number}
           aria-label={card.label}
           aria-controls={card.bodyId}
+          aria-expanded="false"
         >
           <span data-step-badge aria-hidden="true">{card.number}</span>
         </button>
