@@ -218,6 +218,7 @@ export const pl = {
     stepsStageLabel: 'Gotowanie',
     stepsHeading: 'Kroki',
     stepLabel: 'Etap {number}',
+    stepPositionLabel: 'Krok {number} z {total}',
     stepCardLabel: 'Krok {number}',
     stepPreparationHeading: 'Przygotuj przed wykonaniem',
     stepFinalLabel: 'Finalny krok',

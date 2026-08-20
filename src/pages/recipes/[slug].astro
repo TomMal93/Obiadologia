@@ -987,6 +987,17 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     setStepOpen(item, true, animate);
   };
 
+  const scrollStepMarkerIntoView = (
+    journey: HTMLElement,
+    item: HTMLElement,
+    behavior: ScrollBehavior,
+  ) => {
+    const number = item.dataset.stepNumber;
+    journey
+      .querySelector<HTMLButtonElement>(`[data-step-marker][data-step-number="${number}"]`)
+      ?.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+  };
+
   const renderPreparation = (preparationId: string) => {
     const checked = completedPreparation.has(preparationId);
 
@@ -1066,11 +1077,17 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     action?.addEventListener('click', () => {
       const checked = !isStepChecked(item);
       setStepChecked(item, checked);
-      if (!journey || !checked) return;
+      if (!journey) return;
 
-      setStepOpen(item, false, true);
-      const next = journeyItems(journey).find((candidate) => !isStepChecked(candidate));
-      if (next) openStepItem(next, true);
+      if (checked) {
+        setStepOpen(item, false, true);
+        const next = journeyItems(journey).find((candidate) => !isStepChecked(candidate));
+        if (next) openStepItem(next, true);
+      }
+
+      const current = journeyItems(journey).find((candidate) => !isStepChecked(candidate))
+        ?? journeyItems(journey).at(-1);
+      if (current) scrollStepMarkerIntoView(journey, current, 'smooth');
     });
 
     renderStepItem(item);
@@ -1079,7 +1096,20 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
 
   for (const journey of stepJourneys) {
     const navigator = journey.querySelector<HTMLElement>('[data-step-navigator]');
-    if (navigator) navigator.hidden = false;
+    const navigatorShell = journey.querySelector<HTMLElement>('[data-step-navigator-shell]');
+    if (navigator && navigatorShell) {
+      navigator.hidden = false;
+      const renderNavigatorOverflow = () => {
+        navigatorShell.classList.toggle('has-overflow-start', navigator.scrollLeft > 1);
+        navigatorShell.classList.toggle(
+          'has-overflow-end',
+          navigator.scrollLeft + navigator.clientWidth < navigator.scrollWidth - 1,
+        );
+      };
+      navigator.addEventListener('scroll', renderNavigatorOverflow, { passive: true });
+      new ResizeObserver(renderNavigatorOverflow).observe(navigator);
+      requestAnimationFrame(renderNavigatorOverflow);
+    }
 
     const items = journeyItems(journey);
     const current = items.find((item) => !isStepChecked(item)) ?? null;
@@ -1092,6 +1122,7 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
         if (!item) return;
         const open = marker.getAttribute('aria-expanded') !== 'true';
         setStepOpen(item, open, true);
+        marker.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         if (open) item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     }

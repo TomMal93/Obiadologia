@@ -27,34 +27,40 @@ const cards = steps.map((text, index) => {
     text,
     bodyId: `step-${mode}-${number}-body`,
     label: formatMessage(messages.stepLabel, { number }),
+    navigatorLabel: formatMessage(messages.stepPositionLabel, {
+      number,
+      total: steps.length,
+    }),
     preparation: preparation.filter((item) => item.beforeStep === number),
   };
 });
 ---
 
 <div class:list={['step-journey', className]} data-step-journey={mode}>
-  <ol
-    class="step-journey__navigator"
-    aria-label={messages.stepsHeading}
-    data-step-navigator
-    hidden
-  >
-    {cards.map((card) => (
-      <li>
-        <button
-          type="button"
-          class="step-journey__marker"
-          data-step-marker
-          data-step-number={card.number}
-          aria-label={card.label}
-          aria-controls={card.bodyId}
-          aria-expanded="false"
-        >
-          <span data-step-badge aria-hidden="true">{card.number}</span>
-        </button>
-      </li>
-    ))}
-  </ol>
+  <div class="step-journey__navigator-shell" data-step-navigator-shell>
+    <ol
+      class="step-journey__navigator"
+      aria-label={messages.stepsHeading}
+      data-step-navigator
+      hidden
+    >
+      {cards.map((card) => (
+        <li>
+          <button
+            type="button"
+            class="step-journey__marker"
+            data-step-marker
+            data-step-number={card.number}
+            aria-label={card.navigatorLabel}
+            aria-controls={card.bodyId}
+            aria-expanded="false"
+          >
+            <span data-step-badge aria-hidden="true">{card.number}</span>
+          </button>
+        </li>
+      ))}
+    </ol>
+  </div>
 
   <ol class="step-list" data-step-list={mode}>
     {cards.map((card) => (

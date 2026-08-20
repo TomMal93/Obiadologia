@@ -129,6 +129,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   const secondStep = stepItems.nth(1);
   const firstStepAction = firstStep.locator('[data-checkable-step]');
   const stepMarkers = standaloneJourney.locator('[data-step-marker]');
+  const navigatorShell = standaloneJourney.locator('[data-step-navigator-shell]');
   // Ścieżka prowadzi po jednym etapie: rozwinięty jest tylko najbliższy do zrobienia.
   await expect(firstStep).toHaveClass(/is-current/);
   await expect(firstStep.locator('[data-step-body]')).toBeVisible();
@@ -138,6 +139,8 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(stepMarkers).toHaveCount(9);
   await expect(stepMarkers.first()).toHaveAttribute('aria-current', 'step');
   await expect(stepMarkers.first()).toHaveAttribute('aria-expanded', 'true');
+  await expect(stepMarkers.first()).toHaveAccessibleName('Krok 1 z 9');
+  await expect(navigatorShell).toHaveClass(/has-overflow-end/);
   await expect(stepMarkers.first().locator('[data-step-badge]')).toHaveText('1');
   await expect(secondStep.locator('.step-item__label')).toHaveText('Krok 2');
   await expect.poll(() => stepMarkers.first().evaluate((marker) =>

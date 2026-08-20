@@ -8,12 +8,46 @@
   gap: var(--space-12);
 }
 
+.step-journey__navigator-shell {
+  position: relative;
+  min-width: 0;
+  margin: 0 var(--space-8);
+}
+
+.step-journey__navigator-shell::before,
+.step-journey__navigator-shell::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.step-journey__navigator-shell::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-surface), transparent);
+}
+
+.step-journey__navigator-shell::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-surface), transparent);
+}
+
+.step-journey__navigator-shell.has-overflow-start::before,
+.step-journey__navigator-shell.has-overflow-end::after {
+  opacity: 1;
+}
+
 .step-journey__navigator {
   display: grid;
   grid-auto-columns: minmax(44px, 1fr);
   grid-auto-flow: column;
-  gap: 0;
-  margin: 0 var(--space-8);
+  gap: var(--space-4);
+  margin: 0;
   padding: 0;
   overflow-x: auto;
   list-style: none;
