@@ -15,7 +15,7 @@
   flex-direction: column;
   min-height: calc(100vh - var(--header-block));
   min-height: calc(100svh - var(--header-block));
-  padding: 0 var(--gutter) clamp(24px, 4vh, 32px);
+  padding: 0 var(--gutter) clamp(16px, 3vh, 24px);
 }
 
 /* Delikatne, powtarzalne hasła w tle — czysto dekoracyjne (aria-hidden),
@@ -520,11 +520,11 @@
 @keyframes ring-segment-breathe {
   0%,
   100% {
-    transform: scale(0.985);
+    transform: scale(0.99);
   }
 
   50% {
-    transform: scale(1.03);
+    transform: scale(1.045);
   }
 }
 
@@ -619,7 +619,8 @@
 
 .path-action {
   display: grid;
-  width: 100%;
+  width: calc(100% - var(--space-8));
+  aspect-ratio: 1;
   justify-items: center;
   margin-top: 6px;
 }
@@ -628,13 +629,11 @@
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: clamp(4px, 1vh, 8px);
+  gap: clamp(2px, 0.6vh, 4px);
   width: 100%;
-  /* Wspólna min. wysokość i proporcja wyrównują kafle w jeden rząd mimo różnej
-     długości opisów nad nimi. */
-  aspect-ratio: 1 / 1.05;
-  min-height: clamp(100px, 26vw, 130px);
-  padding: clamp(8px, 1.8vh, 14px) clamp(4px, 1vw, 8px) clamp(8px, 1.6vh, 12px);
+  height: 100%;
+  min-height: 0;
+  padding: var(--space-4);
   border: 1px solid var(--col-glass-border, color-mix(in srgb, var(--col-accent) 45%, transparent));
   border-radius: clamp(22px, 5.5vw, 28px);
   color: inherit;
@@ -674,8 +673,8 @@ button.path-tile {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(52px, 13.5vw, 64px);
-  height: clamp(52px, 13.5vw, 64px);
+  width: clamp(38px, 10.5vw, 50px);
+  height: clamp(38px, 10.5vw, 50px);
   color: var(--col-accent);
 }
 
@@ -687,8 +686,9 @@ button.path-tile {
 
 .path-tile-label {
   color: var(--col-strong);
-  font-size: clamp(17px, 4.6vw, 21px);
+  font-size: clamp(16px, 3.8vw, 18px);
   font-weight: 800;
+  line-height: 1.15;
   letter-spacing: -0.02em;
 }
 

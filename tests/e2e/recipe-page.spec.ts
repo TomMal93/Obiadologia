@@ -394,16 +394,43 @@ test('recipe preparation groups day-before and just-in-time tasks in assistant m
     name: 'O daniu',
   }).evaluate((element) => element.getBoundingClientRect().left);
   expect(choiceHeadingLeft).toBeCloseTo(descriptionHeadingLeft, 0);
-  const [cookingFlowBox, stepsBox, journeyBox] = await Promise.all([
-    page.locator('.recipe-cooking-flow').boundingBox(),
+  const [cookingFlowGeometry, stepsBox, journeyBox] = await Promise.all([
+    page.locator('.recipe-cooking-flow').evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      const styles = getComputedStyle(element);
+      return {
+        x: box.x,
+        contentInset: Number.parseFloat(styles.borderLeftWidth)
+          + Number.parseFloat(styles.paddingLeft),
+      };
+    }),
     steps.boundingBox(),
     assistantSteps.boundingBox(),
   ]);
-  expect(cookingFlowBox).not.toBeNull();
   expect(stepsBox).not.toBeNull();
   expect(journeyBox).not.toBeNull();
-  expect(Math.abs(stepsBox!.x - cookingFlowBox!.x)).toBeLessThanOrEqual(2);
-  expect(journeyBox!.width).toBeCloseTo(stepsBox!.width, 0);
+  expect(stepsBox!.x - cookingFlowGeometry.x).toBeCloseTo(
+    cookingFlowGeometry.contentInset,
+    0,
+  );
+  const stepsHorizontalInset = await steps.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return Number.parseFloat(styles.borderLeftWidth)
+      + Number.parseFloat(styles.paddingLeft)
+      + Number.parseFloat(styles.paddingRight)
+      + Number.parseFloat(styles.borderRightWidth);
+  });
+  expect(journeyBox!.width).toBeCloseTo(stepsBox!.width - stepsHorizontalInset, 0);
+  const journeyHorizontalMargins = await assistantSteps.locator(
+    '.step-journey__navigator-shell, .step-list',
+  ).evaluateAll((elements) => elements.map((element) => {
+    const styles = getComputedStyle(element);
+    return [styles.marginLeft, styles.marginRight];
+  }));
+  expect(journeyHorizontalMargins).toEqual([
+    ['0px', '0px'],
+    ['0px', '0px'],
+  ]);
   await stepsMode.click();
   await expect(preparation).toBeHidden();
   await expect(page.getByRole('region', { name: 'Kroki' })).toBeVisible();

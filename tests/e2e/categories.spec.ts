@@ -57,6 +57,7 @@ test('detailed category search opens an explicit placeholder and returns to cate
 test('category content fills the section from its 20px top inset', async ({ page }) => {
   await page.setViewportSize({ width: 430, height: 932 });
   await page.goto('/');
+  await page.getByRole('button', { name: /Śniadanie/ }).click();
 
   const geometry = await page.locator('.category-section').evaluate((section) => {
     const heading = section.querySelector(':scope > .section-heading');
@@ -67,18 +68,25 @@ test('category content fills the section from its 20px top inset', async ({ page
     }
 
     const sectionBounds = section.getBoundingClientRect();
-    const sectionStyles = getComputedStyle(section);
+    const resultsBody = results.querySelector('.category-results-body');
+    const recipeList = resultsBody?.querySelector('.recipe-list');
 
     return {
       headingOffset: heading.getBoundingClientRect().top - sectionBounds.top,
-      resultsBottomGap: sectionBounds.bottom
-        - Number.parseFloat(sectionStyles.paddingBottom)
-        - results.getBoundingClientRect().bottom,
+      resultsBottomGap: sectionBounds.bottom - results.getBoundingClientRect().bottom,
+      listFillsBody: resultsBody instanceof HTMLElement && recipeList instanceof HTMLElement
+        ? recipeList.getBoundingClientRect().height >= (
+            resultsBody.clientHeight
+            - Number.parseFloat(getComputedStyle(resultsBody).paddingTop)
+            - Number.parseFloat(getComputedStyle(resultsBody).paddingBottom)
+          )
+        : null,
     };
   });
 
   expect(geometry.headingOffset).toBeCloseTo(20, 0);
   expect(geometry.resultsBottomGap).toBeCloseTo(0, 0);
+  expect(geometry.listFillsBody).toBe(true);
 });
 
 test('homepage heading and path panel keep stable mobile geometry', async ({ page }) => {
@@ -125,6 +133,12 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     const actionMarginTop = await page.locator('.path-action').first().evaluate(
       (element) => Number.parseFloat(getComputedStyle(element).marginTop),
     );
+    const actionBounds = await page.locator('.path-action').evaluateAll(
+      (actions) => actions.map((action) => {
+        const bounds = action.getBoundingClientRect();
+        return { width: bounds.width, height: bounds.height };
+      }),
+    );
     const actionNoteGaps = await page.locator('.path-action').evaluateAll(
       (actions, noteTop) => actions.map(
         (action) => Number(noteTop) - action.getBoundingClientRect().bottom,
@@ -144,12 +158,19 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     expect(headingCenter).toBeCloseTo(availableSpaceCenter, 0);
     expect(gridTop - treeBottom).toBeCloseTo(7, 0);
     expect(actionMarginTop).toBe(6);
+    for (const bounds of actionBounds.slice(1)) {
+      expect(bounds.width).toBeCloseTo(actionBounds[0].width, 1);
+      expect(bounds.height).toBeCloseTo(actionBounds[0].height, 1);
+    }
+    for (const bounds of actionBounds) {
+      expect(bounds.width).toBeCloseTo(bounds.height, 1);
+    }
     for (const gap of actionNoteGaps) {
       expect(gap).toBeCloseTo(22, 0);
     }
     expect(panelBounds.bottom - noteBounds.bottom).toBeCloseTo(23, 0);
-    expect(sectionBottomPadding).toBeGreaterThanOrEqual(24);
-    expect(sectionBottomPadding).toBeLessThanOrEqual(32);
+    expect(sectionBottomPadding).toBeGreaterThanOrEqual(16);
+    expect(sectionBottomPadding).toBeLessThanOrEqual(24);
     expect(sectionBottom - panelBounds.bottom).toBeCloseTo(sectionBottomPadding, 0);
   }
 });

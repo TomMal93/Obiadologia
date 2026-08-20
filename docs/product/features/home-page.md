@@ -21,11 +21,14 @@ Strona zawiera:
 
 Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
 
-W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Odstęp między dolną krawędzią notatki a ramką panelu jest stały, natomiast dolna kotwica panelu skaluje się płynnie od `24px` do `32px` zależnie od wysokości mobilnego viewportu. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Centralną ikonę drzewka otacza okrągły pierścień o średnicy dawnej poświaty: od godziny 12, zgodnie z ruchem wskazówek zegara, biegną kolejno jednolite wycinki Szukaj (koral), Mapa (niebieski) i Kategorie (zieleń), połączone wyłącznie wąskimi przejściami na stykach. Kolor zaczyna się od krycia `0.8`, utrzymuje je przez większość promienia, po czym dopiero blisko obrzeża zanika do pełnej przezroczystości na zewnętrznej krawędzi. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
+W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Odstęp między dolną krawędzią notatki a ramką panelu jest stały, natomiast dolna kotwica panelu skaluje się płynnie od `16px` do `24px` zależnie od wysokości mobilnego viewportu. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Centralną ikonę drzewka otacza okrągły pierścień o średnicy dawnej poświaty: od godziny 12, zgodnie z ruchem wskazówek zegara, biegną kolejno jednolite wycinki Szukaj (koral), Mapa (niebieski) i Kategorie (zieleń), połączone wyłącznie wąskimi przejściami na stykach. Kolor zaczyna się od krycia `0.8`, utrzymuje je przez większość promienia, po czym dopiero blisko obrzeża zanika do pełnej przezroczystości na zewnętrznej krawędzi. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
 Każdy kafel drogi ma delikatne, półprzezroczyste obramowanie w kolorze swojej
 ścieżki, wizualnie lżejsze od zewnętrznego obramowania panoramicznych kart
-przepisów.
+przepisów. Wszystkie trzy obszary akcji są kwadratami o identycznych wymiarach
+i są subtelnie odsunięte od bocznych krawędzi swoich kolumn. Ikony i etykiety
+skalują się proporcjonalnie wewnątrz kafli także przy najmniejszym obsługiwanym
+viewporcie `320px`.
 
 Ikona menu we wspólnym nagłówku otwiera mobilne menu nawigacyjne (hamburger). Menu jest wysuwanym panelem z przyciemnionym tłem i zawiera cztery pozycje: „Strona główna”, „Kategorie”, „Szukaj” i „Mapa”. „Strona główna” prowadzi do `/`, „Kategorie” do sekcji kategorii (`/#kategorie`), a „Szukaj” i „Mapa” otwierają właściwy tryb wspólnego overlaya — na stronie głównej bezpośrednio, a z pozostałych stron przez powrót na `/` i otwarcie trybu po wejściu. Logo i nazwa „Obiadologia” w nagłówku otwartego panelu prowadzą na stronę główną, tak samo jak brand wspólnego nagłówka strony: z innej strony przez przejście na `/`, a na samej stronie głównej przez domknięcie panelu i powrót na górę strony bez przeładowania. Menu jest obsługiwalne klawiaturą i czytnikiem ekranu: przycisk niesie stan `aria-expanded`, otwarcie przenosi fokus do panelu, brand i wszystkie pozycje pozostają w pętli fokusu, `Escape` oraz klik w tło zamykają menu i przywracają fokus na przycisk, a tło jest zablokowane na czas otwarcia. Zamknięte menu pozostaje poza kolejnością tabulacji i drzewem dostępności.
 
@@ -124,7 +127,7 @@ Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 ## Wyniki
 
 Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie”, która
-rozciąga się do dolnej krawędzi obszaru treści sekcji i zachowuje stałą wysokość
+rozciąga się do dolnej krawędzi sekcji i zachowuje stałą wysokość
 w danym viewporcie. Bezpośrednio pod jej nagłówkiem znajduje się pasek
 podsumowania wyboru. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki;
 zmienia się wyłącznie jej wnętrze:
@@ -132,7 +135,9 @@ zmienia się wyłącznie jej wnętrze:
 - bez wyboru ramka pokazuje instrukcję „Tutaj pojawią się dopasowane przepisy.”,
 - po dopasowaniu pokazuje od trzech do czterech początkowych propozycji,
 - bez dopasowania pokazuje komunikat „Brak dopasowań. Zmień lub usuń wybrane kryterium.”,
-- lista dłuższa niż dostępne wnętrze ramki przewija się pionowo, bez zmiany wysokości ramki,
+- lista wypełnia dostępne wnętrze ramki, a gdy jest dłuższa, przewija się
+  pionowo bez zmiany wysokości ramki; przewijalny obszar ma cienki scrollbar
+  w kolorystyce Kategorii,
 - w drugiej fazie: przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
 
 „Pokaż więcej” nie należy do bieżącego MVP. W drugiej fazie prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane w specyfikacji tej podstrony. Do tego czasu prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
@@ -159,7 +164,8 @@ zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
 - Żadna kategoria nie jest zaznaczona domyślnie.
 - „Szczegółowe wyszukiwanie” prowadzi do jawnego ekranu zastępczego, z którego można wrócić do sekcji Kategorii.
 - Nagłówek sekcji Kategorii wraz z opisem rozpoczyna się `20px` od jej górnej krawędzi.
-- Ramka „Propozycje dla Ciebie” sięga dolnej krawędzi obszaru treści sekcji.
+- Ramka „Propozycje dla Ciebie” sięga dolnej krawędzi sekcji, a lista przepisów
+  wypełnia jej przewijalne wnętrze.
 - Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.
 - Ramka wyników jest widoczna w każdym stanie i nie zmienia wysokości po wyborze, odznaczeniu ani braku dopasowań.
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.
@@ -173,14 +179,18 @@ zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
 - Kafel każdej drogi znajduje się bezpośrednio pod tytułem i kolorową kreską,
   ma górny margines `6px`, delikatne półprzezroczyste obramowanie w kolorze drogi,
   a osobna strzałka nie jest renderowana.
+- Wszystkie trzy obszary akcji dróg są kwadratami o identycznej szerokości i
+  wysokości, a ikony i etykiety zachowują proporcjonalną skalę.
 - Centralną ikonę drzewka otacza pierścień o średnicy dawnej poświaty. Kolor ma
   krycie `0.8` w centrum i przez większość promienia, a dopiero blisko obrzeża
   zanika do pełnej przezroczystości. Pierścień tworzą trzy
   równe, jednolite wycinki: koralowy od godziny 12, następnie niebieski i zielony
   zgodnie z ruchem wskazówek zegara; tylko styki kolorów mają wąskie przejścia.
+  Puls delikatnie zwiększa grubość pierścienia, a centralny węzeł pozostaje
+  nieruchomy.
 - Wysokość panelu dopasowuje się do responsywnej zawartości, a pionowy odstęp
   między każdą grupą akcji a notatką wynosi `22px`.
 - Odstęp między drzewem a siatką dróg jest stały w mobilnych viewportach i zgodny z referencją Pixel 7 (`412 × 839px`).
 - Odległość dolnej krawędzi notatki od ramki panelu jest stała w mobilnych viewportach i zgodna z referencją iPhone 12 Pro.
-- Odległość dolnej ramki panelu wyboru dróg od końca pierwszej sekcji skaluje się płynnie od `24px` do `32px` zależnie od wysokości mobilnego viewportu.
+- Odległość dolnej ramki panelu wyboru dróg od końca pierwszej sekcji skaluje się płynnie od `16px` do `24px` zależnie od wysokości mobilnego viewportu.
 - Układ spełnia wymagania responsywności i dostępności.

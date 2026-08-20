@@ -73,7 +73,8 @@ Trzy drogi odkrywania mają stały kolor tożsamości. Ten sam kolor identyfikuj
   zewnętrznej krawędzi. Obręcz tworzą trzy równe wycinki kolorów dróg. Od godziny 12, zgodnie z ruchem
   wskazówek zegara, kolejność to Szukaj (`--color-search`), Mapa
   (`--color-map`) i Kategorie (`--color-categories`), z wąskim, delikatnym przejściem
-  wyłącznie przy każdym styku.
+  wyłącznie przy każdym styku. Obręcz pulsuje delikatną zmianą grubości;
+  centralny węzeł pozostaje nieruchomy.
 - Wariant `-strong` jest przeznaczony do tekstu i etykiet na jasnym tle i MUSI spełniać kontrast WCAG 2.2 AA. Dla Mapy kolor bazowy spełnia próg samodzielnie, więc `-strong` jest mu równy.
 - Wariant `-soft` to delikatne tło stanu aktywnego lub kafla.
 - Kolory przewodnie są aliasami odcieni bazowych (`--color-blue`/`--color-coral`/`--color-green`); te odcienie mogą nadal służyć innym rolom (np. koral marki i pierścienia fokusu). W kodzie tożsamość drogi zawsze używa tokenu przewodniego, nie odcienia bazowego.
@@ -206,7 +207,7 @@ Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi.
 - Projekt ma jeden układ mobilny działający od `320px` do `480px` szerokości.
 - Na ekranie szerszym niż `480px` cały widok jest wyśrodkowany w kontenerze `max-width: 480px`; nie powstaje osobny układ tabletowy ani desktopowy.
 - Trzy ścieżki strony głównej zachowują kolejność i hierarchię z makiety. Przy mniejszych szerokościach mogą zwężać kafle lub przechodzić w układ pionowy tylko wtedy, gdy jest to konieczne do uniknięcia przepełnienia.
-- Na pierwszym ekranie strony głównej komunikat główny jest wyśrodkowany w przestrzeni między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu dróg. Panel jest dosuwany do dolnej kotwicy sekcji skalującej się płynnie od `24px` do `32px` zależnie od wysokości mobilnego viewportu, a jego wysokość wynika z responsywnie skalowanej zawartości. Dolna krawędź notatki zachowuje stały odstęp od ramki panelu. Odstęp drzewa od siatki dróg jest stały i skalibrowany dla Pixel 7 (`412 × 839px`). Lokalną geometrię grupy akcji definiuje [home-page.md](../product/features/home-page.md).
+- Na pierwszym ekranie strony głównej komunikat główny jest wyśrodkowany w przestrzeni między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu dróg. Panel jest dosuwany do dolnej kotwicy sekcji skalującej się płynnie od `16px` do `24px` zależnie od wysokości mobilnego viewportu, a jego wysokość wynika z responsywnie skalowanej zawartości. Dolna krawędź notatki zachowuje stały odstęp od ramki panelu. Odstęp drzewa od siatki dróg jest stały i skalibrowany dla Pixel 7 (`412 × 839px`). Lokalną geometrię grupy akcji definiuje [home-page.md](../product/features/home-page.md).
 - Karty wyników na telefonie mogą ustawić zdjęcie nad treścią; metadane nie mogą wypadać poza kartę.
 - Overlay uwzględnia `100dvh`, bezpieczne obszary urządzenia i klawiaturę ekranową.
 - Nie tworzymy dolnej nawigacji mobilnej, jeśli nie wynika to z nowej decyzji produktowej.
@@ -241,7 +242,7 @@ W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokośc
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
 | sekcje pełnoekranowe | każda główna sekcja poza dokumentową stroną przepisu wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
 | spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
-| geometria pierwszego ekranu | środek komunikatu głównego wypada w połowie przestrzeni między wspólnym nagłówkiem a panelem dróg; panel jest dosuwany do dolnej kotwicy sekcji skalującej się od `24px` do `32px`, jego wysokość dopasowuje się do zawartości, a odstępy notatki od ramki panelu oraz drzewa od siatki dróg pozostają stałe między mobilnymi viewportami; referencje: iPhone 12 Pro (`390 × 844px`) i Pixel 7 (`412 × 839px`); lokalna geometria grupy akcji jest w [home-page.md](../product/features/home-page.md) |
+| geometria pierwszego ekranu | środek komunikatu głównego wypada w połowie przestrzeni między wspólnym nagłówkiem a panelem dróg; panel jest dosuwany do dolnej kotwicy sekcji skalującej się od `16px` do `24px`, jego wysokość dopasowuje się do zawartości, a odstępy notatki od ramki panelu oraz drzewa od siatki dróg pozostają stałe między mobilnymi viewportami; referencje: iPhone 12 Pro (`390 × 844px`) i Pixel 7 (`412 × 839px`); lokalna geometria grupy akcji jest w [home-page.md](../product/features/home-page.md) |
 | brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |
 | interakcje | wyniki reagują na każdą zmianę kryteriów, a karta otwiera trasę przepisu |
 

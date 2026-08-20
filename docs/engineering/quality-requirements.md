@@ -112,13 +112,13 @@ corepack pnpm typecheck   # astro check (sprawdzanie typów TS w plikach .ts, .t
 corepack pnpm lint        # eslint . --max-warnings=0 (reguły jakości, hooki React, a11y w JSX)
 # lub opcjonalnie w tle: corepack pnpm test:watch
 
-# 2. Pełna bramka weryfikacyjna (przed commitem, PR-em i na CI)
+# 2. Pełna bramka weryfikacyjna (przed commitem, na wyraźne polecenie i automatycznie na CI)
 corepack pnpm verify      # lint + typecheck + test + test:e2e
 ```
 
 ### Podział weryfikacji w procesie pracy:
 1. **Szybka pętla (w trakcie pracy):** Uruchamiana na bieżąco po zmianach w kodzie (`test`, `typecheck`, `lint`). Wykonuje się w pamięci (1–3s) bez narzutu budowania i uruchamiania przeglądarki.
-2. **Pełna bramka (przed poleceniem zacommitowania):** Uruchamia `corepack pnpm verify` (w tym Playwright E2E z automatycznym audytem `axe-core`). Przed testami E2E `webServer` Playwrighta sam buduje stronę i serwuje ją przez `astro preview`.
+2. **Pełna bramka (wyłącznie przed poleceniem zacommitowania albo na wyraźne polecenie):** Uruchamia `corepack pnpm verify` (w tym Playwright E2E z automatycznym audytem `axe-core`). Nie uruchamia się jej przy zwykłej finalizacji zadania bez commita. Przed testami E2E `webServer` Playwrighta sam buduje stronę i serwuje ją przez `astro preview`.
    - **Zasada obsługi błędów:** Jeżeli pełna bramka wykaże jakikolwiek błąd, proces commitowania **MUSI zostać przerwany**, a raport z błędem przedstawiony do decyzji programisty/użytkownika.
    - **Wyjątek (jawne polecenie commita):** Jeżeli użytkownik wyraźnie zażąda commita bez testów (np. poleceniem typu „git commit bez testów”), bramka weryfikacyjna jest pomijana i następuje bezpośrednie wykonanie commita.
 

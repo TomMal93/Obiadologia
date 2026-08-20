@@ -13,6 +13,7 @@
 
   justify-content: flex-start;
   padding-block-start: 20px;
+  padding-block-end: 0;
   animation: brand-pulse 9s ease-in-out infinite;
 }
 
@@ -347,12 +348,38 @@
   outline-offset: -3px;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+  scrollbar-color: color-mix(in srgb, var(--color-categories) 72%, var(--color-border)) var(--color-categories-soft);
+  scrollbar-width: thin;
+}
+
+.category-results-body::-webkit-scrollbar {
+  width: var(--space-8);
+}
+
+.category-results-body::-webkit-scrollbar-track {
+  border-radius: var(--radius-pill);
+  background: var(--color-categories-soft);
+}
+
+.category-results-body::-webkit-scrollbar-thumb {
+  border: 2px solid var(--color-categories-soft);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-categories) 72%, var(--color-border));
+}
+
+.category-results-body::-webkit-scrollbar-thumb:hover {
+  background: var(--color-categories);
 }
 
 .category-results-body.is-message {
   display: grid;
   place-items: center;
   overflow: hidden;
+}
+
+.category-results-body:not(.is-message) > .recipe-list {
+  min-height: 100%;
+  align-content: start;
 }
 
 .category-results-message {
