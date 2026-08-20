@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import type { Difficulty, MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
+import type { MealTime, Occasion, Recipe, Tempo } from '@/domain/recipe';
 
 export interface RecipeSearch {
   search(query: string): Recipe[];
@@ -82,74 +82,8 @@ function isUsefulCompactSuggestion(value: string): boolean {
   );
 }
 
-const tempoKeywords = [
-  'szybko',
-  'szybki',
-  'szybkie',
-  'ekspres',
-  'ekspresowe',
-  'blyskawicz',
-  'minut',
-  'kwadrans',
-  'latw',
-  'prost',
-  'jednogarnkow',
-  'pateln',
-  'garnek',
-  'zimno',
-  'lunchbox',
-  'zapas',
-  'odgrzan',
-  'bez pieczenia',
-  'bez gotowania',
-];
-
-const occasionKeywords = [
-  'dziec',
-  'gosc',
-  'grill',
-  'imprez',
-  'domowk',
-  'wynos',
-  'prac',
-  'szkol',
-  'piknik',
-  'rodzin',
-  'dwojg',
-  'randk',
-  'romantycz',
-  'swiet',
-  'niedziel',
-  'lekk',
-  'fit',
-  'dietetycz',
-  'zdrow',
-  'konkret',
-  'sycac',
-  'bogat',
-  'comfort',
-  'wegetarian',
-  'wege',
-  'wegan',
-  'miesa',
-  'slodk',
-  'wytrawn',
-  'rozgrzewaj',
-  'orzezwiaj',
-  'pikant',
-  'ostr',
-  'lagodn',
-  'warzyw',
-];
-
-function classifyTag(normalized: string): 'tempo' | 'occasion' | 'coral' {
-  if (tempoKeywords.some((keyword) => normalized.includes(keyword))) return 'tempo';
-  if (occasionKeywords.some((keyword) => normalized.includes(keyword))) return 'occasion';
-  return 'coral';
-}
-
-// Rozkłada tropy z koszyków kolorystycznych naprzemiennie (round-robin), aby kolory
-// (koralowy, zielony, niebieski) rozłożyły się po siatce po równo.
+// Rozkłada tropy z kilku koszyków naprzemiennie (round-robin), aby kolory
+// rodzajów rozłożyły się po siatce, zamiast zbijać w jednolite bloki.
 function interleave(buckets: Trope[][]): Trope[] {
   const out: Trope[] = [];
   const longest = Math.max(0, ...buckets.map((bucket) => bucket.length));
@@ -186,24 +120,6 @@ const categorySuggestions: Record<MealTime | Tempo | Occasion, string> = {
   grill: 'na grilla',
 };
 
-const difficultyTerms: Record<Difficulty, string> = {
-  easy: 'łatwe proste szybkie łatwy prosty',
-  medium: 'średnie dla każdego',
-  hard: 'trudne dla wprawnych wymagające zaawansowane',
-};
-
-function mapPaceTerms(pace: number): string {
-  if (pace <= 0.35) return 'szybko szybkie ekspresowe na już';
-  if (pace >= 0.65) return 'bez pośpiechu powolne spokojne wolno';
-  return '';
-}
-
-function mapLightnessTerms(lightness: number): string {
-  if (lightness >= 0.65) return 'lekko lekkie lekka dietetyczne fit';
-  if (lightness <= 0.35) return 'konkretnie konkretne konkretny sycące sycący';
-  return '';
-}
-
 export function normalizeSearchText(value: string): string {
   return value
     .trim()
@@ -221,14 +137,8 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
     ingredients: recipe.ingredients.map((ingredient) => normalizeSearchText(ingredient.name)),
     tags: recipe.tags.map(normalizeSearchText),
     description: normalizeSearchText(recipe.description),
-    categories: [
-      ...recipe.mealTimes.map((value) => categoryTerms[value]),
-      ...recipe.tempos.map((value) => categoryTerms[value]),
-      ...recipe.occasions.map((value) => categoryTerms[value]),
-      difficultyTerms[recipe.difficulty],
-      mapPaceTerms(recipe.mapPosition.pace),
-      mapLightnessTerms(recipe.mapPosition.lightness),
-    ].map(normalizeSearchText),
+    categories: [...recipe.mealTimes, ...recipe.tempos, ...recipe.occasions]
+      .map((value) => normalizeSearchText(categoryTerms[value])),
   }));
   const fuse = new Fuse(records, {
     threshold: 0.34,
@@ -272,110 +182,41 @@ export function createRecipeSearch(recipes: Recipe[]): RecipeSearch {
         .slice(0, limit);
     },
     // Typowane „tropy" na start i przy braku wyników: pory dnia, tempa i okazje
-    // obecne w katalogu plus wyraziste składniki i cechy. Zrównoważone między
-    // 3 grupami kolorów (koralowy = pora dnia / składnik, zielony = tempo, niebieski = okazja).
-    // Każdy trop jest realnym zapytaniem, więc kliknięcie zawsze prowadzi do trafień.
+    // obecne w katalogu plus wyraziste składniki. Każdy niesie literalny rodzaj
+    // (kolor) i jest realnym zapytaniem, więc kliknięcie zawsze prowadzi do trafień.
+    // Koszyki są przeplatane, ale nie uzupełniamy jednego rodzaju innym tylko po
+    // to, aby sztucznie wyrównać liczbę kolorów.
     tropes(limit = 16) {
       const presentMealTimes = new Set(published.flatMap((recipe) => recipe.mealTimes));
       const presentTempos = new Set(published.flatMap((recipe) => recipe.tempos));
       const presentOccasions = new Set(published.flatMap((recipe) => recipe.occasions));
-      const presentDifficulties = new Set(published.map((recipe) => recipe.difficulty));
-      const hasFastPace = published.some((recipe) => recipe.mapPosition.pace <= 0.35);
-      const hasSlowPace = published.some((recipe) => recipe.mapPosition.pace >= 0.65);
-      const hasLight = published.some((recipe) => recipe.mapPosition.lightness >= 0.65);
-      const hasHearty = published.some((recipe) => recipe.mapPosition.lightness <= 0.35);
 
-      const seenQuery = new Set<string>();
+      const daypart: Trope[] = daypartTropes
+        .filter((trope) => presentMealTimes.has(trope.value))
+        .map(({ label, query }) => ({ label, query, kind: 'daypart' }));
+      const tempo: Trope[] = tempoTropes
+        .filter((trope) => presentTempos.has(trope.value))
+        .map(({ label, query }) => ({ label, query, kind: 'tempo' }));
+      const occasion: Trope[] = occasionTropes
+        .filter((trope) => presentOccasions.has(trope.value))
+        .map(({ label, query }) => ({ label, query, kind: 'occasion' }));
 
-      const coralBucket: Trope[] = [];
-      const greenBucket: Trope[] = [];
-      const blueBucket: Trope[] = [];
-
-      function addTrope(trope: Trope, bucket: Trope[]) {
-        const normalized = normalizeSearchText(trope.query);
-        if (!normalized || seenQuery.has(normalized)) return;
-        seenQuery.add(normalized);
-        bucket.push(trope);
-      }
-
-      // 1. Grupa koralowa: Pory dnia
-      for (const { value, label, query } of daypartTropes) {
-        if (presentMealTimes.has(value)) {
-          addTrope({ label, query, kind: 'daypart' }, coralBucket);
-        }
-      }
-
-      // 2. Grupa zielona: Tempa, trudność i tempo z mapy
-      for (const { value, label, query } of tempoTropes) {
-        if (presentTempos.has(value)) {
-          addTrope({ label, query, kind: 'tempo' }, greenBucket);
-        }
-      }
-      if (presentDifficulties.has('easy')) {
-        addTrope({ label: 'Łatwe', query: 'łatwe', kind: 'tempo' }, greenBucket);
-      }
-      if (hasFastPace) {
-        addTrope({ label: 'Ekspresowe', query: 'ekspresowe', kind: 'tempo' }, greenBucket);
-      }
-      if (presentDifficulties.has('medium')) {
-        addTrope({ label: 'Średnie', query: 'średnie', kind: 'tempo' }, greenBucket);
-      }
-      if (hasSlowPace) {
-        addTrope({ label: 'Bez pośpiechu', query: 'bez pośpiechu', kind: 'tempo' }, greenBucket);
-      }
-      if (presentDifficulties.has('hard')) {
-        addTrope({ label: 'Dla wprawnych', query: 'wymagające', kind: 'tempo' }, greenBucket);
-      }
-
-      // 3. Grupa niebieska: Okazje i charakter z mapy
-      for (const { value, label, query } of occasionTropes) {
-        if (presentOccasions.has(value)) {
-          addTrope({ label, query, kind: 'occasion' }, blueBucket);
-        }
-      }
-      if (hasLight) {
-        addTrope({ label: 'Lekko', query: 'lekko', kind: 'occasion' }, blueBucket);
-      }
-      if (hasHearty) {
-        addTrope({ label: 'Konkretnie', query: 'konkretnie', kind: 'occasion' }, blueBucket);
-      }
-
-      // 4. Tagi z przepisów — klasyfikacja do odpowiedniego koszyka
-      for (const recipe of published) {
-        for (const tag of recipe.tags) {
-          const normalized = normalizeSearchText(tag);
-          if (
-            genericIngredients.has(tag) ||
-            seenQuery.has(normalized) ||
-            !isUsefulCompactSuggestion(tag)
-          ) continue;
-
-          const classification = classifyTag(normalized);
-          if (classification === 'tempo') {
-            addTrope({ label: capitalize(tag), query: tag, kind: 'tempo' }, greenBucket);
-          } else if (classification === 'occasion') {
-            addTrope({ label: capitalize(tag), query: tag, kind: 'occasion' }, blueBucket);
-          } else {
-            addTrope({ label: capitalize(tag), query: tag, kind: 'ingredient' }, coralBucket);
-          }
-        }
-      }
-
-      // 5. Składniki — do koszyka koralowego
+      const ingredient: Trope[] = [];
+      const seenIngredient = new Set<string>();
       for (const recipe of published) {
         for (const { name } of recipe.ingredients) {
           const normalized = normalizeSearchText(name);
           if (
             genericIngredients.has(name) ||
-            seenQuery.has(normalized) ||
+            seenIngredient.has(normalized) ||
             !isUsefulCompactSuggestion(name)
           ) continue;
-          addTrope({ label: capitalize(name), query: name, kind: 'ingredient' }, coralBucket);
+          seenIngredient.add(normalized);
+          ingredient.push({ label: capitalize(name), query: name, kind: 'ingredient' });
         }
       }
 
-      // Przeplatamy 3 koszyki kolorów (koralowy, zielony, niebieski) naprzemiennie
-      return interleave([coralBucket, greenBucket, blueBucket]).slice(0, limit);
+      return interleave([ingredient, tempo, occasion, daypart]).slice(0, limit);
     },
   };
 }

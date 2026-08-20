@@ -43,7 +43,7 @@ Overlay:
 - jest pełnoekranowym dialogiem w granicach mobilnego kontenera aplikacji;
 - zawiera logo i nazwę „Obiadologia” w tym samym rozmiarze i położeniu co wspólny nagłówek strony; są one linkiem na stronę główną i kończą sesję overlayu jak jawne zamknięcie, po czym pozostawiają użytkownika na górze strony głównej;
 - zawiera przycisk zamknięcia;
-- zawiera jeden przełącznik „Wyszukiwarka / Mapa”;
+- zawiera jeden przełącznik „Wyszukiwarka / Mapa”, którego szerokie segmenty mają wysokość `40px`, a fokus przyjmuje kolor danego trybu: koralowy dla Wyszukiwarki i niebieski dla Mapy, zgodnie z [ui-system.md](../../design/ui-system.md#przełącznik-trybu);
 - zawiera obszar właściwy dla aktywnego trybu;
 - zawiera wspólną listę propozycji;
 - blokuje przewijanie i interakcję ze stroną pod spodem;
@@ -159,6 +159,7 @@ Po rozpoczęciu nowej sesji w trybie Wyszukiwarki:
 - lista wyników nie jest widoczna;
 - placeholder wyjaśnia obsługiwane rodzaje zapytań;
 - pod polem widoczny jest blok „A może w tę stronę?” — klikalne podpowiedzi wywiedzione z katalogu (pory dnia, tempa, okazje i wyraziste składniki), które zapełniają pusty stan i podpowiadają kierunek. W stanie pustym mają formę gęstej mozaiki bento z szesnastoma kaflami łączonymi w pionie i poziomie („hero” 2×2, kolumny 1×2, paski 2×1 i kwadraty 1×1). Kolor kafla niesie rodzaj podpowiedzi, spójnie z akcentami wyboru Kategorii: pora dnia i składnik na koralowo, tempo na zielono, okazja na niebiesko. Nie są to wyniki użytkownika ani zestaw filtrów; wybranie podpowiedzi ustawia ją jako jedno aktywne zapytanie.
+- Rozkład kolorów wynika z rzeczywistych danych katalogu i nie musi być równy. Trudność, pozycja na Mapie ani dowolny tag nie mogą zostać przedstawione jako tempo, okazja lub składnik wyłącznie po to, aby wizualnie zrównoważyć mozaikę.
 - etykieta podpowiedzi ma najwyżej dwa słowa; rozbudowane nazwy składników zawierające warianty, zastosowanie albo uwagi z przepisu nie trafiają do mozaiki;
 
 Usunięcie całej treści przywraca ten stan.
@@ -310,6 +311,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 - Fokus pozostaje w dialogu i po zamknięciu wraca do elementu otwierającego.
 - Tło jest zablokowane, a własna zawartość overlayu pozostaje przewijalna.
 - Zmiana trybu nie powoduje gwałtownego skoku wspólnych elementów.
+- Segmenty przełącznika „Wyszukiwarka / Mapa” mają wysokość `40px`, pozostają szersze niż `44px` i pokazują pierścień fokusu w kolorze danego trybu.
 - Starsza odpowiedź nie nadpisuje wyników nowszych kryteriów.
 - Brak wyników jest odróżniony od błędu.
 - Prototyp z lokalnymi danymi obsługuje stan początkowy, sukces i brak wyników, ale nie symuluje ładowania ani błędu; te stany stają się obowiązkowe wraz z rzeczywistą operacją asynchroniczną.
@@ -323,6 +325,7 @@ Komunikat braku wyników: „Nie znaleźliśmy propozycji dla tego miejsca.”
 - Wybranie sugestii ustawia jedno aktywne zapytanie.
 - Wyczyszczenie pola przywraca stan początkowy.
 - Podpowiedzi w mozaice mają najwyżej dwa słowa i nie pokazują rozbudowanych opisów składników.
+- Rodzaj i kolor każdej podpowiedzi odpowiadają jej literalnemu źródłu; mozaika nie wyrównuje kolorów przez przypisywanie tagów, trudności lub cech Mapy do innego rodzaju.
 - Pole i sugestie są w pełni obsługiwalne klawiaturą.
 
 ### Mapa

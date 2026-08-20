@@ -116,7 +116,7 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 - Siatka odstępów: `4, 8, 12, 16, 24, 32, 48, 64px`. Wartości wyrażają rytm i proporcje skalowane spójnie w zakresie mobilnym, a nie sztywne stałe niezależne od viewportu — zob. „Spójność i proporcje na telefonach”.
 - Stałe odstępy na siatce używają tokenów `--space-4`…`--space-32`; płynny rytm sekcji niosą tokeny `--gutter` / `--stack-gap` / `--screen-pad-y`. Płynne `clamp()` dla lokalnego, precyzyjnego dostrajania (rozmiary ikon, wysokości kafli) pozostają wartościami literalnymi.
 - Promienie: token `--radius-field` (`12px`, tagi i pola), `--radius-card` (`20px`, karty), `--radius-panel` (`28px`, duże panele), `--radius-pill` (`999px`, pigułki i chipy).
-- Minimalny obszar kliknięcia: `44 × 44px`.
+- Minimalny obszar kliknięcia: `44 × 44px`; uzgodniony wyjątek dla szerokich segmentów przełącznika „Wyszukiwarka / Mapa” definiuje [quality-requirements.md](../engineering/quality-requirements.md#responsywność-i-kompatybilność).
 - Cień powierzchni: miękki i jasny, np. `0 12px 32px rgb(89 55 29 / 8%)`.
 - Obramowania są subtelne; kolorowe obramowanie oznacza aktywną ścieżkę lub wybór.
 
@@ -131,7 +131,7 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 ### Przycisk i kafel wyboru
 
 - MUSI obsługiwać: `default`, `hover`, `focus-visible`, `active/selected`, `disabled` i `loading`.
-- Fokus MUSI być wyraźnym pierścieniem w kolorze koralowym (odcień bazowy `--color-coral`) o kontraście co najmniej 3:1. Pierścień fokusu jest jedną, wspólną rolą dla całej aplikacji — nie dziedziczy koloru aktywnej drogi (także w trybie Mapy).
+- Fokus MUSI być wyraźnym pierścieniem o kontraście co najmniej 3:1. Domyślnie używa koloru koralowego (`--color-coral`) i nie dziedziczy koloru aktywnej drogi. Uzgodnionym wyjątkiem są dwa segmenty przełącznika „Wyszukiwarka / Mapa”: fokus segmentu Wyszukiwarki jest koralowy (`--color-search`), a segmentu Mapy niebieski (`--color-map`).
 - Stan wyłączony nie może wyglądać jak dostępna akcja i MUSI mieć `disabled` lub `aria-disabled`.
 - Akcja główna używa gradientu marki; akcje ścieżek używają odpowiednio coral, blue albo green.
 
@@ -144,7 +144,9 @@ Kolor nie może być jedynym nośnikiem znaczenia. Stan aktywny MUSI mieć takż
 ### Przełącznik trybu
 
 - Search i Mapa tworzą jeden przełącznik w overlayu.
+- Każdy segment ma wysokość `40px` i szerokość większą niż `44px`, zgodnie z wyjątkiem opisanym w [quality-requirements.md](../engineering/quality-requirements.md#responsywność-i-kompatybilność).
 - Aktywny tryb ma kolor ścieżki, obramowanie i pogrubioną etykietę.
+- Pierścień `focus-visible` używa koloru segmentu: koralowego dla Wyszukiwarki i niebieskiego dla Mapy.
 - Zachowanie przełącznika i stan sesji definiuje [discovery-overlay.md](../product/features/discovery-overlay.md).
 
 ### Karta przepisu

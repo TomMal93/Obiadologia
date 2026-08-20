@@ -71,22 +71,46 @@ describe('recipe search', () => {
     }
   });
 
-  it('balances tropes roughly equally across visual color groups in bento', () => {
+  it('keeps trope kinds literal instead of balancing colors with unrelated traits', () => {
     const search = createRecipeSearch(testRecipes);
     const tropes = search.tropes(16);
+    const ingredientNames = new Set(
+      testRecipes.flatMap((recipe) => recipe.ingredients.map((ingredient) => ingredient.name)),
+    );
 
-    const colorGroups = {
-      coral: tropes.filter((t) => t.kind === 'daypart' || t.kind === 'ingredient').length,
-      green: tropes.filter((t) => t.kind === 'tempo').length,
-      blue: tropes.filter((t) => t.kind === 'occasion').length,
+    for (const trope of tropes) {
+      if (trope.kind === 'daypart') {
+        expect(['śniadanie', 'obiad', 'kolacja']).toContain(trope.query);
+      } else if (trope.kind === 'tempo') {
+        expect(['szybko', 'na dziś', 'dwa dni']).toContain(trope.query);
+      } else if (trope.kind === 'occasion') {
+        expect(['dzieci', 'gości', 'grill']).toContain(trope.query);
+      } else {
+        expect(ingredientNames).toContain(trope.query);
+      }
+    }
+
+    expect(tropes.map((trope) => trope.query)).not.toContain('łatwe');
+    expect(tropes.map((trope) => trope.query)).not.toContain('lekko');
+  });
+
+  it('does not synthesize search matches from difficulty or map position', () => {
+    const recipe = {
+      ...testRecipes[0],
+      title: 'Neutralny posiłek',
+      description: 'Neutralny opis dania.',
+      ingredients: [{ category: 'grains' as const, name: 'ryż', amount: 100, unit: 'g' as const }],
+      tags: ['neutralny'],
+      difficulty: 'hard' as const,
+      mealTimes: ['lunch' as const],
+      tempos: ['today' as const],
+      occasions: [],
+      mapPosition: { pace: 0, lightness: 1 },
     };
+    const search = createRecipeSearch([recipe]);
 
-    expect(tropes.length).toBe(16);
-    expect(colorGroups.coral).toBeGreaterThanOrEqual(4);
-    expect(colorGroups.green).toBeGreaterThanOrEqual(4);
-    expect(colorGroups.blue).toBeGreaterThanOrEqual(4);
-    const counts = [colorGroups.coral, colorGroups.green, colorGroups.blue];
-    expect(Math.max(...counts) - Math.min(...counts)).toBeLessThanOrEqual(2);
+    expect(search.search('zaawansowane')).toEqual([]);
+    expect(search.search('dietetyczne')).toEqual([]);
   });
 });
 

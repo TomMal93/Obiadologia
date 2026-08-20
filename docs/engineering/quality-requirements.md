@@ -40,9 +40,9 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 - Do obowiązkowych szerokości dochodzi kontrola reprezentatywnej niskiej i wysokiej wysokości telefonu, aby potwierdzić, że pełnoekranowe sekcje wypełniają jeden ekran bez ucięć i pustych obszarów.
 - W całym zakresie mobilnym układ, kolejność i rytm odstępów sekcji pozostają spójne; różnice między telefonami są proporcjonalne, a nie strukturalne. Normatywną regułę definiuje [ui-system.md](../design/ui-system.md).
 - Żaden element nie jest ucięty ani nie przepełnia sekcji, treść nie tworzy poziomego przewijania, a elementy nie nachodzą na siebie ani się nie rozjeżdżają między rozmiarami telefonów.
-- Skalowanie proporcjonalne nie schodzi poniżej progów dostępności: tekst interfejsu `16px`, obszar akcji `44 × 44px` i kontrast WCAG 2.2 AA.
+- Skalowanie proporcjonalne nie schodzi poniżej progów dostępności: tekst interfejsu `16px`, obszar akcji `44 × 44px` i kontrast WCAG 2.2 AA. Uzgodnionym wyjątkiem jest każdy z dwóch szerokich segmentów przełącznika „Wyszukiwarka / Mapa” w discovery overlayu: ma wysokość `40px`, zachowując szerokość większą niż `44px` i czytelny odstęp od sąsiednich akcji.
 - Wspieramy dwie najnowsze stabilne wersje Chrome, Edge, Firefox i Safari w momencie wydania.
-- Interfejs dotykowy ma obszary akcji minimum `44 × 44px`.
+- Interfejs dotykowy ma obszary akcji minimum `44 × 44px`, poza opisanym wyżej przełącznikiem „Wyszukiwarka / Mapa”.
 - Overlay używa dynamicznej wysokości viewportu i pozostaje obsługiwalny po otwarciu klawiatury ekranowej.
 
 ## Wydajność
