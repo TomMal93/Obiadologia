@@ -206,7 +206,6 @@ export const pl = {
     assistantChoiceHint: 'Wybierz tryb, aby zobaczyć dalszą część przepisu.',
     assistantMode: 'Tryb asystenta',
     stepsOnlyMode: 'Tylko kroki',
-    preparationStageLabel: 'Przygotowanie',
     preparationHeading: 'Zanim zaczniesz',
     preparationHint: 'Warto zajrzeć do listy — przygotowanie tych rzeczy wcześniej może usprawnić późniejsze gotowanie.',
     preparationTiming: {
@@ -215,7 +214,6 @@ export const pl = {
     },
     checkPreparationLabel: 'Oznacz przygotowanie jako wykonane: {name}',
     uncheckPreparationLabel: 'Cofnij wykonanie przygotowania: {name}',
-    stepsStageLabel: 'Gotowanie',
     stepsHeading: 'Kroki',
     stepLabel: 'Etap {number}',
     stepPositionLabel: 'Krok {number} z {total}',

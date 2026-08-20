@@ -204,6 +204,24 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(tips.getByRole('listitem')).toHaveCount(3);
   await expect(tips.getByText(/Bazę możesz przygotować do momentu dodania jajek/)).toBeVisible();
   await expect(tips.getByText(/Z solą postępuj ostrożnie/)).toBeVisible();
+  const tipsAlignment = await tips.evaluate((element) => {
+    const badge = element.querySelector('.recipe-section-head__badge');
+    const headingText = element.querySelector('.recipe-section-head__title > span:last-child');
+    const mark = element.querySelector('.tips-list__mark');
+    const tipText = element.querySelector('.tips-list > li > span:last-child');
+    if (!badge || !headingText || !mark || !tipText) return null;
+
+    const badgeBox = badge.getBoundingClientRect();
+    const markBox = mark.getBoundingClientRect();
+    return {
+      centerDifference: (badgeBox.left + badgeBox.width / 2)
+        - (markBox.left + markBox.width / 2),
+      textDifference: headingText.getBoundingClientRect().left
+        - tipText.getBoundingClientRect().left,
+    };
+  });
+  expect(tipsAlignment?.centerDifference).toBeCloseTo(0, 0);
+  expect(tipsAlignment?.textDifference).toBeCloseTo(0, 0);
   expect(
     await tips.evaluate((element) =>
       element.previousElementSibling?.classList.contains('recipe-steps'),
@@ -578,40 +596,36 @@ test('every main recipe section can be collapsed and expanded independently', as
     const toggle = section.getByRole('button', { name, exact: true });
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    if (name === 'Zanim zaczniesz' || name === 'Kroki') {
-      const centers = await section.evaluate((element) => {
-        const head = element.querySelector('.recipe-section-head');
-        const icon = element.querySelector('.recipe-section-toggle > svg');
-        if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
-          throw new Error('Nie znaleziono geometrii zwiniętego nagłówka');
-        }
-        const headBounds = head.getBoundingClientRect();
-        const iconBounds = icon.getBoundingClientRect();
-        return {
-          head: headBounds.top + headBounds.height / 2,
-          icon: iconBounds.top + iconBounds.height / 2,
-        };
-      });
-      expect(centers.icon).toBeCloseTo(centers.head, 0);
-    }
+    const collapsedCenters = await section.evaluate((element) => {
+      const head = element.querySelector('.recipe-section-head');
+      const icon = element.querySelector('.recipe-section-toggle > svg');
+      if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
+        throw new Error('Nie znaleziono geometrii zwiniętego nagłówka');
+      }
+      const headBounds = head.getBoundingClientRect();
+      const iconBounds = icon.getBoundingClientRect();
+      return {
+        head: headBounds.top + headBounds.height / 2,
+        icon: iconBounds.top + iconBounds.height / 2,
+      };
+    });
+    expect(collapsedCenters.icon).toBeCloseTo(collapsedCenters.head, 0);
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-    if (name === 'Zanim zaczniesz' || name === 'Kroki') {
-      const centers = await section.evaluate((element) => {
-        const head = element.querySelector('.recipe-section-head');
-        const icon = element.querySelector('.recipe-section-toggle > svg');
-        if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
-          throw new Error('Nie znaleziono geometrii rozwiniętego nagłówka');
-        }
-        const headBounds = head.getBoundingClientRect();
-        const iconBounds = icon.getBoundingClientRect();
-        return {
-          head: headBounds.top + headBounds.height / 2,
-          icon: iconBounds.top + iconBounds.height / 2,
-        };
-      });
-      expect(centers.icon).toBeCloseTo(centers.head, 0);
-    }
+    const expandedCenters = await section.evaluate((element) => {
+      const head = element.querySelector('.recipe-section-head');
+      const icon = element.querySelector('.recipe-section-toggle > svg');
+      if (!(head instanceof HTMLElement) || !(icon instanceof SVGElement)) {
+        throw new Error('Nie znaleziono geometrii rozwiniętego nagłówka');
+      }
+      const headBounds = head.getBoundingClientRect();
+      const iconBounds = icon.getBoundingClientRect();
+      return {
+        head: headBounds.top + headBounds.height / 2,
+        icon: iconBounds.top + iconBounds.height / 2,
+      };
+    });
+    expect(expandedCenters.icon).toBeCloseTo(expandedCenters.head, 0);
   }
 
   const accessibility = await new AxeBuilder({ page }).analyze();

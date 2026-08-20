@@ -383,13 +383,6 @@
   line-height: 1.5;
 }
 
-.recipe-section-head .recipe-stage-label {
-  color: var(--color-coral-strong);
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
 .recipe-section-head h2,
 .recipe-tips h2 {
   min-width: 0;
@@ -799,12 +792,14 @@
 }
 
 .recipe-prep .recipe-section-head,
-.recipe-steps .recipe-section-head {
+.recipe-steps .recipe-section-head,
+.recipe-tips .recipe-section-head {
   position: relative;
 }
 
 .recipe-prep .recipe-section-toggle > svg,
-.recipe-steps .recipe-section-toggle > svg {
+.recipe-steps .recipe-section-toggle > svg,
+.recipe-tips .recipe-section-toggle > svg {
   position: absolute;
   top: 50%;
   right: 0;
@@ -812,7 +807,8 @@
 }
 
 .recipe-prep .recipe-section-toggle[aria-expanded='false'] > svg,
-.recipe-steps .recipe-section-toggle[aria-expanded='false'] > svg {
+.recipe-steps .recipe-section-toggle[aria-expanded='false'] > svg,
+.recipe-tips .recipe-section-toggle[aria-expanded='false'] > svg {
   transform: translateY(-50%) rotate(180deg);
 }
 
@@ -924,14 +920,14 @@
 .tips-list {
   display: grid;
   gap: var(--space-12);
-  margin: 0;
+  margin: var(--space-4) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .tips-list > li {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 36px minmax(0, 1fr);
   align-items: start;
   gap: var(--space-12);
   line-height: 1.5;
@@ -942,6 +938,7 @@
   width: 24px;
   height: 24px;
   place-items: center;
+  justify-self: center;
   border-radius: var(--radius-pill);
   color: var(--color-coral-strong);
   font-size: var(--font-size-14);
