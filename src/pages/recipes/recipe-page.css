@@ -786,20 +786,6 @@
   background: var(--color-surface);
 }
 
-/* W sekcji kroków właściwą ramę wizualną tworzą karty etapów. Rozsunięcie jej
-   do krawędzi nadrzędnego panelu daje poziomemu nawigatorowi miejsce na siedem
-   pól przy zachowaniu 44 px obszaru dotyku. */
-.recipe-steps {
-  margin-inline: calc(-1 * var(--space-12));
-  padding-inline: 0;
-  border: 0;
-  background: transparent;
-}
-
-.recipe-steps > .recipe-section-head {
-  padding-inline: var(--space-16);
-}
-
 .recipe-lead .recipe-section-head,
 .recipe-ingredients .recipe-section-head,
 .recipe-prep .recipe-section-head,

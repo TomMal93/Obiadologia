@@ -296,6 +296,13 @@
   padding: var(--space-16);
 }
 
+/* Pierwszy blok treści siedzi bliżej nagłówka „Krok N”, niezależnie od tego,
+   czy etap zaczyna się od przygotowania, czy od finalnej instrukcji. */
+.step-item__body > .step-prep:first-child,
+.step-item__body > .step-final:first-child {
+  padding-top: var(--space-4);
+}
+
 .step-prep + .step-final {
   border-top: 1px solid rgb(255 79 46 / 24%);
 }
