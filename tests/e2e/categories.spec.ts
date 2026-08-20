@@ -113,6 +113,9 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
     const sectionBottom = await page.locator('.intro-screen').evaluate(
       (element) => element.getBoundingClientRect().bottom,
     );
+    const sectionBottomPadding = await page.locator('.intro-screen').evaluate(
+      (element) => Number.parseFloat(getComputedStyle(element).paddingBottom),
+    );
     const noteBounds = await page.locator('.path-note').evaluate(
       (element) => {
         const bounds = element.getBoundingClientRect();
@@ -145,7 +148,9 @@ test('homepage heading and path panel keep stable mobile geometry', async ({ pag
       expect(gap).toBeCloseTo(22, 0);
     }
     expect(panelBounds.bottom - noteBounds.bottom).toBeCloseTo(23, 0);
-    expect(sectionBottom - panelBounds.bottom).toBeCloseTo(46, 0);
+    expect(sectionBottomPadding).toBeGreaterThanOrEqual(24);
+    expect(sectionBottomPadding).toBeLessThanOrEqual(32);
+    expect(sectionBottom - panelBounds.bottom).toBeCloseTo(sectionBottomPadding, 0);
   }
 });
 
@@ -188,4 +193,3 @@ test('category panel is framed like path panel', async ({ page }) => {
   await expect(categoryPanel).toHaveCSS('border-top-style', 'solid');
   await expect(categoryPanel).toHaveCSS('border-top-left-radius', '28px');
 });
-

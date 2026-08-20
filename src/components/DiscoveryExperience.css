@@ -192,7 +192,7 @@
 }
 
 .category-option.is-selected {
-  border: 2px solid var(--group-accent);
+  border-color: var(--group-accent);
   color: var(--group-strong);
   font-weight: 800;
   background-color: var(--group-soft);

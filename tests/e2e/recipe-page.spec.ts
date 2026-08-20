@@ -418,7 +418,7 @@ test('every main recipe section can be collapsed and expanded independently', as
     {
       section: description,
       name: 'O daniu',
-      content: description.getByText(/Aromatyczna szakszuka z rumianym chorizo/),
+      content: description.locator('[data-section-content] > p'),
     },
     {
       section: ingredients,

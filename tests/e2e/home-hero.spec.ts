@@ -1,4 +1,15 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
+
+async function resolvedCustomColor(locator: Locator, property: string) {
+  return locator.evaluate((element, customProperty) => {
+    const probe = document.createElement('span');
+    probe.style.color = getComputedStyle(element).getPropertyValue(customProperty);
+    element.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  }, property);
+}
 
 test('zachowuje dekoracyjny puls koloru przy ograniczeniu ruchu', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -20,7 +31,7 @@ test('kafle hero używają obramowania w kolorze swojej drogi', async ({ page })
     ['categories', 'rgb(21, 148, 71)'],
   ] as const) {
     const tile = page.locator(`.path-col--${variant} .path-tile`);
-    await expect(tile).toHaveCSS('--col-accent', accent);
+    expect(await resolvedCustomColor(tile, '--col-accent')).toBe(accent);
     await expect(tile).toHaveCSS('border-top-width', '1px');
     await expect(tile).toHaveCSS('border-top-style', 'solid');
   }
