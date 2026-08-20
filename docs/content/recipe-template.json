@@ -1,0 +1,87 @@
+{
+  "id": "recipe_XXX",
+  "slug": "adresowa-nazwa-przepisu",
+  "title": "[Pełna nazwa dania]",
+  "description": "[Jedno lub dwa zdania opisujące smak, charakter i najważniejsze cechy dania.]",
+  "image": {
+    "src": "/images/recipes/adresowa-nazwa-przepisu.webp",
+    "alt": "[Krótki opis tego, co rzeczywiście widać na zdjęciu.]"
+  },
+  "preparationMinutes": 30,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "[Nazwa składnika sprzedawanego na sztuki]",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "[Nazwa składnika z naturalną miarą domową]",
+      "amount": 100,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "grains",
+      "name": "[Nazwa składnika sypkiego przeliczanego na szklanki]",
+      "amount": 200,
+      "unit": "g",
+      "gramsPerCup": 160,
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-skladnik-wczesniej",
+      "text": "[Opisz, co można przygotować wcześniej i jak to bezpiecznie przechować.]",
+      "stepText": "[Bezpośrednia instrukcja wykonania tej czynności teraz.]",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-sprzet",
+      "text": "[Opisz czynność wykonywaną tuż przed gotowaniem lub w jego trakcie.]",
+      "stepText": "[Bezpośrednia instrukcja wykonania tej czynności teraz.]",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "[Pierwszy krok właściwego gotowania; zakłada wykonanie czynności z preparation.]",
+    "[Drugi krok właściwego gotowania.]",
+    "[Ostatni krok i sposób podania.]"
+  ],
+  "stepsOnly": [
+    "[Samodzielny krok zawierający wszystkie potrzebne przygotowania.]",
+    "[Kolejny krok prowadzący przez właściwe gotowanie bez korzystania z preparation.]",
+    "[Ostatni krok i sposób podania.]"
+  ],
+  "tips": [
+    "[Krótka porada dotycząca techniki, typowego błędu lub lepszego efektu.]"
+  ],
+  "tags": [
+    "[najważniejszy tag]",
+    "[drugi tag]",
+    "[trzeci tag]"
+  ],
+  "mealTimes": [
+    "lunch"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.5,
+    "lightness": 0.5
+  },
+  "editorialPriority": 50,
+  "status": "draft"
+}

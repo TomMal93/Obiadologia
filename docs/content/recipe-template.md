@@ -6,6 +6,11 @@
 >
 > Prezentacja i zachowanie strony: [recipe-page.md](../product/features/recipe-page.md)
 
+Gotowa struktura JSON do skopiowania znajduje się w
+[`recipe-template.json`](recipe-template.json). Plik zawiera wszystkie pola,
+łącznie z opcjonalnymi; niewykorzystywane sekcje usuń zgodnie z instrukcjami
+poniżej.
+
 Skopiuj treść od sekcji „Przepis” do osobnego pliku i zastąp tekst w nawiasach
 kwadratowych. Nie usuwaj wymaganych sekcji. Sekcje oznaczone jako opcjonalne
 można pominąć w całości.
