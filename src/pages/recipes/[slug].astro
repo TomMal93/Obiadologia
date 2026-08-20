@@ -49,7 +49,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
       data-progress-complete={messages.recipe.ingredientsProgressComplete}
       data-step-progress-template={messages.recipe.stepProgress}
       data-step-progress-complete={messages.recipe.stepProgressComplete}
-      data-steps-journey-template={messages.recipe.stepsJourneyProgress}
       data-base-servings={recipe.servings}
     >
       <header class="recipe-hero">
@@ -881,9 +880,6 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     const checked = action?.getAttribute('aria-pressed') === 'true';
     item.classList.toggle('is-done', checked);
 
-    const badge = item.querySelector<HTMLElement>('[data-step-badge]');
-    if (badge) badge.textContent = checked ? '✓' : (item.dataset.stepNumber ?? '');
-
     const label = action?.querySelector<HTMLElement>('[data-step-action-label]');
     if (action && label) {
       label.textContent = (checked ? action.dataset.uncheckLabel : action.dataset.checkLabel) ?? '';
@@ -916,21 +912,25 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
     const items = journeyItems(journey);
     if (items.length === 0) return;
 
-    const completed = items.filter(isStepChecked).length;
     const currentIndex = items.findIndex((item) => !isStepChecked(item));
     for (const [index, item] of items.entries()) {
       item.classList.toggle('is-current', index === currentIndex);
     }
 
-    const progress = journey.querySelector<HTMLElement>('[data-steps-progress]');
-    const progressText = progress?.querySelector<HTMLElement>('[data-steps-progress-text]');
-    const template = article?.dataset.stepsJourneyTemplate;
-    if (progress && progressText && template) {
-      progress.hidden = false;
-      progress.style.setProperty('--steps-progress', String(completed / items.length));
-      progressText.textContent = template
-        .replace('{current}', String(currentIndex === -1 ? items.length : currentIndex + 1))
-        .replace('{total}', String(items.length));
+    const markers = Array.from(
+      journey.querySelectorAll<HTMLButtonElement>('[data-step-marker]'),
+    );
+    for (const [index, marker] of markers.entries()) {
+      const done = isStepChecked(items[index]);
+      marker.classList.toggle('is-done', done);
+      if (index === currentIndex || (currentIndex === -1 && index === items.length - 1)) {
+        marker.setAttribute('aria-current', 'step');
+      } else {
+        marker.removeAttribute('aria-current');
+      }
+
+      const badge = marker.querySelector<HTMLElement>('[data-step-badge]');
+      if (badge) badge.textContent = done ? '✓' : String(index + 1);
     }
 
     const mode = journey.dataset.stepJourney;
@@ -1073,9 +1073,23 @@ const preparationGroups = preparationTimings.flatMap((timing) => {
   }
 
   for (const journey of stepJourneys) {
+    const navigator = journey.querySelector<HTMLElement>('[data-step-navigator]');
+    if (navigator) navigator.hidden = false;
+
     const items = journeyItems(journey);
     const current = items.find((item) => !isStepChecked(item)) ?? null;
     for (const item of items) setStepOpen(item, item === current, false);
+
+    for (const marker of journey.querySelectorAll<HTMLButtonElement>('[data-step-marker]')) {
+      marker.addEventListener('click', () => {
+        const number = Number(marker.dataset.stepNumber);
+        const item = items[number - 1];
+        if (!item) return;
+        openStepItem(item, true);
+        item.querySelector<HTMLButtonElement>('[data-step-head]')?.focus({ preventScroll: true });
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
   }
   renderStepJourneys();
 

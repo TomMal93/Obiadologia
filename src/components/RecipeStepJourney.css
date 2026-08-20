@@ -1,36 +1,87 @@
-/* Ścieżka kroków: oś z numerowanymi znacznikami po lewej i karty etapów po
-   prawej. Stan etapu niesie klasa `is-done` (wykonany), `is-current` (najbliższy
-   do zrobienia) i `is-open` (rozwinięty). Kolor nigdy nie jest jedynym nośnikiem
-   znaczenia: znacznik wykonanego etapu pokazuje ✓, a jego treść zostaje
-   przekreślona. Numer etapu niesie wyłącznie znacznik osi — karta nie powtarza
-   go ani etykietą „Etap N”, ani znacznikiem przy finalnym kroku. */
+/* Poziomy nawigator odzwierciedla makietę mobilną: bieżący etap ma koralowe
+   wypełnienie, a pozostałe obrys. Zwinięte karty powtarzają numer jako krótką
+   etykietę „Krok N”, dzięki czemu lista pozostaje czytelna po przewinięciu
+   nawigatora poza ekran. */
 
 .step-journey {
   display: grid;
   gap: var(--space-12);
 }
 
-.step-journey__progress {
+.step-journey__navigator {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-12);
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-14);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  grid-auto-columns: minmax(44px, 1fr);
+  grid-auto-flow: column;
+  gap: 0;
+  margin: 0 var(--space-8);
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
 }
 
-.step-journey__track,
+.step-journey__navigator::-webkit-scrollbar {
+  display: none;
+}
+
+.step-journey__navigator > li {
+  min-width: 44px;
+  scroll-snap-align: center;
+}
+
+.step-journey__marker {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 44px;
+  min-height: 52px;
+  place-items: center;
+  padding: 4px;
+  border: 0;
+  color: var(--color-coral-strong);
+  font-size: var(--font-size-16);
+  font-weight: 800;
+  line-height: 1;
+  background: transparent;
+  cursor: pointer;
+}
+
+.step-journey__marker::before {
+  position: absolute;
+  inset: 4px;
+  border: 1.5px solid rgb(255 79 46 / 64%);
+  border-radius: var(--radius-field);
+  background: var(--color-surface);
+  content: '';
+  transition: border-color 240ms ease, background-color 240ms ease, box-shadow 240ms ease;
+}
+
+.step-journey__marker > span {
+  position: relative;
+}
+
+.step-journey__marker[aria-current='step']::before {
+  border-color: var(--color-coral);
+  background: var(--brand-gradient);
+  box-shadow: 0 5px 12px rgb(255 79 46 / 18%);
+}
+
+.step-journey__marker[aria-current='step'] {
+  color: var(--color-surface);
+}
+
+.step-journey__marker.is-done:not([aria-current='step'])::before {
+  background: var(--color-coral-soft);
+}
+
 .step-progress__track {
   height: 6px;
   overflow: hidden;
   border-radius: var(--radius-pill);
-  background: var(--color-coral-soft);
+  background: rgb(255 79 46 / 12%);
 }
 
-.step-journey__fill,
 .step-progress__fill {
   display: block;
   height: 100%;
@@ -39,84 +90,18 @@
   transition: width 320ms ease;
 }
 
-.step-journey__fill {
-  width: calc(var(--steps-progress, 0) * 100%);
-}
-
 .step-list {
   --step-list-gap: var(--space-8);
 
   display: grid;
   gap: var(--step-list-gap);
-  margin: 0;
+  margin: 0 var(--space-8);
   padding: 0;
   list-style: none;
 }
 
 .step-item {
-  --step-rail-width: var(--space-32);
-
-  position: relative;
-  display: grid;
-  grid-template-columns: var(--step-rail-width) minmax(0, 1fr);
-  gap: var(--space-12);
-  align-items: start;
-}
-
-/* Ciągła oś łączy znaczniki etapów. Odcinek każdego etapu sięga w dół przez
-   odstęp listy, więc linia nie urywa się między kartami. Pierwszy i ostatni
-   etap urywają ją na środku własnego znacznika, żeby nie wystawała poza
-   ścieżkę. */
-.step-item::before {
-  position: absolute;
-  top: 0;
-  bottom: calc(-1 * var(--step-list-gap, 0px));
-  left: calc(var(--step-rail-width) / 2 - 1px);
-  width: 2px;
-  background: var(--color-coral-soft);
-  content: '';
-}
-
-.step-item:first-child::before {
-  top: calc(var(--step-rail-width) / 2);
-}
-
-.step-item:last-child::before {
-  bottom: calc(100% - var(--step-rail-width) / 2);
-}
-
-/* Oś nabiera mocnego koloru tylko za wykonanymi etapami — aktywny etap wyróżnia
-   sam znacznik, więc linia kończy bieg na jego kole. */
-.step-item.is-done::before {
-  background: var(--color-coral-strong);
-}
-
-.step-item__badge {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: var(--step-rail-width);
-  height: var(--step-rail-width);
-  place-items: center;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-14);
-  font-weight: 800;
-  line-height: 1;
-  background: var(--color-surface);
-  transition: color 240ms ease, border-color 240ms ease, background-color 240ms ease;
-}
-
-.step-item.is-current .step-item__badge {
-  border-color: var(--color-coral-strong);
-  color: var(--color-coral-strong);
-}
-
-.step-item.is-done .step-item__badge {
-  border-color: var(--color-coral-strong);
-  color: var(--color-surface);
-  background: var(--color-coral-strong);
+  min-width: 0;
 }
 
 .step-item__card {
@@ -132,7 +117,7 @@
 }
 
 .step-item.is-open .step-item__card {
-  border-color: rgb(255 79 46 / 42%);
+  border-color: rgb(255 79 46 / 46%);
   background: var(--color-coral-soft);
 }
 
@@ -148,8 +133,8 @@
   width: 100%;
   min-height: 44px;
   align-items: center;
-  gap: var(--space-8);
-  padding: var(--space-8) var(--space-12);
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-16);
   border: 0;
   color: var(--color-text);
   font: inherit;
@@ -158,45 +143,23 @@
   cursor: pointer;
 }
 
-.step-item:not(.has-prep).is-open .step-item__head {
-  position: absolute;
-  top: var(--space-8);
-  right: var(--space-8);
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  min-height: 36px;
-  padding: 0;
-  border-radius: var(--radius-pill);
-  z-index: 2;
-}
-
-.step-item:not(.has-prep).is-open .step-item__chevron {
-  margin: 0;
-}
-
-.step-item:not(.has-prep).is-open .step-final__text::before {
-  display: block;
-  float: right;
-  width: 36px;
-  height: 36px;
-  margin-left: var(--space-8);
-  content: '';
-}
-
 /* Rozwinięta karta niesie pełną treść kroku w swoim wnętrzu, więc zapowiedź
-   ustępuje miejsca nagłówkowi półkroków — ten stoi w wierszu sterowania kartą,
-   na wysokości strzałki zwijania. Zwinięta karta zapowiada treść, więc
-   nagłówek półkroków w niej nie stoi. */
-.step-item.is-open .step-item__preview,
-.step-item:not(.is-open) .step-item__prep-title {
+   znika, ale nagłówek „Krok N” pozostaje w wierszu sterowania kartą. */
+.step-item.is-open .step-item__preview {
   display: none;
 }
 
+.step-item__label {
+  flex: none;
+  color: var(--color-coral-strong);
+  font-size: var(--font-size-14);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .step-item__prep-title {
-  min-width: 0;
-  flex: 1;
+  margin: 0;
   color: var(--color-coral-strong);
   font-weight: 800;
   line-height: 1.3;
@@ -207,13 +170,14 @@
   flex: 1;
   overflow: hidden;
   color: var(--color-text);
-  font-weight: 500;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .step-item.is-done .step-item__preview {
   color: var(--color-text-muted);
+  text-decoration: line-through;
 }
 
 .step-item__chevron {
@@ -243,7 +207,7 @@
 .step-prep {
   display: grid;
   gap: var(--space-8);
-  padding: var(--space-12);
+  padding: var(--space-16);
 }
 
 .step-prep__list {
@@ -329,7 +293,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-12);
-  padding: var(--space-12);
+  padding: var(--space-16);
 }
 
 .step-prep + .step-final {
@@ -367,7 +331,7 @@
   align-items: center;
   justify-self: center;
   gap: var(--space-8);
-  padding: var(--space-8) var(--space-12);
+  padding: var(--space-8) var(--space-16);
   border: 1px solid var(--color-coral);
   border-radius: var(--radius-pill);
   color: var(--color-coral-strong);
@@ -416,9 +380,9 @@
   background: var(--color-coral-soft);
 }
 
-/* Bez skryptu ścieżka jest zwykłą, kompletną listą kroków: znika oś sterowania
+/* Bez skryptu ścieżka jest zwykłą, kompletną listą kroków: znika nawigator
    (zwijanie, akcje, postęp), a treść pozostaje w całości. */
-.step-journey__progress[hidden],
+.step-journey__navigator[hidden],
 .step-item__head[hidden],
 .step-item__heading-fallback[hidden],
 .step-item__body[hidden],

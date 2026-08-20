@@ -1,8 +1,7 @@
 ---
-// Ścieżka kroków gotowania: pionowa oś z numerowanymi znacznikami i kartami
-// etapów. Dokładnie jeden etap jest rozwinięty — pokazuje przypisane półkroki
-// (ich nagłówek „Przygotuj przed wykonaniem” stoi w wierszu sterowania kartą,
-// na wysokości strzałki zwijania), finalny krok i akcję oznaczenia go jako
+// Ścieżka kroków gotowania: poziomy nawigator etapów nad listą kart.
+// Dokładnie jeden etap jest początkowo rozwinięty — pokazuje przypisane półkroki
+// (z własnym nagłówkiem „Przygotuj przed wykonaniem”), finalny krok i akcję oznaczenia go jako
 // zrobiony. Pozostałe etapy pozostają zwiniętym, jednoliniowym zapowiedzeniem.
 // Komponent renderuje jedną wersję kroków; strona przepisu osadza go osobno dla
 // „Trybu asystenta” (z półkrokami) i dla „Tylko kroki”.
@@ -34,23 +33,35 @@ const cards = steps.map((text, index) => {
 ---
 
 <div class:list={['step-journey', className]} data-step-journey={mode}>
-  <p class="step-journey__progress" data-steps-progress aria-live="polite" hidden>
-    <span data-steps-progress-text>
-      {formatMessage(messages.stepsJourneyProgress, { current: 1, total: steps.length })}
-    </span>
-    <span class="step-journey__track" aria-hidden="true">
-      <span class="step-journey__fill"></span>
-    </span>
-  </p>
+  <ol
+    class="step-journey__navigator"
+    aria-label={messages.stepsHeading}
+    data-step-navigator
+    hidden
+  >
+    {cards.map((card) => (
+      <li>
+        <button
+          type="button"
+          class="step-journey__marker"
+          data-step-marker
+          data-step-number={card.number}
+          aria-label={card.label}
+          aria-controls={card.bodyId}
+        >
+          <span data-step-badge aria-hidden="true">{card.number}</span>
+        </button>
+      </li>
+    ))}
+  </ol>
 
   <ol class="step-list" data-step-list={mode}>
     {cards.map((card) => (
       <li
-        class:list={['step-item', { 'has-prep': card.preparation.length > 0 }]}
+        class="step-item"
         data-step-item
         data-step-number={card.number}
       >
-        <span class="step-item__badge" data-step-badge aria-hidden="true">{card.number}</span>
         <div class="step-item__card">
           <h3 class="step-item__heading">
             <button
@@ -62,9 +73,9 @@ const cards = steps.map((text, index) => {
               hidden
             >
               <span class="visually-hidden">{card.label}</span>
-              {card.preparation.length > 0 && (
-                <span class="step-item__prep-title">{messages.stepPreparationHeading}</span>
-              )}
+              <span class="step-item__label" aria-hidden="true">
+                {formatMessage(messages.stepCardLabel, { number: card.number })}
+              </span>
               <span class="step-item__preview">{card.text}</span>
               <svg class="step-item__chevron" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="m5 12 5-5 5 5" />
@@ -76,6 +87,7 @@ const cards = steps.map((text, index) => {
           <div class="step-item__body" id={card.bodyId} data-step-body>
             {card.preparation.length > 0 && (
               <div class="step-prep" data-step-prep hidden>
+                <p class="step-item__prep-title">{messages.stepPreparationHeading}</p>
                 <ul class="step-prep__list">
                   {card.preparation.map((item) => (
                     <li
