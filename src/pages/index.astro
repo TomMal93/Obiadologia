@@ -29,7 +29,10 @@ const backgroundPhrases = [
       </div>
 
       <section class="home-hero" aria-labelledby="main-heading">
-        <h1 id="main-heading">{messages.home.hero.lead} <span>{messages.home.hero.emphasis}</span></h1>
+        <h1 id="main-heading">
+          <span class="home-hero__lead">{messages.home.hero.lead}</span>{' '}
+          <span class="home-hero__emphasis">{messages.home.hero.emphasis}</span>
+        </h1>
       </section>
 
       <section class="path-panel" aria-labelledby="paths-heading">

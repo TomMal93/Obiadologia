@@ -133,6 +133,10 @@
   font-size: clamp(43px, 13vw, 70px);
   line-height: 1;
   letter-spacing: -0.035em;
+}
+
+.home-hero__lead {
+  display: inline-block;
   background-image: linear-gradient(
     180deg,
     color-mix(in srgb, var(--color-text) 55%, white) 0%,
@@ -198,7 +202,10 @@
   }
 }
 
-.home-hero h1 span {
+.home-hero__emphasis {
+  display: inline-block;
+  margin-bottom: -0.12em;
+  padding-bottom: 0.12em;
   color: var(--brand-pulse);
   background-image: linear-gradient(
     180deg,
