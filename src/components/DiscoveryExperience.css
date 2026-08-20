@@ -1284,15 +1284,16 @@
   grid-area: content;
   min-width: 0;
   margin: 0;
-  padding: 0 var(--space-8) 0 var(--space-16);
-  align-self: center;
-  transform: translateY(clamp(9px, 3vw, 12px));
+  padding: 0 var(--space-8) clamp(var(--space-24), 6vw, 28px) var(--space-16);
+  align-self: end;
 }
 
 .recipe-list--panoramic .recipe-content strong {
+  margin: -1px;
+  padding: 1px;
   color: rgb(255 255 255 / 88%);
   font-size: clamp(18px, 5.4vw, 24px);
-  line-height: 1.08;
+  line-height: 1.15;
   letter-spacing: -0.025em;
   -webkit-text-stroke: 1px color-mix(in srgb, var(--recipe-card-accent) 52%, transparent);
   paint-order: stroke fill;
