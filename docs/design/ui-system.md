@@ -193,9 +193,9 @@ Poniższa tabela jest kierunkiem kolejnego etapu i nie stanowi kryterium ukończ
 
 Aplikacja jest zbudowana z sekcji, z których każda odpowiada jednemu ekranowi. Zasada „jedna sekcja = jeden ekran” jest podstawowym założeniem układu i ma pierwszeństwo przy projektowaniu zawartości każdej sekcji.
 
-- Każda główna sekcja MUSI wypełniać jeden ekran, tj. wysokość widocznego obszaru (`100dvh`) z uwzględnieniem bezpiecznych obszarów urządzenia i klawiatury ekranowej.
-- Sekcja przy bazowych ustawieniach nie może być wyższa niż ekran. Treść projektujemy tak, aby mieściła się w jednym ekranie; jeśli się nie mieści, ograniczamy lub upraszczamy treść, zamiast rozciągać sekcję albo wprowadzać przewijanie wewnątrz sekcji.
-- Wyjątkiem jest stała ramka wyników Kategorii opisana w [home-page.md](../product/features/home-page.md): jej lista może przewijać się pionowo, aby wybór i stany pusty/sukces nie zmieniały geometrii sekcji. Przewijalny region musi być dostępny z klawiatury i mieć nazwę dostępną dla technologii asystujących.
+- Każda główna sekcja MUSI wypełniać jeden ekran, tj. wysokość widocznego obszaru (`100dvh`) z uwzględnieniem bezpiecznych obszarów urządzenia i klawiatury ekranowej. Wyjątkiem jest sekcja Kategorii opisana w [home-page.md](../product/features/home-page.md): zachowuje niezmienioną kartę i mieści pięć pełnych kart wynikowych, więc może być wyższa od viewportu.
+- Poza opisanym wyjątkiem Kategorii sekcja przy bazowych ustawieniach nie może być wyższa niż ekran. Treść projektujemy tak, aby mieściła się w jednym ekranie; jeśli się nie mieści, ograniczamy lub upraszczamy treść, zamiast rozciągać sekcję albo wprowadzać przewijanie wewnątrz sekcji.
+- Stała ramka wyników Kategorii opisana w [home-page.md](../product/features/home-page.md) mieści pięć pełnych kart, a od szóstego wyniku jej lista przewija się pionowo. Dzięki temu wybór i stany pusty/sukces nie zmieniają geometrii ramki. Przewijalny region musi być dostępny z klawiatury i mieć nazwę dostępną dla technologii asystujących.
 - Strona przepisu jest wyjątkiem dokumentowym, a nie sekcją pełnoekranową: jej artykuł ma naturalną wysokość treści i przewija się wraz ze stroną. Lokalną kompozycję definiuje [recipe-page.md](../product/features/recipe-page.md).
 - Przewijanie między sekcjami jest swobodne. Na tym etapie nie wprowadzamy wymuszonego zatrzaskiwania (`scroll-snap`); ewentualne dodanie snapu jest osobną decyzją produktową.
 - Reguła nie może łamać dostępności. Przy powiększeniu tekstu, bardzo niskim ekranie lub otwartej klawiaturze treść MUSI pozostać w pełni osiągalna (bez przycięcia), nawet jeśli wymaga to przewinięcia — zgodnie z wymaganiem reflow WCAG 2.2 AA.
@@ -240,7 +240,7 @@ W całym zakresie mobilnym (`320–480px` szerokości i przy różnych wysokośc
 | klawiatura | wszystkie akcje działają bez myszy, a fokus jest widoczny |
 | kontrast | tekst, kontrolki i fokus spełniają WCAG 2.2 AA |
 | viewporty | brak przepełnień przy 320, 375, 390, 430 i 480px; przy 768px układ pozostaje mobilny i wyśrodkowany |
-| sekcje pełnoekranowe | każda główna sekcja poza dokumentową stroną przepisu wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
+| sekcje pełnoekranowe | każda główna sekcja poza dokumentową stroną przepisu i uzgodnionym wyjątkiem Kategorii wypełnia jeden ekran i przy bazowych ustawieniach go nie przekracza, a treść nie jest przycięta |
 | spójność między telefonami | ta sama kompozycja, hierarchia i rytm odstępów na 320, 375, 390, 430 i 480px oraz przy niskiej i wysokiej wysokości ekranu; różnice są proporcjonalne, nie strukturalne |
 | geometria pierwszego ekranu | środek komunikatu głównego wypada w połowie przestrzeni między wspólnym nagłówkiem a panelem dróg; panel jest dosuwany do dolnej kotwicy sekcji skalującej się od `16px` do `24px`, jego wysokość dopasowuje się do zawartości, a odstępy notatki od ramki panelu oraz drzewa od siatki dróg pozostają stałe między mobilnymi viewportami; referencje: iPhone 12 Pro (`390 × 844px`) i Pixel 7 (`412 × 839px`); lokalna geometria grupy akcji jest w [home-page.md](../product/features/home-page.md) |
 | brak ucięć i rozjazdów | żaden element nie jest ucięty ani nie przepełnia sekcji, brak poziomego przewijania, elementy nie nachodzą na siebie ani się nie rozjeżdżają |

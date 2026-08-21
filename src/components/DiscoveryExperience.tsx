@@ -477,12 +477,14 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
   const searchInputRef = useRef<HTMLInputElement>(null);
   const mapPointRef = useRef<HTMLButtonElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+  const categoryResultsRef = useRef<HTMLDivElement>(null);
+  const categoryTouchYRef = useRef<number | null>(null);
   const draggingRef = useRef(false);
   const recipeSearch = useMemo(() => createRecipeSearch(recipes), [recipes]);
 
   const hasSelection = hasCategorySelection(selection);
   const categoryResults = useMemo(
-    () => filterRecipesByCategories(recipes, selection).slice(0, 4),
+    () => filterRecipesByCategories(recipes, selection),
     [recipes, selection],
   );
   const snapshot = session?.snapshot;
@@ -507,6 +509,51 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
     const frame = window.requestAnimationFrame(() => setRankedMap(currentMap));
     return () => window.cancelAnimationFrame(frame);
   }, [currentMap]);
+
+  useEffect(() => {
+    const results = categoryResultsRef.current;
+    if (!results) return;
+
+    const handleTouchStart = (event: TouchEvent) => {
+      categoryTouchYRef.current = event.touches[0]?.clientY ?? null;
+    };
+    const handleTouchMove = (event: TouchEvent) => {
+      const currentY = event.touches[0]?.clientY;
+      const previousY = categoryTouchYRef.current;
+      if (currentY === undefined || previousY === null) return;
+
+      const scrollDelta = previousY - currentY;
+      categoryTouchYRef.current = currentY;
+      if (scrollDelta === 0) return;
+
+      const hasOwnScroll = results.scrollHeight > results.clientHeight + 1;
+      if (!hasOwnScroll) return;
+
+      const reachedTop = results.scrollTop <= 1;
+      const reachedBottom = results.scrollTop + results.clientHeight >= results.scrollHeight - 1;
+      const shouldHandOff = (scrollDelta < 0 && reachedTop)
+        || (scrollDelta > 0 && reachedBottom);
+
+      if (!shouldHandOff) return;
+      event.preventDefault();
+      window.scrollBy({ top: scrollDelta, behavior: 'auto' });
+    };
+    const handleTouchEnd = () => {
+      categoryTouchYRef.current = null;
+    };
+
+    results.addEventListener('touchstart', handleTouchStart, { passive: true });
+    results.addEventListener('touchmove', handleTouchMove, { passive: false });
+    results.addEventListener('touchend', handleTouchEnd);
+    results.addEventListener('touchcancel', handleTouchEnd);
+
+    return () => {
+      results.removeEventListener('touchstart', handleTouchStart);
+      results.removeEventListener('touchmove', handleTouchMove);
+      results.removeEventListener('touchend', handleTouchEnd);
+      results.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, []);
 
   const searchResults = useMemo(
     () => recipeSearch.search(debouncedQuery),
@@ -732,6 +779,7 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
   }
 
   function toggle(key: keyof CategorySelection, value: MealTime | Tempo | Occasion) {
+    if (categoryResultsRef.current) categoryResultsRef.current.scrollTop = 0;
     setSelection((current) => ({ ...current, [key]: current[key] === value ? undefined : value }));
   }
 
@@ -788,6 +836,7 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
             )}
           </div>
           <div
+            ref={categoryResultsRef}
             className={`category-results-body${hasSelection && categoryResults.length > 0 ? '' : ' is-message'}`}
             role="region"
             aria-label={categoryMessages.resultsRegionLabel}

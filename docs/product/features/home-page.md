@@ -19,7 +19,11 @@ Strona zawiera:
 4. sekcję kategorii,
 5. listę propozycji wynikających z wyboru kategorii.
 
-Poszczególne bloki tej struktury są prezentowane jako sekcje pełnoekranowe zgodnie z zasadą „jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Nagłówek z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
+Pierwsza sekcja jest prezentowana jako sekcja pełnoekranowa zgodnie z zasadą
+„jedna sekcja = jeden ekran” z [ui-system.md](../../design/ui-system.md). Sekcja
+Kategorii jest uzgodnionym wyjątkiem: jej ramka wyników mieści pięć pełnych,
+niezmienionych kart, dlatego cała sekcja może być wyższa od viewportu. Nagłówek
+z logo należy do pierwszego ekranu, a nie stanowi osobnej sekcji.
 
 W układzie mobilnym środek komunikatu głównego znajduje się w połowie odległości między dolną krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg. Wysokość panelu wynika z responsywnie skalowanej zawartości, a odstęp między grupami akcji a notatką wynosi `22px`; krótsza ramka jest dosuwana do dolnej kotwicy pierwszej sekcji. Odstęp między dolną krawędzią notatki a ramką panelu jest stały, natomiast dolna kotwica panelu skaluje się płynnie od `16px` do `24px` zależnie od wysokości mobilnego viewportu. Kafel każdej drogi znajduje się pod jej tytułem i kolorową kreską, z lokalnym górnym marginesem `6px`; osobne strzałki nie są renderowane. Centralną ikonę drzewka otacza okrągły pierścień o średnicy dawnej poświaty: od godziny 12, zgodnie z ruchem wskazówek zegara, biegną kolejno jednolite wycinki Szukaj (koral), Mapa (niebieski) i Kategorie (zieleń), połączone wyłącznie wąskimi przejściami na stykach. Kolor zaczyna się od krycia `0.8`, utrzymuje je przez większość promienia, po czym dopiero blisko obrzeża zanika do pełnej przezroczystości na zewnętrznej krawędzi. Odstęp między drzewem a siatką trzech dróg jest stały i zgodny z referencją Pixel 7 (`412 × 839px` viewportu przeglądarki). Na ekranach zbyt niskich, by pomieścić całą kompozycję, zawartość pozostaje dostępna przez naturalne przewijanie dokumentu.
 
@@ -127,20 +131,23 @@ Aktywny stan musi być widoczny nie tylko przez zmianę koloru.
 ## Wyniki
 
 Pod panelem wyboru zawsze znajduje się ramka „Propozycje dla Ciebie”, która
-rozciąga się do dolnej krawędzi sekcji i zachowuje stałą wysokość
-w danym viewporcie. Bezpośrednio pod jej nagłówkiem znajduje się pasek
+zachowuje stałą wysokość mieszczącą pięć pełnych kart przepisu. Bezpośrednio
+pod jej nagłówkiem znajduje się pasek
 podsumowania wyboru. Zmiana kryteriów nie przesuwa panelu ani nagłówka ramki;
 zmienia się wyłącznie jej wnętrze:
 
 - bez wyboru ramka pokazuje instrukcję „Tutaj pojawią się dopasowane przepisy.”,
-- po dopasowaniu pokazuje od trzech do czterech początkowych propozycji,
+- po dopasowaniu pokazuje wszystkie propozycje; przy trzech, czterech lub pięciu
+  wynikach wszystkie karty są widoczne jednocześnie,
 - bez dopasowania pokazuje komunikat „Brak dopasowań. Zmień lub usuń wybrane kryterium.”,
-- lista wypełnia dostępne wnętrze ramki, a gdy jest dłuższa, przewija się
-  pionowo bez zmiany wysokości ramki; przewijalny obszar ma cienki scrollbar
-  w kolorystyce Kategorii,
+- od szóstego wyniku lista przewija się pionowo bez zmiany wysokości ramki;
+  przewijalny obszar ma cienki scrollbar w kolorystyce Kategorii, a zmiana
+  kryteriów ustawia go ponownie na początku listy; gdy lista jest pusta albo
+  osiągnie górną lub dolną granicę, dalszy — również już trwający — gest
+  dotykowy przewija stronę,
 - w drugiej fazie: przycisk „Pokaż więcej”, jeżeli istnieją kolejne wyniki.
 
-„Pokaż więcej” nie należy do bieżącego MVP. W drugiej fazie prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane w specyfikacji tej podstrony. Do tego czasu prototyp pokazuje wyłącznie początkowe propozycje i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
+„Pokaż więcej” nie należy do bieżącego MVP. W drugiej fazie prowadzi do podstrony Kategorii z filtrem odpowiadającym wyborom ze strony głównej. Dokładna trasa, zachowanie filtra i zakres wyników zostaną opisane w specyfikacji tej podstrony. Do tego czasu prototyp pokazuje wszystkie dopasowane propozycje w przewijanej ramce i nie renderuje nieaktywnego przycisku. Makieta przedstawia kierunek docelowego stanu z większym zbiorem danych.
 
 Karty korzystają ze wspólnego modelu opisanego w [data-model.md](../../engineering/data-model.md)
 i z tego samego panoramicznego wariantu prezentacyjnego co lista w discovery
@@ -164,15 +171,20 @@ zdjęcia zachowuje tę samą geometrię i wspólny ciemny placeholder.
 - Żadna kategoria nie jest zaznaczona domyślnie.
 - „Szczegółowe wyszukiwanie” prowadzi do jawnego ekranu zastępczego, z którego można wrócić do sekcji Kategorii.
 - Nagłówek sekcji Kategorii wraz z opisem rozpoczyna się `20px` od jej górnej krawędzi.
-- Ramka „Propozycje dla Ciebie” sięga dolnej krawędzi sekcji, a lista przepisów
-  wypełnia jej przewijalne wnętrze.
+- Ramka „Propozycje dla Ciebie” mieści pięć pełnych, niezmienionych kart; przy
+  trzech, czterech lub pięciu wynikach wszystkie są widoczne jednocześnie, a od
+  szóstego lista przewija się pionowo.
+- Gest nad pustą listą oraz gest wychodzący poza początek lub koniec listy
+  przechodzi na przewijanie strony i nie tworzy pułapki przewijania.
 - Pasek pod grupami zawsze pokazuje przypomnienie albo jednoliniowe podsumowanie wyboru.
 - Ramka wyników jest widoczna w każdym stanie i nie zmienia wysokości po wyborze, odznaczeniu ani braku dopasowań.
 - Co najmniej jeden wybór generuje filtrowane wyniki; niewybrane grupy nie ograniczają filtrowania.
 - Lista propozycji używa tego samego panoramicznego wariantu kart co discovery overlay.
 - Użytkownik może usunąć aktywny wybór.
 - Wyniki aktualizują się po każdej zmianie, a usunięcie ostatniego wyboru je ukrywa.
-- Każda główna sekcja wypełnia jeden ekran i nie jest wyższa niż ekran, zgodnie z regułą pełnoekranowych sekcji w [ui-system.md](../../design/ui-system.md).
+- Pierwsza główna sekcja wypełnia jeden ekran. Kategorie mogą być wyższe od
+  ekranu wyłącznie w zakresie potrzebnym do pokazania pięciu niezmienionych kart,
+  zgodnie z wyjątkiem opisanym w [ui-system.md](../../design/ui-system.md).
 - Środek komunikatu głównego znajduje się w połowie odległości między dolną
   krawędzią wspólnego nagłówka a górną krawędzią panelu wyboru dróg.
 - Panel jest dosuwany do dolnej kotwicy pierwszej sekcji.

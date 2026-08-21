@@ -53,7 +53,7 @@ test('detailed category search opens an explicit placeholder and returns to cate
   await expect(page).toHaveURL(/\/#kategorie$/);
 });
 
-test('category content fills the section from its 20px top inset', async ({ page }) => {
+test('category content shows five full cards and scrolls further results', async ({ page }) => {
   await page.setViewportSize({ width: 430, height: 932 });
   await page.goto('/');
   await page.getByRole('button', { name: /Śniadanie/ }).click();
@@ -69,10 +69,32 @@ test('category content fills the section from its 20px top inset', async ({ page
     const sectionBounds = section.getBoundingClientRect();
     const resultsBody = results.querySelector('.category-results-body');
     const recipeList = resultsBody?.querySelector('.recipe-list');
+    const cards = resultsBody instanceof HTMLElement
+      ? [...resultsBody.querySelectorAll<HTMLElement>('.recipe-card')]
+      : [];
+    const bodyBounds = resultsBody?.getBoundingClientRect();
+    const bodyStyle = resultsBody instanceof HTMLElement ? getComputedStyle(resultsBody) : null;
+    const visibleTop = bodyBounds && bodyStyle
+      ? bodyBounds.top + Number.parseFloat(bodyStyle.paddingTop)
+      : 0;
+    const visibleBottom = bodyBounds && bodyStyle
+      ? bodyBounds.bottom - Number.parseFloat(bodyStyle.paddingBottom)
+      : 0;
 
     return {
       headingOffset: heading.getBoundingClientRect().top - sectionBounds.top,
       resultsBottomGap: sectionBounds.bottom - results.getBoundingClientRect().bottom,
+      resultCount: cards.length,
+      firstFiveVisible: cards.slice(0, 5).every((card) => {
+        const bounds = card.getBoundingClientRect();
+        return bounds.top >= visibleTop - 1 && bounds.bottom <= visibleBottom + 1;
+      }),
+      sixthBelowViewport: cards.length > 5
+        ? cards[5].getBoundingClientRect().top >= visibleBottom - 1
+        : false,
+      hasOverflow: resultsBody instanceof HTMLElement
+        ? resultsBody.scrollHeight > resultsBody.clientHeight
+        : false,
       listFillsBody: resultsBody instanceof HTMLElement && recipeList instanceof HTMLElement
         ? recipeList.getBoundingClientRect().height >= (
             resultsBody.clientHeight
@@ -85,7 +107,77 @@ test('category content fills the section from its 20px top inset', async ({ page
 
   expect(geometry.headingOffset).toBeCloseTo(20, 0);
   expect(geometry.resultsBottomGap).toBeCloseTo(0, 0);
+  expect(geometry.resultCount).toBeGreaterThan(5);
+  expect(geometry.firstFiveVisible).toBe(true);
+  expect(geometry.sixthBelowViewport).toBe(true);
+  expect(geometry.hasOverflow).toBe(true);
   expect(geometry.listFillsBody).toBe(true);
+
+  const resultsBody = page.locator('.category-results-body');
+  await resultsBody.evaluate((element) => element.scrollTo({ top: element.scrollHeight }));
+  const sixthVisibleAfterScroll = await resultsBody.evaluate((element) => {
+    const sixthCard = element.querySelectorAll<HTMLElement>('.recipe-card')[5];
+    const bodyBounds = element.getBoundingClientRect();
+    const bodyStyle = getComputedStyle(element);
+    const cardBounds = sixthCard.getBoundingClientRect();
+    return cardBounds.top >= bodyBounds.top + Number.parseFloat(bodyStyle.paddingTop) - 1
+      && cardBounds.bottom <= bodyBounds.bottom - Number.parseFloat(bodyStyle.paddingBottom) + 1;
+  });
+  expect(sixthVisibleAfterScroll).toBe(true);
+
+  await page.getByRole('button', { name: /Na już/ }).click();
+  await expect.poll(() => resultsBody.evaluate((element) => element.scrollTop)).toBe(0);
+});
+
+test('category results hand scrolling back to the page when they cannot scroll further', async ({ page }) => {
+  await page.setViewportSize({ width: 430, height: 932 });
+  await page.goto('/');
+
+  const resultsBody = page.locator('.category-results-body');
+  const cdp = await page.context().newCDPSession(page);
+  const swipe = async (x: number, y: number, movementY: number) => {
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x, y }],
+    });
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ x, y: y + movementY }],
+    });
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    });
+  };
+
+  await resultsBody.scrollIntoViewIfNeeded();
+  const emptyBounds = await resultsBody.boundingBox();
+  if (!emptyBounds) throw new Error('Empty category results are not visible');
+  const emptyStart = await page.evaluate(() => window.scrollY);
+  await swipe(
+    emptyBounds.x + emptyBounds.width / 2,
+    emptyBounds.y + emptyBounds.height / 2,
+    160,
+  );
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(emptyStart);
+
+  await page.getByRole('button', { name: /Śniadanie/ }).click();
+  await resultsBody.evaluate((element) => element.scrollTo({ top: 0 }));
+  await resultsBody.scrollIntoViewIfNeeded();
+  await resultsBody.hover();
+  const pageAtListTop = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, -240);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(pageAtListTop);
+
+  await resultsBody.evaluate((element) => element.scrollTo({ top: element.scrollHeight }));
+  await resultsBody.scrollIntoViewIfNeeded();
+  const pageAtListBottom = await page.evaluate(() => window.scrollY);
+  const resultsBounds = await resultsBody.boundingBox();
+  if (!resultsBounds) throw new Error('Category results are not visible');
+  const touchX = resultsBounds.x + resultsBounds.width / 2;
+  const touchY = resultsBounds.y + resultsBounds.height / 2;
+  await swipe(touchX, touchY, -240);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(pageAtListBottom);
 });
 
 test('homepage heading and path panel keep stable mobile geometry', async ({ page }) => {

@@ -255,12 +255,20 @@
 
 .category-results-frame {
   --recipe-card-accent: var(--color-categories);
+  --panoramic-card-height: clamp(96px, 26vw, 112px);
+  --category-results-list-height: calc(
+    var(--panoramic-card-height) + var(--panoramic-card-height)
+    + var(--panoramic-card-height) + var(--panoramic-card-height)
+    + var(--panoramic-card-height)
+    + var(--space-12) + var(--space-12) + var(--space-12) + var(--space-12)
+    + var(--space-12) + var(--space-4) + 1px
+  );
 
   display: flex;
   min-height: 0;
   padding-block: var(--space-12);
-  overflow: hidden;
-  flex: 1 0 clamp(240px, 36dvh, 320px);
+  overflow: clip;
+  flex: 0 0 auto;
   flex-direction: column;
 }
 
@@ -281,7 +289,7 @@
   gap: var(--space-8);
   align-items: center;
   justify-content: center;
-  min-height: var(--space-24);
+  min-height: 64px;
   margin: var(--space-8) 0 var(--space-12);
   padding: 0 var(--space-4);
 }
@@ -340,13 +348,17 @@
 }
 
 .category-results-body {
+  box-sizing: border-box;
+  height: var(--category-results-list-height);
   min-height: 0;
-  flex: 1;
+  flex: 0 0 var(--category-results-list-height);
   overflow-y: auto;
   padding: var(--space-12) var(--space-4) var(--space-4);
   border-top: 1px solid var(--color-border);
   outline-offset: -3px;
-  overscroll-behavior: contain;
+  /* Na granicach listy dalszy gest przechodzi na dokument, dzięki czemu
+     wewnętrzny scroll nie tworzy pułapki przewijania. */
+  overscroll-behavior-y: auto;
   scrollbar-gutter: stable;
   scrollbar-color: color-mix(in srgb, var(--color-categories) 72%, var(--color-border)) var(--color-categories-soft);
   scrollbar-width: thin;
@@ -374,7 +386,7 @@
 .category-results-body.is-message {
   display: grid;
   place-items: center;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .category-results-body:not(.is-message) > .recipe-list {
@@ -1193,7 +1205,7 @@
   display: grid;
   width: 100%;
   min-width: 0;
-  height: clamp(96px, 26vw, 112px);
+  height: var(--panoramic-card-height, clamp(96px, 26vw, 112px));
   grid-template-areas: "content meta";
   grid-template-columns: minmax(0, 1fr) auto;
   min-height: 96px;

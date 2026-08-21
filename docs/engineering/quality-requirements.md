@@ -37,7 +37,7 @@ Te wymagania są bramką jakości bieżącego etapu. Funkcja nie jest ukończona
 - Jeden układ mobilny od szerokości `320px` do `480px`; brak poziomego przewijania treści.
 - Na ekranach szerszych niż `480px` aplikacja zachowuje układ mobilny w wyśrodkowanym kontenerze o maksymalnej szerokości `480px`.
 - Obowiązkowe szerokości kontroli: `320`, `375`, `390`, `430` i `480px`; dodatkowa kontrola na `768px` potwierdza wyśrodkowanie kontenera bez zmiany układu.
-- Do obowiązkowych szerokości dochodzi kontrola reprezentatywnej niskiej i wysokiej wysokości telefonu, aby potwierdzić, że pełnoekranowe sekcje wypełniają jeden ekran bez ucięć i pustych obszarów.
+- Do obowiązkowych szerokości dochodzi kontrola reprezentatywnej niskiej i wysokiej wysokości telefonu, aby potwierdzić, że pełnoekranowe sekcje wypełniają jeden ekran bez ucięć i pustych obszarów; sekcja Kategorii podlega wyjątkowi z [home-page.md](../product/features/home-page.md) i musi bez ucięć prezentować pięć pełnych kart.
 - W całym zakresie mobilnym układ, kolejność i rytm odstępów sekcji pozostają spójne; różnice między telefonami są proporcjonalne, a nie strukturalne. Normatywną regułę definiuje [ui-system.md](../design/ui-system.md).
 - Żaden element nie jest ucięty ani nie przepełnia sekcji, treść nie tworzy poziomego przewijania, a elementy nie nachodzą na siebie ani się nie rozjeżdżają między rozmiarami telefonów.
 - Skalowanie proporcjonalne nie schodzi poniżej progów dostępności: tekst interfejsu `16px`, obszar akcji `44 × 44px` i kontrast WCAG 2.2 AA. Uzgodnionym wyjątkiem jest każdy z dwóch szerokich segmentów przełącznika „Wyszukiwarka / Mapa” w discovery overlayu: ma wysokość `40px`, zachowując szerokość większą niż `44px` i czytelny odstęp od sąsiednich akcji.

@@ -74,6 +74,38 @@ describe('DiscoveryExperience categories', () => {
     expect(screen.getByRole('region', { name: 'Wyniki kategorii' })).toBe(results);
     expect(within(results).getByText('Brak dopasowań. Zmień lub usuń wybrane kryterium.')).toBeInTheDocument();
   });
+
+  it.each([4, 5, 7])('renders all %i matching recipes without truncating the list', (count) => {
+    const matchingRecipes = Array.from({ length: count }, (_, index) => ({
+      ...testRecipes[0],
+      id: `category_result_${index}`,
+      slug: `category-result-${index}`,
+      title: `Wynik kategorii ${index + 1}`,
+    }));
+    renderExperience(matchingRecipes);
+
+    fireEvent.click(screen.getByRole('button', { name: /Obiad/ }));
+
+    const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
+    expect(within(results).getAllByRole('link')).toHaveLength(count);
+  });
+
+  it('returns the results region to the top after changing a category', () => {
+    const matchingRecipes = Array.from({ length: 7 }, (_, index) => ({
+      ...testRecipes[0],
+      id: `scroll_result_${index}`,
+      slug: `scroll-result-${index}`,
+      title: `Przewijany wynik ${index + 1}`,
+    }));
+    renderExperience(matchingRecipes);
+    fireEvent.click(screen.getByRole('button', { name: /Obiad/ }));
+
+    const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
+    results.scrollTop = 120;
+    fireEvent.click(screen.getByRole('button', { name: /Na grilla/ }));
+
+    expect(results.scrollTop).toBe(0);
+  });
 });
 
 describe('DiscoveryExperience overlay', () => {
