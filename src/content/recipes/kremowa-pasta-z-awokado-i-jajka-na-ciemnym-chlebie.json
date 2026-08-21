@@ -1,0 +1,117 @@
+{
+  "id": "recipe_014",
+  "slug": "kremowa-pasta-z-awokado-i-jajka-na-ciemnym-chlebie",
+  "title": "Kremowa pasta z awokado i jajka na ciemnym chlebie",
+  "description": "Aksamitna i pożywna pasta śniadaniowa na bazie dojrzałego awokado i ugotowanego jajka, podana na miękkich kromkach ciemnego pieczywa. Doskonałe źródło zdrowych tłuszczów dla malucha.",
+  "image": null,
+  "preparationMinutes": 12,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "Dojrzałe awokado (np. odmiany Hass)",
+      "amount": 0.5,
+      "unit": "szt",
+      "measure": "metric"
+    },
+    {
+      "category": "produce",
+      "name": "Jajko ugotowane na twardo",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Sok z cytryny (kilka kropel)",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 2
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek (opcjonalnie)",
+      "amount": 3,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3
+      },
+      "measure": "household"
+    },
+    {
+      "category": "produce",
+      "name": "Świeży szczypiorek lub koperek (drobno posiekany, opcjonalnie)",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 2
+      },
+      "measure": "household"
+    },
+    {
+      "category": "grains",
+      "name": "Ciemny chleb (np. żytni razowy lub graham)",
+      "amount": 70,
+      "unit": "g",
+      "household": {
+        "unit": "bread_slice",
+        "metricAmount": 35
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "ugotuj-jajko-wczesniej",
+      "text": "Jajko możesz ugotować na twardo wcześniej (np. wieczorem) i przechowywać w lodówce w skorupce.",
+      "stepText": "Ugotuj jajko na twardo (ok. 8–9 minut od zagotowania wody), ostudź w zimnej wodzie i obierz ze skorupki.",
+      "timing": "day_before",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "W miseczce rozgnieć dojrzałe awokado widelcem na gładką masę z kilkoma kroplami soku z cytryny (dzięki temu pasta zachowa ładny zielony kolor).",
+    "Ugotowane i obrane jajko zetrzyj na tarce o drobnych oczkach lub dokładnie rozgnieć widelcem, a następnie połącz z awokado.",
+    "Dodaj opcjonalną łyżeczkę oliwy z oliwek oraz drobno posiekany szczypiorek/koperek i wymieszaj całość na jednolitą pastę.",
+    "Posmaruj grubo kromki ciemnego chleba.",
+    "Odetnij ewentualne twarde skórki chleba, a kromki pokrój w poręczne paseczki lub trójkąciki, ułatwiające chwytanie dwulatkowi."
+  ],
+  "stepsOnly": [
+    "Ugotuj jajko na twardo (ok. 8–9 minut), ostudź i obierz.",
+    "W miseczce rozgnieć widelcem awokado z kilkoma kroplami soku z cytryny i rozdrobnionym jajkiem.",
+    "Dodaj odrobinę oliwy oraz posiekany szczypiorek i wymieszaj na gładką masę.",
+    "Posmaruj pastą kromki ciemnego chleba, odkrój twarde brzegi i pokrój w wygodne paseczki dla dziecka."
+  ],
+  "tips": [
+    "Sok z cytryny nie tylko dodaje świeżości, ale przede wszystkim zapobiega ciemnieniu awokado.",
+    "Krojenie kromki w podłużne słupki (ang. soldiers) znacznie ułatwia dwulatkowi samodzielne jedzenie bez rozsypywania pasty."
+  ],
+  "tags": [
+    "dla dzieci",
+    "śniadanie",
+    "wytrawne",
+    "awokado",
+    "jajko",
+    "kanapki"
+  ],
+  "mealTimes": [
+    "breakfast",
+    "dinner"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.15,
+    "lightness": 0.5
+  },
+  "editorialPriority": 88,
+  "status": "draft"
+}

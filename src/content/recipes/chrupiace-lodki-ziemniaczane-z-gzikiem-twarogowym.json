@@ -1,0 +1,130 @@
+{
+  "id": "recipe_005",
+  "slug": "chrupiace-lodki-ziemniaczane-z-gzikiem-twarogowym",
+  "title": "Chrupiące łódeczki ziemniaczane z twarogiem i szczypiorkiem",
+  "description": "Złociste, chrupiące łódeczki ziemniaczane wstępnie upieczone, błyskawicznie wydrążone i dopieczone na chrupko, wypełnione świeżym gzikiem z twarogu, śmietany i szczypiorku.",
+  "image": null,
+  "preparationMinutes": 35,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "Ziemniaki (średnie lub duże, równej wielkości)",
+      "amount": 4,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Twaróg półtłusty (klinek lub w kostce)",
+      "amount": 250,
+      "unit": "g"
+    },
+    {
+      "category": "dairy",
+      "name": "Śmietana 18% (lub gęsty jogurt naturalny)",
+      "amount": 100,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 25
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Pęczek świeżego szczypiorku",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek lub olej rzepakowy",
+      "amount": 25,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Sól i świeżo mielony czarny pieprz",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    },
+    {
+      "category": "produce",
+      "name": "Rzodkiewka (opcjonalnie)",
+      "amount": 3,
+      "unit": "szt"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-paste-twarogowa",
+      "text": "Wymieszaj twaróg ze śmietaną, szczypiorkiem, solą i pieprzem. Schłodź w lodówce przed nadziewaniem.",
+      "stepText": "W misce rozgnieć twaróg ze śmietaną, solą, dużą ilością pieprzu i drobno posiekanym szczypiorkiem (oraz opcjonalnie startą rzodkiewką). Wstaw pastę do lodówki.",
+      "timing": "just_in_time",
+      "beforeStep": 2
+    },
+    {
+      "id": "przygotuj-piekarnik-i-ziemniaki",
+      "text": "Wyszoruj ziemniaki i rozgrzej piekarnik do pieczenia wstępnego.",
+      "stepText": "Rozgrzej piekarnik do 210°C (termoobieg). Dokładnie wyszoruj ziemniaki, przekrój je wzdłuż na połówki i nakłuj widelcem od strony miąższu.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Ułóż połówki ziemniaków na blasze miąższem do dołu, lekko posmarowane oliwą, i piecz przez 20–25 minut, aż miąższ całkowicie zmięknie.",
+    "Wyjmij ziemniaki, odwróć i łyżką jednym ruchem wybierz miękki środek (zostawiając ok. 5 mm rant przy skórce). Wydrążony ciepły miąższ możesz wmieszać do twarogu.",
+    "Wydrążone łódeczki posmaruj od środka oliwą, oprósz solą i piecz jeszcze przez 8–10 minut miąższem do góry, aż staną się chrupiące i złociste.",
+    "Gorące, chrupiące skórki napełnij zimnym twarogiem ze szczypiorkiem, udekoruj pieprzem i podawaj od razu."
+  ],
+  "stepsOnly": [
+    "Rozgrzej piekarnik do 210°C z termoobiegiem.",
+    "Ziemniaki dokładnie wyszoruj, przekrój wzdłuż na połówki, posmaruj łyżką oliwy i ułóż miąższem do dołu na blasze wyłożonej papierem do pieczenia.",
+    "Piecz przez 20–25 minut, aż miąższ będzie całkowicie miękki przy nakłuciu widelcem.",
+    "W czasie pieczenia w misce wymieszaj twaróg ze śmietaną, posiekanym szczypiorkiem, solą oraz świeżo mielonym pieprzem i wstaw pastę do lodówki.",
+    "Wyjmij ziemniaki z piekarnika i łyżką delikatnie wydrąż miękki miąższ ze środka (zostawiając stabilną ściankę ok. 5 mm przy skórce). Wybrany miąższ możesz od razu rozgnieść i wmieszać do pasty twarogowej.",
+    "Wydrążone łódeczki posmaruj od środka resztą oliwy, oprósz solą i wstaw z powrotem do piekarnika (miąższem do góry) na 8–10 minut, aż brzegi mocno się przypieką i staną chrupiące.",
+    "Gorące łódeczki wyjmij z pieca, natychmiast wypełnij zimnym gzikiem twarogowym, posyp dodatkowym szczypiorkiem i podawaj."
+  ],
+  "tips": [
+    "Wstępne upieczenie ziemniaków przed drążeniem eliminuje ryzyko pęknięcia skórki i skaleczenia – miękki środek wychodzi gładko za jednym pociągnięciem łyżki.",
+    "Wmieszanie części ciepłego, wydrążonego miąższu do twarogu sprawia, że gzik uzyskuje niesamowicie kremową, aksamitną strukturę.",
+    "Danie bazuje na kontraście termicznym: gorąca, chrupiąca skórka ziemniaka połączona z mocno schłodzonym twarogiem."
+  ],
+  "tags": [
+    "ziemniaki",
+    "gzik",
+    "twaróg",
+    "przekąski",
+    "finger food",
+    "wegetariańskie",
+    "obiad"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.35,
+    "lightness": 0.6
+  },
+  "editorialPriority": 65,
+  "status": "draft"
+}

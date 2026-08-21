@@ -22,7 +22,6 @@ test('category selection opens the published chorizo shakshuka recipe', async ({
 
   await page.getByRole('button', { name: /Śniadanie/ }).click();
   const results = page.getByRole('region', { name: 'Wyniki kategorii' });
-  await expect(results.getByRole('link')).toHaveCount(1);
   const card = results.getByRole('link', { name: /Szakszuka/ });
   await expect(card).toBeVisible();
   const selectedFrameGeometry = await readFrameGeometry();

@@ -1,0 +1,163 @@
+{
+  "id": "recipe_013",
+  "slug": "kotlety-mielone-z-tluczonymi-ziemniakami",
+  "title": "Kotlety mielone z tłuczonymi ziemniakami",
+  "description": "Klasyk polskiego domowego obiadu – soczyste kotlety wieprzowe z chrupiącą skórką podane z tradycyjnymi tłuczonymi ziemniakami.",
+  "image": null,
+  "preparationMinutes": 45,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "meat",
+      "name": "Mięso mielone z łopatki wieprzowej",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "category": "grains",
+      "name": "Kajzerka czerstwa",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Woda lub mleko do namoczenia bułki",
+      "amount": 150,
+      "unit": "ml",
+      "gramsPerCup": 250,
+      "measure": "household"
+    },
+    {
+      "category": "produce",
+      "name": "Cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Ząbek czosnku",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Jajko",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Bułka tarta",
+      "amount": 60,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Smalec lub olej do smażenia",
+      "amount": 30,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Ziemniaki",
+      "amount": 1000,
+      "unit": "g"
+    },
+    {
+      "category": "pantry",
+      "name": "Sól",
+      "amount": 15,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Pieprz czarny mielony",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Świeży koperek (opcjonalnie)",
+      "amount": 10,
+      "unit": "g"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "namoczenie-bulki",
+      "text": "Kajzerkę zalej wodą lub mlekiem i odstaw na kilka minut do całkowitego zmięknięcia.",
+      "stepText": "Zalej czerstwą kajzerkę płynem i odstaw, aż wchłonie wilgoć.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    },
+    {
+      "id": "obranie-ziemniakow",
+      "text": "Obierz i pokrój ziemniaki przed przystąpieniem do smażenia kotletów.",
+      "stepText": "Obierz ziemniaki, pokrój w równe kawałki i opłucz pod zimną wodą.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Wstaw ziemniaki do osolonej wody i gotuj do miękkości przez około 20-25 minut.",
+    "Na patelni rozgrzej łyżkę tłuszczu i zeszklij drobno posiekaną cebulę.",
+    "W dużej misce połącz mięso mielone, odciśniętą kajzerkę, zeszkloną cebulę, przeciśnięty czosnek, jajko, sól oraz pieprz. Wyrabiaj masę dłonią przez minimum 5 minut na jednolitą, kleistą strukturę.",
+    "Formuj owalne, lekko spłaszczone kotlety i obtaczaj je w bułce tartej.",
+    "Smaż kotlety na rozgrzanym tłuszczu na średnim ogniu po około 4-5 minut z każdej strony na złocistobrązowy kolor.",
+    "Odcedź ugotowane ziemniaki, odparuj je krótko na wyłączonym palniku i utłucz tłuczkiem na gładką masę.",
+    "Podawaj gorące kotlety z tłuczonymi ziemniakami, opcjonalnie posypane świeżo posiekanym koperkiem."
+  ],
+  "stepsOnly": [
+    "Obierz ziemniaki, pokrój w równą kostkę, zalej zimną osoloną wodą i gotuj przez ok. 20-25 minut.",
+    "Zalej kajzerkę płynem do namoczenia, a cebulę posiekaj w kostkę i zeszklij na łyżce tłuszczu.",
+    "W misce połącz mięso mielone, dokładnie odciśniętą kajzerkę, zeszkloną cebulę, czosnek, jajko, łyżeczkę soli oraz pieprz i wyrabiaj dłonią przez 5 minut.",
+    "Uformuj kotlety, obtocz w bułce tartej i smaż na średnim ogniu po ok. 4-5 minut z każdej strony.",
+    "Odcedź ziemniaki, odparuj przez 30 sekund w garnku i dokładnie utłucz tłuczkiem.",
+    "Wyłóż ziemniaki i kotlety na talerze, opcjonalnie dekorując posiekanym koperkiem."
+  ],
+  "tips": [
+    "Długie wyrabianie mięsa napowietrza masę, sprawiając, że kotlety po usmażeniu są pulchne i soczyste.",
+    "Krótkie odparowanie ugotowanych ziemniaków w gorącym garnku przed tłuczeniem pozwala pozbyć się nadmiaru wody i uzyskać lepszą strukturę bez dodatku nabiału."
+  ],
+  "tags": [
+    "obiad",
+    "kuchnia polska",
+    "wieprzowina",
+    "ziemniaki",
+    "klasyka"
+  ],
+  "mealTimes": [
+    "lunch"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.45,
+    "lightness": 0.65
+  },
+  "editorialPriority": 90,
+  "status": "draft"
+}

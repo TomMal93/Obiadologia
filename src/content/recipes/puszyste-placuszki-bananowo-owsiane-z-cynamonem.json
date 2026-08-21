@@ -1,0 +1,125 @@
+{
+  "id": "recipe_016",
+  "slug": "puszyste-placuszki-bananowo-owsiane-z-cynamonem",
+  "title": "Puszyste placuszki bananowo-owsiane z cynamonem",
+  "description": "Naturalnie słodkie, delikatne i miękkie placuszki na bazie dojrzałego banana i płatków owsianych błyskawicznych. Idealne dla małych rączek, bez dodatku cukru.",
+  "image": null,
+  "preparationMinutes": 25,
+  "difficulty": "easy",
+  "servings": 2,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "Dojrzały banan",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Jajko (rozmiar M/L)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "grains",
+      "name": "Płatki owsiane błyskawiczne",
+      "amount": 60,
+      "unit": "g",
+      "gramsPerCup": 100,
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Ciepła woda lub mleko (do namoczenia płatków)",
+      "amount": 50,
+      "unit": "ml",
+      "measure": "metric"
+    },
+    {
+      "category": "dairy",
+      "name": "Jogurt naturalny (opcjonalnie)",
+      "amount": 30,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Cynamon mielony",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 2
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek (do masy i smażenia)",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "namocz-platki-wczesniej",
+      "text": "Płatki owsiane błyskawiczne możesz zalać ciepłą wodą lub mlekiem 10 minut przed przygotowaniem ciasta.",
+      "stepText": "Zalej płatki owsiane błyskawiczne ciepłą wodą lub mlekiem i odstaw na 10 minut do napęcznienia.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    },
+    {
+      "id": "rozgrzej-patelnie",
+      "text": "Rozgrzej patelnię na małym ogniu i spryskaj lub natłuść odrobiną oliwy z oliwek.",
+      "stepText": "Spryskaj patelnię oliwą z oliwek i rozgrzej ją na małym ogniu.",
+      "timing": "just_in_time",
+      "beforeStep": 3
+    }
+  ],
+  "steps": [
+    "1a. Zalej płatki owsiane błyskawiczne ciepłą wodą lub mlekiem i odstaw na 10 minut do zmiękczenia. 1b. W osobnej misce rozgnieć banana widelcem, dodaj jajko, cynamon, opcjonalny jogurt naturalny oraz 2 psiknięcia oliwy z oliwek.",
+    "Połącz napęczniałe płatki z masą bananową i dokładnie wymieszaj łyżką.",
+    "Na lekko natłuszczoną oliwą, rozgrzaną patelnię nakładaj po 1 czubatej łyżce ciasta na jeden placuszek.",
+    "Smaż na małym ogniu pod przykryciem przez ok. 2–3 minuty do ścięcia i zezłocenia spodu, po czym obróć i dosmażaj jeszcze przez 1–2 minuty.",
+    "Zdejmij z patelni, ostudź do bezpiecznej temperatury i podaj ze świeżymi owocami."
+  ],
+  "stepsOnly": [
+    "Płatki owsiane zalej ciepłą wodą lub mlekiem na 10 minut. W misce rozgnieć banana, dodaj jajko, cynamon, opcjonalny jogurt oraz 2 psiknięcia oliwy i wymieszaj z napęczniałymi płatkami.",
+    "Rozgrzej patelnię natłuszczoną oliwą z oliwek na małym ogniu.",
+    "Nakładaj porcje ciasta (po 1 łyżce) i smaż pod przykryciem po ok. 2–3 minuty z jednej strony oraz 1–2 minuty po obróceniu.",
+    "Zdejmij placuszki, lekko ostudź i podawaj dziecku."
+  ],
+  "tips": [
+    "Namoczenie płatków błyskawicznych sprawia, że placuszki są delikatne i miękkie bez potrzeby blendowania.",
+    "Dodanie dwóch psiknięć oliwy z oliwek bezpośrednio do ciasta zapobiega przywieraniu i ułatwia obracanie placuszków na patelni."
+  ],
+  "tags": [
+    "dla dzieci",
+    "śniadanie",
+    "bez cukru",
+    "placuszki",
+    "płatki owsiane"
+  ],
+  "mealTimes": [
+    "breakfast"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.25,
+    "lightness": 0.4
+  },
+  "editorialPriority": 90,
+  "status": "draft"
+}

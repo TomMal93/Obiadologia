@@ -191,7 +191,7 @@ export const pl = {
     ingredientsHeading: 'Składniki',
     ingredientCategories: {
       produce: 'Warzywa i owoce',
-      meat: 'Mięso i wędliny',
+      meat: 'Mięso, ryby i wędliny',
       dairy: 'Nabiał i jajka',
       grains: 'Pieczywo i produkty zbożowe',
       pantry: 'Spiżarnia',

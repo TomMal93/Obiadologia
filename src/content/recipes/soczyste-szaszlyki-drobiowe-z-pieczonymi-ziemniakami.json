@@ -1,0 +1,152 @@
+{
+  "id": "recipe_020",
+  "slug": "soczyste-szaszlyki-drobiowe-z-pieczonymi-ziemniakami",
+  "title": "Soczyste szaszłyki drobiowe z pieczonymi ziemniakami",
+  "description": "Klasyczne, kolorowe szaszłyki z kurczaka i warzyw pieczone w aromatycznych ziołach, podane z chrupiącymi z zewnątrz i miękkimi w środku pieczonymi ziemniaczkami.",
+  "image": null,
+  "preparationMinutes": 45,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "Ziemniaki (typ ogólnoużytkowy lub sałatkowy)",
+      "amount": 800,
+      "unit": "g"
+    },
+    {
+      "category": "meat",
+      "name": "Pierś z kurczaka (lub udziec bez kości)",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "Papryka czerwona",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Cukinia",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Czerwona cebula",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek",
+      "amount": 40,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 20
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Słodka i wędzona papryka",
+      "amount": 10,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Czosnek granulowany lub świeży",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Zioła (rozmaryn, tymianek lub oregano)",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Sól i świeżo mielony pieprz",
+      "amount": 6,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "marynowanie-i-namaczanie",
+      "text": "Pokrój mięso i warzywa na szaszłyki, zamarynuj w oliwie z przyprawami i przechowaj w lodówce. Namocz drewniane patyczki w wodzie.",
+      "stepText": "Pierś z kurczaka pokrój w regularną kostkę (ok. 2,5-3 cm). W misce wymieszaj mięso z 2 łyżkami oliwy, papryką słodką, wędzoną, czosnkiem, solą i pieprzem. Jeśli używasz drewnianych patyczków do szaszłyków, zalej je wodą na minimum 20 minut, aby nie przypalały się w piekarniku.",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotowanie-piekarnika-i-ziemniakow",
+      "text": "Rozgrzej piekarnik i przygotuj ziemniaki z ziołami do pieczenia.",
+      "stepText": "Rozgrzej piekarnik do 200°C (funkcja góra-dół z termoobiegiem). Ziemniaki dokładnie umyj (młode zostaw w skórce), pokrój w równe łódeczki lub ćwiartki, wymieszaj w misce z 2 łyżkami oliwy, solą, pieprzem i rozmarynem.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Wyłóż blachę papierem do pieczenia i równomiernie rozłóż na niej doprawione łódeczki ziemniaków, zostawiając miejsce na szaszłyki (lub przygotuj osobną kratkę/blachę). Wstaw ziemniaki do piekarnika na pierwsze 10–12 minut pieczenia.",
+    "W międzyczasie pokrój paprykę, cukinię i czerwoną cebulę w kawałki zbliżone wielkością do mięsa. Nabijaj naprzemiennie na patyczki: mięso, cebulę, paprykę i cukinię.",
+    "Dołóż przygotowane szaszłyki obok podpieczonych ziemniaków (lub ułóż je na ruszcie nad blachą) i piecz całość wspólnie przez kolejne 20–25 minut, obracając szaszłyki raz w połowie czasu, aż mięso będzie soczyste i zrumienione, a ziemniaki chrupiące.",
+    "Podawaj gorące prosto z piekarnika, np. z ulubionym sosem czosnkowym, sosem tzatziki lub świeżą sałatą."
+  ],
+  "stepsOnly": [
+    "Nastaw piekarnik na 200°C z termoobiegiem. Jeśli używasz drewnianych patyczków do szaszłyków, zamocz je w misce z zimną wodą.",
+    "Ziemniaki dokładnie wyszoruj, pokrój w równe ćwiartki/łódeczki, wymieszaj w misce z połową oliwy, solą, pieprzem i rozmarynem, a następnie wyłóż na jedną stronę dużej blachy wyłożonej papierem do pieczenia i wstaw do piekarnika.",
+    "Pierś z kurczaka, paprykę, cukinię i cebulę pokrój w grubą kostkę (ok. 2,5–3 cm). W misce wymieszaj mięso z resztą oliwy, słodką oraz wędzoną papryką, czosnkiem, solą i pieprzem.",
+    "Nabijaj składniki naprzemiennie na patyczki (mięso, papryka, cebula, cukinia).",
+    "Wyjmij blachę z podpiekającymi się ziemniakami, dołóż obok szaszłyki i piecz całość razem przez 20–25 minut (obracając szaszłyki w połowie czasu), aż mięso będzie soczyste i rumiane, a ziemniaki miękkie w środku i chrupiące z zewnątrz.",
+    "Przełóż na talerze i serwuj od razu na gorąco."
+  ],
+  "tips": [
+    "Wcześniejsze namoczenie patyczków w wodzie zapobiega ich zwęgleniu podczas pieczenia.",
+    "Ziemniaki potrzebują ok. 10 minut dłuższego pieczenia niż kurczak – wstawienie ich wcześniej gwarantuje, że ziemniaki będą idealnie chrupiące, a mięso nie ulegnie wysuszeniu."
+  ],
+  "tags": [
+    "szaszłyki",
+    "ziemniaki",
+    "kurczak",
+    "danie z piekarnika",
+    "obiad"
+  ],
+  "mealTimes": [
+    "dinner",
+    "lunch"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.5,
+    "lightness": 0.5
+  },
+  "editorialPriority": 50,
+  "status": "draft"
+}

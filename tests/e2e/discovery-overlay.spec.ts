@@ -71,14 +71,14 @@ test('map supports pointer input and preserves an unmatched search query', async
 
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
   const search = dialog.getByRole('searchbox', { name: 'Szukaj przepisu' });
-  await search.fill('feta');
+  await search.fill('xyzabc');
   await expect(dialog.getByText('Tego nie znaleźliśmy. Spróbujmy inaczej.')).toBeVisible();
   // Bez wyników w overlayu zostaje wyłącznie link brandu prowadzący na „/”.
   await expect(dialog.locator('.recipe-card')).toHaveCount(0);
   await dialog.getByRole('button', { name: /Mapa/ }).click();
   await expect(page.getByRole('button', { name: /Talerz na mapie: szybko 80% · lekko 80%/ })).toBeVisible();
   await dialog.getByRole('button', { name: /Wyszukiwarka/ }).click();
-  await expect(search).toHaveValue('feta');
+  await expect(search).toHaveValue('xyzabc');
 
   const accessibility = await new AxeBuilder({ page }).include('.discovery-overlay').analyze();
   expect(accessibility.violations).toEqual([]);

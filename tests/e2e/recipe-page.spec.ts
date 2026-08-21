@@ -46,7 +46,7 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(ingredients.getByText('0/5')).toBeVisible();
   await expect(ingredients.getByRole('heading', { level: 3 })).toHaveText([
     'Warzywa i owoce',
-    'Mięso i wędliny',
+    'Mięso, ryby i wędliny',
     'Nabiał i jajka',
     'Pieczywo i produkty zbożowe',
     'Spiżarnia',
@@ -110,7 +110,9 @@ test('published chorizo shakshuka recipe presents its complete model data', asyn
   await expect(servings).toHaveText('2');
   await expect(chorizo.locator('[data-ingredient-measure]')).toHaveText('80 g / 10 plastrów');
 
-  const meatGroup = ingredients.locator('[data-ingredient-group]').filter({ hasText: 'Mięso i wędliny' });
+  const meatGroup = ingredients
+    .locator('[data-ingredient-group]')
+    .filter({ hasText: 'Mięso, ryby i wędliny' });
   const chorizoToggle = ingredients.locator('[data-checkable-ingredient]').filter({
     hasText: 'chorizo',
   });

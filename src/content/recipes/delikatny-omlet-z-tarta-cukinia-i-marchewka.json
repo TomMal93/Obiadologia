@@ -1,0 +1,117 @@
+{
+  "id": "recipe_007",
+  "slug": "delikatny-omlet-z-tarta-cukinia-i-marchewka",
+  "title": "Delikatny omlet z tartą cukinią i marchewką",
+  "description": "Miękki, puszysty omlet na parze z drobno startymi warzywami. Soczysty, delikatny w smaku i łatwy do chwycenia w małe rączki.",
+  "image": null,
+  "preparationMinutes": 12,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "Jajka (rozmiar M)",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Cukinia (starta na drobnych oczkach i odciśnięta)",
+      "amount": 30,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Młoda marchewka (starta na drobnych oczkach)",
+      "amount": 20,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "dairy",
+      "name": "Mleko lub woda",
+      "amount": 15,
+      "unit": "ml",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek (do natłuszczenia patelni)",
+      "amount": 3,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-warzywa",
+      "text": "Zetrzyj cukinię i marchewkę na małych oczkach tarki. Cukinię lekko odciśnij w dłoniach z nadmiaru soku.",
+      "stepText": "Zetrzyj warzywa na drobnej tarce i odciśnij sok z cukinii.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-patelnie",
+      "text": "Przetrzyj patelnię ręcznikiem papierowym z kilkoma kroplami oliwy z oliwek.",
+      "stepText": "Przetrzyj patelnię oliwą i rozgrzej na małym ogniu.",
+      "timing": "just_in_time",
+      "beforeStep": 2
+    }
+  ],
+  "steps": [
+    "W misce roztrzep widelcem jajka z mlekiem (lub wodą), dodaj startą marchewkę oraz odciśniętą z nadmiaru soku cukinię i wymieszaj.",
+    "Wylej masę jajeczno-warzywną na lekko natłuszczoną patelnię.",
+    "Przykryj szczelnie pokrywką i trzymaj na małym ogniu przez ok. 4–5 minut, aż omlet całkowicie się zetnie od góry.",
+    "Zdejmij z ognia, zsuń na talerz i pozostaw do lekkiego przestudzenia.",
+    "Pokrój omlet w podłużne słupki (paseczki) wygodne do samodzielnego chwytania przez dziecko."
+  ],
+  "stepsOnly": [
+    "Zetrzyj cukinię i marchewkę na drobnych oczkach, cukinię lekko odciśnij.",
+    "Roztrzep jajka z mlekiem, dodaj warzywa i wymieszaj.",
+    "Wylej na natłuszczoną patelnię, przykryj pokrywką i smaż na minimalnym ogniu przez ok. 4–5 minut do ścięcia.",
+    "Zdejmij, ostudź i pokrój w paseczki."
+  ],
+  "tips": [
+    "Odciśnięcie soku z cukinii jest kluczowe – dzięki temu omlet ładnie się zetnie i nie będzie zbyt wodnisty.",
+    "Ścieranie warzyw na drobnych oczkach sprawia, że zmiękną one w tym samym czasie, w którym ścina się jajko."
+  ],
+  "tags": [
+    "dla dzieci",
+    "śniadanie",
+    "omlet",
+    "cukinia",
+    "marchewka",
+    "wytrawne"
+  ],
+  "mealTimes": [
+    "breakfast",
+    "dinner"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.15,
+    "lightness": 0.4
+  },
+  "editorialPriority": 88,
+  "status": "draft"
+}

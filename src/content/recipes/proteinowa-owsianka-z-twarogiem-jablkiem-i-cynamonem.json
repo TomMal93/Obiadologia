@@ -1,0 +1,116 @@
+{
+  "id": "recipe_004",
+  "slug": "proteinowa-owsianka-z-twarogiem-jablkiem-i-cynamonem",
+  "title": "Proteinowa owsianka z twarogiem, jabłkiem i cynamonem",
+  "description": "Jednogarnkowa, pożywna owsianka gotowana z jabłkiem i połączona z delikatnym twarogiem lub serkiem ricotta. Naturalne źródło białka dla dwulatka bez odżywek i bez dodatku cukru.",
+  "image": null,
+  "preparationMinutes": 10,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Płatki owsiane błyskawiczne lub górskie",
+      "amount": 40,
+      "unit": "g",
+      "gramsPerCup": 100,
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Wrzątek lub gorąca woda",
+      "amount": 160,
+      "unit": "ml",
+      "measure": "metric"
+    },
+    {
+      "category": "produce",
+      "name": "Słodkie jabłko",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Twaróg półtłusty (lub serek ricotta / gęsty jogurt grecki)",
+      "amount": 60,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 30
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Cynamon mielony",
+      "amount": 1,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 1
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Masło orzechowe 100% z orzechów laskowych lub migdałów (opcjonalnie)",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-jablko",
+      "text": "Obierz jabłko ze skórki i zetrzyj na tarce o grubych oczkach.",
+      "stepText": "Obierz jabłko i zetrzyj je na tarce o grubych oczkach.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Do małego garnka wsyp płatki owsiane i zalej wrzątkiem.",
+    "Wstaw na mały ogień, dodaj od razu starte jabłko i gotuj całość przez ok. 3–4 minuty, aż płatki zmiękną, a jabłko puści sok i stworzy gęstą bazę.",
+    "Zdejmij garnek z ognia. Dodaj twaróg rozgnieciony widelcem (lub ricottę) oraz opcjonalną łyżeczkę masła orzechowego.",
+    "Wymieszaj energicznie łyżką – twaróg pod wpływem ciepła płatków połączy się z masą, tworząc aksamitny, puszysty krem przypominający sernik.",
+    "Przełóż do miseczki, oprósz szczyptą cynamonu i ostudź do bezpiecznej temperatury przed podaniem."
+  ],
+  "stepsOnly": [
+    "Wsyp płatki owsiane do garnka, zalej wrzątkiem, dodaj starte jabłko i gotuj na małym ogniu przez ok. 3–4 minuty do miękkości.",
+    "Zdejmij z ognia, dodaj twaróg (lub ricottę) oraz opcjonalnie odrobinę masła orzechowego 100% i dokładnie wymieszaj na gładki krem.",
+    "Przełóż do miseczki, posyp cynamonem i podaj po lekkim przestudzeniu."
+  ],
+  "tips": [
+    "Dodanie twarogu lub ricotty po zdjęciu z ognia zachowuje ich kremową strukturę i zapobiega warzeniu się nabiału.",
+    "Dla dwulatka to bezpieczny sposób na podbicie białka w diecie wyłącznie przy użyciu naturalnych składników (nabiał + orzechy), bez odżywek białkowych."
+  ],
+  "tags": [
+    "dla dzieci",
+    "śniadanie",
+    "owsianka",
+    "wysokobiałkowe",
+    "twaróg",
+    "bez cukru"
+  ],
+  "mealTimes": [
+    "breakfast"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.15,
+    "lightness": 0.4
+  },
+  "editorialPriority": 90,
+  "status": "draft"
+}

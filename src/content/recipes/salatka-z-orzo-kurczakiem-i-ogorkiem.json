@@ -1,0 +1,143 @@
+{
+  "id": "recipe_017",
+  "slug": "salatka-z-orzo-kurczakiem-i-ogorkiem",
+  "title": "Sałatka makaronowa z orzo, kurczakiem i ogórkiem",
+  "description": "Szybka i pożywna sałatka z drobnym makaronem orzo, podsmażonym kurczakiem i chrupiącym ogórkiem, połączona kremowym sosem na bazie skyru, majonezu i soku z cytryny.",
+  "image": null,
+  "preparationMinutes": 20,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Makaron orzo",
+      "amount": 200,
+      "unit": "g",
+      "gramsPerCup": 180,
+      "measure": "household"
+    },
+    {
+      "category": "meat",
+      "name": "Pierś z kurczaka",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Ogórek szklarniowy",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Czerwona cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Cytryna (sok)",
+      "amount": 0.5,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Skyr naturalny",
+      "amount": 150,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 25
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Majonez",
+      "amount": 40,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 20
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek",
+      "amount": 10,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Sól i świeżo mielony pieprz",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "ugotuj-makaron-i-kurczaka",
+      "text": "Ugotuj makaron orzo al dente, przelej lodowatą wodą. Kurczaka pokrój w kostkę, przypraw i usmaż na złoty kolor. Ostudź oba składniki i przechowaj w lodówce w szczelnym pojemniku.",
+      "stepText": "Wstaw garnek z osoloną wodą na makaron oraz patelnię z łyżką oliwy. Pokrój kurczaka w kostkę, oprósz solą, pieprzem i wrzuć na patelnię. Do wrzątku wsyp orzo i gotuj 8–9 minut. Makaron odcedź i przelej lodowatą wodą, a kurczaka zdejmij z ognia do lekkiego przestudzenia.",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-warzywa-i-sos",
+      "text": "Wydrąż i pokrój ogórka, posiekaj cebulę oraz wymieszaj składniki sosu.",
+      "stepText": "Wzdłuż przekrój ogórka, wydrąż łyżeczką gniazda nasienne i pokrój go w drobną kostkę. Czerwoną cebulę drobno posiekaj. W małej misce wymieszaj skyr, majonez, sok z cytryny, szczyptę soli oraz pieprzu.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "W dużej misce połącz przygotowany makaron orzo, usmażonego kurczaka, ogórka oraz posiekaną czerwoną cebulę.",
+    "Wlej sos ze skyru i majonezu, a następnie dokładnie wymieszaj wszystkie składniki.",
+    "Spróbuj sałatki i w razie potrzeby dopraw dodatkową odrobiną soku z cytryny, solą lub świeżo mielonym pieprzem."
+  ],
+  "stepsOnly": [
+    "Wstaw garnek z osoloną wodą na makaron i postaw patelnię z łyżką oliwy na średnim ogniu.",
+    "Pierś z kurczaka pokrój w drobną kostkę (ok. 1,5 cm), oprósz solą oraz świeżo mielonym pieprzem i wrzuć na rozgrzaną patelnię.",
+    "Gdy woda zawrze, wsyp makaron orzo i gotuj al dente przez 8–9 minut, w międzyczasie mieszając i rumieniąc kurczaka.",
+    "W czasie gotowania makaronu wydrąż łyżeczką gniazda nasienne z ogórka i pokrój go w kostkę, drobno posiekaj cebulę, a w miseczce wymieszaj skyr, majonez, sok z cytryny, sól i pieprz.",
+    "Ugotowany makaron odcedź na sicie i obficie przelej lodowatą wodą z kranu, aby go szybko schłodzić i zahartować, a następnie dobrze odsącz.",
+    "W dużej misce połącz ostudzony makaron, kurczaka, ogórka, cebulę oraz sos, dokładnie wymieszaj i dopraw do smaku."
+  ],
+  "tips": [
+    "Przelanie ugotowanego orzo lodowatą wodą natychmiast zatrzymuje gotowanie i zapobiega wchłanianiu całego sosu przez gorący makaron.",
+    "Wydrążenie wodnistych gniazd nasiennych z ogórka sprawia, że sałatka nie podchodzi wodą i zachowuje idealną strukturę nawet na drugi dzień."
+  ],
+  "tags": [
+    "sałatka",
+    "makaron orzo",
+    "kurczak",
+    "fit",
+    "szybki obiad"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "today",
+    "two_days"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.3,
+    "lightness": 0.7
+  },
+  "editorialPriority": 50,
+  "status": "draft"
+}

@@ -1,0 +1,190 @@
+{
+  "id": "recipe_001",
+  "slug": "ekspresowy-pieczony-kebab-z-indyka-w-tortilli",
+  "title": "Ekspresowy pieczony kebab z indyka w tortilli",
+  "description": "Soczyste paski mielonego indyka pieczone z przyprawami, podane w ciepłej tortilli z chrupiącymi warzywami i sosem na bazie skyru.",
+  "image": null,
+  "preparationMinutes": 25,
+  "difficulty": "easy",
+  "servings": 3,
+  "ingredients": [
+    {
+      "category": "meat",
+      "name": "Mięso mielone z indyka",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "category": "pantry",
+      "name": "Przyprawa do kebaba / gyrosa",
+      "amount": 15,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Cebula suszona granulowana",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Czosnek granulowany",
+      "amount": 3,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek w sprayu",
+      "amount": 5,
+      "unit": "ml"
+    },
+    {
+      "category": "produce",
+      "name": "Papryka czerwona",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Cebula czerwona lub biała",
+      "amount": 0.5,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Pomidor",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Ogórek świeży",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "grains",
+      "name": "Placki tortilli pszennej",
+      "amount": 3,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Skyr naturalny",
+      "amount": 150,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 25
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Ketchup",
+      "amount": 45,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Ząbek czosnku (opcjonalnie do sosu)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Sok z cytryny (opcjonalnie do sosu)",
+      "amount": 5,
+      "unit": "ml",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "both"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "zamarynuj-mieso-wczesniej",
+      "text": "Możesz wymieszać mięso z przyprawami wieczorem dzień wcześniej i schować w zamkniętym pojemniku do lodówki – mięso przejdzie smakiem, a przygotowanie obiadu zajmie tylko czas pieczenia.",
+      "stepText": "Wymieszaj mięso mielone z indyka z przyprawami.",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-piekarnik-i-blache",
+      "text": "Rozgrzej piekarnik do 215°C (z termoobiegiem lub funkcją grilla). Blaszkę wyłóż papierem do pieczenia i spryskaj oliwą.",
+      "stepText": "Rozgrzej piekarnik do 215°C. Blaszkę wyłóż papierem do pieczenia i spryskaj oliwą.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-sos-ze-skyru",
+      "text": "Wymieszaj skyr ze startym ząbkiem czosnku, łyżeczką soku z cytryny oraz szczyptą soli i pieprzu (możesz też użyć czystego skyru).",
+      "stepText": "Wymieszaj skyr z czosnkiem, sokiem z cytryny oraz przyprawami na sos.",
+      "timing": "just_in_time",
+      "beforeStep": 3
+    }
+  ],
+  "steps": [
+    "Wymieszaj mięso mielone z indyka z przyprawą do kebaba/gyrosa, suszoną cebulą i czosnkiem granulowanym (jeśli nie zrobiono tego wcześniej).",
+    "Rozprowadź mięso na blasze na grubość około 1 cm i krawędzią łopatki zrób podłużne odstępy, formując paski. Piecz w 215°C przez 15–18 minut.",
+    "W czasie pieczenia pokrój warzywa. Placki tortilli posmaruj skyrem (lub sosem czosnkowym), wyłóż upieczone mięso, świeże warzywa, ketchup i zwiń w ciasne wrapy."
+  ],
+  "stepsOnly": [
+    "Rozgrzej piekarnik do 215°C (z termoobiegiem lub grillem). Blaszkę wyłóż papierem do pieczenia i spryskaj oliwą.",
+    "W misce dokładnie wymieszaj mięso mielone z indyka z przyprawą do kebaba, cebulą suszoną i czosnkiem granulowanym.",
+    "Rozprowadź masę mięsną na blaszce i łopatką zrób podłużne przerwy, formując równe paski. Piecz przez 15–18 minut do zrumienienia.",
+    "Wymieszaj skyr ze startym czosnkiem, sokiem z cytryny i solą (opcjonalnie). Pokrój paprykę, cebulę, pomidora i ogórka.",
+    "Placki tortilli posmaruj skyrem lub sosem, ułóż gorące paski mięsa, dodaj warzywa, polej ketchupem i zwiń."
+  ],
+  "tips": [
+    "Pieczenie w wyższej temperaturze (215°C) przez krótszy czas zapobiega wysuszeniu indyka i tworzy chrupiące brzegi.",
+    "Przygotowanie wieczorem: możesz wymieszać mięso z przyprawami lub nawet upiec je dzień wcześniej – na zimno lub po szybkim odgrzaniu smakuje równie dobrze.",
+    "Opcja do pracy: zawiń gotowego wrapa w papier do pieczenia lub folię aluminiową. Jeśli zabierasz go na później, warzywa o dużej zawartości wody (pomidor, ogórek) możesz spakować osobno w pojemniczku, aby placek nie nasiąkł wilgocią."
+  ],
+  "tags": [
+    "kebab",
+    "indyk",
+    "tortilla",
+    "do pracy",
+    "kolacja",
+    "łatwe",
+    "wysokobiałkowe",
+    "meal prep"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.8,
+    "lightness": 0.7
+  },
+  "editorialPriority": 75,
+  "status": "draft"
+}

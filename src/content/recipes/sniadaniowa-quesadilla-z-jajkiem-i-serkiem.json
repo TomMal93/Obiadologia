@@ -1,0 +1,129 @@
+{
+  "id": "recipe_018",
+  "slug": "sniadaniowa-quesadilla-z-jajkiem-i-serkiem",
+  "title": "Śniadaniowa quesadilla z jajkiem duszona pod przykryciem",
+  "description": "Sycące śniadanie z patelni, w którym jajko powoli ścina się wewnątrz zamkniętej tortilli, a sery całkowicie topią, tworząc chrupiącą i zwartą całość.",
+  "image": null,
+  "preparationMinutes": 15,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Tortilla pszenna",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Jajko (rozmiar L)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Ser żółty w plastrach (np. gouda lub cheddar)",
+      "amount": 3,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Serek topiony / śmietankowy (w trójkąciku)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Szynka w plastrach",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Czerwona cebula",
+      "amount": 0.15,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Szczypiorek",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Masło do smażenia",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Sól i świeżo mielony pieprz",
+      "amount": 2,
+      "unit": "g",
+      "measure": "metric"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-skladniki",
+      "text": "Roztrzep jajko widelcem ze szczyptą soli i pieprzu. Pokrój cienki plaster cebuli w drobną kostkę i posiekaj szczypiorek.",
+      "stepText": "Roztrzep jajko ze szczyptą soli i pieprzu, posiekaj cebulę oraz szczypiorek.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-patelnie",
+      "text": "Rozgrzej patelnię na minimalnym ogniu i przygotuj pokrywkę.",
+      "stepText": "Rozgrzej patelnię na minimalnym ogniu i rozpuść odrobinę masła.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Na dnie patelni rozpuść masło i połóż pierwszy placek tortilli.",
+    "Wylej na placek roztrzepane jajko i delikatnie rozprowadź je widelcem po całej powierzchni.",
+    "Równomiernie rozłóż kawałki serka w trójkąciku, plastry sera żółtego, szynkę, posiekaną cebulę oraz szczypiorek.",
+    "Przykryj całość drugim plackiem tortilli i lekko go dociśnij.",
+    "Przykryj patelnię szczelną pokrywką i smaż na minimalnym ogniu przez około 7–10 minut, kontrolując spód, aż jajko pod wpływem pary w środku się zetnie, a ser rozpuści i sklei placki.",
+    "Zdejmij pokrywkę, ostrożnie obróć quesadillę na drugą stronę (najwygodniej zsuwając ją na talerz) i dosmażaj bez przykrycia przez 2–3 minuty do uzyskania chrupkości.",
+    "Zdejmij danie na deskę, odczekaj minutę, przekrój na 4 trójkąty i podawaj od razu."
+  ],
+  "stepsOnly": [
+    "Roztrzep jajko w kubku ze szczyptą soli i pieprzu, a cebulę oraz szczypiorek drobno posiekaj.",
+    "Na patelni z rozpuszczonym masłem na minimalnym ogniu połóż pierwszy placek tortilli, wylej na niego jajko i rozprowadź widelcem.",
+    "Rozłóż kawałki serka w trójkąciku, plastry sera, szynkę, cebulę i szczypiorek, po czym przykryj drugim plackiem tortilli.",
+    "Przykryj patelnię pokrywką i trzymaj na minimalnym ogniu przez 7–10 minut, aż jajko w środku się zetnie pod wpływem pary, a ser stopi.",
+    "Obróć na drugą stronę i dosmażaj bez przykrycia przez 2–3 minuty na złocisty kolor i chrupkość.",
+    "Przełóż na deskę, pokrój na trójkąty i zjedz na ciepło."
+  ],
+  "tips": [
+    "Kluczem jest minimalny płomień – zbyt duży ogień spali dolną tortillę zanim jajko i para w środku zdążą ściąć masę.",
+    "Do obracania quesadilli najlepiej użyć dużego płaskiego talerza: zsuń na niego quesadillę i energicznym ruchem odwróć z powrotem na patelnię."
+  ],
+  "tags": [
+    "śniadanie",
+    "quesadilla",
+    "jajka",
+    "tortilla",
+    "ser"
+  ],
+  "mealTimes": [
+    "breakfast"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.25,
+    "lightness": 0.6
+  },
+  "editorialPriority": 60,
+  "status": "published"
+}

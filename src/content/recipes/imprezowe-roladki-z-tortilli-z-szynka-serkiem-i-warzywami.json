@@ -1,0 +1,141 @@
+{
+  "id": "recipe_003",
+  "slug": "imprezowe-roladki-z-tortilli-z-szynka-serkiem-i-warzywami",
+  "title": "Imprezowe roladki z tortilli z szynką, serkiem i chrupiącymi warzywami",
+  "description": "Ekspresowa i efektowna przekąska na zimno. Placki tortilli posmarowane kremowym serkiem ziołowym, zawinięte z delikatną szynką, chrupiącą papryką, ogórkiem i opcjonalną zieleniną, a następnie pokrojone w estetyczne ślimaczki.",
+  "image": null,
+  "preparationMinutes": 15,
+  "difficulty": "easy",
+  "servings": 6,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Placki tortilli pszennej (duże, ok. 25-30 cm)",
+      "amount": 3,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Kremowy serek śmietankowy (np. typu almette, philadelphia lub ziołowy)",
+      "amount": 200,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 25
+      },
+      "measure": "both"
+    },
+    {
+      "category": "meat",
+      "name": "Szynka w cienkich plastrach (np. drobiowa, konserwowa lub prosciutto cotto)",
+      "amount": 150,
+      "unit": "g",
+      "household": {
+        "unit": "slice",
+        "metricAmount": 15
+      },
+      "measure": "household"
+    },
+    {
+      "category": "produce",
+      "name": "Papryka czerwona",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Ogórek szklarniowy (długi)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Świeży szpinak baby lub rukola (opcjonalnie)",
+      "amount": 50,
+      "unit": "g",
+      "gramsPerCup": 25,
+      "measure": "household"
+    },
+    {
+      "category": "dairy",
+      "name": "Ser żółty w cienkich plastrach (opcjonalnie)",
+      "amount": 100,
+      "unit": "g",
+      "household": {
+        "unit": "slice",
+        "metricAmount": 20
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Świeżo mielony pieprz",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 2
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-warzywa-wczesniej",
+      "text": "Paprykę i ogórka pokrój w bardzo cienkie słupki (julienne). Zawiń całe tortille w folię spożywczą i schłodź w lodówce przed krojeniem.",
+      "stepText": "Paprykę oczyść z gniazd nasiennych i pokrój w bardzo cienkie, podłużne paski. Ogórka przekrój wzdłuż, usuń pestki łyżeczką i również pokrój w cienkie słupki. Jeśli używasz szpinaku lub rukoli, umyj i dokładnie osusz liście.",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-deske-i-folie",
+      "text": "Przygotuj dużą deskę, ostry nóż z gładkim ostrzem oraz folię spożywczą do ciasnego zawinięcia rulonów.",
+      "stepText": "Rozłóż na blacie folię spożywczą lub deskę do krojenia i przygotuj bardzo ostry nóż.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Każdy placek tortilli równomiernie posmaruj grubszą warstwą serka śmietankowego aż po same brzegi i oprósz odrobiną świeżo mielonego pieprzu.",
+    "Na serku ułóż plastry szynki, sera żółtego oraz opcjonalnie listki szpinaku lub rukoli. Na jednym z brzegów ułóż wzdłuż paski chrupiącej papryki i ogórka.",
+    "Zwiń tortille bardzo ciasno w zwarte rulony. Owiń każdy rulon ściśle folią spożywczą i wstaw do lodówki na minimum 20-30 minut, aby stężały.",
+    "Przed podaniem zdejmij folię, odetnij nierówne końcówki, a resztę pokrój ostrym nożem na grube plastry (ok. 2–3 cm). Ułóż na płaskim półmisku przekrojem do góry."
+  ],
+  "stepsOnly": [
+    "Paprykę oczyść i pokrój w bardzo cienkie słupki. Ogórka przekrój wzdłuż, wydrąż miękkie gniazda nasienne i pokrój w cienkie paski. Jeśli dodajesz szpinak lub rukolę, umyj i dokładnie osusz liście.",
+    "Rozłóż placki tortilli na blacie i każdy dokładnie posmaruj serkiem śmietankowym (od brzegu do brzegu), po czym posyp odrobiną pieprzu.",
+    "Na serku rozłóż plastry szynki, sera żółtego oraz opcjonalnie warstwę liści szpinaku. Wzdłuż dolnej krawędzi ułóż rządek pasków papryki i ogórka.",
+    "Zwiń placki w bardzo ciasne, zwarte rulony. Jeśli masz czas, owiń je folią spożywczą i schłodź 15–20 minut w lodówce, aby łatwiej się kroiły.",
+    "Odetnij nieregularne końce każdego rulonu, a resztę pokrój ostrym nożem w równe plastry o grubości ok. 2,5 cm.",
+    "Ułóż roladki na paterze lub desce przekrojem do góry i podawaj gościom."
+  ],
+  "tips": [
+    "Schłodzenie zwiniętych rulonów w folii spożywczej przez co najmniej 20 minut w lodówce sprawia, że serek tężeje, a roladki kroją się perfekcyjnie bez rozjeżdżania i deformowania kształtu.",
+    "Wydrążenie nasion z ogórka jest kluczowe – zapobiega rozmoczeniu tortilli, dzięki czemu przekąska pozostaje idealnie świeża i chrupka przez całą imprezę.",
+    "Do krojenia najlepiej używać ostrego noża bez ząbków, przecierając go co kilka cięć ręcznikiem papierowym dla czystego przekroju."
+  ],
+  "tags": [
+    "przekąski",
+    "tortilla",
+    "na imprezę",
+    "finger food",
+    "zimna płyta",
+    "szybkie przekąski"
+  ],
+  "mealTimes": [
+    "dinner",
+    "lunch"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [
+    "guests"
+  ],
+  "mapPosition": {
+    "pace": 0.2,
+    "lightness": 0.5
+  },
+  "editorialPriority": 70,
+  "status": "draft"
+}

@@ -1,0 +1,94 @@
+{
+  "id": "recipe_skyr_owocowy_lunchbox",
+  "slug": "szybki-skyr-waniliowy-z-owocami-i-nerkowcami",
+  "title": "Błyskawiczny skyr waniliowy z owocami i nerkowcami",
+  "description": "Ekspresowy, wysokobiałkowy posiłek do pracy w formule shake & go bez brudzenia deski do krojenia. Zrób w 3 minuty rano lub przygotuj wieczór wcześniej.",
+  "image": null,
+  "preparationMinutes": 3,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "dairy",
+      "name": "Skyr waniliowy (duże opakowanie)",
+      "amount": 450,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "Banan",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Borówki",
+      "amount": 100,
+      "unit": "g",
+      "household": {
+        "unit": "handful",
+        "metricAmount": 50
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Orzechy nerkowca",
+      "amount": 30,
+      "unit": "g",
+      "household": {
+        "unit": "handful",
+        "metricAmount": 30
+      },
+      "measure": "both"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "szybkie-mycie-owocow",
+      "text": "Umyj borówki pod bieżącą wodą przed rozpoczęciem przygotowania.",
+      "stepText": "Umyj borówki pod bieżącą wodą.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Wsyp borówki bezpośrednio do dużego pojemnika na lunch, a obranego banana połam w dłoniach na mniejsze kawałki.",
+    "Wsyp garść nerkowców.",
+    "Na wierzch wyłóż całe opakowanie skyru waniliowego (450 g), zamknij szczelnie pojemnik i energicznie potrząśnij (shake), aż składniki równomiernie się połączą."
+  ],
+  "stepsOnly": [
+    "Umyj borówki i wsyp je bezpośrednio do dużego pojemnika na lunch, a obranego banana połam w dłoniach na mniejsze kawałki.",
+    "Dodaj garść orzechów nerkowca i wyłóż 450 g waniliowego skyru.",
+    "Zamknij szczelnie pokrywkę i energicznie potrząśnij pojemnikiem."
+  ],
+  "tips": [
+    "Zamiast banana i borówek możesz użyć jednej gruszki albo jednego jabłka.",
+    "Brak deski do krojenia i potrząsanie w zamkniętym pojemniku (shake) skracają czas przygotowania i zmywania do absolutnego minimum.",
+    "Przygotowanie wieczorem sprawia, że nerkowce przyjemnie miękną w skyrze, a całość jest rano od razu gotowa do wrzucenia do torby."
+  ],
+  "tags": [
+    "praca",
+    "szybkie",
+    "łatwe",
+    "meal-prep",
+    "wysokobiałkowe",
+    "lunchbox",
+    "bez-gotowania"
+  ],
+  "mealTimes": [
+    "lunch",
+    "breakfast"
+  ],
+  "tempos": [
+    "now",
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.05,
+    "lightness": 0.35
+  },
+  "editorialPriority": 80,
+  "status": "published"
+}

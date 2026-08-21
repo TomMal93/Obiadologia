@@ -1,0 +1,157 @@
+{
+  "id": "recipe_019",
+  "slug": "soczyste-papryki-faszerowane-miesem-i-cukinia-z-ziemniakami",
+  "title": "Soczyste papryki faszerowane mięsem i cukinią z pieczonymi ziemniakami",
+  "description": "Aromatyczne papryki nadziane soczystym mięsem mielonym wymieszanym ze startą cukinią, cebulą i czosnkiem pod pierzynką z sera, pieczone na jednej blasze ze złocistymi ziemniaczkami.",
+  "image": null,
+  "preparationMinutes": 45,
+  "difficulty": "easy",
+  "servings": 4,
+  "ingredients": [
+    {
+      "category": "produce",
+      "name": "Papryka (duże, stabilne sztuki do napełnienia)",
+      "amount": 4,
+      "unit": "szt"
+    },
+    {
+      "category": "meat",
+      "name": "Mięso mielone (wieprzowo-wołowe, z łopatki lub z indyka)",
+      "amount": 500,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "Cukinia (do starcia w farsz)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Ziemniaki",
+      "amount": 800,
+      "unit": "g"
+    },
+    {
+      "category": "produce",
+      "name": "Cebula",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Czosnek",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "dairy",
+      "name": "Ser żółty lub mozzarella (starty)",
+      "amount": 100,
+      "unit": "g"
+    },
+    {
+      "category": "pantry",
+      "name": "Koncentrat pomidorowy (lub passata)",
+      "amount": 30,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Oliwa z oliwek",
+      "amount": 30,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Zioła (oregano, majeranek lub zioła prowansalskie)",
+      "amount": 5,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Sól, pieprz czarny, słodka papryka",
+      "amount": 8,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 4
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-farsz-z-cukinia",
+      "text": "Zetrzyj cukinię, odciśnij nadmiar soku i połącz z mięsem mielonym, cebulą, czosnkiem, koncentratem oraz przyprawami. Schłodź w lodówce.",
+      "stepText": "Cukinię zetrzyj na tarce o grubych oczkach, lekko posól, odczekaj 3 minuty i mocno odciśnij w dłoniach z nadmiaru soku. Cebulę drobno posiekaj, czosnek przeciśnij przez praskę. Połącz mięso z odciśniętą cukinią, cebulą, czosnkiem, koncentratem i przyprawami.",
+      "timing": "day_before",
+      "beforeStep": 1
+    },
+    {
+      "id": "przygotuj-warzywa-i-piekarnik",
+      "text": "Rozgrzej piekarnik, wydrąż papryki i przygotuj ziemniaki z oliwą.",
+      "stepText": "Rozgrzej piekarnik do 190°C (termoobieg). Odetnij wierzchy z papryk (czapeczki) i usuń nasiona. Ziemniaki pokrój w łódeczki, wymieszaj z 2 łyżkami oliwy, solą, pieprzem i ziołami.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Przygotowane papryki napełnij ściśle mięsno-cukiniowym farszem i ułóż pionowo na dużej blasze wyłożonej papierem do pieczenia.",
+    "Wokół papryk równomiernie rozłóż doprawione łódeczki ziemniaków.",
+    "Przykryj papryki odciętymi czapeczkami i wstaw blachę do piekarnika na ok. 35 minut.",
+    "Zdejmij czapeczki, posyp wierzch farszu startym serem i zapiekaj jeszcze przez 10 minut, aż ser się stopi i zrumieni, a ziemniaki będą chrupiące.",
+    "Podawaj gorące prosto z pieca."
+  ],
+  "stepsOnly": [
+    "Rozgrzej piekarnik do 190°C z termoobiegiem i przygotuj blachę z papierem do pieczenia.",
+    "Ziemniaki pokrój w równe łódeczki, wymieszaj z 2 łyżkami oliwy, solą, pieprzem i ziołami, a następnie wyłóż po bokach blachy.",
+    "Z papryk odetnij czapeczki i usuń gniazda nasienne.",
+    "Cukinię zetrzyj na grubych oczkach tarki i mocno odciśnij w dłoniach z nadmiaru wody.",
+    "W misce wymieszaj mięso mielone, odciśniętą cukinię, posiekaną cebulę, przeciśnięty czosnek, koncentrat pomidorowy, sól, pieprz i oregano.",
+    "Napełnij papryki farszem, ustaw pionowo między ziemniakami i przykryj czapeczkami.",
+    "Piecz przez 35 minut, po czym zdejmij czapeczki, posyp wierzch serem i dopiekaj jeszcze 8–10 minut do zrumienienia sera."
+  ],
+  "tips": [
+    "Starta cukinia to genialny dodatek do mięsa mielonego – oddaje wilgoć podczas pieczenia, dzięki czemu farsz nigdy nie jest suchy ani zbity.",
+    "Pamiętaj o mocnym odciśnięciu startej cukinii w dłoniach przed dodaniem do mięsa, aby farsz nie stał się zbyt wodnisty.",
+    "Pieczenie papryk pod własnymi czapeczkami przez pierwsze 35 minut zamyka parę w środku i gwarantuje maksymalną soczystość."
+  ],
+  "tags": [
+    "papryka faszerowana",
+    "cukinia",
+    "mięso mielone",
+    "danie z piekarnika",
+    "obiad",
+    "ziemniaki"
+  ],
+  "mealTimes": [
+    "dinner",
+    "lunch"
+  ],
+  "tempos": [
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.45,
+    "lightness": 0.45
+  },
+  "editorialPriority": 70,
+  "status": "draft"
+}

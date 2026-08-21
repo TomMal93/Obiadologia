@@ -1,0 +1,93 @@
+{
+  "id": "recipe_015",
+  "slug": "prosta-owsianka-z-jablkiem-i-cynamonem",
+  "title": "Prosta owsianka z jabłkiem i cynamonem",
+  "description": "Błyskawiczna i pożywna owsianka jednogarnkowa gotowana na wodzie z dodatkiem startego lub drobno pokrojonego jabłka i cynamonu. Proste, naturalne śniadanie dla malucha.",
+  "image": null,
+  "preparationMinutes": 10,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Płatki owsiane",
+      "amount": 40,
+      "unit": "g",
+      "gramsPerCup": 100,
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Wrzątek",
+      "amount": 200,
+      "unit": "ml",
+      "measure": "metric"
+    },
+    {
+      "category": "produce",
+      "name": "Słodkie jabłko",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Cynamon mielony",
+      "amount": 1,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 1
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-jablko",
+      "text": "Obierz jabłko ze skórki i zetrzyj na tarce o grubych oczkach lub pokrój w drobną kostkę.",
+      "stepText": "Obierz jabłko ze skórki i zetrzyj na tarce lub drobno pokrój.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Do małego garnka wsyp płatki owsiane i zalej je wrzątkiem.",
+    "Wstaw na mały ogień i gotuj przez 2–3 minuty, aż płatki lekko napęcznieją.",
+    "Dodaj obrane, starte (lub drobno pokrojone) jabłko i gotuj całość jeszcze przez 2–3 minuty, aż wszystko całkowicie zmięknie i zgęstnieje.",
+    "Zdejmij z ognia, przełóż do miseczki, posyp szczyptą cynamonu i ostudź przed podaniem dziecku."
+  ],
+  "stepsOnly": [
+    "Wsyp płatki owsiane do garnka, zalej wrzątkiem i gotuj na małym ogniu przez 2–3 minuty.",
+    "Dodaj obrane i starte (lub drobno pokrojone) jabłko, po czym gotuj jeszcze ok. 2–3 minuty do miękkości.",
+    "Przełóż owsiankę do miseczki, oprósz cynamonem i podaj po lekkim przestudzeniu."
+  ],
+  "tips": [
+    "Starcie jabłka na tarce sprawia, że zmięknie ono błyskawicznie w trakcie gotowania owsianki.",
+    "Jeśli owsianka wyjdzie za gęsta, wystarczy dolać odrobinę ciepłej wody lub ulubionego mleka tuż przed podaniem."
+  ],
+  "tags": [
+    "dla dzieci",
+    "śniadanie",
+    "owsianka",
+    "jednogarnkowe",
+    "bez cukru",
+    "jabłko"
+  ],
+  "mealTimes": [
+    "breakfast"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.1,
+    "lightness": 0.3
+  },
+  "editorialPriority": 85,
+  "status": "draft"
+}

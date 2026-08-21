@@ -19,10 +19,24 @@ describe('Recipe schema', () => {
     expect(parseRecipes(testRecipes)).toHaveLength(5);
   });
 
-  it('validates the published application catalog', () => {
-    expect(catalog).toHaveLength(2);
-    expect(catalog.map((r) => r.slug)).toContain('szakszuka-z-chorizo-i-cukinia');
-    expect(catalog.map((r) => r.slug)).toContain('domowe-spaghetti-bolognese');
+  it('validates the application recipe catalog', () => {
+    expect(catalog).toHaveLength(20);
+
+    const publishedSlugs = catalog
+      .filter(({ status }) => status === 'published')
+      .map(({ slug }) => slug);
+
+    expect(publishedSlugs).toHaveLength(6);
+    expect(publishedSlugs).toEqual(
+      expect.arrayContaining([
+        'domowe-spaghetti-bolognese',
+        'ekspresowa-salatka-makaronowa-z-tunczykiem-shake-go',
+        'sniadaniowa-quesadilla-z-jajkiem-i-serkiem',
+        'szakszuka-z-chorizo-i-cukinia',
+        'szybki-skyr-waniliowy-z-owocami-i-nerkowcami',
+        'wrap-z-wedzonym-lososiem-skyrem-i-ogorkiem',
+      ]),
+    );
   });
 
   it('provides natural household measures for the chorizo shakshuka', () => {

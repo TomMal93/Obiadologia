@@ -1,0 +1,119 @@
+{
+  "id": "recipe_002",
+  "slug": "delikatne-leniwe-kopytka-twarogowe",
+  "title": "Delikatne kopytka twarogowe (leniwe)",
+  "description": "Klasyczne, mięciutkie kopytka z twarogu i mąki, idealne dla dzieci. Proste w przygotowaniu i doskonałe do podania na ciepło z masłem lub musem owocowym.",
+  "image": null,
+  "preparationMinutes": 20,
+  "difficulty": "easy",
+  "servings": 2,
+  "ingredients": [
+    {
+      "category": "dairy",
+      "name": "Twaróg półtłusty",
+      "amount": 250,
+      "unit": "g",
+      "measure": "metric"
+    },
+    {
+      "category": "produce",
+      "name": "Jajko (rozmiar M)",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "grains",
+      "name": "Mąka pszenna lub orkiszowa jasna",
+      "amount": 70,
+      "unit": "g",
+      "gramsPerCup": 150,
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "grains",
+      "name": "Mąka ziemniaczana",
+      "amount": 15,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "dairy",
+      "name": "Masło (do podania)",
+      "amount": 10,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "household"
+    },
+    {
+      "category": "pantry",
+      "name": "Cynamon mielony (opcjonalnie do posypania)",
+      "amount": 1,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 1
+      },
+      "measure": "household"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "zagotuj-wode",
+      "text": "Wstaw duży garnek z lekko osoloną wodą na średni ogień przed formowaniem kopytek.",
+      "stepText": "Wstaw garnek z wodą na ogień i doprowadź do wrzenia.",
+      "timing": "just_in_time",
+      "beforeStep": 2
+    }
+  ],
+  "steps": [
+    "W misce rozgnieć twaróg widelcem lub praską na gładką masę, dodaj jajko i wymieszaj.",
+    "Wsyp mąkę pszenną (lub orkiszową) oraz mąkę ziemniaczaną. Zagnieć szybko miękkie, lekko klejące ciasto (staraj się nie dosypywać zbyt dużo mąki, by kluseczki pozostały miękkie).",
+    "Wyłóż ciasto na podsypaną mąką stolicę lub blat, uformuj wałeczek o grubości ok. 2 cm i lekko go spłaszcz dłonią.",
+    "Krój wałeczek pod skosem nożem na małe, 1,5–2 cm kawałki.",
+    "Wrzucaj kopytka partiami do delikatnie gotującej się wody. Gotuj na małym ogniu przez ok. 1–2 minuty od momentu wypłynięcia na powierzchnię.",
+    "Wyłów łyżką cedzakową na talerz, dodaj odrobinę masła i ostudź przed podaniem dziecku."
+  ],
+  "stepsOnly": [
+    "Wstaw garnek z wodą na ogień. W misce rozgnieć twaróg z jajkiem, dodaj obie mąki i zagnieć jednolite, miękkie ciasto.",
+    "Na podsypanym mąką blacie uformuj wałeczek, lekko go spłaszcz i pokrój nożem pod skosem na małe kluseczki.",
+    "Wrzucaj kopytka do wrzątku i gotuj na małym ogniu przez ok. 1–2 minuty od wypłynięcia.",
+    "Wyjmij łyżką cedzakową, wymieszaj z odrobiną masła i podaj z owocami lub cynamonem."
+  ],
+  "tips": [
+    "Dodatek mąki ziemniaczanej nadaje kopytkom aksamitną, zwartą, ale wciąż delikatną konsystencję.",
+    "Nie wyrabiaj ciasta zbyt długo i nie dodawaj nadmiaru mąki, bo kluski staną się twarde i gumowate."
+  ],
+  "tags": [
+    "dla dzieci",
+    "kolacja",
+    "obiad",
+    "twaróg",
+    "kopytka",
+    "leniwe"
+  ],
+  "mealTimes": [
+    "dinner",
+    "lunch"
+  ],
+  "tempos": [
+    "now"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.3,
+    "lightness": 0.5
+  },
+  "editorialPriority": 85,
+  "status": "draft"
+}

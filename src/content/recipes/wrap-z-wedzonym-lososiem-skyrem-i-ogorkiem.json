@@ -1,0 +1,114 @@
+{
+  "id": "recipe_wrap_losos_skyr_ogorek",
+  "slug": "wrap-z-wedzonym-lososiem-skyrem-i-ogorkiem",
+  "title": "Wrapy z wędzonym łososiem, skyrem i ogórkiem",
+  "description": "Błyskawiczne, lekkie wrapy z wędzonym łososiem, chrupiącym ogórkiem i sosem ze skyru. Dwie sztuki jako sycąca, wysokobiałkowa porcja na zimno do pracy.",
+  "image": null,
+  "preparationMinutes": 5,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Placki tortilli pszennej lub pełnoziarnistej",
+      "amount": 2,
+      "unit": "szt"
+    },
+    {
+      "category": "meat",
+      "name": "Łosoś wędzony na zimno (w plastrach)",
+      "amount": 100,
+      "unit": "g"
+    },
+    {
+      "category": "dairy",
+      "name": "Skyr naturalny",
+      "amount": 50,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 25
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Ogórek świeży",
+      "amount": 1,
+      "unit": "szt"
+    },
+    {
+      "category": "produce",
+      "name": "Sok z cytryny",
+      "amount": 5,
+      "unit": "ml",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Czosnek granulowany",
+      "amount": 2,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 2
+      },
+      "measure": "both"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "przygotuj-sos-ze-skyru",
+      "text": "Wymieszaj skyr z czosnkiem granulowanym, sokiem z cytryny oraz szczyptą świeżo mielonego pieprzu.",
+      "stepText": "Wymieszaj skyr z czosnkiem, sokiem z cytryny i pieprzem na sos.",
+      "timing": "just_in_time",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Ogórka przekrój wzdłuż na cienkie paski lub słupki.",
+    "Rozłóż dwa placki tortilli, posmaruj je równomiernie sosem ze skyru, po czym rozdziel na nie plastry wędzonego łososia (po 50 g na placek) i słupki ogórka.",
+    "Zagnij boki każdego placka do środka, zwiń ciasno w dwa rulony i przekrój na pół."
+  ],
+  "stepsOnly": [
+    "Wymieszaj skyr z sokiem z cytryny, czosnkiem granulowanym i pieprzem.",
+    "Pokrój ogórka w cienkie paski.",
+    "Posmaruj dwa placki tortilli sosem, rozłóż po 50 g łososia na każdy oraz ogórka.",
+    "Zwiń oba placki ciasno w rulony i przekrój na pół."
+  ],
+  "tips": [
+    "Jeśli przygotowujesz wrapy wieczorem, wykrój wodnisty środek ogórka z pestkami, a gotowe rulony ciasno owiń papierem śniadaniowym lub folią i przechowaj przez noc w lodówce.",
+    "Zamiast kroić ogórka nożem, możesz użyć obieraczki do warzyw i ściąć go w bardzo cienkie wstążki, które łatwiej się zwijają.",
+    "100 g wędzonego łososia zapewnia optymalną słoność całego dania, więc nie trzeba dodawać soli do sosu."
+  ],
+  "tags": [
+    "do pracy",
+    "na zimno",
+    "łatwe",
+    "szybkie",
+    "łosoś",
+    "wrap",
+    "wysokobiałkowe",
+    "lunchbox"
+  ],
+  "mealTimes": [
+    "lunch",
+    "dinner",
+    "breakfast"
+  ],
+  "tempos": [
+    "now",
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.05,
+    "lightness": 0.35
+  },
+  "editorialPriority": 80,
+  "status": "published"
+}

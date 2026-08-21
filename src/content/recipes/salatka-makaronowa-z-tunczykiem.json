@@ -1,0 +1,136 @@
+{
+  "id": "recipe_salatka_makaronowa_shake_go",
+  "slug": "ekspresowa-salatka-makaronowa-z-tunczykiem-shake-go",
+  "title": "Ekspresowa sałatka makaronowa z tuńczykiem (Shake & Go)",
+  "description": "Błyskawiczna, wysokobiałkowa sałatka makaronowa bez brudzenia deski i misek. Wszystkie składniki lądują prosto w lunchboxie – zamknij, potrząśnij i gotowe do pracy.",
+  "image": null,
+  "preparationMinutes": 3,
+  "difficulty": "easy",
+  "servings": 1,
+  "ingredients": [
+    {
+      "category": "grains",
+      "name": "Makaron ugotowany wcześniej (np. świderki lub kokardki)",
+      "amount": 160,
+      "unit": "g"
+    },
+    {
+      "category": "meat",
+      "name": "Tuńczyk w sosie własnym (odsączony)",
+      "amount": 120,
+      "unit": "g"
+    },
+    {
+      "category": "dairy",
+      "name": "Skyr naturalny",
+      "amount": 150,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 25
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Kukurydza konserwowa (odsączona)",
+      "amount": 60,
+      "unit": "g",
+      "household": {
+        "unit": "tablespoon",
+        "metricAmount": 15
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Pomidorki koktajlowe",
+      "amount": 5,
+      "unit": "szt"
+    },
+    {
+      "category": "pantry",
+      "name": "Musztarda delikatesowa lub dijon",
+      "amount": 10,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 10
+      },
+      "measure": "both"
+    },
+    {
+      "category": "pantry",
+      "name": "Czosnek granulowany i suszony koperek",
+      "amount": 3,
+      "unit": "g",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 3
+      },
+      "measure": "both"
+    },
+    {
+      "category": "produce",
+      "name": "Sok z cytryny",
+      "amount": 5,
+      "unit": "ml",
+      "household": {
+        "unit": "teaspoon",
+        "metricAmount": 5
+      },
+      "measure": "both"
+    }
+  ],
+  "preparation": [
+    {
+      "id": "ugotuj-makaron-wczesniej",
+      "text": "Ugotuj makaron wcześniej, ostudź go i przechowaj w lodówce w szczelnym pojemniku.",
+      "stepText": "Ugotuj makaron al dente zgodnie z instrukcją na opakowaniu, odcedź, ostudź i odważ 160 g.",
+      "timing": "day_before",
+      "beforeStep": 1
+    }
+  ],
+  "steps": [
+    "Do szczelnego pojemnika na lunch wrzuć bezpośrednio ugotowany makaron, odsączonego tuńczyka, kukurydzę oraz umyte pomidorki koktajlowe w całości.",
+    "Na wierzch dodaj skyr naturalny, musztardę, sok z cytryny, czosnek granulowany, suszony koperek oraz szczyptę soli i pieprzu.",
+    "Szczelnie zamknij pokrywkę lunchboxa i energicznie nim potrząsaj (shake) przez kilkanaście sekund, aż skyr i przyprawy równomiernie oblepią makaron i dodatki."
+  ],
+  "stepsOnly": [
+    "Ugotuj makaron al dente zgodnie z instrukcją na opakowaniu, odcedź, przelej zimną wodą i dokładnie ostudź; odważ 160 g.",
+    "Wrzuć do lunchboxa makaron, tuńczyka, kukurydzę i całe pomidorki koktajlowe.",
+    "Dodaj skyr, musztardę, sok z cytryny i przyprawy.",
+    "Zamknij szczelnie pojemnik i energicznie nim potrząśnij (shake) do połączenia składników."
+  ],
+  "tips": [
+    "Całą sałatkę możesz złożyć wieczorem i przechować przez noc w szczelnym pojemniku w lodówce — rano będzie gotowa do zabrania.",
+    "Brak konieczności krojenia pomidorków i użycie suszonych ziół redukuje czas przygotowania do 3 minut i eliminuje zmywanie deski.",
+    "Upewnij się, że pojemnik ma uszczelkę i solidne zatrzaski przed rozpoczęciem potrząsania.",
+    "Jeśli makaron był w lodówce i lekko skleił się przed przygotowaniem, potrząsanie ze skyrem natychmiast go rozdzieli."
+  ],
+  "tags": [
+    "do pracy",
+    "łatwe",
+    "szybkie",
+    "na zimno",
+    "kolacja",
+    "shake-and-go",
+    "wysokobiałkowe",
+    "lunchbox"
+  ],
+  "mealTimes": [
+    "dinner",
+    "lunch"
+  ],
+  "tempos": [
+    "now",
+    "today"
+  ],
+  "occasions": [],
+  "mapPosition": {
+    "pace": 0.05,
+    "lightness": 0.4
+  },
+  "editorialPriority": 80,
+  "status": "published"
+}
