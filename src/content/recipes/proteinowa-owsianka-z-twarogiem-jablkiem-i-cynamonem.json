@@ -3,7 +3,10 @@
   "slug": "proteinowa-owsianka-z-twarogiem-jablkiem-i-cynamonem",
   "title": "Proteinowa owsianka z twarogiem, jabłkiem i cynamonem",
   "description": "Jednogarnkowa, pożywna owsianka gotowana z jabłkiem i połączona z delikatnym twarogiem lub serkiem ricotta. Naturalne źródło białka dla dwulatka bez odżywek i bez dodatku cukru.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/proteinowa-owsianka-z-twarogiem-jablkiem-i-cynamonem.webp",
+    "alt": "Miseczka owsianki z kawałkami jabłka, twarogiem, cynamonem i porcją masła orzechowego"
+  },
   "preparationMinutes": 10,
   "difficulty": "easy",
   "servings": 1,
@@ -112,5 +115,5 @@
     "lightness": 0.4
   },
   "editorialPriority": 90,
-  "status": "draft"
+  "status": "published"
 }

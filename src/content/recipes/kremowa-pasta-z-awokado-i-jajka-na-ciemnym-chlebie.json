@@ -3,7 +3,10 @@
   "slug": "kremowa-pasta-z-awokado-i-jajka-na-ciemnym-chlebie",
   "title": "Kremowa pasta z awokado i jajka na ciemnym chlebie",
   "description": "Aksamitna i pożywna pasta śniadaniowa na bazie dojrzałego awokado i ugotowanego jajka, podana na miękkich kromkach ciemnego pieczywa. Doskonałe źródło zdrowych tłuszczów dla malucha.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/kremowa-pasta-z-awokado-i-jajka-na-ciemnym-chlebie.webp",
+    "alt": "Kromki ciemnego chleba pokrojone w paski i trójkąty, posmarowane kremową pastą z awokado i jajka"
+  },
   "preparationMinutes": 12,
   "difficulty": "easy",
   "servings": 1,
@@ -113,5 +116,5 @@
     "lightness": 0.5
   },
   "editorialPriority": 88,
-  "status": "draft"
+  "status": "published"
 }

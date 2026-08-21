@@ -3,7 +3,10 @@
   "slug": "ekspresowy-pieczony-kebab-z-indyka-w-tortilli",
   "title": "Ekspresowy pieczony kebab z indyka w tortilli",
   "description": "Soczyste paski mielonego indyka pieczone z przyprawami, podane w ciepłej tortilli z chrupiącymi warzywami i sosem na bazie skyru.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/ekspresowy-pieczony-kebab-z-indyka-w-tortilli.webp",
+    "alt": "Dwa przekrojone wrapy z pieczonym indykiem, świeżymi warzywami i kremowym sosem"
+  },
   "preparationMinutes": 25,
   "difficulty": "easy",
   "servings": 3,
@@ -186,5 +189,5 @@
     "lightness": 0.7
   },
   "editorialPriority": 75,
-  "status": "draft"
+  "status": "published"
 }

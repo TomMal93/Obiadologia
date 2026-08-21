@@ -3,7 +3,10 @@
   "slug": "kotlety-mielone-z-tluczonymi-ziemniakami",
   "title": "Kotlety mielone z tłuczonymi ziemniakami",
   "description": "Klasyk polskiego domowego obiadu – soczyste kotlety wieprzowe z chrupiącą skórką podane z tradycyjnymi tłuczonymi ziemniakami.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/kotlety-mielone-z-tluczonymi-ziemniakami.webp",
+    "alt": "Dwa rumiane kotlety mielone, w tym jeden przekrojony, podane z tłuczonymi ziemniakami i koperkiem"
+  },
   "preparationMinutes": 45,
   "difficulty": "easy",
   "servings": 4,
@@ -159,5 +162,5 @@
     "lightness": 0.65
   },
   "editorialPriority": 90,
-  "status": "draft"
+  "status": "published"
 }

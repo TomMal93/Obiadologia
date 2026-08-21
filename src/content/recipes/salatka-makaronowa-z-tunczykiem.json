@@ -3,7 +3,10 @@
   "slug": "ekspresowa-salatka-makaronowa-z-tunczykiem-shake-go",
   "title": "Ekspresowa sałatka makaronowa z tuńczykiem (Shake & Go)",
   "description": "Błyskawiczna, wysokobiałkowa sałatka makaronowa bez brudzenia deski i misek. Wszystkie składniki lądują prosto w lunchboxie – zamknij, potrząśnij i gotowe do pracy.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/ekspresowa-salatka-makaronowa-z-tunczykiem-shake-go.webp",
+    "alt": "Szklany lunchbox z kremową sałatką makaronową z tuńczykiem, kukurydzą i całymi pomidorkami koktajlowymi"
+  },
   "preparationMinutes": 3,
   "difficulty": "easy",
   "servings": 1,

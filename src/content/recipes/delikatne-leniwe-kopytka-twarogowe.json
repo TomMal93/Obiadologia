@@ -3,7 +3,10 @@
   "slug": "delikatne-leniwe-kopytka-twarogowe",
   "title": "Delikatne kopytka twarogowe (leniwe)",
   "description": "Klasyczne, mięciutkie kopytka z twarogu i mąki, idealne dla dzieci. Proste w przygotowaniu i doskonałe do podania na ciepło z masłem lub musem owocowym.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/delikatne-leniwe-kopytka-twarogowe.webp",
+    "alt": "Talerz delikatnych klusek leniwych polanych masłem i oprószonych cynamonem"
+  },
   "preparationMinutes": 20,
   "difficulty": "easy",
   "servings": 2,
@@ -115,5 +118,5 @@
     "lightness": 0.5
   },
   "editorialPriority": 85,
-  "status": "draft"
+  "status": "published"
 }

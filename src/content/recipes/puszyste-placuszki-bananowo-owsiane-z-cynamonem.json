@@ -3,7 +3,10 @@
   "slug": "puszyste-placuszki-bananowo-owsiane-z-cynamonem",
   "title": "Puszyste placuszki bananowo-owsiane z cynamonem",
   "description": "Naturalnie słodkie, delikatne i miękkie placuszki na bazie dojrzałego banana i płatków owsianych błyskawicznych. Idealne dla małych rączek, bez dodatku cukru.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/puszyste-placuszki-bananowo-owsiane-z-cynamonem.webp",
+    "alt": "Stos małych rumianych placuszków bananowo-owsianych ze świeżymi borówkami i malinami"
+  },
   "preparationMinutes": 25,
   "difficulty": "easy",
   "servings": 2,
@@ -121,5 +124,5 @@
     "lightness": 0.4
   },
   "editorialPriority": 90,
-  "status": "draft"
+  "status": "published"
 }

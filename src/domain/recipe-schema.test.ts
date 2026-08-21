@@ -22,21 +22,7 @@ describe('Recipe schema', () => {
   it('validates the application recipe catalog', () => {
     expect(catalog).toHaveLength(20);
 
-    const publishedSlugs = catalog
-      .filter(({ status }) => status === 'published')
-      .map(({ slug }) => slug);
-
-    expect(publishedSlugs).toHaveLength(6);
-    expect(publishedSlugs).toEqual(
-      expect.arrayContaining([
-        'domowe-spaghetti-bolognese',
-        'ekspresowa-salatka-makaronowa-z-tunczykiem-shake-go',
-        'sniadaniowa-quesadilla-z-jajkiem-i-serkiem',
-        'szakszuka-z-chorizo-i-cukinia',
-        'szybki-skyr-waniliowy-z-owocami-i-nerkowcami',
-        'wrap-z-wedzonym-lososiem-skyrem-i-ogorkiem',
-      ]),
-    );
+    expect(catalog.every(({ status }) => status === 'published')).toBe(true);
   });
 
   it('provides natural household measures for the chorizo shakshuka', () => {

@@ -3,7 +3,10 @@
   "slug": "soczyste-szaszlyki-drobiowe-z-pieczonymi-ziemniakami",
   "title": "Soczyste szaszłyki drobiowe z pieczonymi ziemniakami",
   "description": "Klasyczne, kolorowe szaszłyki z kurczaka i warzyw pieczone w aromatycznych ziołach, podane z chrupiącymi z zewnątrz i miękkimi w środku pieczonymi ziemniaczkami.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/soczyste-szaszlyki-drobiowe-z-pieczonymi-ziemniakami.webp",
+    "alt": "Szaszłyki z kawałkami kurczaka, papryką, cukinią i czerwoną cebulą podane z pieczonymi ziemniakami"
+  },
   "preparationMinutes": 45,
   "difficulty": "easy",
   "servings": 4,
@@ -148,5 +151,5 @@
     "lightness": 0.5
   },
   "editorialPriority": 50,
-  "status": "draft"
+  "status": "published"
 }

@@ -3,7 +3,10 @@
   "slug": "prosta-owsianka-z-jablkiem-i-cynamonem",
   "title": "Prosta owsianka z jabłkiem i cynamonem",
   "description": "Błyskawiczna i pożywna owsianka jednogarnkowa gotowana na wodzie z dodatkiem startego lub drobno pokrojonego jabłka i cynamonu. Proste, naturalne śniadanie dla malucha.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/prosta-owsianka-z-jablkiem-i-cynamonem.webp",
+    "alt": "Miseczka kremowej owsianki z miękkimi kawałkami jabłka oprószonej cynamonem"
+  },
   "preparationMinutes": 10,
   "difficulty": "easy",
   "servings": 1,
@@ -89,5 +92,5 @@
     "lightness": 0.3
   },
   "editorialPriority": 85,
-  "status": "draft"
+  "status": "published"
 }

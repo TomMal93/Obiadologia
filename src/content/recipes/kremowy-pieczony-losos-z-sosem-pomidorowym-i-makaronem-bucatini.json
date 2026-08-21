@@ -3,7 +3,10 @@
   "slug": "kremowy-pieczony-losos-z-sosem-pomidorowym-i-makaronem-bucatini",
   "title": "Pieczony łosoś w kremowym sosie pomidorowym z serkiem Philadelphia i makaronem bucatini",
   "description": "Ekspresowe, jednogarnkowe danie z pieca. Filet z łososia pieczony w krojonych pomidorach z kremowym serkiem Philadelphia, świeżym czosnkiem i szpinakiem, wymieszany z makaronem bucatini, który idealnie chłonie aksamitny sos.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/kremowy-pieczony-losos-z-sosem-pomidorowym-i-makaronem-bucatini.webp",
+    "alt": "Naczynie z makaronem bucatini, kawałkami pieczonego łososia, szpinakiem i pomidorkami w kremowym sosie"
+  },
   "preparationMinutes": 25,
   "difficulty": "easy",
   "servings": 4,
@@ -143,5 +146,5 @@
     "lightness": 0.55
   },
   "editorialPriority": 80,
-  "status": "draft"
+  "status": "published"
 }

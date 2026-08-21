@@ -3,7 +3,10 @@
   "slug": "salatka-z-orzo-kurczakiem-i-ogorkiem",
   "title": "Sałatka makaronowa z orzo, kurczakiem i ogórkiem",
   "description": "Szybka i pożywna sałatka z drobnym makaronem orzo, podsmażonym kurczakiem i chrupiącym ogórkiem, połączona kremowym sosem na bazie skyru, majonezu i soku z cytryny.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/salatka-z-orzo-kurczakiem-i-ogorkiem.webp",
+    "alt": "Miska sałatki z makaronem orzo, rumianym kurczakiem, ogórkiem i czerwoną cebulą w kremowym sosie"
+  },
   "preparationMinutes": 20,
   "difficulty": "easy",
   "servings": 4,
@@ -139,5 +142,5 @@
     "lightness": 0.7
   },
   "editorialPriority": 50,
-  "status": "draft"
+  "status": "published"
 }

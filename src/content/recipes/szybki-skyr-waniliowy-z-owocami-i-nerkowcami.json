@@ -3,7 +3,10 @@
   "slug": "szybki-skyr-waniliowy-z-owocami-i-nerkowcami",
   "title": "Błyskawiczny skyr waniliowy z owocami i nerkowcami",
   "description": "Ekspresowy, wysokobiałkowy posiłek do pracy w formule shake & go bez brudzenia deski do krojenia. Zrób w 3 minuty rano lub przygotuj wieczór wcześniej.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/szybki-skyr-waniliowy-z-owocami-i-nerkowcami.webp",
+    "alt": "Szklany lunchbox z waniliowym skyrem, plasterkami banana, borówkami i orzechami nerkowca"
+  },
   "preparationMinutes": 3,
   "difficulty": "easy",
   "servings": 1,

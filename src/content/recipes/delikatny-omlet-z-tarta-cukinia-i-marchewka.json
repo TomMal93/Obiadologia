@@ -3,7 +3,10 @@
   "slug": "delikatny-omlet-z-tarta-cukinia-i-marchewka",
   "title": "Delikatny omlet z tartą cukinią i marchewką",
   "description": "Miękki, puszysty omlet na parze z drobno startymi warzywami. Soczysty, delikatny w smaku i łatwy do chwycenia w małe rączki.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/delikatny-omlet-z-tarta-cukinia-i-marchewka.webp",
+    "alt": "Puszysty omlet z drobinkami cukinii i marchewki pokrojony w podłużne paski"
+  },
   "preparationMinutes": 12,
   "difficulty": "easy",
   "servings": 1,
@@ -113,5 +116,5 @@
     "lightness": 0.4
   },
   "editorialPriority": 88,
-  "status": "draft"
+  "status": "published"
 }

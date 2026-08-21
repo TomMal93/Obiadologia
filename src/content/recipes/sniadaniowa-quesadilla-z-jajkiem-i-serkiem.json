@@ -3,7 +3,10 @@
   "slug": "sniadaniowa-quesadilla-z-jajkiem-i-serkiem",
   "title": "Śniadaniowa quesadilla z jajkiem duszona pod przykryciem",
   "description": "Sycące śniadanie z patelni, w którym jajko powoli ścina się wewnątrz zamkniętej tortilli, a sery całkowicie topią, tworząc chrupiącą i zwartą całość.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/sniadaniowa-quesadilla-z-jajkiem-i-serkiem.webp",
+    "alt": "Rumiana quesadilla pokrojona w trójkąty z widocznym jajkiem, szynką, cebulą i roztopionym serem"
+  },
   "preparationMinutes": 15,
   "difficulty": "easy",
   "servings": 1,

@@ -3,7 +3,10 @@
   "slug": "chrupiace-lodki-ziemniaczane-z-gzikiem-twarogowym",
   "title": "Chrupiące łódeczki ziemniaczane z twarogiem i szczypiorkiem",
   "description": "Złociste, chrupiące łódeczki ziemniaczane wstępnie upieczone, błyskawicznie wydrążone i dopieczone na chrupko, wypełnione świeżym gzikiem z twarogu, śmietany i szczypiorku.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/chrupiace-lodki-ziemniaczane-z-gzikiem-twarogowym.webp",
+    "alt": "Cztery chrupiące łódeczki ziemniaczane wypełnione twarogiem ze szczypiorkiem i plasterkami rzodkiewki"
+  },
   "preparationMinutes": 35,
   "difficulty": "easy",
   "servings": 4,
@@ -126,5 +129,5 @@
     "lightness": 0.6
   },
   "editorialPriority": 65,
-  "status": "draft"
+  "status": "published"
 }

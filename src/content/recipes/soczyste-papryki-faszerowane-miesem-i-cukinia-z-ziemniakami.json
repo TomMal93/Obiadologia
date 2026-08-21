@@ -3,7 +3,10 @@
   "slug": "soczyste-papryki-faszerowane-miesem-i-cukinia-z-ziemniakami",
   "title": "Soczyste papryki faszerowane mięsem i cukinią z pieczonymi ziemniakami",
   "description": "Aromatyczne papryki nadziane soczystym mięsem mielonym wymieszanym ze startą cukinią, cebulą i czosnkiem pod pierzynką z sera, pieczone na jednej blasze ze złocistymi ziemniaczkami.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/soczyste-papryki-faszerowane-miesem-i-cukinia-z-ziemniakami.webp",
+    "alt": "Cztery pieczone papryki z mięsnym farszem i roztopionym serem otoczone złocistymi ziemniakami"
+  },
   "preparationMinutes": 45,
   "difficulty": "easy",
   "servings": 4,
@@ -153,5 +156,5 @@
     "lightness": 0.45
   },
   "editorialPriority": 70,
-  "status": "draft"
+  "status": "published"
 }

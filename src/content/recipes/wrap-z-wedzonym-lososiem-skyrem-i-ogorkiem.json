@@ -3,7 +3,10 @@
   "slug": "wrap-z-wedzonym-lososiem-skyrem-i-ogorkiem",
   "title": "Wrapy z wędzonym łososiem, skyrem i ogórkiem",
   "description": "Błyskawiczne, lekkie wrapy z wędzonym łososiem, chrupiącym ogórkiem i sosem ze skyru. Dwie sztuki jako sycąca, wysokobiałkowa porcja na zimno do pracy.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/wrap-z-wedzonym-lososiem-skyrem-i-ogorkiem.webp",
+    "alt": "Cztery połówki wrapów z widocznymi warstwami wędzonego łososia, ogórka i sosu ze skyru"
+  },
   "preparationMinutes": 5,
   "difficulty": "easy",
   "servings": 1,

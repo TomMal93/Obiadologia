@@ -3,7 +3,10 @@
   "slug": "imprezowe-roladki-z-tortilli-z-szynka-serkiem-i-warzywami",
   "title": "Imprezowe roladki z tortilli z szynką, serkiem i chrupiącymi warzywami",
   "description": "Ekspresowa i efektowna przekąska na zimno. Placki tortilli posmarowane kremowym serkiem ziołowym, zawinięte z delikatną szynką, chrupiącą papryką, ogórkiem i opcjonalną zieleniną, a następnie pokrojone w estetyczne ślimaczki.",
-  "image": null,
+  "image": {
+    "src": "/images/recipes/imprezowe-roladki-z-tortilli-z-szynka-serkiem-i-warzywami.webp",
+    "alt": "Półmisek roladek z tortilli z widocznymi warstwami szynki, serka, sera i chrupiących warzyw"
+  },
   "preparationMinutes": 15,
   "difficulty": "easy",
   "servings": 6,
@@ -137,5 +140,5 @@
     "lightness": 0.5
   },
   "editorialPriority": 70,
-  "status": "draft"
+  "status": "published"
 }
