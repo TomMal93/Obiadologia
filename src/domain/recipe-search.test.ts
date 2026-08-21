@@ -67,6 +67,7 @@ describe('recipe search', () => {
     expect(new Set(tropes.map((trope) => trope.query)).size).toBe(tropes.length);
     for (const trope of tropes) {
       expect(trope.label.trim().split(/\s+/u).length).toBeLessThanOrEqual(2);
+      expect(normalizeSearchText(trope.query)).toBe(normalizeSearchText(trope.label));
       expect(search.search(trope.query).length).toBeGreaterThan(0);
     }
   });
@@ -84,7 +85,7 @@ describe('recipe search', () => {
       } else if (trope.kind === 'tempo') {
         expect(['szybko', 'na dziś', 'dwa dni']).toContain(trope.query);
       } else if (trope.kind === 'occasion') {
-        expect(['dzieci', 'gości', 'grill']).toContain(trope.query);
+        expect(['dla dzieci', 'dla gości', 'na grilla']).toContain(trope.query);
       } else {
         expect(ingredientNames).toContain(trope.query);
       }

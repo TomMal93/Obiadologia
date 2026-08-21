@@ -109,7 +109,9 @@
   "tempos": [
     "now"
   ],
-  "occasions": [],
+  "occasions": [
+    "kids"
+  ],
   "mapPosition": {
     "pace": 0.15,
     "lightness": 0.4

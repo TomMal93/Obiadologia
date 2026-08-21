@@ -42,9 +42,9 @@ const tempoTropes: CategoryTrope<Tempo>[] = [
 ];
 
 const occasionTropes: CategoryTrope<Occasion>[] = [
-  { value: 'kids', label: 'Dla dzieci', query: 'dzieci' },
-  { value: 'guests', label: 'Dla gości', query: 'gości' },
-  { value: 'grill', label: 'Na grilla', query: 'grill' },
+  { value: 'kids', label: 'Dla dzieci', query: 'dla dzieci' },
+  { value: 'guests', label: 'Dla gości', query: 'dla gości' },
+  { value: 'grill', label: 'Na grilla', query: 'na grilla' },
 ];
 
 // Składniki podstawowe (spiżarniane) nie są dobrymi tropami — pomijamy je, aby
