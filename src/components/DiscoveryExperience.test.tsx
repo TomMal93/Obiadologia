@@ -106,6 +106,42 @@ describe('DiscoveryExperience categories', () => {
 
     expect(results.scrollTop).toBe(0);
   });
+
+  it('hands a mobile swipe to the page at both ends of the results list', () => {
+    const matchingRecipes = Array.from({ length: 7 }, (_, index) => ({
+      ...testRecipes[0],
+      id: `touch_result_${index}`,
+      slug: `touch-result-${index}`,
+      title: `Wynik dotyku ${index + 1}`,
+    }));
+    const scrollBy = vi.spyOn(window, 'scrollBy').mockImplementation(() => {});
+    renderExperience(matchingRecipes);
+
+    const results = screen.getByRole('region', { name: 'Wyniki kategorii' });
+    Object.defineProperties(results, {
+      clientHeight: { configurable: true, value: 400 },
+      scrollHeight: { configurable: true, value: 1000 },
+    });
+
+    results.scrollTop = 0;
+    fireEvent.touchStart(results, { touches: [{ clientY: 200 }] });
+    fireEvent.touchMove(results, { touches: [{ clientY: 320 }] });
+    expect(scrollBy).toHaveBeenLastCalledWith({ top: -120, behavior: 'auto' });
+
+    scrollBy.mockClear();
+    results.scrollTop = 200;
+    fireEvent.touchStart(results, { touches: [{ clientY: 320 }] });
+    fireEvent.touchMove(results, { touches: [{ clientY: 200 }] });
+    expect(scrollBy).not.toHaveBeenCalled();
+    expect(results.scrollTop).toBe(320);
+
+    results.scrollTop = 600;
+    fireEvent.touchStart(results, { touches: [{ clientY: 320 }] });
+    fireEvent.touchMove(results, { touches: [{ clientY: 200 }] });
+    expect(scrollBy).toHaveBeenLastCalledWith({ top: 120, behavior: 'auto' });
+
+    scrollBy.mockRestore();
+  });
 });
 
 describe('DiscoveryExperience overlay', () => {

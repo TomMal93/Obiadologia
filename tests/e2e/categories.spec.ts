@@ -164,19 +164,26 @@ test('category results hand scrolling back to the page when they cannot scroll f
   await page.getByRole('button', { name: /Śniadanie/ }).click();
   await resultsBody.evaluate((element) => element.scrollTo({ top: 0 }));
   await resultsBody.scrollIntoViewIfNeeded();
-  await resultsBody.hover();
   const pageAtListTop = await page.evaluate(() => window.scrollY);
-  await page.mouse.wheel(0, -240);
+  const topBounds = await resultsBody.boundingBox();
+  if (!topBounds) throw new Error('Category results are not visible at the top');
+  await swipe(
+    topBounds.x + topBounds.width / 2,
+    topBounds.y + topBounds.height / 2,
+    240,
+  );
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(pageAtListTop);
 
   await resultsBody.evaluate((element) => element.scrollTo({ top: element.scrollHeight }));
   await resultsBody.scrollIntoViewIfNeeded();
   const pageAtListBottom = await page.evaluate(() => window.scrollY);
-  const resultsBounds = await resultsBody.boundingBox();
-  if (!resultsBounds) throw new Error('Category results are not visible');
-  const touchX = resultsBounds.x + resultsBounds.width / 2;
-  const touchY = resultsBounds.y + resultsBounds.height / 2;
-  await swipe(touchX, touchY, -240);
+  const bottomBounds = await resultsBody.boundingBox();
+  if (!bottomBounds) throw new Error('Category results are not visible at the bottom');
+  await swipe(
+    bottomBounds.x + bottomBounds.width / 2,
+    bottomBounds.y + bottomBounds.height / 2,
+    -240,
+  );
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(pageAtListBottom);
 });
 
