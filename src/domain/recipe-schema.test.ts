@@ -54,6 +54,24 @@ describe('Recipe schema', () => {
     expect(() => recipeSchema.parse({ ...testRecipes[0], tips: [] })).toThrow();
   });
 
+  it('requires complete, non-negative nutrition values per serving', () => {
+    expect(recipeSchema.parse(testRecipes[0]).nutritionPerServing).toEqual({
+      calories: 420,
+      proteinGrams: 30,
+      fatGrams: 18,
+      carbohydrateGrams: 35,
+    });
+    expect(() =>
+      recipeSchema.parse({
+        ...testRecipes[0],
+        nutritionPerServing: { ...testRecipes[0].nutritionPerServing, proteinGrams: -1 },
+      }),
+    ).toThrow();
+    expect(() =>
+      recipeSchema.parse({ ...testRecipes[0], nutritionPerServing: { calories: 420 } }),
+    ).toThrow();
+  });
+
   it('requires a standalone step version exactly for recipes with support stages', () => {
     const withSupportStages = testRecipes[0];
     const withoutSupportStages = testRecipes[1];

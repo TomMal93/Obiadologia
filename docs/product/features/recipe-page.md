@@ -7,7 +7,7 @@
 
 Strona przepisu jest celem nawigacji wszystkich trzech dróg odkrywania: karta wyniku z Kategorii, Wyszukiwarki i Mapy prowadzi do `/recipes/:slug`. Strona prezentuje jeden przepis na podstawie wspólnego modelu `Recipe` i pozwala wrócić do dalszego odkrywania.
 
-Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [data-model.md](../../engineering/data-model.md). Treść redakcyjna spoza modelu, w tym wartości odżywcze, pozostaje poza zakresem — zob. [mvp-scope.md](../mvp-scope.md).
+Wersja wstępna prezentuje wyłącznie pola istniejące w modelu `Recipe` z [data-model.md](../../engineering/data-model.md). Obejmuje to szacunkowe wartości odżywcze na porcję; pozostała treść redakcyjna spoza modelu pozostaje poza zakresem — zob. [mvp-scope.md](../mvp-scope.md).
 
 ## Referencja projektu
 
@@ -30,7 +30,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 | Element projektu | Status w MVP | Powód |
 |---|---|---|
-| wartości odżywcze | pominięte | brak danych w modelu i poza zakresem MVP |
+| wartości odżywcze | obecne | szacunkowa energia oraz makroskładniki na jedną porcję z `nutritionPerServing` |
 | „Podobne przepisy” | pominięte | brak uzgodnionego kontraktu podobieństwa |
 | przełącznik jednostek nad składnikami | pominięty | forma miary jest wyborem redakcyjnym pojedynczego składnika (`measure`), więc lista jest mieszana i nie ma czego przełączać |
 | panel „Kiedy zacząć” | pominięty | tryb asystenta pokazuje etapy wspierające bez kalkulatora godziny rozpoczęcia |
@@ -39,6 +39,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 - trasa `/recipes/:slug` i jej prerendering;
 - prezentacja pól modelu `Recipe` dla jednego przepisu;
+- tabela szacunkowej energii i makroskładników na jedną porcję;
 - pasek trudności, bazowej liczby porcji i czasu oraz lokalne przeliczanie ilości składników;
 - placeholder braku zdjęcia;
 - lokalne, nietrwałe odhaczanie składników i kroków;
@@ -47,7 +48,7 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 ## Poza zakresem
 
-- wartości odżywcze i inne pola spoza modelu `Recipe` — granice etapu definiuje [mvp-scope.md](../mvp-scope.md);
+- inne pola spoza modelu `Recipe` — granice etapu definiuje [mvp-scope.md](../mvp-scope.md);
 - sekcja podobnych przepisów;
 - docelowy zestaw przepisów i produkcyjne obrazy — otwarte `OPEN-003` i `OPEN-005` w [technical-decisions.md](../../engineering/technical-decisions.md);
 - oceny, komentarze, zapisywanie ulubionych i udostępnianie — poza MVP.
@@ -56,10 +57,11 @@ Projekt pokazuje też kierunek dla elementów poza MVP. Ich widoczność w pliku
 
 - Trasa `/recipes/:slug` jest prerenderowana dla każdego przepisu o statusie `published`; slug spoza katalogu nie generuje strony.
 - Strona przepisu nie powiela wspólnego nagłówka. Pierwszym elementem jest hero z akcją powrotu, dzięki czemu zdjęcie i tytuł rozpoczynają stronę zgodnie z projektem.
-- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tytułem (`h1`) i tagami; pasek trudności, porcji i czasu przygotowania; opis; listę składników z nagłówkiem „Składniki”; opcjonalną sekcję wspierającą gotowanie „Zanim zaczniesz”; kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
+- Strona prezentuje w kolejności: hero ze zdjęciem albo placeholderem, tytułem (`h1`) i tagami; pasek trudności, porcji i czasu przygotowania; panel „O daniu” z opisem i tabelą wartości odżywczych; listę składników z nagłówkiem „Składniki”; opcjonalną sekcję wspierającą gotowanie „Zanim zaczniesz”; kroki przygotowania z nagłówkiem „Kroki”; opcjonalną sekcję porad „Coś jeszcze”.
 - Każdy główny panel treści — „O daniu”, „Składniki”, „Zanim zaczniesz”, „Kroki” i opcjonalne „Coś jeszcze” — jest początkowo rozwinięty i można go niezależnie zwinąć oraz ponownie rozwinąć przyciskiem w nagłówku. Nagłówek pozostaje widoczny, kontrolka komunikuje nazwę sekcji i aktualny stan, a stan jest lokalny dla otwartej strony. Przycisk „Jak chcesz gotować?” steruje całym nadrzędnym panelem gotowania: razem zwija wybór trybu, przygotowanie, kroki i porady. Bez skryptu kontrolki pozostają ukryte, a cała dostępna w danym trybie treść jest widoczna.
 - Zwijanie i rozwijanie sekcji jest ruchem ciągłym: treść pozostaje w całości, a kolejne linie odsłania i chowa krawędź sekcji schodząca do wysokości nagłówka. Odstęp między nagłówkiem a treścią maleje razem z nią, więc na końcu ruchu układ nie przeskakuje. Strzałka nagłówka obraca się w tym samym tempie, a przerwanie ruchu ponownym kliknięciem zawraca go z bieżącej klatki. Przy `prefers-reduced-motion` sekcja zmienia stan natychmiast, bez animacji.
 - Pasek bezpośrednio pod hero ma trzy komórki: przetłumaczony poziom `difficulty`, bazową liczbę `servings` z akcjami zmniejszenia i zwiększenia oraz czas z `preparationMinutes`. Liczbę porcji można ustawić w zakresie `1–12`.
+- Bezpośrednio pod opisem panel „O daniu” pokazuje tabelę `nutritionPerServing`: energię w kcal oraz białko, tłuszcze i węglowodany w gramach. Podpis tabeli komunikuje, że wartości są szacunkowe i dotyczą jednej porcji. Zmiana liczby porcji nie zmienia tych wartości, ponieważ proporcjonalnie skaluje cały przepis, a nie wielkość pojedynczej porcji.
 - Zmiana liczby porcji skaluje ilość każdego składnika względem bazowej wartości według reguły z [data-model.md](../../engineering/data-model.md). Każda pokazana forma miary — metryczna, domowa i obie połączone ukośnikiem — korzysta z przeliczonej ilości. Stan jest lokalny i resetuje się po opuszczeniu strony.
 - Regulacja porcji jest wzbogaceniem progresywnym: bez skryptu strona pokazuje bazową liczbę porcji i bazowe ilości, a akcje zmiany pozostają ukryte.
 - Składniki są podzielone według grup zakupowych z pola `category` ([data-model.md](../../engineering/data-model.md)). Puste grupy są pomijane. Każdy składnik pokazuje nazwę i jedną miarę.
@@ -90,7 +92,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 - Dolna nakładka hero używa gradientu od przezroczystości do ciemnego koralu. Tagi i `h1` mają biały tekst oraz kontrast niezależny od zdjęcia, a tytuł jest dominującym typograficznie elementem nakładki.
 - Akcja „Powrót” ma jasną powierzchnię, zaokrąglony kształt i minimalny obszar aktywny `44 × 44px`; pozostaje nad zdjęciem i nakładką.
 - Akcje zmiany porcji są okrągłe, mają minimalny obszar aktywny `44 × 44px`, dostępne nazwy i stan `disabled` na granicach zakresu.
-- Opis rozpoczyna właściwą kolumnę treści jako panel „O daniu” w tej samej neutralnej ramce i z takim samym nagłówkiem jak sekcja „Zanim zaczniesz”. Nie jest częścią koralowego paska metadanych.
+- Opis rozpoczyna właściwą kolumnę treści jako panel „O daniu” w tej samej neutralnej ramce i z takim samym nagłówkiem jak sekcja „Zanim zaczniesz”. Pod opisem, za subtelnym poziomym separatorem, mieści się zwarta siatka wartości odżywczych bez dodatkowej zewnętrznej ramki: białko, tłuszcze i węglowodany tworzą trzy równe kafle w pierwszym rzędzie, a energia osobny pełnoszeroki pasek z większym odstępem powyżej. Każda wartość ma koralową ikonę, etykietę, dużą liczbę i jednostkę, a tekstowy nagłówek jest wyrównany do lewej. Etykiety i jednostki pozostają czytelne w jednym układzie mobilnym `320–480px`. Panel nie jest częścią koralowego paska metadanych.
 - Sekcja „Składniki” korzysta z tej samej neutralnej ramki co panel „O daniu” i sekcja „Zanim zaczniesz”. Nagłówki grup zakupowych są mniejsze i lżejsze od nagłówka całej sekcji, ale zachowują koralowy kolor akcentu. Miara stoi przy prawej krawędzi wiersza składnika i pozostaje nierozdzielona; przy dłuższej nazwie łamie się nazwa, a nie miara.
 - Licznik zebranych składników jest niewielkim wskaźnikiem z paskiem postępu w wierszu nagłówka każdej grupy składników. Pasek pokazuje bieżący postęp zebrania składników, a po zebraniu wszystkich składników licznik wskazuje komplet w koralowym kolorze akcentu. Cały ruch niesie `transition`, więc `prefers-reduced-motion` wycisza go wspólną regułą globalną, nie zmieniając stanów.
 - Wybór sposobu gotowania i ujawniona po nim treść, aż do sekcji „Coś jeszcze” włącznie, tworzą jeden nadrzędny panel. Panel odróżnia się od neutralnych ramek większym promieniem, delikatnym koralowym tłem i subtelnym cieniem; poszczególne etapy zachowują wewnętrzne powierzchnie.
@@ -114,6 +116,7 @@ Wspólne reguły wizualne (tokeny, typografia, jeden układ mobilny `320–480px
 | 3 | Przy `image: null` widoczny jest dekoracyjny placeholder, a układ strony nie zmienia wymiarów. |
 | 4 | Akcja „Powrót” w hero przywraca poprzedni widok z historii, w tym zawieszoną sesję discovery; przy bezpośrednim otwarciu przepisu prowadzi awaryjnie do `/`. |
 | 5 | Tytuł dokumentu i meta description są unikalne dla przepisu. |
+| 5a | Pod opisem w „O daniu” widoczna jest opisana semantycznie siatka szacunkowych wartości na porcję: trzy równe kafle białka, tłuszczów i węglowodanów oraz pełnoszeroki pasek energii poniżej, zgodne z `nutritionPerServing`; zmiana liczby porcji nie zmienia wartości na jedną porcję. |
 | 6 | Strona przechodzi automatyczną kontrolę `axe-core`, działa klawiaturą i nie tworzy poziomego przewijania w zakresie `320–480px`. |
 | 7 | Dane prototypowe są jawnie oznaczone jako prototypowe. |
 | 8 | Lista składników nie ma przełącznika jednostek, a każdy składnik pokazuje formę wskazaną w `measure`: metryczną, domową albo obie rozdzielone ukośnikiem; składnik bez wskazania pozostaje metryczny. Bez skryptu widoczne są te same miary. |

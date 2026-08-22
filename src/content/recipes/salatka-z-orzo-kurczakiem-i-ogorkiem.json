@@ -10,6 +10,7 @@
   "preparationMinutes": 20,
   "difficulty": "easy",
   "servings": 4,
+  "nutritionPerServing": { "calories": 400, "proteinGrams": 30, "fatGrams": 13, "carbohydrateGrams": 40 },
   "ingredients": [
     {
       "category": "grains",

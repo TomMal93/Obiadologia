@@ -33,6 +33,7 @@ Dokument definiuje znaczenie danych, nie bazę danych, API ani język programowa
 | `preparationMinutes` | integer | dodatnia liczba minut |
 | `difficulty` | Difficulty | kontrolowany poziom trudności |
 | `servings` | integer | bazowa liczba porcji od `1` do `12` |
+| `nutritionPerServing` | NutritionPerServing | szacunkowe wartości odżywcze jednej porcji |
 | `ingredients` | Ingredient[] | składniki z ilością metryczną dla bazowej liczby porcji i opcjonalnym przelicznikiem naturalnej miary domowej; `name` zasila wyszukiwanie |
 | `preparation` | PreparationStep[] \| — | opcjonalna lista czynności z sekcji „Zanim zaczniesz”; każda wskazuje, czy można ją wykonać dzień wcześniej, czy tuż przed gotowaniem lub w trakcie |
 | `steps` | string[] | co najmniej jeden krok właściwego gotowania, pisany tak, jakby etapy wspierające były już wykonane; kolejność określa numerację na stronie przepisu |
@@ -55,6 +56,7 @@ Occasion = kids | guests | grill
 Difficulty = easy | medium | hard
 MapPosition = { pace: 0..1, lightness: 0..1 }
 ImageReference = { src: string, alt: string }
+NutritionPerServing = { calories: number >= 0, proteinGrams: number >= 0, fatGrams: number >= 0, carbohydrateGrams: number >= 0 }
 IngredientUnit = g | ml | szt
 IngredientCategory = produce | meat | dairy | grains | pantry | spices
 HouseholdUnit = cup | tablespoon | teaspoon | pinch | piece | slice | bread_slice | handful
@@ -69,6 +71,7 @@ PreparationStep = { id: string, text: string, stepText: string, timing: Preparat
 - `steps` i `stepsOnly` to dwie wersje tych samych kroków, a nie ta sama treść pokazana dwa razy. `steps` prowadzi przez gotowanie przy założeniu, że czynności z `preparation` zostały wykonane, więc może pomijać krojenie, namoczenie lub przygotowanie sprzętu. `stepsOnly` jest wersją samodzielną dla trybu „Tylko kroki”, w którym „Zanim zaczniesz” jest ukryte, więc MUSI nieść wszystko, co `steps` z tej sekcji założyło — także wtedy, gdy wymaga to innej liczby kroków.
 - `stepsOnly` istnieje dokładnie wtedy, gdy istnieje `preparation`. Brak pola przy przygotowaniach jest błędem danych, bo tryb „Tylko kroki” gubiłby wtedy część pracy. Pole przy przepisie bez przygotowań jest błędem danych, bo taki przepis nie ma przełącznika trybu, a druga lista rozjechałaby się z `steps` bez możliwości zauważenia tego w UI.
 - `tips` jest opcjonalną listą krótkich porad uzupełniających właściwe kroki. Brak pola oznacza brak sekcji „Coś jeszcze”; pusta tablica jest błędem danych.
+- `nutritionPerServing` przechowuje szacunkowe wartości dla jednej gotowej porcji: energię w kilokaloriach oraz białko, tłuszcze i węglowodany w gramach. Wartości nie są wyliczane automatycznie z listy składników. Zmiana liczby porcji skaluje ilości potrzebne do przygotowania dania, ale nie zmienia wartości przypadających na jedną porcję.
 
 - `pace: 0` oznacza „szybko”, a `pace: 1` — „bez pośpiechu”.
 - `lightness: 0` oznacza „konkretnie”, a `lightness: 1` — „lekko”.
@@ -97,6 +100,7 @@ PreparationStep = { id: string, text: string, stepText: string, timing: Preparat
   "preparationMinutes": 25,
   "difficulty": "easy",
   "servings": 2,
+  "nutritionPerServing": { "calories": 480, "proteinGrams": 42, "fatGrams": 22, "carbohydrateGrams": 28 },
   "ingredients": [
     { "category": "meat", "name": "kurczak", "amount": 400, "unit": "g" },
     { "category": "produce", "name": "sałata", "amount": 1, "unit": "szt" },

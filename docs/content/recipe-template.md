@@ -34,6 +34,17 @@ można pominąć w całości.
 - **Trudność:** `[easy | medium | hard]`
 - **Bazowa liczba porcji:** `[liczba całkowita od 1 do 12]`
 
+## Wartości odżywcze
+
+Podaj szacunkowe wartości dla jednej gotowej porcji. Energia jest zapisywana w
+kilokaloriach, a makroskładniki w gramach. Wartości nie są automatycznie
+wyliczane z listy składników.
+
+- **Energia (`calories`):** [liczba większa lub równa 0]
+- **Białko (`proteinGrams`):** [liczba gramów większa lub równa 0]
+- **Tłuszcze (`fatGrams`):** [liczba gramów większa lub równa 0]
+- **Węglowodany (`carbohydrateGrams`):** [liczba gramów większa lub równa 0]
+
 ## Zdjęcie
 
 Jeśli zdjęcie nie jest jeszcze dostępne, wpisz `null` i pomiń ścieżkę oraz tekst
@@ -166,6 +177,7 @@ rankingu definiuje [data-model.md](../engineering/data-model.md#mapa).
 - [ ] Tytuł i opis są naturalne oraz napisane po polsku.
 - [ ] Czas jest dodatnią liczbą całkowitą.
 - [ ] Trudność ma jedną z dozwolonych wartości, a bazowa liczba porcji mieści się w zakresie `1–12`.
+- [ ] Wartości odżywcze są uzupełnione dla jednej porcji i żadna z nich nie jest ujemna.
 - [ ] Każdy składnik ma kategorię zakupową, dodatnią ilość i dozwoloną jednostkę.
 - [ ] Opcjonalny przelicznik `household` ma dozwoloną jednostkę, dodatnie `metricAmount` i występuje wyłącznie przy bazowej jednostce `g` albo `ml`.
 - [ ] Opcjonalne `measure` ma wartość `metric`, `household` albo `both`, a formy z miarą domową mają przelicznik i dają czytelną ilość.

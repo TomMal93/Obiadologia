@@ -10,6 +10,7 @@
   "preparationMinutes": 20,
   "difficulty": "easy",
   "servings": 2,
+  "nutritionPerServing": { "calories": 390, "proteinGrams": 31, "fatGrams": 13, "carbohydrateGrams": 39 },
   "ingredients": [
     {
       "category": "dairy",

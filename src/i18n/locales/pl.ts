@@ -188,6 +188,14 @@ export const pl = {
     backLabel: 'Powrót do poprzedniego widoku',
     backShort: 'Powrót',
     descriptionHeading: 'O daniu',
+    nutritionCaption: 'Szacunkowe wartości odżywcze na porcję',
+    nutrition: {
+      calories: 'Energia',
+      energyPerServing: 'Energia na porcję',
+      protein: 'Białko',
+      fat: 'Tłuszcze',
+      carbohydrates: 'Węglowodany',
+    },
     ingredientsHeading: 'Składniki',
     ingredientCategories: {
       produce: 'Warzywa i owoce',

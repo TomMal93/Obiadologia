@@ -83,7 +83,7 @@ Wymagania przekrojowe: [quality-requirements.md](../engineering/quality-requirem
 - podstrona wyników Kategorii otwierana przez „Pokaż więcej”,
 - zaawansowane filtrowanie,
 - docelowy zestaw przykładowych przepisów, produkcyjne zdjęcia i pełna treść redakcyjna katalogu (prototypowe kroki są już w modelu),
-- rozszerzenia strony przepisu wymagające nowych danych lub reguł: wartości odżywcze i podobne przepisy,
+- rozszerzenia strony przepisu wymagające nowych danych lub reguł, takie jak podobne przepisy,
 - wiele wersji językowych.
 
 Typowane wydzielenie polskich tekstów interfejsu jest przygotowaniem technicznym,

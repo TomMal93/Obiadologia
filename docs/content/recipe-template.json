@@ -10,6 +10,12 @@
   "preparationMinutes": 30,
   "difficulty": "easy",
   "servings": 4,
+  "nutritionPerServing": {
+    "calories": 0,
+    "proteinGrams": 0,
+    "fatGrams": 0,
+    "carbohydrateGrams": 0
+  },
   "ingredients": [
     {
       "category": "produce",

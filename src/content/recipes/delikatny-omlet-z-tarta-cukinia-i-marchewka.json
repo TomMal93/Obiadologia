@@ -10,6 +10,7 @@
   "preparationMinutes": 12,
   "difficulty": "easy",
   "servings": 1,
+  "nutritionPerServing": { "calories": 210, "proteinGrams": 14, "fatGrams": 15, "carbohydrateGrams": 6 },
   "ingredients": [
     {
       "category": "produce",

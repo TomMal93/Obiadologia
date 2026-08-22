@@ -20,6 +20,15 @@ const imageReferenceSchema = z
   })
   .strict();
 
+const nutritionPerServingSchema = z
+  .object({
+    calories: z.number().nonnegative(),
+    proteinGrams: z.number().nonnegative(),
+    fatGrams: z.number().nonnegative(),
+    carbohydrateGrams: z.number().nonnegative(),
+  })
+  .strict();
+
 /** Czynność wspierająca gotowanie, przypisana do jednej z dwóch grup czasowych. */
 export const preparationStepSchema = z
   .object({
@@ -43,6 +52,7 @@ export const recipeSchema = z
     preparationMinutes: z.number().int().positive(),
     difficulty: z.enum(difficulties),
     servings: z.number().int().positive().max(12),
+    nutritionPerServing: nutritionPerServingSchema,
     ingredients: z.array(ingredientSchema).min(1),
     // Jedna lista czynności wspierających, rozdzielanych w UI na możliwe do
     // wykonania dzień wcześniej i wykonywane tuż przed gotowaniem lub w trakcie.
