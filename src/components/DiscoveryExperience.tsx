@@ -478,7 +478,6 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
   const mapPointRef = useRef<HTMLButtonElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const categoryResultsRef = useRef<HTMLDivElement>(null);
-  const categoryTouchYRef = useRef<number | null>(null);
   const draggingRef = useRef(false);
   const recipeSearch = useMemo(() => createRecipeSearch(recipes), [recipes]);
 
@@ -509,73 +508,6 @@ export function DiscoveryExperience({ recipes, common, messages, locale }: Props
     const frame = window.requestAnimationFrame(() => setRankedMap(currentMap));
     return () => window.cancelAnimationFrame(frame);
   }, [currentMap]);
-
-  useEffect(() => {
-    const results = categoryResultsRef.current;
-    if (!results) return;
-
-    const shouldHandScrollToPage = (scrollDelta: number) => {
-      if (results.scrollHeight <= results.clientHeight + 1) return true;
-
-      const reachedTop = results.scrollTop <= 1;
-      const reachedBottom = results.scrollTop + results.clientHeight >= results.scrollHeight - 1;
-      return (scrollDelta < 0 && reachedTop) || (scrollDelta > 0 && reachedBottom);
-    };
-
-    const scrollPage = (scrollDelta: number) => {
-      window.scrollBy({ top: scrollDelta, behavior: 'auto' });
-    };
-
-    const handleWheel = (event: WheelEvent) => {
-      if (!shouldHandScrollToPage(event.deltaY)) return;
-
-      event.preventDefault();
-      scrollPage(event.deltaY);
-    };
-
-    const handleTouchStart = (event: TouchEvent) => {
-      categoryTouchYRef.current = event.touches[0]?.clientY ?? null;
-    };
-    const handleTouchMove = (event: TouchEvent) => {
-      const currentY = event.touches[0]?.clientY;
-      const previousY = categoryTouchYRef.current;
-      if (currentY === undefined || previousY === null) return;
-
-      const scrollDelta = previousY - currentY;
-      categoryTouchYRef.current = currentY;
-      if (scrollDelta === 0) return;
-
-      event.preventDefault();
-
-      const maximumScrollTop = Math.max(0, results.scrollHeight - results.clientHeight);
-      const nextScrollTop = Math.min(
-        maximumScrollTop,
-        Math.max(0, results.scrollTop + scrollDelta),
-      );
-      const listScrollDelta = nextScrollTop - results.scrollTop;
-      results.scrollTop = nextScrollTop;
-
-      const pageScrollDelta = scrollDelta - listScrollDelta;
-      if (pageScrollDelta !== 0) scrollPage(pageScrollDelta);
-    };
-    const handleTouchEnd = () => {
-      categoryTouchYRef.current = null;
-    };
-
-    results.addEventListener('wheel', handleWheel, { passive: false });
-    results.addEventListener('touchstart', handleTouchStart, { passive: true });
-    results.addEventListener('touchmove', handleTouchMove, { passive: false });
-    results.addEventListener('touchend', handleTouchEnd);
-    results.addEventListener('touchcancel', handleTouchEnd);
-
-    return () => {
-      results.removeEventListener('wheel', handleWheel);
-      results.removeEventListener('touchstart', handleTouchStart);
-      results.removeEventListener('touchmove', handleTouchMove);
-      results.removeEventListener('touchend', handleTouchEnd);
-      results.removeEventListener('touchcancel', handleTouchEnd);
-    };
-  }, []);
 
   const searchResults = useMemo(
     () => recipeSearch.search(debouncedQuery),

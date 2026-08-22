@@ -359,9 +359,10 @@
   /* Na granicach listy dalszy gest przechodzi na dokument, dzięki czemu
      wewnętrzny scroll nie tworzy pułapki przewijania. */
   overscroll-behavior-y: auto;
-  /* Pionowy gest dotykowy rozdziela skrypt między listę i stronę, również w
-     trakcie jednego swipe'a. Poziome gesty i pinch-to-zoom pozostają natywne. */
-  touch-action: pan-x pinch-zoom;
+  /* Przeglądarka obsługuje pionowy gest natywnie: przewija listę, a po
+     osiągnięciu jej granicy kontynuuje ten sam gest na stronie. */
+  touch-action: pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   scrollbar-color: color-mix(in srgb, var(--color-categories) 72%, var(--color-border)) var(--color-categories-soft);
   scrollbar-width: thin;
